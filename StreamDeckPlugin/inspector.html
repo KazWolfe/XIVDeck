@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>XIVDeck Property Inspector</title>
+
+    <script>
+        const PLUGIN_ID = "dev.wolf.xivdeck.sdplugin"
+    </script>
+
+    <!-- lib files used by the plugin -->
+    <script src="js/lib/ELGEvents.js"></script>
+    <script src="js/lib/ESDTimer.js"></script>
+    <script src="js/lib/SDApi.js"></script>
+    <script src="js/lib/Utils.js"></script>
+    <script src="js/lib/WSErrorHandler.js"></script>
+
+    <!-- Links and API interfaces -->
+    <script src="js/link/FFXIVPluginLink.js"></script>
+    <script src="js/link/StreamDeckLink.js"></script>
+
+    <!-- Registered actions -->
+    <script src="js/actions/ActionButton.js"></script>
+    <script src="js/actions/HotbarButton.js"></script>
+    <script src="js/actions/CommandButton.js"></script>
+
+    <!-- The inspector -->
+    <script src="js/inspector.js"></script>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/sdpi.css">
+</head>
+<body>
+    <div class="sdpi-wrapper">
+        <!-- Local settings for this action itself -->
+        <div class="sdpi-heading">Action Configuration</div>
+        <div id="piPlaceholder"></div>
+
+        <!-- Global settings (port, authentication) -->
+        <div class="sdpi-heading">Plugin Configuration</div>
+        <div class="sdpi-item">
+            <div class="sdpi-item-label">XIVDeck Port</div>
+            <input class="sdpi-item-value" id="global.port" value="" placeholder="Port Number">
+        </div>
+        <div class="sdpi-item">
+            <div class="sdpi-item-label">XIVDeck Secret</div>
+            <input class="sdpi-item-value" id="global.auth_secret" value="" placeholder="Your secret key...">
+        </div>
+    </div>
+    <script>
+        // Entrypoint for Elgato's side of the API/framework.
+        function connectElgatoStreamDeckSocket(inPort, inUUID, inMessageType, inApplicationInfo, inActionInfo) {
+            StreamDeckLink.getInstance().connectElgatoWS(inPort, inUUID, inMessageType, inApplicationInfo, inActionInfo);
+            window.$SD.api = Object.assign({ send: SDApi.send }, SDApi.common, SDApi[inMessageType]);
+        }
+    </script>
+</body>
+</html>

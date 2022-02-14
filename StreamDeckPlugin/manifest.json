@@ -1,0 +1,49 @@
+﻿{
+  "Actions": [
+    {
+      "Icon": "assets/images/command",
+      "Name": "Text Command / Message",
+      "States": [
+        {
+          "Image": "assets/images/chatBase",
+          "TitleAlignment": "middle",
+          "FontSize": "16"
+        }
+      ],
+      "Tooltip": "Send a chat command or message to Final Fantasy XIV",
+      "UUID": "dev.wolf.xivdeck.sdplugin.actions.SendCommand"
+    },
+    {
+      "Icon": "assets/images/hotbar",
+      "Name": "Execute Hotbar Slot",
+      "States": [
+        {
+          "Image": "null",
+          "TitleAlignment": "bottom",
+          "FontSize": "16"
+        }
+      ],
+      "Tooltip": "Press a specific hotbar button defined in the game",
+      "UUID": "dev.wolf.xivdeck.sdplugin.actions.ExecHotbar"
+    }
+  ],
+  "SDKVersion": 2,
+  "Author": "Kaz Wolfe",
+  "CodePath": "plugin.html",
+  "PropertyInspectorPath": "inspector.html",
+  "Description": "Integrate with Final Fantasy XIV for a mogtastic experience in-game!",
+  "Name": "XIVDeck",
+  "Icon": "assets/images/icon",
+  "URL": "https://wolf.dev/",
+  "Version": "0.0.1",
+  "OS": [{
+      "Platform": "windows",
+      "MinimumVersion" : "10"
+  }],
+  "Software": {
+    "MinimumVersion" : "5.0"
+  },
+  "ApplicationsToMonitor": {
+    "windows": [ "ffxiv_dx11.exe" ]
+  }
+}

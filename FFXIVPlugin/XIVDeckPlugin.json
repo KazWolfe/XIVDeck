@@ -1,0 +1,6 @@
+﻿{
+  "Name": "XIVDeck Game Plugin",
+  "Author": "Kaz Wolfe",
+  "Description": "This plugin is the game-side component of XIVDeck, helping bring Final Fantasy XIV integration natively to the Stream Deck.",
+  "RepoUrl": "https://github.com/kazwolfe/XIVDeck"
+}

@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFXIVPlugin", "FFXIVPlugin\FFXIVPlugin.csproj", "{3B131829-50B8-4E72-BEBA-1762F0C61294}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamDeckPlugin", "StreamDeckPlugin\StreamDeckPlugin.csproj", "{299F16FD-C8AC-4774-95E5-7311D085595E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{299F16FD-C8AC-4774-95E5-7311D085595E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{299F16FD-C8AC-4774-95E5-7311D085595E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B131829-50B8-4E72-BEBA-1762F0C61294}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{3B131829-50B8-4E72-BEBA-1762F0C61294}.Debug|Any CPU.Build.0 = Debug|x64
+		{3B131829-50B8-4E72-BEBA-1762F0C61294}.Release|Any CPU.ActiveCfg = Release|x64
+		{3B131829-50B8-4E72-BEBA-1762F0C61294}.Release|Any CPU.Build.0 = Release|x64
+	EndGlobalSection
+EndGlobal
