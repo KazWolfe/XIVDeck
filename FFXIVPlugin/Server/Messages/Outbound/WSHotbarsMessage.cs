@@ -2,7 +2,6 @@
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVPlugin.helpers;
-using WebSocketSharp;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;

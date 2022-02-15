@@ -1,4 +1,5 @@
-﻿using Dalamud.Configuration;
+﻿#nullable enable
+using Dalamud.Configuration;
 using Dalamud.Plugin;
 using System;
 
@@ -28,16 +29,14 @@ namespace FFXIVPlugin.helpers {
         public string AuthenticationKey { get; set; } = "";
 
         [NonSerialized]
-        private DalamudPluginInterface? pluginInterface;
+        private DalamudPluginInterface? _pluginInterface;
 
-        public void Initialize(DalamudPluginInterface @interface)
-        {
-            this.pluginInterface = @interface;
+        public void Initialize(DalamudPluginInterface @interface) {
+            this._pluginInterface = @interface;
         }
 
-        public void Save()
-        {
-            this.pluginInterface!.SavePluginConfig(this);
+        public void Save() {
+            this._pluginInterface!.SavePluginConfig(this);
         }
     }
 }

@@ -62,7 +62,7 @@ public class IconManager : IDisposable {
             });
         }
         
-        public TexFile GetIcon(int iconId, bool hq = false) => this.GetIcon(Injections.DataManager.Language, iconId, hq);
+        public TexFile GetIcon(int iconId, bool hq = false, bool highres = false) => this.GetIcon(Injections.DataManager.Language, iconId, hq, highres);
 
         /// <summary>
         /// Get a <see cref="T:Lumina.Data.Files.TexFile" /> containing the icon with the given ID, of the given language.
@@ -70,7 +70,7 @@ public class IconManager : IDisposable {
         /// <param name="iconLanguage">The requested language.</param>
         /// <param name="iconId">The icon ID.</param>
         /// <returns>The <see cref="T:Lumina.Data.Files.TexFile" /> containing the icon.</returns>
-        public TexFile GetIcon(ClientLanguage iconLanguage, int iconId, bool hq = false)
+        public TexFile GetIcon(ClientLanguage iconLanguage, int iconId, bool hq = false, bool highres = false)
         {
             string type;
             switch (iconLanguage)
@@ -90,21 +90,29 @@ public class IconManager : IDisposable {
                 default:
                     throw new ArgumentOutOfRangeException("Language", "Unknown Language: " + Injections.DataManager.Language.ToString());
             }
-            return this.GetIcon(type, iconId, hq);
+            return this.GetIcon(type, iconId, hq, highres);
         }
-        
-        public TexFile GetIcon(string type, int iconId, bool hq = false)
+
+        public TexFile GetIcon(string type, int iconId, bool hq = false, bool highres = false) 
         {
             if (type == null)
                 type = string.Empty;
             if (type.Length > 0 && !type.EndsWith("/"))
                 type += "/";
             
-            var formatStr = $"ui/icon/{{0:D3}}000/{(hq?"hq/":"")}{{1}}{{2:D6}}.tex";
+            var formatStr = $"ui/icon/{{0:D3}}000/{(hq?"hq/":"")}{{1}}{{2:D6}}{(highres?"_hr1":"")}.tex";
             TexFile file = Injections.DataManager.GetFile<TexFile>(string.Format(formatStr, (object) (iconId / 1000), (object) type, (object) iconId));
+
+            if (file == null && highres) {
+                // high-res probably doesn't exist, fallback and try low-res instead
+                var fstr = string.Format(formatStr, (object) (iconId / 1000), (object) type, (object) iconId);
+                PluginLog.Information($"Couldn't get high res icon for {fstr}");
+                return GetIcon(type, iconId, hq, false);
+            }
+            
             return file != null || type.Length <= 0 ? file : Injections.DataManager.GetFile<TexFile>(string.Format(formatStr, (object) (iconId / 1000), (object) string.Empty, (object) iconId));
         }
-        
+
 
         public TextureWrap GetActionIcon(Action action) {
             return GetIconTexture(actionCustomIcons.ContainsKey(action.RowId) ? actionCustomIcons[action.RowId] : action.Icon);
@@ -129,7 +137,7 @@ public class IconManager : IDisposable {
         }
 
         public string GetIconAsPngString(int iconId, bool hq = false) {
-            var icon = GetIcon(iconId, hq);
+            var icon = GetIcon("", iconId, hq, true);
             var image = GetImage(icon);
 
             byte[] pngBytes = null;

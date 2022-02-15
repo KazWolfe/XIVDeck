@@ -27,7 +27,7 @@ namespace FFXIVPlugin
         public SigHelper SigHelper { get; }
 
         private HotbarWatcher HotbarWatcher;
-        public WSServer WSServer;
+        public XivDeckWSServer XivDeckWsServer;
 
         public XIVDeckPlugin(DalamudPluginInterface pluginInterface) {
             // Injections management
@@ -48,7 +48,8 @@ namespace FFXIVPlugin
             this.HotbarWatcher = new HotbarWatcher(this);
             
             // And the WS server itself, though this should probably be converted to ASP.net or a different library
-            this.WSServer = new WSServer(this.Configuration.WebSocketPort);
+            this.XivDeckWsServer = new XivDeckWSServer(this.Configuration.WebSocketPort);
+            this.XivDeckWsServer.Start();
 
             this.PluginUi = new ui.PluginUI(this);
 
@@ -67,7 +68,7 @@ namespace FFXIVPlugin
             Injections.CommandManager.RemoveHandler(commandName);
             
             this.HotbarWatcher.Dispose();
-            this.WSServer.Dispose();
+            this.XivDeckWsServer.Stop();
         }
 
         private void OnCommand(string command, string args) {

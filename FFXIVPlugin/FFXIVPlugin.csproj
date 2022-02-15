@@ -52,7 +52,7 @@
         <PackageReference Include="SixLabors.ImageSharp" Version="2.0.0" />
         
         <!-- WebSocket server and management library -->
-        <PackageReference Include="WebSocketSharp" Version="1.0.3-rc11" />
+        <PackageReference Include="NetCoreServer" Version="5.1.0" />
         
         <!-- Dalamud things -->
         <PackageReference Include="DalamudPackager" Version="2.1.5" />
@@ -94,7 +94,8 @@
             <InputAssemblies Include="$(TargetPath)" />
             <InputAssemblies Include="$(TargetDir)*.dll" Exclude="$(TargetPath)" />
         </ItemGroup>
-        <Exec Command="$(PkgILRepack)\tools\ILRepack.exe /lib:$(DalamudLibPath) /out:$(TargetDir)$(TargetFileName) @(InputAssemblies, ' ')" />    </Target>
+        <Exec Command="$(PkgILRepack)\tools\ILRepack.exe /lib:$(DalamudLibPath) /out:$(TargetDir)$(TargetFileName) @(InputAssemblies, ' ')" />    
+    </Target>
 
     <Target Name="CleanOutDir" AfterTargets="ILRepack">
         <ItemGroup>

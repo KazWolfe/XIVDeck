@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using NetCoreServer;
 using Newtonsoft.Json;
-using WebSocketSharp;
 
 namespace FFXIVPlugin.Server.Messages.Inbound {
     public class WSGetHotbarSlotIconOpcode : BaseInboundMessage {
@@ -10,7 +10,7 @@ namespace FFXIVPlugin.Server.Messages.Inbound {
         [JsonRequired]
         public int slotId { get; set; }
 
-        public unsafe override void Process(WebSocket socket) {
+        public unsafe override void Process(WsSession session) {
             var plugin = XIVDeckPlugin.Instance;
 
             var hotbarModule =
@@ -41,7 +41,7 @@ namespace FFXIVPlugin.Server.Messages.Inbound {
             reply["iconId"] = iconId;
             reply["iconData"] = pngString;
 
-            socket.Send(JsonConvert.SerializeObject(reply));
+            session.SendTextAsync(JsonConvert.SerializeObject(reply));
         }
         
         public WSGetHotbarSlotIconOpcode() : base("getHotbarIcon") { }

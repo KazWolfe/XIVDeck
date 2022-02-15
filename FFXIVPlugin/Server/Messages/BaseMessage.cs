@@ -1,6 +1,6 @@
 ﻿using System;
+using NetCoreServer;
 using Newtonsoft.Json;
-using WebSocketSharp;
 
 namespace FFXIVPlugin.Server.Messages.Inbound {
     public class BaseInboundMessage {
@@ -11,7 +11,7 @@ namespace FFXIVPlugin.Server.Messages.Inbound {
             this.Opcode = opcode;
         }
 
-        public virtual void Process(WebSocket socket) { }
+        public virtual void Process(WsSession session) { }
     }
 
     public class BaseOutboundMessage {

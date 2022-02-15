@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using NetCoreServer;
 using Newtonsoft.Json;
-using WebSocketSharp;
 
 namespace FFXIVPlugin.Server.Messages.Inbound {
     public class WSEchoInboundMessage : BaseInboundMessage {
         public string Data { get; set; }
 
-        public override void Process(WebSocket socket) {
-            var reply = new Dictionary<string, string>();
-            reply["data"] = Data;
+        public override void Process(WsSession session) {
+            var reply = new Dictionary<string, string> {
+                ["data"] = Data
+            };
 
-            socket.Send(JsonConvert.SerializeObject(reply));
+            session.SendTextAsync(JsonConvert.SerializeObject(reply));
         }
 
         public WSEchoInboundMessage() : base("echo") { }

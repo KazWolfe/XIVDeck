@@ -24,11 +24,8 @@ namespace FFXIVPlugin.Utils {
                 PluginLog.Information($"HOTBAR UPDATE!" );
                 _hotbar_cache = hotbarModule->HotBar;
 
-                var wsServer = this._plugin.WSServer;
-                var serverObj = wsServer.server;
-                var socketService = serverObj.WebSocketServices["/xivdeck"];
-                var sessionManager = socketService.Sessions;
-                sessionManager.Broadcast(JsonConvert.SerializeObject(new WsHotbarUpdateMessage(hotbarModule->HotBar)));
+                var wsServer = this._plugin.XivDeckWsServer;
+                wsServer.MulticastText(JsonConvert.SerializeObject(new WsHotbarUpdateMessage(_hotbar_cache)));
             }
         }
 

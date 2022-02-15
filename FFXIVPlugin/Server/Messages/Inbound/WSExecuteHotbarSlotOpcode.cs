@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using NetCoreServer;
 using Newtonsoft.Json;
-using WebSocketSharp;
 
 namespace FFXIVPlugin.Server.Messages.Inbound {
     public class WSExecuteHotbarSlotOpcode : BaseInboundMessage {
@@ -9,7 +9,7 @@ namespace FFXIVPlugin.Server.Messages.Inbound {
         
         [JsonRequired] public int SlotId { get; set; }
 
-        public unsafe override void Process(WebSocket socket) {
+        public unsafe override void Process(WsSession session) {
             var plugin = XIVDeckPlugin.Instance;
             
             var hotbarModule =
