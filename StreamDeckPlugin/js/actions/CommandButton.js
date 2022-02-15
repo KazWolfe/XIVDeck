@@ -27,7 +27,7 @@
             <div class="sdpi-item">
                 <div class="sdpi-item-label">Command</div>
                 <span class="sdpi-item-value textarea">
-                    <textarea type="textarea" id="command" maxlength="500">${actionInfo.payload.settings.command}</textarea>
+                    <textarea type="textarea" id="command" maxlength="500">${actionInfo.payload.settings.command || ''}</textarea>
                 </span>
             </div>
             `

@@ -18,7 +18,7 @@
         this.websocket.sendJSON(payload);
     }
 
-    connect() {
+    connect(doRetry = true) {
         // if the game isn't alive, don't bother connecting
         if (!this.isGameAlive) {
             console.warn("[XIVDeck - FFXIVPluginLink] Connect ran while game was dead")
@@ -62,6 +62,9 @@
             console.debug("[XIVDeck - FFXIVPluginLink] Connection to WebSocket server lost!")
             this.eventManager.emit("_wsClosed", {});
             this.websocket = null;
+            
+            // allow us to control retry logic
+            if (!doRetry) return;
             
             // if the game is reported as dead, stop trying to reconnect, it's just a waste of time.
             if (this.isGameAlive === false) {

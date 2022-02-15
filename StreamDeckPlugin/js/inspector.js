@@ -9,7 +9,19 @@ function connected(jsn) {
     $SD.api.getGlobalSettings();
 
     // todo: figure out some way to move this to global settings
-    window.$XIV = new FFXIVPluginLink(37984)
+    window.$XIV = new FFXIVPluginLink(37984);
+    window.$XIV.isGameAlive = true;  // hack - PI doesn't actually care about this, probably.
+    $XIV.connect(false);
+
+    $XIV.eventManager.on("_wsOpened", _ => {
+        connectWarnDom = document.getElementById("xivWsError");
+        connectWarnDom.style.display = "none";
+    })
+
+    $XIV.eventManager.on("_wsClosed", _ => {
+        connectWarnDom = document.getElementById("xivWsError");
+        connectWarnDom.style.display = "block";
+    })
     
     $SD.on("didReceiveGlobalSettings", event => {
         $SD.globalSettings = event.payload.settings;
@@ -49,11 +61,7 @@ function connected(jsn) {
     }
 
     var placeholderDomElement = document.getElementById("piPlaceholder")
-    placeholderDomElement.innerHTML += 
-        "<div class=\"sdpi-item\">" +
-        `<p>${actionInfo.action}</p>` +
-        "</div>"
-
+    
     // emit the action to allow the ActionManager to take over
     renderEvent = { "actionInfo": actionInfo, "domElement": placeholderDomElement }
     $SD.emit(actionInfo.action + ".renderPIPane", renderEvent)

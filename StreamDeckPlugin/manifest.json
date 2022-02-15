@@ -1,11 +1,11 @@
 ﻿{
   "Actions": [
     {
-      "Icon": "assets/images/command",
+      "Icon": "assets/images/chat",
       "Name": "Text Command / Message",
       "States": [
         {
-          "Image": "assets/images/chatBase",
+          "Image": "assets/images/chat@2x.png",
           "TitleAlignment": "middle",
           "FontSize": "16"
         }
@@ -18,7 +18,7 @@
       "Name": "Execute Hotbar Slot",
       "States": [
         {
-          "Image": "null",
+          "Image": "assets/images/hotbar@2x.png",
           "TitleAlignment": "bottom",
           "FontSize": "16"
         }
@@ -27,6 +27,8 @@
       "UUID": "dev.wolf.xivdeck.sdplugin.actions.ExecHotbar"
     }
   ],
+  "Category": "XIVDeck",
+  "CategoryIcon": "assets/images/category",
   "SDKVersion": 2,
   "Author": "Kaz Wolfe",
   "CodePath": "plugin.html",
