@@ -21,7 +21,7 @@ namespace FFXIVPlugin.Utils {
             if (checkHotbarEquality(hotbarModule->HotBar, _hotbar_cache)) {
                 // no-op
             } else {
-                PluginLog.Information($"HOTBAR UPDATE!" );
+                PluginLog.Debug("Detected a change to hotbar(s)!");
                 _hotbar_cache = hotbarModule->HotBar;
 
                 var wsServer = this._plugin.XivDeckWsServer;

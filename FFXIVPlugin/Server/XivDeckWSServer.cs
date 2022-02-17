@@ -24,7 +24,14 @@ namespace FFXIVPlugin.Server {
 
         public override void OnWsReceived(byte[] buffer, long offset, long size) {
             string rawMessage = Encoding.UTF8.GetString(buffer, (int) offset, (int) size);
+            PluginLog.Debug($"Got WS message - {rawMessage}");
+            
             BaseInboundMessage message = JsonConvert.DeserializeObject<BaseInboundMessage>(rawMessage);
+
+            if (message == null) {
+                PluginLog.Warning($"Got invalid message from WebSocket - {rawMessage}");
+                return;
+            }
 
             switch (message.Opcode) {
                 case "command":
@@ -44,7 +51,18 @@ namespace FFXIVPlugin.Server {
                     break;
             }
 
-            message.Process(this);
+            if (message == null) {
+                PluginLog.Error($"Failed to deserialize a WebSocket message - {rawMessage}");
+                return;
+            }
+
+            try {
+                message.Process(this);
+            } catch (Exception ex) {
+                Injections.Chat.PrintError($"[XIVDeck] An error occured while processing a websocket message: {ex.GetType()}: {ex.Message}");
+                PluginLog.Error(ex, "The WebSocket server encountered an error processing a message.");
+            }
+
         }
 
         public new void SendClose(int code, string text) {
@@ -69,8 +87,13 @@ namespace FFXIVPlugin.Server {
                 this.SendClose(1003, "Unknown request URL.");
                 return;
             }
+
+            if (this.Socket.RemoteEndPoint is not IPEndPoint point) {
+                this.SendClose(1000, "Illegal remote endpoint type");
+                return;
+            }
             
-            if (!IPAddress.IsLoopback(((IPEndPoint) this.Socket.RemoteEndPoint).Address)) {
+            if (!IPAddress.IsLoopback(point.Address)) {
                 this.SendClose(1008, "For security purposes, non-local connections are rejected.");
                 return;
             }

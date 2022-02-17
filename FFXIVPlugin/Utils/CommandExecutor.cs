@@ -19,12 +19,12 @@ namespace FFXIVPlugin.Utils {
                 case HotbarSlotType.Emote:
                     var emoteData = Injections.DataManager.Excel.GetSheet<Emote>().GetRow(actionId);
                     var textCommand = emoteData.TextCommand.Value.Command;
-                    PluginLog.Information($"Would call: {textCommand.ToString()}");
+                    PluginLog.Debug($"Would call: {textCommand.ToString()}");
                     plugin.XivCommon.Functions.Chat.SendMessage(textCommand.ToString());
                     break;
                 case HotbarSlotType.Action:
                     var actionData = Injections.DataManager.Excel.GetSheet<Action>().GetRow(actionId);
-                    PluginLog.Information($"Would call: /ac \"{actionData.Name}\"");
+                    PluginLog.Debug($"Would call: /ac \"{actionData.Name}\"");
                     plugin.XivCommon.Functions.Chat.SendMessage($"/ac \"{actionData.Name}\"");
                     break;
                 case HotbarSlotType.Empty:

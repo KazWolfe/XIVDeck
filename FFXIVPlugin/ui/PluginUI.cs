@@ -9,7 +9,6 @@ using Dalamud.Interface.Colors;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using FFXIVPlugin.GameStructs;
 using FFXIVPlugin.helpers;
 using FFXIVPlugin.Utils;
 using Lumina.Excel.GeneratedSheets;
@@ -68,8 +67,6 @@ namespace FFXIVPlugin.ui {
             ImGui.SetNextWindowSize(new Vector2(375, 330), ImGuiCond.FirstUseEver);
             ImGui.SetNextWindowSizeConstraints(new Vector2(375, 330), new Vector2(float.MaxValue, float.MaxValue));
             if (ImGui.Begin("XIVDeck Debug Window", ref this.visible)) {
-                ImGui.Text($"Config Value: {this._plugin.Configuration.SomePropertyToBeSavedAndWithADefault}");
-
                 if (ImGui.Button("Show Settings")) {
                     SettingsVisible = true;
                 }
@@ -77,7 +74,7 @@ namespace FFXIVPlugin.ui {
                 ImGui.InputText("Command", ref commandToExecute, 255);
 
                 if (ImGui.Button("Run Command")) {
-                    PluginLog.Information($"Command: {commandToExecute}");
+                    PluginLog.Debug($"Command: {commandToExecute}");
                     this._plugin.XivCommon.Functions.Chat.SendMessage(commandToExecute);
                 }
                 
@@ -122,7 +119,7 @@ namespace FFXIVPlugin.ui {
                     HotbarSlotType selType;
                     HotbarSlotType.TryParse(items[this.selected_action_type], out selType);
                     
-                    PluginLog.Information($"Executing {selType} #{this.selected_action_id}");
+                    PluginLog.Debug($"Executing {selType} #{this.selected_action_id}");
                     _plugin.SigHelper.ExecuteHotbarAction(selType, (uint) this.selected_action_id);
                 }
 
@@ -134,10 +131,8 @@ namespace FFXIVPlugin.ui {
             if (!SettingsVisible) {
                 return;
             }
-
-            ImGui.SetNextWindowSize(new Vector2(232, 75), ImGuiCond.Always);
-            if (ImGui.Begin("XIVDeck Configuration Menu", ref this.settingsVisible,
-                ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse)) {
+            
+            if (ImGui.Begin("XIVDeck Configuration Menu", ref this.settingsVisible)) {
                 var wsPort = this._plugin.Configuration.WebSocketPort;
                 var safeMode = this._plugin.Configuration.SafeMode;
                 var hasLinkedStreamDeck = this._plugin.Configuration.HasLinkedStreamDeckPlugin;
@@ -161,10 +156,10 @@ namespace FFXIVPlugin.ui {
                     this._plugin.Configuration.WebSocketPort = wsPort;
                     this._plugin.Configuration.Save();
                 }
-                ImGui.Text("Port number must be between 1024-59999. Changes to the port number require the plugin " +
+                ImGui.TextWrapped("Port number must be between 1024-59999. Changes to the port number require the plugin " +
                            "be reloaded to take effect. Note that reconfiguration of the Stream Deck plugin will " +
                            "also be required if the WebSocket port were to be changed.");
-                ImGui.Text("Default port: 37984");
+                ImGui.TextWrapped("Default port: 37984");
             }
             ImGui.End();
         }

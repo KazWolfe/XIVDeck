@@ -2,7 +2,6 @@
 using System.Runtime.InteropServices;
 using Dalamud.Game;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using FFXIVPlugin.GameStructs;
 using Framework = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework;
 
 namespace FFXIVPlugin.helpers {
@@ -40,9 +39,13 @@ namespace FFXIVPlugin.helpers {
                 CommandType = commandType,
                 CommandId = commandId
             };
-            
 
-            this.HotbarSlotExecutor(hotbarModulePtr, **(IntPtr**) &slot);
+            var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(slot));
+            Marshal.StructureToPtr(slot, ptr, false);
+            
+            this.HotbarSlotExecutor(hotbarModulePtr, ptr);
+            
+            Marshal.FreeHGlobal(ptr);
         }
     }
 }

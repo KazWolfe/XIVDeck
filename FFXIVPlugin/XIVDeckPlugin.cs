@@ -17,7 +17,7 @@ namespace FFXIVPlugin
         
         public string Name => "XIVDeck Game Plugin";
 
-        private const string commandName = "/xivdeck";
+        private const string commandName = "/xivdeckdebug";
 
         public DalamudPluginInterface PluginInterface { get; init; }
         public helpers.PluginConfig Configuration { get; init; }
@@ -52,10 +52,12 @@ namespace FFXIVPlugin
             this.XivDeckWsServer.Start();
 
             this.PluginUi = new ui.PluginUI(this);
-
-            Injections.CommandManager.AddHandler(commandName, new CommandInfo(OnCommand) {
-                HelpMessage = "A useful message to display in /xlhelp"
-            });
+            
+            if (this.PluginInterface.IsDev) {
+                Injections.CommandManager.AddHandler(commandName, new CommandInfo(OnCommand) {
+                    HelpMessage = "A useful message to display in /xlhelp"
+                });
+            }
 
             this.PluginInterface.UiBuilder.Draw += DrawUI;
             this.PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUI;
@@ -65,8 +67,11 @@ namespace FFXIVPlugin
 
         public void Dispose() {
             this.PluginUi.Dispose();
-            Injections.CommandManager.RemoveHandler(commandName);
-            
+
+            if (this.PluginInterface.IsDev) {
+                Injections.CommandManager.RemoveHandler(commandName);
+            }
+
             this.HotbarWatcher.Dispose();
             this.XivDeckWsServer.Stop();
         }
