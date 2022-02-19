@@ -8,7 +8,7 @@ using FFXIVPlugin.helpers;
 using Lumina.Excel.GeneratedSheets;
 
 namespace FFXIVPlugin.ActionExecutor.Strategies {
-    public class EmoteStrategy : IBaseStrategy {
+    public class EmoteStrategy : IStrategy {
         public Emote GetEmoteById(uint id) {
             return Injections.DataManager.Excel.GetSheet<Emote>().GetRow(id);
         }
@@ -33,7 +33,7 @@ namespace FFXIVPlugin.ActionExecutor.Strategies {
             }
 
             PluginLog.Debug($"Would execute command: {textCommand.Command.RawString}");
-            // XIVDeckPlugin.Instance.XivCommon.Functions.Chat.SendMessage(textCommand.Command.RawString);
+            XIVDeckPlugin.Instance.XivCommon.Functions.Chat.SendMessage(textCommand.Command.RawString);
         }
 
         public int GetIconId(uint item) {

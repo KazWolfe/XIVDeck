@@ -25,7 +25,7 @@ namespace FFXIVPlugin.ActionExecutor {
         
         public static ActionDispatcher Instance = new ActionDispatcher();
         
-        public static IBaseStrategy GetStrategyForSlotType(HotbarSlotType type) {
+        public static IStrategy GetStrategyForSlotType(HotbarSlotType type) {
             return Instance.GetStrategyForType(type);
         }
 
@@ -33,20 +33,23 @@ namespace FFXIVPlugin.ActionExecutor {
             return Instance._GetSupportedActions();
         }
 
-        public static Dictionary<HotbarSlotType, IBaseStrategy> GetStrategies() {
+        public static Dictionary<HotbarSlotType, IStrategy> GetStrategies() {
             return Instance.Strategies;
         }
 
-        private Dictionary<HotbarSlotType, IBaseStrategy> Strategies { get; } = new();
+        private Dictionary<HotbarSlotType, IStrategy> Strategies { get; } = new();
 
         private ActionDispatcher() {
             this.Strategies[HotbarSlotType.Emote] = new EmoteStrategy();
             this.Strategies[HotbarSlotType.Minion] = new MinionStrategy();
             this.Strategies[HotbarSlotType.Mount] = new MountStrategy();
             this.Strategies[HotbarSlotType.Macro] = new MacroStrategy();
+            this.Strategies[HotbarSlotType.GeneralAction] = new GeneralActionStrategy();
+            this.Strategies[HotbarSlotType.FieldMarker] = new WaymarkStrategy();
+            this.Strategies[HotbarSlotType.Marker] = new MarkerStrategy();
         }
 
-        private IBaseStrategy GetStrategyForType(HotbarSlotType type) {
+        private IStrategy GetStrategyForType(HotbarSlotType type) {
             return this.Strategies[type];
         }
 

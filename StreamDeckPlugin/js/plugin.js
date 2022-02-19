@@ -12,12 +12,16 @@ function connected(jsn) {
 
     $SD.on("applicationDidLaunch", _ => {
         $XIV.isGameAlive = true;
+
+        console.log("[XIVDeck] Detected that FFXIV has opened, connecting")
         $XIV.connect();
     });
 
     $SD.on("applicationDidTerminate", _ => {
         $XIV.isGameAlive = false;
 
+        console.log("[XIVDeck] Detected that FFXIV has closed, terminating WebSockets")
+        
         // close the websocket just in case somehow it's not already closed
         if ($XIV.websocket) $XIV.websocket.close();
     });

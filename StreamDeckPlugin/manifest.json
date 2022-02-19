@@ -25,6 +25,19 @@
       ],
       "Tooltip": "Press a specific hotbar button defined in the game",
       "UUID": "dev.wolf.xivdeck.sdplugin.actions.ExecHotbar"
+    },
+    {
+      "Icon": "assets/images/hotbar",
+      "Name": "Execute Action",
+      "States": [
+        {
+          "Image": "assets/images/hotbar@2x.png",
+          "TitleAlignment": "bottom",
+          "FontSize": "16"
+        }
+      ],
+      "Tooltip": "Trigger a sepecific action (mount, minion, macro, etc.) in-game",
+      "UUID": "dev.wolf.xivdeck.sdplugin.actions.ExecAction"
     }
   ],
   "Category": "XIVDeck",

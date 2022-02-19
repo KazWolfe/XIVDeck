@@ -17,6 +17,7 @@ using FFXIVPlugin.helpers;
 using Lumina.Excel.GeneratedSheets;
 
 namespace FFXIVPlugin.Base {
+    // borrowed from https://github.com/goaaats/Dalamud.FindAnything/blob/master/Dalamud.FindAnything/GameStateCache.cs
     public unsafe class GameStateCache {
         // E8 ?? ?? ?? ?? 84 C0 74 A4
         private delegate byte IsEmoteUnlockedDelegate(UIState* uiState, uint emoteId, byte unk);

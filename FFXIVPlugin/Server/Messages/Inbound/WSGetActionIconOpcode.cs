@@ -10,7 +10,7 @@ namespace FFXIVPlugin.Server.Messages.Inbound {
     public class WSGetActionIconOpcode : BaseInboundMessage {
         [JsonRequired] public ExecutableAction action;
 
-        public unsafe override void Process(WsSession session) {
+        public override void Process(WsSession session) {
             var plugin = XIVDeckPlugin.Instance;
 
             var iconId = ActionDispatcher.GetStrategyForSlotType(action.HotbarSlotType).GetIconId((uint) action.ActionId);
@@ -18,7 +18,7 @@ namespace FFXIVPlugin.Server.Messages.Inbound {
 
             var reply = new Dictionary<string, dynamic>();
             reply["messageType"] = "actionIcon";
-            reply["Action"] = action;
+            reply["action"] = action;
             reply["iconId"] = iconId;
             reply["iconData"] = pngString;
 

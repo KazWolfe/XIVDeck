@@ -8,7 +8,7 @@ using FFXIVPlugin.helpers;
 using Lumina.Excel.GeneratedSheets;
 
 namespace FFXIVPlugin.ActionExecutor.Strategies {
-    public class MinionStrategy : IBaseStrategy {
+    public class MinionStrategy : IStrategy {
         public Companion GetMinionById(uint id) {
             return Injections.DataManager.Excel.GetSheet<Companion>().GetRow(id);
         }
@@ -30,7 +30,7 @@ namespace FFXIVPlugin.ActionExecutor.Strategies {
             String command = $"/minion \"{minion.Singular.RawString}\"";
             
             PluginLog.Debug($"Would execute command: {command}");
-            // XIVDeckPlugin.Instance.XivCommon.Functions.Chat.SendMessage(command);
+            XIVDeckPlugin.Instance.XivCommon.Functions.Chat.SendMessage(command);
         }
 
         public int GetIconId(uint item) {

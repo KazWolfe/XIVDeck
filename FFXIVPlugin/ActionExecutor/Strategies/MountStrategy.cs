@@ -8,7 +8,7 @@ using FFXIVPlugin.helpers;
 using Lumina.Excel.GeneratedSheets;
 
 namespace FFXIVPlugin.ActionExecutor.Strategies {
-    public class MountStrategy : IBaseStrategy {
+    public class MountStrategy : IStrategy {
         public Mount GetMountById(uint id) {
             return Injections.DataManager.Excel.GetSheet<Mount>().GetRow(id);
         }
@@ -30,7 +30,7 @@ namespace FFXIVPlugin.ActionExecutor.Strategies {
             String command = $"/mount \"{mount.Singular.RawString}\"";
             
             PluginLog.Debug($"Would execute command: {command}");
-            // XIVDeckPlugin.Instance.XivCommon.Functions.Chat.SendMessage(command);
+            XIVDeckPlugin.Instance.XivCommon.Functions.Chat.SendMessage(command);
         }
 
         public int GetIconId(uint item) {
