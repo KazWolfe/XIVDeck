@@ -3,7 +3,8 @@ using Dalamud.Game;
 using Dalamud.Logging;
 
 namespace FFXIVPlugin.Utils {
-    // Graciously borrowed from https://github.com/Eternita-S/NotificationMaster/blob/master/NotificationMaster/TickScheduler.cs
+    
+    // borrowed from https://github.com/Eternita-S/NotificationMaster/blob/master/NotificationMaster/TickScheduler.cs
     class TickScheduler : IDisposable {
         long executeAt;
         Action function;

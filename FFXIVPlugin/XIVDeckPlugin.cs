@@ -5,6 +5,7 @@ using Dalamud.Plugin;
 using System.IO;
 using System.Reflection;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
+using FFXIVPlugin.Base;
 using FFXIVPlugin.helpers;
 using FFXIVPlugin.Server;
 using FFXIVPlugin.Utils;
@@ -25,6 +26,8 @@ namespace FFXIVPlugin
         private ui.PluginUI PluginUi { get; init; }
         public XivCommonBase XivCommon { get; }
         public SigHelper SigHelper { get; }
+        
+        public GameStateCache GameStateCache { get; }
 
         private HotbarWatcher HotbarWatcher;
         public XivDeckWSServer XivDeckWsServer;
@@ -47,6 +50,9 @@ namespace FFXIVPlugin
             this.IconManager = new IconManager(this.PluginInterface);
             this.HotbarWatcher = new HotbarWatcher(this);
             
+            // Load cache of unlocked events
+            this.GameStateCache = GameStateCache.Load();
+
             // And the WS server itself, though this should probably be converted to ASP.net or a different library
             this.XivDeckWsServer = new XivDeckWSServer(this.Configuration.WebSocketPort);
             this.XivDeckWsServer.Start();
@@ -61,8 +67,6 @@ namespace FFXIVPlugin
 
             this.PluginInterface.UiBuilder.Draw += DrawUI;
             this.PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUI;
-
-            Injections.Chat.PrintError("XIVDeck Loaded!");
         }
 
         public void Dispose() {

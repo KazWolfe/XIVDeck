@@ -15,7 +15,9 @@ using SixLabors.ImageSharp.PixelFormats;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace FFXIVPlugin.Utils {
-public class IconManager : IDisposable {
+    
+    // borrowed from https://github.com/Caraxi/RemindMe/blob/master/IconManager.cs
+    public class IconManager : IDisposable {
 
         private readonly DalamudPluginInterface _pluginInterface;
         private bool _disposed;

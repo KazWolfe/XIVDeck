@@ -34,20 +34,36 @@ namespace FFXIVPlugin.Server {
             }
 
             switch (message.Opcode) {
-                case "command":
-                    message = JsonConvert.DeserializeObject<WSCommandInboundMessage>(rawMessage);
+                // system messages
+                case "init":
+                    message = JsonConvert.DeserializeObject<WSInitMessage>(rawMessage);
                     break;
                 case "echo":
                     message = JsonConvert.DeserializeObject<WSEchoInboundMessage>(rawMessage);
                     break;
+                
+                // command/text
+                case "command":
+                    message = JsonConvert.DeserializeObject<WSChatMessage>(rawMessage);
+                    break;
+
+                // hotbar
                 case "execHotbar":
                     message = JsonConvert.DeserializeObject<WSExecuteHotbarSlotOpcode>(rawMessage);
                     break;
                 case "getHotbarIcon":
                     message = JsonConvert.DeserializeObject<WSGetHotbarSlotIconOpcode>(rawMessage);
                     break;
-                case "init":
-                    message = JsonConvert.DeserializeObject<WSInitMessage>(rawMessage);
+                
+                // actions
+                case "getUnlockedActions":
+                    message = JsonConvert.DeserializeObject<WSGetUnlockedActionsOpcode>(rawMessage);
+                    break;
+                case "getActionIcon":
+                    message = JsonConvert.DeserializeObject<WSGetActionIconOpcode>(rawMessage);
+                    break;
+                case "execAction":
+                    message = JsonConvert.DeserializeObject<WSExecuteActionOpcode>(rawMessage);
                     break;
             }
 
