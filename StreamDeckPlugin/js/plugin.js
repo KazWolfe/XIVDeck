@@ -25,6 +25,12 @@ function connected(jsn) {
         // close the websocket just in case somehow it's not already closed
         if ($XIV.websocket) $XIV.websocket.close();
     });
+    
+    $XIV.eventManager.on("sdAlert", (event) => {
+        if (!event.context) return;
+        
+        $SD.api.showAlert(event.context)
+    })
 
     for (let buttonHandler in window.RA) {
         buttonHandler = window.RA[buttonHandler]

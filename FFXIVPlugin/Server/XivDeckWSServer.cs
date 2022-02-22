@@ -4,7 +4,9 @@ using System.Net.Sockets;
 using System.Text;
 using Dalamud.Logging;
 using FFXIVPlugin.helpers;
+using FFXIVPlugin.Server.Messages;
 using FFXIVPlugin.Server.Messages.Inbound;
+using FFXIVPlugin.Server.Messages.Outbound;
 using NetCoreServer;
 using Newtonsoft.Json;
 using XivCommon;
@@ -77,6 +79,13 @@ namespace FFXIVPlugin.Server {
             } catch (Exception ex) {
                 Injections.Chat.PrintError($"[XIVDeck] An error occured while processing a websocket message: {ex.GetType()}: {ex.Message}");
                 PluginLog.Error(ex, "The WebSocket server encountered an error processing a message.");
+
+                // Error handling logic - send an alert back to the Stream Deck so we can show a failed icon.
+                if (message.SDContext != null) {
+                    this.SendText(JsonConvert.SerializeObject(new WSShowSDAlert {
+                        Context = message.SDContext
+                    }));
+                }
             }
 
         }

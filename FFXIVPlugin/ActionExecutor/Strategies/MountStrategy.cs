@@ -9,15 +9,16 @@ using Lumina.Excel.GeneratedSheets;
 
 namespace FFXIVPlugin.ActionExecutor.Strategies {
     public class MountStrategy : IStrategy {
+        private static GameStateCache _gameStateCache = XIVDeckPlugin.Instance.GameStateCache;
+        
         public Mount GetMountById(uint id) {
             return Injections.DataManager.Excel.GetSheet<Mount>().GetRow(id);
         }
         
         public List<ExecutableAction> GetAllowedItems() {
-            GameStateCache gameStateCache = XIVDeckPlugin.Instance.GameStateCache;
-            gameStateCache.Refresh();
+            _gameStateCache.Refresh();
 
-            return gameStateCache.UnlockedMountKeys.Select(mount => new ExecutableAction() {
+            return _gameStateCache.UnlockedMountKeys.Select(mount => new ExecutableAction() {
                 ActionId = (int) mount.RowId, 
                 ActionName = mount.Singular.RawString, 
                 HotbarSlotType = HotbarSlotType.Mount
@@ -26,6 +27,10 @@ namespace FFXIVPlugin.ActionExecutor.Strategies {
 
         public void Execute(uint actionId, dynamic _) {
             Mount mount = GetMountById(actionId);
+            
+            if (!_gameStateCache.IsMinionUnlocked(actionId)) {
+                throw new InvalidOperationException($"The mount \"{mount.Singular.RawString}\" isn't unlocked and therefore can't be used.");
+            }
             
             String command = $"/mount \"{mount.Singular.RawString}\"";
             

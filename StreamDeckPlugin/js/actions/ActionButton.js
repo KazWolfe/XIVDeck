@@ -131,14 +131,13 @@ var ExecuteActionButtonHandler = {
        onTypeUpdate: function (event) {
            console.log("change", event)
            
-           let actionList = unlockedActions[event.target.value]
            let acActionSelector = document.getElementById('acActionSelection')
+           
+           // reset the action selector
            acActionSelector.removeEventListener('change', ExecuteActionButtonHandler.piHandlers.onActionUpdate)
-
-           // reset to placeholder
            acActionSelector.innerHTML = '<option value="default" id="namePlaceholder" selected disabled>Select item...</option>'
 
-           for (let action of actionList) {
+           for (let action of unlockedActions[event.target.value]) {
                acActionSelector.innerHTML += `<option value="${action.id}">[#${action.id}] ${Utils.toTitleCase(action.name)}</option>`
            }
 
@@ -191,7 +190,14 @@ class ExecuteActionButton {
             throw Error("Not action type/ID was defined for this button!");
         }
 
-        let message = { "opcode": "execAction", "action": { "type": settings.actionType, "id": settings.actionId } }
+        let message = { 
+            "opcode": "execAction", 
+            "sdContext": onKeyEvent.context,
+            "action": { 
+                "type": settings.actionType, 
+                "id": settings.actionId 
+            } 
+        }
 
         window.$XIV.send(message, true);
         console.info(`Triggered ${settings.actionType} action ID ${settings.actionId}`);

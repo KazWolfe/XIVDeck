@@ -3,6 +3,7 @@ using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVPlugin.helpers;
 using FFXIVPlugin.Server.Messages.Inbound;
+using FFXIVPlugin.Server.Messages.Outbound;
 using Newtonsoft.Json;
 
 namespace FFXIVPlugin.Utils {
@@ -25,7 +26,7 @@ namespace FFXIVPlugin.Utils {
                 _hotbar_cache = hotbarModule->HotBar;
 
                 var wsServer = this._plugin.XivDeckWsServer;
-                wsServer.MulticastText(JsonConvert.SerializeObject(new WsHotbarUpdateMessage(_hotbar_cache)));
+                wsServer.MulticastText(JsonConvert.SerializeObject(new WSHotbarUpdateMessage(_hotbar_cache)));
             }
         }
 

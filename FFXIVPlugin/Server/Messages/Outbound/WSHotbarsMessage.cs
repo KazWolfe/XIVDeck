@@ -7,12 +7,13 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using FFXIVPlugin.Server.Messages.Inbound;
 using FFXIVPlugin.Utils;
 using Lumina.Data.Files;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace FFXIVPlugin.Server.Messages.Inbound {
+namespace FFXIVPlugin.Server.Messages.Outbound {
     public class SerialiazableHotbarSlot {
         public uint CommandId;
         
@@ -34,13 +35,13 @@ namespace FFXIVPlugin.Server.Messages.Inbound {
             // this.PngData = XIVDeckPlugin.Instance.IconManager.GetIconAsPngString(IconId % 1000000, IconId >= 1000000);
         }
     }
-    public class WsHotbarUpdateMessage : BaseOutboundMessage {
+    public class WSHotbarUpdateMessage : BaseOutboundMessage {
         private static string MESSAGE_NAME = "hotbarUpdate";
 
         [JsonProperty("hotbarData")]
         public List<List<SerialiazableHotbarSlot>> HotbarData { get; set; } = new();
 
-        public unsafe WsHotbarUpdateMessage(HotBars hotBars) : base(MESSAGE_NAME) {
+        public unsafe WSHotbarUpdateMessage(HotBars hotBars) : base(MESSAGE_NAME) {
             for (int i = 0; i < 17; i++) {
                 HotbarData.Add(new List<SerialiazableHotbarSlot>());
 

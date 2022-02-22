@@ -11,7 +11,11 @@
                 throw new Error("No command was set for this command")
             }
 
-            let message = { "opcode": "command", "command": command };
+            let message = { 
+                "opcode": "command", 
+                "sdContext": event.context,
+                "command": command 
+            };
             window.$XIV.send(message, true);
 
             console.debug("[XIVDeck.CommandButton] Sent command op to XIVDeck FFXIV Plugin", message)

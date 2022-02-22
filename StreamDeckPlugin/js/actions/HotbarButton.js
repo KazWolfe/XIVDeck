@@ -207,7 +207,12 @@ class ExecuteHotbarSlotButton {
             throw Error("No hotbar slot was configured for this command!");
         }
 
-        let message = { "opcode": "execHotbar", "hotbarId": settings.hotbarId, "slotId": settings.slotId }
+        let message = { 
+            "opcode": "execHotbar", 
+            "sdContext": onKeyEvent.context, 
+            "hotbarId": settings.hotbarId, 
+            "slotId": settings.slotId 
+        }
 
         window.$XIV.send(message, true);
         console.info(`Triggered hotbar ${settings.hotbarId} slot ${settings.slotId} for execution by XIVDeck FFXIV plugin`);

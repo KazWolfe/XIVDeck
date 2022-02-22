@@ -2,13 +2,15 @@
 using NetCoreServer;
 using Newtonsoft.Json;
 
-namespace FFXIVPlugin.Server.Messages.Inbound {
+namespace FFXIVPlugin.Server.Messages {
     public class BaseInboundMessage {
         public string Opcode { get; set; }
+        public string SDContext { get; set; }
         public int Nonce { get; }
 
-        public BaseInboundMessage(string opcode) {
+        public BaseInboundMessage(string opcode, string sdContext = null) {
             this.Opcode = opcode;
+            this.SDContext = sdContext;
         }
 
         public virtual void Process(WsSession session) { }
