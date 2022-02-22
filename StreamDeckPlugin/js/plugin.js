@@ -26,24 +26,24 @@ function connected(jsn) {
         if ($XIV.websocket) $XIV.websocket.close();
     });
 
-    for (let action in window.RA) {
-        action = window.RA[action]
+    for (let buttonHandler in window.RA) {
+        buttonHandler = window.RA[buttonHandler]
 
-        for (let ev in action.elgatoEventHandlers) {
-            $SD.on(`${action.type}.${ev}`, event => {
+        for (let ev in buttonHandler.elgatoEventHandlers) {
+            $SD.on(`${buttonHandler.type}.${ev}`, event => {
                 try {
-                    action.elgatoEventHandlers[ev](event);
+                    buttonHandler.elgatoEventHandlers[ev](event);
                 } catch (ex) {
                     $SD.api.showAlert(event.context);
                     throw ex;
                 }
             })
-            console.debug(`[XIVDeck - Dispatch Manager] Registered StreamDeck action: ${action.type}.${ev}`)
+            console.debug(`[XIVDeck - Dispatch Manager] Registered StreamDeck button listener: ${buttonHandler.type}.${ev}`)
         }
 
-        for (let ev in action.ffxivEventHandlers) {
-            $XIV.eventManager.on(ev, event => action.ffxivEventHandlers[ev](event))
-            console.debug(`[XIVDeck - Dispatch Manager] Registered FFXIV action ${ev} to ${action.type}`)
+        for (let ev in buttonHandler.ffxivEventHandlers) {
+            $XIV.eventManager.on(ev, event => buttonHandler.ffxivEventHandlers[ev](event))
+            console.debug(`[XIVDeck - Dispatch Manager] Registered FFXIV message ${ev} to ${buttonHandler.type}`)
         }
     }
 }

@@ -36,7 +36,7 @@
           "FontSize": "16"
         }
       ],
-      "Tooltip": "Trigger a sepecific action (mount, minion, macro, etc.) in-game",
+      "Tooltip": "Trigger a specific action (mount, minion, etc.) in-game",
       "UUID": "dev.wolf.xivdeck.sdplugin.actions.ExecAction"
     }
   ],

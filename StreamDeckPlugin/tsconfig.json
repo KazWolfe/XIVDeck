@@ -1,10 +1,16 @@
 ﻿{
   "compilerOptions": {
+    "outDir": "./dist/",
     "module": "commonjs",
     "target": "es5",
-    "sourceMap": true
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "strict": true
   },
   "exclude": [
     "node_modules"
-  ]
+  ],
+  "include": ["./src/**/*"]
 }

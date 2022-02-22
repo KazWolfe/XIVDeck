@@ -1,4 +1,6 @@
-var ExecuteActionActionHandler = {
+let unlockedActions = {}
+
+var ExecuteActionButtonHandler = {
     type: `${PLUGIN_ID}.actions.execaction`,
     cache: {}, // on context -> Object
 
@@ -7,24 +9,24 @@ var ExecuteActionActionHandler = {
         willAppear: function(event) {
             if(!event.payload || !event.payload.hasOwnProperty('settings')) return;
 
-            myAction = new ExecuteActionAction(event);
-            ExecuteActionActionHandler.cache[event.context] = myAction;
+            myAction = new ExecuteActionButton(event);
+            ExecuteActionButtonHandler.cache[event.context] = myAction;
             myAction.requestIcon();
         },
 
         // Called when we expect something to no longer be on a Stream Deck. 
         willDisappear: function(event) {
-            let found = ExecuteActionActionHandler.cache[event.context];
+            let found = ExecuteActionButtonHandler.cache[event.context];
             if (found) {
                 found.dispose();
-                delete ExecuteActionActionHandler.cache[event.context];
+                delete ExecuteActionButtonHandler.cache[event.context];
             }
         },
 
         // Called when the user presses a Stream Deck button.
         keyDown: function(event) {
-            let thisInstance = ExecuteActionActionHandler.cache[event.context];
-            if (!thisInstance) { ExecuteActionActionHandler.elgatoEventHandlers.willAppear(event) }
+            let thisInstance = ExecuteActionButtonHandler.cache[event.context];
+            if (!thisInstance) { ExecuteActionButtonHandler.elgatoEventHandlers.willAppear(event) }
 
             thisInstance.execute(event);
         },
@@ -36,7 +38,7 @@ var ExecuteActionActionHandler = {
 
         // Called when a specific button receives settings. 
         didReceiveSettings: function(event) {
-            let thisInstance = ExecuteActionActionHandler.cache[event.context];
+            let thisInstance = ExecuteActionButtonHandler.cache[event.context];
             let receivedSettings = event.payload.settings;
 
             if (!thisInstance || !receivedSettings) return;
@@ -48,14 +50,33 @@ var ExecuteActionActionHandler = {
         },
 
         renderPIPane: function (event) {
-            // todo
+            domElement = event.domElement;
+            actionInfo = event.actionInfo;
+
+            domElement.innerHTML += `
+            <div class="sdpi-item">
+                <div class="sdpi-item-label">Action Type</div>
+                <select class="sdpi-item-value" id="acTypeSelection">
+                    <option value="default" id="typePlaceholder" disabled selected>Select type...</option>
+                </select>
+            </div>
+            <div class="sdpi-item">
+                <div class="sdpi-item-label">Action Name</div>
+                <select class="sdpi-item-value" id="acActionSelection">
+                    <option value="default" id="namePlaceholder" disabled selected>Select item...</option>
+                </select>
+            </div>
+            `
+            window.$XIV.eventManager.on("initReply", () => {
+                window.$XIV.send({"opcode": "getUnlockedActions"})
+            });
         }
     },
 
     ffxivEventHandlers: {
         actionIcon: function (event) {
-            for (var i in Object.values(ExecuteActionActionHandler.cache)) {
-                var instance = Object.values(ExecuteActionActionHandler.cache)[i]
+            for (var i in Object.values(ExecuteActionButtonHandler.cache)) {
+                var instance = Object.values(ExecuteActionButtonHandler.cache)[i]
 
                 if (!(instance.actionType === event.action.type && instance.actionId === event.action.id)) {
                     continue
@@ -67,18 +88,76 @@ var ExecuteActionActionHandler = {
         },
 
         initReply: function (event) {
-            for (var i in Object.values(ExecuteActionActionHandler.cache)) {
-                Object.values(ExecuteActionActionHandler.cache)[i].requestIcon();
+            for (var i in Object.values(ExecuteActionButtonHandler.cache)) {
+                Object.values(ExecuteActionButtonHandler.cache)[i].requestIcon();
             }
+        },
+        
+        unlockedActions: function (event) {
+            let actionInfo = $SD.actionInfo
+            let settings = actionInfo.payload.settings
+            unlockedActions = event.data
+            
+            let acTypeSelector = document.getElementById('acTypeSelection')
+            
+            // do nothing if not in PI
+            if (!acTypeSelector) return
+            
+            for (let type of Object.keys(unlockedActions)) {
+                acTypeSelector.innerHTML += `<option value="${type}">${type}</option>`
+            }
+            
+            if (settings.actionType) {
+                acTypeSelector.value = settings.actionType;
+                let acActionSelector = document.getElementById('acActionSelection')
+
+                for (let action of unlockedActions[settings.actionType]) {
+                    acActionSelector.innerHTML += `<option value="${action.id}">[#${action.id}] ${Utils.toTitleCase(action.name)}</option>`
+                }
+                
+                if (settings.actionId) {
+                    acActionSelector.value = settings.actionId
+                }
+
+                acActionSelector.addEventListener('change', ExecuteActionButtonHandler.piHandlers.onActionUpdate)
+            }
+
+            acTypeSelector.addEventListener('change', ExecuteActionButtonHandler.piHandlers.onTypeUpdate)
+
         }
     },
 
     piHandlers: {
+       onTypeUpdate: function (event) {
+           console.log("change", event)
+           
+           let actionList = unlockedActions[event.target.value]
+           let acActionSelector = document.getElementById('acActionSelection')
+           acActionSelector.removeEventListener('change', ExecuteActionButtonHandler.piHandlers.onActionUpdate)
+
+           // reset to placeholder
+           acActionSelector.innerHTML = '<option value="default" id="namePlaceholder" selected disabled>Select item...</option>'
+
+           for (let action of actionList) {
+               acActionSelector.innerHTML += `<option value="${action.id}">[#${action.id}] ${Utils.toTitleCase(action.name)}</option>`
+           }
+
+           acActionSelector.addEventListener('change', ExecuteActionButtonHandler.piHandlers.onActionUpdate)
+       },
        
+       onActionUpdate: function (event) {
+           let actionInfo = $SD.actionInfo
+           let settings = actionInfo.payload.settings
+
+           settings.actionType = document.getElementById('acTypeSelection').value
+           settings.actionId = parseInt(event.target.value)
+
+           $SD.api.setSettings($XIV.uuid, settings)
+       }
     }
 }
 
-class ExecuteActionAction {
+class ExecuteActionButton {
     myContext = null;
 
     actionType = null;
@@ -146,4 +225,4 @@ class ExecuteActionAction {
     }
 }
 
-window.RA = window.RA ? window.RA.concat(ExecuteActionActionHandler) : [ ExecuteActionActionHandler ]
+window.RA = window.RA ? window.RA.concat(ExecuteActionButtonHandler) : [ ExecuteActionButtonHandler ]

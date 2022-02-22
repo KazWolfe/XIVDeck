@@ -1,4 +1,4 @@
-﻿var ExecuteHotbarSlotActionHandler = {
+﻿var ExecuteHotbarSlotButtonHandler = {
     type: `${PLUGIN_ID}.actions.exechotbar`,
     cache: {}, // on context -> Object
 
@@ -7,24 +7,24 @@
         willAppear: function(event) {
             if(!event.payload || !event.payload.hasOwnProperty('settings')) return;
 
-            myAction = new ExecuteHotbarSlotAction(event);
-            ExecuteHotbarSlotActionHandler.cache[event.context] = myAction;
+            myAction = new ExecuteHotbarSlotButton(event);
+            ExecuteHotbarSlotButtonHandler.cache[event.context] = myAction;
             myAction.requestIcon();
         },
 
         // Called when we expect something to no longer be on a Stream Deck. 
         willDisappear: function(event) {
-            let found = ExecuteHotbarSlotActionHandler.cache[event.context];
+            let found = ExecuteHotbarSlotButtonHandler.cache[event.context];
             if (found) {
                 found.dispose();
-                delete ExecuteHotbarSlotActionHandler.cache[event.context];
+                delete ExecuteHotbarSlotButtonHandler.cache[event.context];
             }
         },
 
         // Called when the user presses a Stream Deck button.
         keyDown: function(event) {
-            let thisInstance = ExecuteHotbarSlotActionHandler.cache[event.context];
-            if (!thisInstance) { ExecuteHotbarSlotActionHandler.elgatoEventHandlers.willAppear(event) }
+            let thisInstance = ExecuteHotbarSlotButtonHandler.cache[event.context];
+            if (!thisInstance) { ExecuteHotbarSlotButtonHandler.elgatoEventHandlers.willAppear(event) }
 
             thisInstance.execute(event);
         },
@@ -36,7 +36,7 @@
 
         // Called when a specific button receives settings. 
         didReceiveSettings: function(event) {
-            let thisInstance = ExecuteHotbarSlotActionHandler.cache[event.context];
+            let thisInstance = ExecuteHotbarSlotButtonHandler.cache[event.context];
             let receivedSettings = event.payload.settings;
 
             if (!thisInstance || !receivedSettings) return;
@@ -57,7 +57,7 @@
             <div class="sdpi-item">
                 <div class="sdpi-item-label">Hotbar</div>
                 <select class="sdpi-item-value" id="hotbarSelection">
-                    <option value="default" id="hotbarPlaceholder">Select hotbar...</option>
+                    <option value="default" id="hotbarPlaceholder" selected disabled>Select hotbar...</option>
                     <optgroup label="Regular Hotbars">
                         <option value="0">Hotbar 1</option>
                         <option value="1">Hotbar 2</option>
@@ -97,9 +97,6 @@
             let domSlotSelection = document.getElementById("slotSelection")
 
             if (actionInfo.payload.settings.hasOwnProperty("hotbarId")) {
-                let domHotbarPlaceholder = document.getElementById("hotbarPlaceholder")
-                domHotbarPlaceholder.disabled = true
-                
                 domHotbarSelection.value = actionInfo.payload.settings.hotbarId
             }
             if (actionInfo.payload.settings.hasOwnProperty("slotId")) {
@@ -111,15 +108,15 @@
                 domSlotSelection.setAttribute("max", "16")
             }
             
-            domHotbarSelection.addEventListener('change', ExecuteHotbarSlotActionHandler.piHandlers.onHotbarIdUpdate)
-            domSlotSelection.addEventListener('change', ExecuteHotbarSlotActionHandler.piHandlers.onSlotIdUpdate)
+            domHotbarSelection.addEventListener('change', ExecuteHotbarSlotButtonHandler.piHandlers.onHotbarIdUpdate)
+            domSlotSelection.addEventListener('change', ExecuteHotbarSlotButtonHandler.piHandlers.onSlotIdUpdate)
         }
     },
 
     ffxivEventHandlers: {
         hotbarIcon: function (event) {
-            for (var i in Object.values(ExecuteHotbarSlotActionHandler.cache)) {
-                var instance = Object.values(ExecuteHotbarSlotActionHandler.cache)[i]
+            for (var i in Object.values(ExecuteHotbarSlotButtonHandler.cache)) {
+                var instance = Object.values(ExecuteHotbarSlotButtonHandler.cache)[i]
                 
                 if (!(instance.hotbarId === event.hotbarId && instance.slotId === event.slotId)) {
                     continue
@@ -131,13 +128,13 @@
         },
         
         hotbarUpdate: function (event) {
-            for (var i in Object.values(ExecuteHotbarSlotActionHandler.cache)) {
-                Object.values(ExecuteHotbarSlotActionHandler.cache)[i].requestIcon();
+            for (var i in Object.values(ExecuteHotbarSlotButtonHandler.cache)) {
+                Object.values(ExecuteHotbarSlotButtonHandler.cache)[i].requestIcon();
             }
         },
         
         initReply: function (event) {
-            ExecuteHotbarSlotActionHandler.ffxivEventHandlers.hotbarUpdate(event);
+            ExecuteHotbarSlotButtonHandler.ffxivEventHandlers.hotbarUpdate(event);
         }
     },
     
@@ -146,10 +143,6 @@
             console.log("change", event)
             
             let domSlotSelection = document.getElementById("slotSelection")
-
-            // disable the placeholder
-            let domHotbarPlaceholder = document.getElementById("hotbarPlaceholder")
-            domHotbarPlaceholder.disabled = true
             
             if (event.target.value > 9) {
                 domSlotSelection.setAttribute("max", "16")
@@ -180,7 +173,7 @@
     }
 }
 
-class ExecuteHotbarSlotAction {
+class ExecuteHotbarSlotButton {
     myContext = null;
     
     hotbarId = null;
@@ -248,4 +241,4 @@ class ExecuteHotbarSlotAction {
     }
 }
 
-window.RA = window.RA ? window.RA.concat(ExecuteHotbarSlotActionHandler) : [ ExecuteHotbarSlotActionHandler ]
+window.RA = window.RA ? window.RA.concat(ExecuteHotbarSlotButtonHandler) : [ ExecuteHotbarSlotButtonHandler ]
