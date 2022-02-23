@@ -27,17 +27,43 @@
       "UUID": "dev.wolf.xivdeck.sdplugin.actions.ExecHotbar"
     },
     {
-      "Icon": "assets/images/hotbar",
+      "Icon": "assets/images/action",
       "Name": "Execute Action",
       "States": [
         {
-          "Image": "assets/images/hotbar@2x.png",
+          "Image": "assets/images/action@2x.png",
           "TitleAlignment": "bottom",
           "FontSize": "16"
         }
       ],
       "Tooltip": "Trigger a specific action (mount, minion, etc.) in-game",
       "UUID": "dev.wolf.xivdeck.sdplugin.actions.ExecAction"
+    },
+    {
+      "Icon": "assets/images/macro",
+      "Name": "Run In-Game Macro",
+      "States": [
+        {
+          "Image": "assets/images/macro@2x.png",
+          "TitleAlignment": "bottom",
+          "FontSize": "16"
+        }
+      ],
+      "Tooltip": "Run a User Macro (Individual or Shared) in-game",
+      "UUID": "dev.wolf.xivdeck.sdplugin.actions.ExecMacro"
+    },
+    {
+      "Icon": "assets/images/gearset",
+      "Name": "Switch Gearset / Class",
+      "States": [
+        {
+          "Image": "assets/images/gearset@2x.png",
+          "TitleAlignment": "bottom",
+          "FontSize": "16"
+        }
+      ],
+      "Tooltip": "Switch to a specific gearset or class",
+      "UUID": "dev.wolf.xivdeck.sdplugin.actions.SwitchGearset"
     }
   ],
   "Category": "XIVDeck",

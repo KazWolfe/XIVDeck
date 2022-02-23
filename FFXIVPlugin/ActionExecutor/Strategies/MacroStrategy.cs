@@ -42,8 +42,11 @@ namespace FFXIVPlugin.ActionExecutor.Strategies {
             }, Injections.Framework);
         }
 
-        public int GetIconId(uint item) {
-            return 0;
+        public unsafe int GetIconId(uint item) {
+            // todo: figure out how to get /micon, if set
+            var macro = this.GetMacro((item / 100 > 0), ((int) item % 100));
+
+            return (int) macro->IconId;
         }
     }
 }

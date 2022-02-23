@@ -47,6 +47,7 @@ namespace FFXIVPlugin.ActionExecutor {
             this.Strategies[HotbarSlotType.GeneralAction] = new GeneralActionStrategy();
             this.Strategies[HotbarSlotType.FieldMarker] = new WaymarkStrategy();
             this.Strategies[HotbarSlotType.Marker] = new MarkerStrategy();
+            this.Strategies[HotbarSlotType.MainCommand] = new MainCommandStrategy();
         }
 
         private IStrategy GetStrategyForType(HotbarSlotType type) {

@@ -120,9 +120,7 @@ namespace FFXIVPlugin.Base {
                 });
             }
 
-            Gearsets = gearsets;
-
-            PluginLog.LogVerbose($"{UnlockedEmoteKeys.Count} emotes unlocked.");
+            this.Gearsets = gearsets;
         }
 
         public static GameStateCache Load() => new GameStateCache();
