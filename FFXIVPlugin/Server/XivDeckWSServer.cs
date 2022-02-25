@@ -67,6 +67,14 @@ namespace FFXIVPlugin.Server {
                 case "execAction":
                     message = JsonConvert.DeserializeObject<WSExecuteActionOpcode>(rawMessage);
                     break;
+                
+                // class switching
+                case "getClasses":
+                    message = JsonConvert.DeserializeObject<WSGetClassesOpcode>(rawMessage);
+                    break;
+                case "switchClass":
+                    message = JsonConvert.DeserializeObject<WSSwitchClassOpcode>(rawMessage);
+                    break;
             }
 
             if (message == null) {

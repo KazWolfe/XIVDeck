@@ -54,7 +54,7 @@
     },
     {
       "Icon": "assets/images/gearset",
-      "Name": "Switch Gearset / Class",
+      "Name": "Switch Class",
       "States": [
         {
           "Image": "assets/images/gearset@2x.png",
@@ -62,8 +62,8 @@
           "FontSize": "16"
         }
       ],
-      "Tooltip": "Switch to a specific gearset or class",
-      "UUID": "dev.wolf.xivdeck.sdplugin.actions.SwitchGearset"
+      "Tooltip": "Switch to a specific class/job",
+      "UUID": "dev.wolf.xivdeck.sdplugin.actions.SwitchClass"
     }
   ],
   "Category": "XIVDeck",

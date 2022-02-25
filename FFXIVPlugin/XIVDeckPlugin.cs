@@ -43,6 +43,10 @@ namespace FFXIVPlugin
 
             this.Configuration = this.PluginInterface.GetPluginConfig() as helpers.PluginConfig ?? new helpers.PluginConfig();
             this.Configuration.Initialize(this.PluginInterface);
+            
+            // Load cache of unlocked events
+            this.GameStateCache = GameStateCache.Load();
+            this.GameStateCache.Refresh();
 
             // Various managers for advanced hooking into the game
             this.XivCommon = new XivCommonBase(Hooks.None);
@@ -50,9 +54,6 @@ namespace FFXIVPlugin
             this.IconManager = new IconManager(this.PluginInterface);
             this.HotbarWatcher = new HotbarWatcher(this);
             
-            // Load cache of unlocked events
-            this.GameStateCache = GameStateCache.Load();
-
             // And the WS server itself, though this should probably be converted to ASP.net or a different library
             this.XivDeckWsServer = new XivDeckWSServer(this.Configuration.WebSocketPort);
             this.XivDeckWsServer.Start();
@@ -78,6 +79,7 @@ namespace FFXIVPlugin
 
             this.HotbarWatcher.Dispose();
             this.XivDeckWsServer.Stop();
+            this.SigHelper.Dispose();
         }
 
         private void OnCommand(string command, string args) {

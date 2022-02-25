@@ -124,6 +124,16 @@ var ExecuteActionButtonHandler = {
 
             acTypeSelector.addEventListener('change', ExecuteActionButtonHandler.piHandlers.onTypeUpdate)
 
+        },
+
+        stateUpdate: function (event) {
+            for (var i in Object.values(ExecuteActionButtonHandler.cache)) {
+                let actionButon = Object.values(ExecuteActionButtonHandler.cache)[i];
+                
+                if (actionButon.actionType === event.type) {
+                    actionButon.requestIcon();
+                }
+            }
         }
     },
 

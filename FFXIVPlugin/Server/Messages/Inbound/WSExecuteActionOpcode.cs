@@ -18,7 +18,11 @@ namespace FFXIVPlugin.Server.Messages.Inbound {
 
         public override void Process(WsSession session) {
             HotbarSlotType actionType = Action.HotbarSlotType;
-            ActionDispatcher.GetStrategyForSlotType(actionType).Execute((uint) Action.ActionId, Options);
+            
+            // threading, we intentionally ignore the return
+            new TickScheduler(delegate {
+                ActionDispatcher.GetStrategyForSlotType(actionType).Execute((uint) Action.ActionId, Options);
+            }, Injections.Framework);
         }
 
         public WSExecuteActionOpcode() : base("execAction") { }

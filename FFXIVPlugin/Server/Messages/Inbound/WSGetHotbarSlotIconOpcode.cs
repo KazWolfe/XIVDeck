@@ -5,10 +5,8 @@ using Newtonsoft.Json;
 
 namespace FFXIVPlugin.Server.Messages.Inbound {
     public class WSGetHotbarSlotIconOpcode : BaseInboundMessage {
-        [JsonRequired]
-        public int hotbarId { get; set; }
-        [JsonRequired]
-        public int slotId { get; set; }
+        [JsonRequired] public int hotbarId { get; set; }
+        [JsonRequired] public int slotId { get; set; }
 
         public unsafe override void Process(WsSession session) {
             var plugin = XIVDeckPlugin.Instance;

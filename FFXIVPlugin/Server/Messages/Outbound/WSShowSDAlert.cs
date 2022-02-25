@@ -10,5 +10,9 @@ namespace FFXIVPlugin.Server.Messages.Outbound {
         public WSShowSDAlert() : base(MESSAGE_NAME) {
             
         }
+
+        public WSShowSDAlert(string context) : base(MESSAGE_NAME) {
+            this.Context = context;
+        }
     }
 }

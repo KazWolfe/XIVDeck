@@ -48,6 +48,7 @@ namespace FFXIVPlugin.ActionExecutor {
             this.Strategies[HotbarSlotType.FieldMarker] = new WaymarkStrategy();
             this.Strategies[HotbarSlotType.Marker] = new MarkerStrategy();
             this.Strategies[HotbarSlotType.MainCommand] = new MainCommandStrategy();
+            this.Strategies[HotbarSlotType.GearSet] = new GearsetStrategy();
         }
 
         private IStrategy GetStrategyForType(HotbarSlotType type) {

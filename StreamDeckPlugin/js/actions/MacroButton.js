@@ -108,6 +108,12 @@ var ExecuteMacroButtonHandler = {
                 Object.values(ExecuteMacroButtonHandler.cache)[i].requestIcon();
             }
         },
+
+        stateUpdate: function (event) {
+            for (var i in Object.values(ExecuteMacroButtonHandler.cache)) {
+                Object.values(ExecuteMacroButtonHandler.cache)[i].requestIcon();
+            }
+        }
     },
 
     piHandlers: {

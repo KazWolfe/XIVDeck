@@ -31,7 +31,7 @@ The XIVDeck Game Plugin has very few configuration parameters; only really requi
 be chosen if (for whatever reason) TCP port 37984 is already used on your host.
 
 The XIVDeck Stream Deck Plugin is a little bit more involved and does expose some extra options
-for discerning players. Currently, the following two command types can be placed on a Stream
+for discerning players. Currently, the following command types can be placed on a Stream
 Deck button:
 
 * **Text Command / Message**: This action allows you to send a chat message (or slash
@@ -40,9 +40,18 @@ single-line messages can be used, and anything after a newline is ignored by the
 * **Execute Hotbar Slot**: This action allows you to trigger a specific hotbar slot at any
 time, regardless of whether the hotbar is visible or not. The current icon present in that
 hotbar slot will display on the Stream Deck.
+* **Execute Action**: This (not at all confusingly named) action allows you to trigger a limited
+subset of actions that can normally be placed on a hotbar. Currently-supported actions are Minions,
+Emotes, Mounts, General Actions, Main Commands, Waymarks, Markers, and Gear Sets.
+* **Run In-Game Macro**: This action allows you to trigger any macro by ID number (zero-indexed) on
+either the Individual or Shared tab of the Macro interface. *This feature does not allow you to
+create external macros.*
+* **Switch Class**: This action allows you to switch to a specific class directly. It will automatically
+trigger the first gearset for each class that it finds in your active Gearset list.
 
-More action types will come (eventually), particularly those related to more efficient gearset,
-emote, and "common action" triggering. 
+More action types may come later, depending on user demand, what can actually go on a hotbar, and what
+Dalamud ultimately supports or makes easily accessible. For actions that either cannot be put on a
+hotbar or are not supported, the **Text Command** action will allow calling a command directly.
 
 ### Building the Plugin
 
