@@ -1,18 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using FFXIVPlugin.helpers;
+using Dalamud.Logging;
+using FFXIVPlugin.Base;
 using NetCoreServer;
 using Newtonsoft.Json;
 
+
 namespace FFXIVPlugin.Server.Messages.Inbound {
+    [SuppressMessage("ReSharper", "UnassignedGetOnlyAutoProperty", Justification = "JSON serializer will initialize values")]
     public class WSInitMessage : BaseInboundMessage {
         public string Data { get; set; }
+        public string Version { get; set; }
 
         public override void Process(WsSession session) {
-            var reply = new Dictionary<string, string>();
-            reply["messageType"] = "initReply";
-            reply["version"] = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            if (System.Version.Parse(this.Version) < System.Version.Parse(Constants.MinimumSDPluginVersion)) {
+                session.SendClose(1008, "The version of the Stream Deck plugin is too old.");
+                PluginLog.Warning($"The currently-installed version of the XIVDeck Stream Deck plugin " +
+                                  $"is {this.Version}, but version {Constants.MinimumSDPluginVersion} is needed.");
+                return;
+            }
+            
+            var reply = new Dictionary<string, string> {
+                ["messageType"] = "initReply",
+                ["version"] = Assembly.GetExecutingAssembly().GetName().Version!.ToString()
+            };
 
             session.SendTextAsync(JsonConvert.SerializeObject(reply));
 

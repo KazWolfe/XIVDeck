@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Client.UI.Shell;
-using FFXIVPlugin.helpers;
-using FFXIVPlugin.Utils;
 
 namespace FFXIVPlugin.ActionExecutor.Strategies {
     public class MacroStrategy : IStrategy {

@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Dalamud.Logging;
+﻿using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using FFXIVClientStructs.FFXIV.Component.Excel;
-using FFXIVPlugin.Base;
-using FFXIVPlugin.helpers;
-using Lumina.Excel;
 using Lumina.Excel.GeneratedSheets;
 
 namespace FFXIVPlugin.ActionExecutor.Strategies {
     public class GeneralActionStrategy : FixedCommandStrategy<GeneralAction> {
         protected override uint[] GetIllegalActionIDs() {
-            // todo: find a way to hide advanced materia melding if not unlocked
-            return new uint[]{ 11, 18, 23, 24 };
+            return new uint[] {
+                11, // empty
+                13, // Advanced Materia Melding - automatically injected on use of Materia Melding
+                18, // Set Down - can only be used in special content
+                23, // Dismount - can only be used in special content
+                24  // Flying Mount Roulette - does not exist in game UI
+            };
         }
-        
+
         protected override string GetNameForAction(GeneralAction action) {
             return action.Name.RawString;
         }
@@ -28,7 +26,12 @@ namespace FFXIVPlugin.ActionExecutor.Strategies {
             return action.Icon;
         }
 
-        protected override string GetCommandToCallAction(GeneralAction action) {
+        protected override unsafe string GetCommandToCallAction(GeneralAction action) {
+            // ERRATA - replace Materia Melding with Advanced Materia Melding if unlocked
+            if (action.RowId == 12 && UIState.Instance()->Hotbar.IsActionUnlocked(12)) {
+                action = this.GetActionById(13);
+            }
+            
             return $"/generalaction \"{action.Name.RawString}\"";
         }
     }

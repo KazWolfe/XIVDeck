@@ -4,7 +4,6 @@ using System.Linq;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVPlugin.Base;
-using FFXIVPlugin.helpers;
 using Lumina.Excel.GeneratedSheets;
 
 namespace FFXIVPlugin.ActionExecutor.Strategies {
@@ -12,13 +11,13 @@ namespace FFXIVPlugin.ActionExecutor.Strategies {
         private static GameStateCache _gameStateCache = XIVDeckPlugin.Instance.GameStateCache;
         
         public Mount GetMountById(uint id) {
-            return Injections.DataManager.Excel.GetSheet<Mount>().GetRow(id);
+            return Injections.DataManager.Excel.GetSheet<Mount>()!.GetRow(id);
         }
         
         public List<ExecutableAction> GetAllowedItems() {
             _gameStateCache.Refresh();
 
-            return _gameStateCache.UnlockedMountKeys.Select(mount => new ExecutableAction() {
+            return _gameStateCache.UnlockedMountKeys!.Select(mount => new ExecutableAction() {
                 ActionId = (int) mount.RowId, 
                 ActionName = mount.Singular.RawString, 
                 HotbarSlotType = HotbarSlotType.Mount
@@ -26,9 +25,9 @@ namespace FFXIVPlugin.ActionExecutor.Strategies {
         }
 
         public void Execute(uint actionId, dynamic _) {
-            Mount mount = GetMountById(actionId);
+            Mount mount = this.GetMountById(actionId);
             
-            if (!_gameStateCache.IsMinionUnlocked(actionId)) {
+            if (!_gameStateCache.IsMountUnlocked(actionId)) {
                 throw new InvalidOperationException($"The mount \"{mount.Singular.RawString}\" isn't unlocked and therefore can't be used.");
             }
             

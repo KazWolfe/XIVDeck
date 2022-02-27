@@ -1,35 +1,42 @@
 ﻿using System;
 using Dalamud.Game;
 using Dalamud.Logging;
+using FFXIVPlugin.Base;
 
 namespace FFXIVPlugin.Utils {
-    
     // borrowed from https://github.com/Eternita-S/NotificationMaster/blob/master/NotificationMaster/TickScheduler.cs
-    class TickScheduler : IDisposable {
-        long executeAt;
-        Action function;
-        Framework framework;
-        bool disposed = false;
+    internal class TickScheduler : IDisposable {
+        internal static void Schedule(Action function, Framework framework = null, long delay = 0) {
+            framework ??= Injections.Framework;
 
-        public TickScheduler(Action function, Framework framework, long delayMS = 0) {
-            this.executeAt = Environment.TickCount64 + delayMS;
-            this.function = function;
-            this.framework = framework;
-            framework.Update += Execute;
+            var _ = new TickScheduler(function, framework, delay);
+        }
+
+        private readonly long _executeAt;
+        private readonly Action _function;
+        private readonly Framework _framework;
+        private bool _disposed;
+
+        private TickScheduler(Action function, Framework framework, long delayMillis = 0) {
+            this._executeAt = Environment.TickCount64 + delayMillis;
+            this._function = function;
+            this._framework = framework;
+            framework.Update += this.Execute;
         }
 
         public void Dispose() {
-            if (!disposed) {
-                framework.Update -= Execute;
+            if (!this._disposed) {
+                this._framework.Update -= this.Execute;
             }
-            disposed = true;
+
+            this._disposed = true;
         }
 
-        void Execute(object _) {
-            if (Environment.TickCount64 < executeAt) return;
+        private void Execute(object _) {
+            if (Environment.TickCount64 < this._executeAt) return;
             
             try {
-                function();
+                this._function();
             } catch (Exception e) {
                 PluginLog.Error(e, "Exception running a Framework tick event");
             }

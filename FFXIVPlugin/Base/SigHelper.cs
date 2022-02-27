@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Dalamud.Game;
 using Dalamud.Hooking;
 using Dalamud.Logging;
 using Dalamud.Utility.Signatures;
@@ -9,7 +8,7 @@ using FFXIVPlugin.Server.Messages.Outbound;
 using Newtonsoft.Json;
 using Framework = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework;
 
-namespace FFXIVPlugin.helpers {
+namespace FFXIVPlugin.Base {
     public unsafe class SigHelper : IDisposable {
         private static class Signatures {
             internal const string ExecuteHotbarSlot = "E9 ?? ?? ?? ?? 48 8D 91 ?? ?? ?? ?? E9";
@@ -21,26 +20,25 @@ namespace FFXIVPlugin.helpers {
             internal const string SaveMacro = "45 33 C9 E9 ?? ?? ?? ?? CC CC CC CC CC CC CC CC 48 85 D2";
         }
         
-        // functions
+        /***** functions *****/
         [Signature(Signatures.ExecuteHotbarSlot, Fallibility = Fallibility.Fallible)]
         private readonly delegate* unmanaged<RaptureHotbarModule*, HotBarSlot*, void> _execHotbarSlot = null!;
 
         
-        // hooks
+        /***** hooks *****/
         private delegate IntPtr RaptureGearsetModule_WriteFile(IntPtr a1, IntPtr a2);
         private delegate IntPtr RaptureMacroModule_WriteFile(IntPtr a1, IntPtr a2, IntPtr a3);
         
         [Signature(Signatures.SaveGearset, DetourName = nameof(DetourGearsetSave))]
-        private Hook<RaptureGearsetModule_WriteFile>? RGM_WriteFileHook { get; init; }
+        private Hook<RaptureGearsetModule_WriteFile> RGM_WriteFileHook { get; init; }
         
         [Signature(Signatures.SaveMacro, DetourName = nameof(DetourMacroSave))]
-        private Hook<RaptureMacroModule_WriteFile>? RMM_WriteFileHook { get; init; }
+        private Hook<RaptureMacroModule_WriteFile> RMM_WriteFileHook { get; init; }
 
-        // the actual class
-
+        /***** the actual class *****/
         private XIVDeckPlugin _plugin = XIVDeckPlugin.Instance;
         
-        internal SigHelper(SigScanner scanner) {
+        internal SigHelper() {
             SignatureHelper.Initialise(this);
 
             this.RGM_WriteFileHook?.Enable();

@@ -1,15 +1,5 @@
 ﻿using System.Collections.Generic;
-using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using FFXIVPlugin.helpers;
-using System;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using FFXIVPlugin.Server.Messages.Inbound;
-using FFXIVPlugin.Utils;
-using Lumina.Data.Files;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -17,11 +7,9 @@ namespace FFXIVPlugin.Server.Messages.Outbound {
     public class SerialiazableHotbarSlot {
         public uint CommandId;
         
-        [JsonConverter(typeof(StringEnumConverter))]
-        public HotbarSlotType CommandType;
+        [JsonConverter(typeof(StringEnumConverter))] public HotbarSlotType CommandType;
         
         public int IconId;
-
         public string PngData;
         
         // stops newtonsoft from complaining
@@ -38,8 +26,7 @@ namespace FFXIVPlugin.Server.Messages.Outbound {
     public class WSHotbarUpdateMessage : BaseOutboundMessage {
         private static string MESSAGE_NAME = "hotbarUpdate";
 
-        [JsonProperty("hotbarData")]
-        public List<List<SerialiazableHotbarSlot>> HotbarData { get; set; } = new();
+        [JsonProperty("hotbarData")] public List<List<SerialiazableHotbarSlot>> HotbarData { get; set; } = new();
 
         public unsafe WSHotbarUpdateMessage(HotBars hotBars) : base(MESSAGE_NAME) {
             for (int i = 0; i < 17; i++) {

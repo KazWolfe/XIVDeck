@@ -7,12 +7,11 @@ using Dalamud;
 using Dalamud.Logging;
 using Dalamud.Plugin;
 using Dalamud.Utility;
-using FFXIVPlugin.helpers;
+using FFXIVPlugin.Base;
 using ImGuiScene;
 using Lumina.Data.Files;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
-using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace FFXIVPlugin.Utils {
     
@@ -22,33 +21,30 @@ namespace FFXIVPlugin.Utils {
         private readonly DalamudPluginInterface _pluginInterface;
         private bool _disposed;
         private readonly Dictionary<(int, bool), TextureWrap> _iconTextures = new();
-        private readonly Dictionary<uint, ushort> _actionCustomIcons = new() {
-            
-        };
 
         public IconManager(DalamudPluginInterface pluginInterface) {
             this._pluginInterface = pluginInterface;
         }
         
         public void Dispose() {
-            _disposed = true;
+            this._disposed = true;
             var c = 0;
             PluginLog.Debug("Disposing icon textures");
-            foreach (var texture in _iconTextures.Values.Where(texture => texture != null)) {
+            foreach (var texture in this._iconTextures.Values.Where(texture => texture != null)) {
                 c++;
                 texture.Dispose();
             }
 
             PluginLog.Debug($"Disposed {c} icon textures.");
-            _iconTextures.Clear();
+            this._iconTextures.Clear();
         }
         
         private void LoadIconTexture(int iconId, bool hq = false) {
             Task.Run(() => {
                 try {
-                    var iconTex = GetIcon(iconId, hq);
+                    var iconTex = this.GetIcon(iconId, hq);
                     
-                    var tex = _pluginInterface.UiBuilder.LoadImageRaw(iconTex.GetRgbaImageData(), iconTex.Header.Width, iconTex.Header.Height, 4);
+                    var tex = this._pluginInterface.UiBuilder.LoadImageRaw(iconTex.GetRgbaImageData(), iconTex.Header.Width, iconTex.Header.Height, 4);
 
                     if (tex.ImGuiHandle != IntPtr.Zero) {
                         this._iconTextures[(iconId, hq)] = tex;
@@ -82,15 +78,15 @@ namespace FFXIVPlugin.Utils {
                     type = "fr/";
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException("Language", "Unknown Language: " + Injections.DataManager.Language.ToString());
+                    throw new ArgumentOutOfRangeException(nameof(iconLanguage), "Unknown Language: " + Injections.DataManager.Language);
             }
             return this.GetIcon(type, iconId, hq, highres);
         }
 
         public TexFile GetIcon(string type, int iconId, bool hq = false, bool highres = false) 
         {
-            if (type == null)
-                type = string.Empty;
+            type ??= string.Empty;
+            
             if (type.Length > 0 && !type.EndsWith("/"))
                 type += "/";
             
@@ -100,19 +96,10 @@ namespace FFXIVPlugin.Utils {
             if (file == null && highres) {
                 // high-res probably doesn't exist, fallback and try low-res instead
                 PluginLog.Debug($"Couldn't get high res icon for {string.Format(formatStr, (iconId / 1000), type, iconId)}");
-                return GetIcon(type, iconId, hq, false);
+                return this.GetIcon(type, iconId, hq);
             }
             
             return file != null || type.Length <= 0 ? file : Injections.DataManager.GetFile<TexFile>(string.Format(formatStr, (iconId / 1000), string.Empty, iconId));
-        }
-
-
-        public TextureWrap GetActionIcon(Action action) {
-            return GetIconTexture(_actionCustomIcons.ContainsKey(action.RowId) ? _actionCustomIcons[action.RowId] : action.Icon);
-        }
-
-        public ushort GetActionIconId(Action action) {
-            return _actionCustomIcons.ContainsKey(action.RowId) ? _actionCustomIcons[action.RowId] : action.Icon;
         }
 
         public TextureWrap GetIconTexture(int iconId, bool hq = false) {
@@ -130,15 +117,14 @@ namespace FFXIVPlugin.Utils {
         }
 
         public string GetIconAsPngString(int iconId, bool hq = false) {
-            var icon = GetIcon("", iconId, hq, true);
+            var icon = this.GetIcon("", iconId, hq, true);
             var image = GetImage(icon);
 
-            using (MemoryStream stream = new MemoryStream()) {
-                image.SaveAsPng(stream);
-                byte[] pngBytes = stream.ToArray();
+            using var stream = new MemoryStream();
+            image.SaveAsPng(stream);
+            byte[] pngBytes = stream.ToArray();
                 
-                return "data:image/png;base64," + Convert.ToBase64String(pngBytes);
-            }
+            return "data:image/png;base64," + Convert.ToBase64String(pngBytes);
         }
     }
 }

@@ -1,28 +1,29 @@
 ﻿using System;
+using System.IO;
 using System.Net;
-using System.Net.Sockets;
 using System.Text;
 using Dalamud.Logging;
-using FFXIVPlugin.helpers;
+using FFXIVPlugin.Base;
 using FFXIVPlugin.Server.Messages;
 using FFXIVPlugin.Server.Messages.Inbound;
 using FFXIVPlugin.Server.Messages.Outbound;
 using NetCoreServer;
 using Newtonsoft.Json;
-using XivCommon;
+using Buffer = System.Buffer;
 
 namespace FFXIVPlugin.Server {
-    public class XivDeckWSServer : WsServer {
-        public XivDeckWSServer(int port) : base(IPAddress.Loopback, port) { }
+    public class XIVDeckWSServer : WsServer {
+        public XIVDeckWSServer(int port) : base(IPAddress.Loopback, port) {
+            this.OptionDualMode = true;
+        }
 
         protected override TcpSession CreateSession() {
-            return new XivDeckRoute(this);
+            return new XIVDeckRoute(this);
         }
     }
 
-    public class XivDeckRoute : WsSession {
-
-        public XivDeckRoute(WsServer server) : base(server) { }
+    public class XIVDeckRoute : WsSession {
+        public XIVDeckRoute(WsServer server) : base(server) { }
 
         public override void OnWsReceived(byte[] buffer, long offset, long size) {
             string rawMessage = Encoding.UTF8.GetString(buffer, (int) offset, (int) size);
@@ -36,6 +37,10 @@ namespace FFXIVPlugin.Server {
             }
 
             switch (message.Opcode) {
+                default:
+                    PluginLog.Warning($"Received message with unknown opcode: {message.Opcode}");
+                    return;
+                
                 // system messages
                 case "init":
                     message = JsonConvert.DeserializeObject<WSInitMessage>(rawMessage);
@@ -78,8 +83,7 @@ namespace FFXIVPlugin.Server {
             }
 
             if (message == null) {
-                PluginLog.Error($"Failed to deserialize a WebSocket message - {rawMessage}");
-                return;
+                throw new InvalidDataException($"Message failed deserialization: {rawMessage}");
             }
 
             try {
@@ -101,34 +105,33 @@ namespace FFXIVPlugin.Server {
         public new void SendClose(int code, string text) {
             byte [] status= BitConverter.GetBytes((short)code);
             Array.Reverse(status);
-            byte[] datas = Combine(status, Encoding.UTF8.GetBytes(text));
-            SendClose(0, datas, 0, datas.Length);            
+            byte[] datas = this.Combine(status, Encoding.UTF8.GetBytes(text));
+            this.SendClose(0, datas, 0, datas.Length);            
             base.Disconnect();
 
         }
 
         private byte[] Combine(byte[] first, byte[] second) {
             byte[] ret = new byte[first.Length + second.Length];
-            System.Buffer.BlockCopy(first, 0, ret, 0, first.Length);
-            System.Buffer.BlockCopy(second, 0, ret, first.Length, second.Length);
+            Buffer.BlockCopy(first, 0, ret, 0, first.Length);
+            Buffer.BlockCopy(second, 0, ret, first.Length, second.Length);
             return ret;
         }
 
         public override void OnWsConnected(HttpRequest request) {
             // only listen to requests coming to xivdeck specifically.
             if (this.Request.Url != "/xivdeck") {
-                this.SendClose(1003, "Unknown request URL.");
+                this.SendClose(1008, "Unknown request URL.");
                 return;
             }
 
             if (this.Socket.RemoteEndPoint is not IPEndPoint point) {
-                this.SendClose(1000, "Illegal remote endpoint type");
+                this.SendClose(1008, "Illegal remote endpoint type");
                 return;
             }
             
             if (!IPAddress.IsLoopback(point.Address)) {
                 this.SendClose(1008, "For security purposes, non-local connections are rejected.");
-                return;
             }
         }
     }

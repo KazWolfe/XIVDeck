@@ -12,7 +12,7 @@ using Dalamud.Game.Libc;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 
-namespace FFXIVPlugin.helpers {
+namespace FFXIVPlugin.Base {
     
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     public class Injections {

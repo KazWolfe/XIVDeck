@@ -4,21 +4,20 @@ using System.Linq;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVPlugin.Base;
-using FFXIVPlugin.helpers;
 using Lumina.Excel.GeneratedSheets;
 
 namespace FFXIVPlugin.ActionExecutor.Strategies {
     public class EmoteStrategy : IStrategy {
-        private static GameStateCache _gameStateCache = XIVDeckPlugin.Instance.GameStateCache;
+        private static readonly GameStateCache GameStateCache = XIVDeckPlugin.Instance.GameStateCache;
         
         public Emote GetEmoteById(uint id) {
-            return Injections.DataManager.Excel.GetSheet<Emote>().GetRow(id);
+            return Injections.DataManager.Excel.GetSheet<Emote>()!.GetRow(id);
         }
         
         public List<ExecutableAction> GetAllowedItems() {
-            _gameStateCache.Refresh();
+            GameStateCache.Refresh();
 
-            return _gameStateCache.UnlockedEmoteKeys.Select(emote => new ExecutableAction() {
+            return GameStateCache.UnlockedEmoteKeys!.Select(emote => new ExecutableAction() {
                 ActionId = (int) emote.RowId, 
                 ActionName = emote.Name.RawString, 
                 HotbarSlotType = HotbarSlotType.Emote
@@ -26,14 +25,14 @@ namespace FFXIVPlugin.ActionExecutor.Strategies {
         }
 
         public void Execute(uint actionId, dynamic _) {
-            Emote emote = GetEmoteById(actionId);
+            Emote emote = this.GetEmoteById(actionId);
             TextCommand textCommand = emote.TextCommand.Value;
 
             if (textCommand == null) {
                 throw new KeyNotFoundException($"The emote \"{emote.Name.RawString}\" does not have an associated text command");
             }
 
-            if (!_gameStateCache.UnlockedEmoteKeys.Contains(emote)) {
+            if (!GameStateCache.UnlockedEmoteKeys!.Contains(emote)) {
                 throw new InvalidOperationException($"The emote \"{emote.Name.RawString}\" isn't unlocked and therefore can't be used.");
             }
 
@@ -42,7 +41,7 @@ namespace FFXIVPlugin.ActionExecutor.Strategies {
         }
 
         public int GetIconId(uint item) {
-            Emote emote = GetEmoteById(item);
+            Emote emote = this.GetEmoteById(item);
             return emote.Icon;
         }
     }

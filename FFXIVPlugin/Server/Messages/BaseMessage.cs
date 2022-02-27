@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using NetCoreServer;
 using Newtonsoft.Json;
 
 namespace FFXIVPlugin.Server.Messages {
+    
+    [SuppressMessage("ReSharper", "UnassignedGetOnlyAutoProperty", Justification = "JSON serializer will initialize these fields")]
     public class BaseInboundMessage {
         public string Opcode { get; set; }
         public string SDContext { get; set; }
@@ -17,18 +20,15 @@ namespace FFXIVPlugin.Server.Messages {
     }
 
     public class BaseOutboundMessage {
-        [JsonProperty("messageType")]
-        public string MessageType { get; set; }
-        
-        [JsonProperty("nonce")]
-        public int Nonce { get; set; }
+        [JsonProperty("messageType")] public string MessageType { get; set; }
+        [JsonProperty("nonce")] public int Nonce { get; set; }
 
-        public BaseOutboundMessage(String messageType, int nonce) {
+        public BaseOutboundMessage(string messageType, int nonce) {
             this.MessageType = messageType;
             this.Nonce = nonce;
         }
 
-        public BaseOutboundMessage(String messageType) {
+        public BaseOutboundMessage(string messageType) {
             var rng = new Random();
 
             this.MessageType = messageType;

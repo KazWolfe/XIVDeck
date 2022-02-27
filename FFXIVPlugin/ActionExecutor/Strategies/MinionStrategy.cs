@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVPlugin.Base;
-using FFXIVPlugin.helpers;
 using Lumina.Excel.GeneratedSheets;
 
 namespace FFXIVPlugin.ActionExecutor.Strategies {
@@ -13,13 +11,13 @@ namespace FFXIVPlugin.ActionExecutor.Strategies {
         private static GameStateCache _gameStateCache = XIVDeckPlugin.Instance.GameStateCache;
         
         public Companion GetMinionById(uint id) {
-            return Injections.DataManager.Excel.GetSheet<Companion>().GetRow(id);
+            return Injections.DataManager.Excel.GetSheet<Companion>()!.GetRow(id);
         }
         
         public List<ExecutableAction> GetAllowedItems() {
             _gameStateCache.Refresh();
 
-            return _gameStateCache.UnlockedMinionKeys.Select(minion => new ExecutableAction() {
+            return _gameStateCache.UnlockedMinionKeys!.Select(minion => new ExecutableAction() {
                 ActionId = (int) minion.RowId, 
                 ActionName = minion.Singular.RawString, 
                 HotbarSlotType = HotbarSlotType.Minion

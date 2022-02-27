@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security;
 using Dalamud.Logging;
 using Dalamud.Memory;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVPlugin.Base;
-using FFXIVPlugin.helpers;
-using Lumina.Excel.GeneratedSheets;
 
 namespace FFXIVPlugin.ActionExecutor.Strategies {
     public unsafe class GearsetStrategy : IStrategy {
@@ -44,7 +41,7 @@ namespace FFXIVPlugin.ActionExecutor.Strategies {
         public void Execute(uint actionSlot, dynamic _) {
             var gearset =  this.GetGearsetBySlot(actionSlot);
             
-            String command = $"/gearset change {gearset.Slot}";
+            String command = $"/gearset change {gearset.Slot + 1}";
             
             PluginLog.Debug($"Would execute command: {command}");
             XIVDeckPlugin.Instance.XivCommon.Functions.Chat.SendMessage(command);

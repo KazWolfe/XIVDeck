@@ -1,17 +1,4 @@
-﻿using System.Collections.Generic;
-using FFXIVClientStructs.FFXIV.Client.System.Framework;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using FFXIVPlugin.helpers;
-using System;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using FFXIVPlugin.Server.Messages.Inbound;
-using FFXIVPlugin.Utils;
-using Lumina.Data.Files;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+﻿using Newtonsoft.Json;
 
 namespace FFXIVPlugin.Server.Messages.Outbound {
     /**

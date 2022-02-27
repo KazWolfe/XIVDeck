@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVPlugin.ActionExecutor;
-using FFXIVPlugin.helpers;
 using NetCoreServer;
 using Newtonsoft.Json;
 
@@ -21,9 +19,10 @@ namespace FFXIVPlugin.Server.Messages.Inbound {
                 actions[type] = allowedItems;
             }
 
-            var reply = new Dictionary<string, dynamic>();
-            reply["messageType"] = "unlockedActions";
-            reply["data"] = actions;
+            var reply = new Dictionary<string, dynamic> {
+                ["messageType"] = "unlockedActions",
+                ["data"] = actions
+            };
 
             session.SendTextAsync(JsonConvert.SerializeObject(reply));
         }

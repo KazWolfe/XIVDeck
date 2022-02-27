@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+﻿using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVPlugin.ActionExecutor;
-using FFXIVPlugin.helpers;
 using FFXIVPlugin.Utils;
 using NetCoreServer;
 using Newtonsoft.Json;
@@ -17,12 +14,11 @@ namespace FFXIVPlugin.Server.Messages.Inbound {
         public dynamic Options { get; set; }
 
         public override void Process(WsSession session) {
-            HotbarSlotType actionType = Action.HotbarSlotType;
+            HotbarSlotType actionType = this.Action.HotbarSlotType;
             
-            // threading, we intentionally ignore the return
-            new TickScheduler(delegate {
-                ActionDispatcher.GetStrategyForSlotType(actionType).Execute((uint) Action.ActionId, Options);
-            }, Injections.Framework);
+            TickScheduler.Schedule(delegate {
+                ActionDispatcher.GetStrategyForSlotType(actionType).Execute((uint) this.Action.ActionId, this.Options);
+            });
         }
 
         public WSExecuteActionOpcode() : base("execAction") { }

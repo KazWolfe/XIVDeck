@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NetCoreServer;
 using Newtonsoft.Json;
 
@@ -9,7 +8,7 @@ namespace FFXIVPlugin.Server.Messages.Inbound {
 
         public override void Process(WsSession session) {
             var reply = new Dictionary<string, string> {
-                ["data"] = Data
+                ["data"] = this.Data
             };
 
             session.SendTextAsync(JsonConvert.SerializeObject(reply));

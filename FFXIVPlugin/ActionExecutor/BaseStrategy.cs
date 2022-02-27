@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Logging;
-using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using FFXIVClientStructs.FFXIV.Component.Excel;
-using FFXIVPlugin.helpers;
+using FFXIVPlugin.Base;
 using Lumina.Excel;
-using Lumina.Excel.GeneratedSheets;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -56,34 +53,41 @@ namespace FFXIVPlugin.ActionExecutor {
         }
 
         public List<ExecutableAction> GetAllowedItems() {
-            if (_actionCache.Count > 0) {
+            if (this._actionCache.Count > 0) {
                 // this is (relatively) safe as general actions shouldn't (can't) be added midway through the game.
                 // so let's just cache them and return whenever this is called just to save a tiiiny amount of memory
-                return _actionCache;
+                return this._actionCache;
             }
 
             ExcelSheet<T> sheet = Injections.DataManager.Excel.GetSheet<T>();
 
+            if (sheet == null) {
+                throw new NullReferenceException($"A sheet of type {typeof(T).Name} does not exist.");
+            }
+            
             foreach (var row in sheet) {
                 // skip illegal action IDs
                 if (row.RowId == 0) continue;
-                if (GetIllegalActionIDs().Contains(row.RowId)) continue;
+                if (this.GetIllegalActionIDs().Contains(row.RowId)) continue;
 
                 var actionName = GetNameForAction(row);
                 if (string.IsNullOrEmpty(actionName)) continue;
 
-                _actionCache.Add(new ExecutableAction() {
+                this._actionCache.Add(new ExecutableAction() {
                     ActionId = (int) row.RowId,
                     ActionName = actionName,
                     HotbarSlotType = GetHotbarSlotType()
                 });
             }
 
-            return _actionCache;
+            return this._actionCache;
         }
         
         public void Execute(uint actionId, dynamic options = null) {
-            String command = GetCommandToCallAction(this.GetActionById(actionId));
+            if (this.GetIllegalActionIDs().Contains(actionId))
+                throw new ArgumentException($"The action with ID {actionId} is marked as illegal and cannot be used.");
+            
+            String command = this.GetCommandToCallAction(this.GetActionById(actionId));
             
             PluginLog.Debug($"Would execute command: {command}");
             XIVDeckPlugin.Instance.XivCommon.Functions.Chat.SendMessage(command);

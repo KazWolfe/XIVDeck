@@ -58,10 +58,16 @@
 
         /* WebSocket onClose will fire when the socket closes, but also when it fails entirely (e.g. ECONNREFUSED).
          * We'll leverage this to handle our retry logic. */
-        this.websocket.onclose = () => {
+        this.websocket.onclose = (event) => {
             console.debug("[XIVDeck - FFXIVPluginLink] Connection to WebSocket server lost!")
             this.eventManager.emit("_wsClosed", {});
             this.websocket = null;
+            
+            // do not retry if this was a result of a server-side closure
+            if (event.code === 1002 || event.code === 1008) {
+                console.warn(`[XIVDeck - FFXIVPluginLink] WebSocket connection was forcibly closed with code ${event.code}, not retrying`)
+                return
+            }
             
             // allow us to control retry logic
             if (!doRetry) return;

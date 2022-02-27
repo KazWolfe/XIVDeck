@@ -1,6 +1,4 @@
-﻿using FFXIVPlugin.helpers;
-using FFXIVPlugin.Utils;
-using Lumina.Excel.GeneratedSheets;
+﻿using FFXIVPlugin.Utils;
 using NetCoreServer;
 
 namespace FFXIVPlugin.Server.Messages.Inbound {
@@ -10,10 +8,9 @@ namespace FFXIVPlugin.Server.Messages.Inbound {
         public override void Process(WsSession session) {
             var plugin = XIVDeckPlugin.Instance;
             
-            // threading, we intentionally ignore the return
-            new TickScheduler(delegate {
-                plugin.XivCommon.Functions.Chat.SendMessage(Command);
-            }, Injections.Framework);
+            TickScheduler.Schedule(delegate {
+                plugin.XivCommon.Functions.Chat.SendMessage(this.Command);
+            });
         }
 
         public WSChatMessage() : base("command") { }

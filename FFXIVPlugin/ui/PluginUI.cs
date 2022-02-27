@@ -1,47 +1,28 @@
-﻿using ImGuiNET;
-using System;
-using System.Collections.Generic;
-using System.Numerics;
-using Dalamud;
-using Dalamud.Data;
-using Dalamud.Game.Command;
+﻿using System;
+using System.Diagnostics;
+using Dalamud.Interface;
 using Dalamud.Interface.Colors;
-using Dalamud.Logging;
-using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using FFXIVPlugin.helpers;
-using FFXIVPlugin.Utils;
-using Lumina.Excel.GeneratedSheets;
-using Action = Lumina.Excel.GeneratedSheets.Action;
+using Dalamud.Interface.Components;
+using ImGuiNET;
 
 namespace FFXIVPlugin.ui {
-    unsafe class PluginUI : IDisposable {
+    class PluginUI : IDisposable {
         private XIVDeckPlugin _plugin;
-        
-        string commandToExecute = string.Empty;
-
-        private int query_hotbar_id = 0;
-        private int query_item_id = 0;
-
-        private int selected_action_type = 0;
-        private int selected_action_id = 0;
-
-        // this extra bool exists for ImGui, since you can't ref a property
-        private bool visible = false;
-        public bool Visible {
-            get { return this.visible; }
-            set { this.visible = value; }
-        }
-
-        private bool settingsVisible = false;
+    
+        private bool _settingsVisible;
         public bool SettingsVisible {
-            get { return this.settingsVisible; }
-            set { this.settingsVisible = value; }
+            get { return this._settingsVisible; }
+            set { this._settingsVisible = value; }
         }
+        
+        // imgui implementation
+        private int _wsPort;
 
         // passing in the image here just for simplicity
         public PluginUI(XIVDeckPlugin plugin) {
             this._plugin = plugin;
+
+            this._wsPort = this._plugin.Configuration.WebSocketPort;
         }
 
         public void Dispose() {
@@ -55,111 +36,85 @@ namespace FFXIVPlugin.ui {
             // There are other ways to do this, but it is generally best to keep the number of
             // draw delegates as low as possible.
 
-            DrawDebugWindow();
             DrawSettingsWindow();
         }
 
-        public void DrawDebugWindow() {
-            if (!Visible) {
-                return;
-            }
-
-            ImGui.SetNextWindowSize(new Vector2(375, 330), ImGuiCond.FirstUseEver);
-            ImGui.SetNextWindowSizeConstraints(new Vector2(375, 330), new Vector2(float.MaxValue, float.MaxValue));
-            if (ImGui.Begin("XIVDeck Debug Window", ref this.visible)) {
-                if (ImGui.Button("Show Settings")) {
-                    SettingsVisible = true;
-                }
-                
-                ImGui.InputText("Command", ref commandToExecute, 255);
-
-                if (ImGui.Button("Run Command")) {
-                    PluginLog.Debug($"Command: {commandToExecute}");
-                    this._plugin.XivCommon.Functions.Chat.SendMessage(commandToExecute);
-                }
-                
-                ImGui.Spacing();
-
-                var hotbarModule =
-                    FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->GetUiModule()->
-                        GetRaptureHotbarModule();
-                
-                var hotbarItem = hotbarModule->HotBar[query_hotbar_id]->Slot[query_item_id];
-                var icon = Injections.DataManager.GetImGuiTextureIcon(hotbarItem->Icon >= 1000000,
-                    (uint) hotbarItem->Icon % 1000000);
-
-                ImGui.Text("-- HOTBAR DEBUG --");
-                ImGui.BeginGroup();
-                ImGui.InputInt("hotbar number", ref query_hotbar_id);
-                ImGui.InputInt("slot number", ref query_item_id);
-                ImGui.EndGroup();
-                ImGui.Text($"Information for action at bar {query_hotbar_id}, slot {query_item_id}:");
-                ImGui.Indent();
-                ImGui.Text($"Action Type: {hotbarItem -> CommandType}");
-                ImGui.Text($"Raw ID: {hotbarItem -> CommandId}");
-                // ImGui.Text($"Action Name: {action.Name}");
-                if (icon != null) {
-                    ImGui.Image(icon.ImGuiHandle, new Vector2(icon.Width, icon.Height));
-                }
-
-                if (ImGui.Button("TRIGGER")) {
-                    _plugin.SigHelper.ExecuteHotbarSlot(hotbarItem);
-                }
-                
-                ImGui.Unindent();
-                
-                ImGui.Text("-- ACTION CONTROL --"); ;
-                String[] items = Enum.GetNames(typeof(HotbarSlotType));
-                ImGui.ListBox("Action Type", ref this.selected_action_type, items, items.Length);
-                ImGui.InputInt("Command ID", ref this.selected_action_id);
-                
-                ImGui.Text($"Action Unlocked: {FFXIVClientStructs.FFXIV.Client.Game.UI.UIState.Instance()->Hotbar.IsActionUnlocked((uint) this.selected_action_id)}");
-
-                if (ImGui.Button("EXECUTE")) {
-                    HotbarSlotType selType;
-                    HotbarSlotType.TryParse(items[this.selected_action_type], out selType);
-                    
-                    PluginLog.Debug($"Executing {selType} #{this.selected_action_id}");
-                    _plugin.SigHelper.ExecuteHotbarAction(selType, (uint) this.selected_action_id);
-                }
-
-            }
-            ImGui.End();
-        }
-
         public void DrawSettingsWindow() {
-            if (!SettingsVisible) {
+            if (!this.SettingsVisible) {
                 return;
             }
             
-            if (ImGui.Begin("XIVDeck Configuration Menu", ref this.settingsVisible)) {
-                var wsPort = this._plugin.Configuration.WebSocketPort;
-                var safeMode = this._plugin.Configuration.SafeMode;
+            if (ImGui.Begin("XIVDeck Configuration Menu", ref this._settingsVisible)) {
                 var hasLinkedStreamDeck = this._plugin.Configuration.HasLinkedStreamDeckPlugin;
+                var safeMode = this._plugin.Configuration.SafeMode;
 
                 if (!safeMode) {
-                    ImGui.TextColored(ImGuiColors.DalamudRed, "DANGER: SAFE MODE DISABLED! You may be able to " +
-                                                              "send illegal commands from your Stream Deck to the " +
-                                                              "game.");
+                    ImGui.PushTextWrapPos();
+                    ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudRed);
+                    
+                    ImGui.Text( "DANGER: SAFE MODE DISABLED! You may be able to send illegal commands from your " +
+                                "Stream Deck to the game.");
+                    
+                    ImGui.PopStyleColor();
+                    ImGui.PopTextWrapPos();
+                    ImGui.Spacing();
                 }
 
                 if (!hasLinkedStreamDeck) {
-                    ImGui.TextColored(ImGuiColors.DalamudYellow, "A Stream Deck has never been connected to this " +
-                                                                 "plugin instance. Please install the plugin as " +
-                                                                 "documented in the GitHub repo for this plugin.");
+                    ImGui.PushTextWrapPos();
+                    ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
+                    
+                    ImGui.Text("A Stream Deck has never been connected to this plugin instance. If you haven't " +
+                               "done so already, please make sure you've downloaded and installed the Stream Deck " +
+                               "plugin from XIVDeck's GitHub repo.\n\nYou will also need to have configured at least " +
+                               "one button on your Stream Deck and properly set connection information.");
+                    
+                    ImGui.PopStyleColor();
+                    ImGui.PopTextWrapPos();
+                    ImGui.Spacing();
+                }
+                
+                ImGui.PushItemWidth(80);
+
+                if (ImGui.InputInt("WebSocket Port", ref this._wsPort, 0)) {
+                    if (this._wsPort < 1024) this._wsPort = 1024;
+                    if (this._wsPort > 59999) this._wsPort = 59999;
+                }
+                
+                ImGui.PopItemWidth();
+                
+                ImGuiComponents.HelpMarker("Default port: 37984\n\nRange: 1024-59999");
+                ImGui.TextWrapped($"Listen IP: 127.0.0.1");
+
+                // FOOTER //
+
+                var windowSize = ImGui.GetWindowContentRegionMax();
+                var placeholderButtonSize = ImGuiHelpers.GetButtonSize("placeholder");
+                
+                ImGui.SetCursorPosY(windowSize.Y - placeholderButtonSize.Y - 4);
+                ImGui.Separator();
+                
+                if (ImGui.Button("GitHub")) {
+                    Process.Start(new ProcessStartInfo() {
+                            FileName = "https://github.com/KazWolfe/XIVDeck",
+                            UseShellExecute = true,
+                    });
                 }
 
-                if (ImGui.InputInt("WebSocket Port", ref wsPort, 0)) {
-                    if (wsPort < 1024) wsPort = 1024;
-                    if (wsPort > 59999) wsPort = 59999;
+                var applyText = "Apply Settings";
+                var applyButtonSize = ImGuiHelpers.GetButtonSize(applyText);
 
-                    this._plugin.Configuration.WebSocketPort = wsPort;
-                    this._plugin.Configuration.Save();
+                ImGui.SameLine(windowSize.X - applyButtonSize.X - 20);
+                if (ImGui.Button(applyText)) {
+                    if (this._wsPort != this._plugin.Configuration.WebSocketPort) {
+                        this._plugin.Configuration.WebSocketPort = this._wsPort;
+                        this._plugin.Configuration.HasLinkedStreamDeckPlugin = false;
+                        
+                        this._plugin.Configuration.Save();
+                    }
+                    
+                    this._plugin.InitializeWSServer();
                 }
-                ImGui.TextWrapped("Port number must be between 1024-59999. Changes to the port number require the plugin " +
-                           "be reloaded to take effect. Note that reconfiguration of the Stream Deck plugin will " +
-                           "also be required if the WebSocket port were to be changed.");
-                ImGui.TextWrapped("Default port: 37984");
             }
             ImGui.End();
         }
