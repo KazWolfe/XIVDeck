@@ -16,7 +16,7 @@ namespace FFXIVPlugin.ActionExecutor.Strategies {
         }
 
         protected override string GetCommandToCallAction(Marker action) {
-            return $"/enemysign \"{action.Name.RawString}\"";
+            return $"/marking \"{action.Name.RawString}\"";
         }
     }
 }
