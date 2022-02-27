@@ -36,7 +36,7 @@ namespace FFXIVPlugin.ActionExecutor.Strategies {
         }
 
         public int GetIconId(uint actionId) {
-            return Injections.DataManager.Excel.GetSheet<MainCommand>()!.GetRow(actionId).Icon;
+            return Injections.DataManager.Excel.GetSheet<MainCommand>()!.GetRow(actionId)!.Icon;
         }
 
         public List<ExecutableAction> GetAllowedItems() {

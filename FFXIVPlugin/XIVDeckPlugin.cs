@@ -1,8 +1,9 @@
-﻿using Dalamud.Plugin;
+﻿using System;
+using Dalamud.Plugin;
 using FFXIVClientStructs;
 using FFXIVPlugin.Base;
 using FFXIVPlugin.Server;
-using FFXIVPlugin.ui;
+using FFXIVPlugin.UI;
 using FFXIVPlugin.Utils;
 using XivCommon;
 
@@ -54,6 +55,9 @@ namespace FFXIVPlugin
 
             this.PluginInterface.UiBuilder.Draw += DrawUI;
             this.PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUI;
+
+            Injections.ClientState.Login += this.OnLogin;
+            this.InitializeNag();
         }
 
         public void Dispose() {
@@ -62,6 +66,8 @@ namespace FFXIVPlugin
             this.HotbarWatcher.Dispose();
             this.XivDeckWsServer.Dispose();
             this.SigHelper.Dispose();
+
+            Injections.ClientState.Login -= this.OnLogin;
         }
 
         private void DrawUI() {
@@ -70,6 +76,18 @@ namespace FFXIVPlugin
 
         private void DrawConfigUI() {
             this.PluginUi.SettingsVisible = true;
+        }
+
+        private void OnLogin(object _, EventArgs __) {
+            if (!this.Configuration.HasLinkedStreamDeckPlugin) {
+                this.PluginUi.SettingsVisible = true;
+            }
+        }
+
+        private void InitializeNag() {
+            if (Injections.ClientState.IsLoggedIn && !this.Configuration.HasLinkedStreamDeckPlugin) {
+                this.PluginUi.SettingsVisible = true;
+            }
         }
 
         internal void InitializeWSServer() {

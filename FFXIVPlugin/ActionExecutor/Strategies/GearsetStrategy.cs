@@ -31,7 +31,7 @@ namespace FFXIVPlugin.ActionExecutor.Strategies {
         public List<ExecutableAction> GetAllowedItems() {
             _gameStateCache.Refresh();
             
-            return _gameStateCache.Gearsets.Select(gearset => new ExecutableAction {
+            return _gameStateCache.Gearsets!.Select(gearset => new ExecutableAction {
                 ActionId = gearset.Slot, 
                 ActionName = gearset.Name, 
                 HotbarSlotType = HotbarSlotType.GearSet,

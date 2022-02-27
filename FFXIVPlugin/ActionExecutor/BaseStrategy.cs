@@ -45,7 +45,7 @@ namespace FFXIVPlugin.ActionExecutor {
         protected abstract string GetCommandToCallAction(T action);
 
         protected virtual uint[] GetIllegalActionIDs() {
-            return new uint[] { };
+            return Array.Empty<uint>();
         }
 
         public T GetActionById(uint id) {
@@ -76,7 +76,7 @@ namespace FFXIVPlugin.ActionExecutor {
                 this._actionCache.Add(new ExecutableAction() {
                     ActionId = (int) row.RowId,
                     ActionName = actionName,
-                    HotbarSlotType = GetHotbarSlotType()
+                    HotbarSlotType = this.GetHotbarSlotType()
                 });
             }
 

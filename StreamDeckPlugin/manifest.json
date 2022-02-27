@@ -5,7 +5,7 @@
       "Name": "Text Command / Message",
       "States": [
         {
-          "Image": "assets/images/chat@2x.png",
+          "Image": "assets/images/chat",
           "TitleAlignment": "middle",
           "FontSize": "16"
         }
@@ -18,7 +18,7 @@
       "Name": "Execute Hotbar Slot",
       "States": [
         {
-          "Image": "assets/images/hotbar@2x.png",
+          "Image": "assets/images/hotbar",
           "TitleAlignment": "bottom",
           "FontSize": "16"
         }
@@ -31,7 +31,7 @@
       "Name": "Execute Action",
       "States": [
         {
-          "Image": "assets/images/action@2x.png",
+          "Image": "assets/images/action",
           "TitleAlignment": "bottom",
           "FontSize": "16"
         }
@@ -44,7 +44,7 @@
       "Name": "Run In-Game Macro",
       "States": [
         {
-          "Image": "assets/images/macro@2x.png",
+          "Image": "assets/images/macro",
           "TitleAlignment": "bottom",
           "FontSize": "16"
         }
@@ -57,7 +57,7 @@
       "Name": "Switch Class",
       "States": [
         {
-          "Image": "assets/images/gearset@2x.png",
+          "Image": "assets/images/gearset",
           "TitleAlignment": "bottom",
           "FontSize": "16"
         }

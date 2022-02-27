@@ -5,7 +5,7 @@ using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using ImGuiNET;
 
-namespace FFXIVPlugin.ui {
+namespace FFXIVPlugin.UI {
     class PluginUI : IDisposable {
         private XIVDeckPlugin _plugin;
     
@@ -63,10 +63,14 @@ namespace FFXIVPlugin.ui {
                 if (!hasLinkedStreamDeck) {
                     ImGui.PushTextWrapPos();
                     ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
-                    
+
                     ImGui.Text("A Stream Deck has never been connected to this plugin instance. If you haven't " +
                                "done so already, please make sure you've downloaded and installed the Stream Deck " +
-                               "plugin from XIVDeck's GitHub repo.\n\nYou will also need to have configured at least " +
+                               "plugin from XIVDeck's GitHub repo.");
+
+                    if (ImGui.Button("Open XIVDeck GitHub")) this.OpenXIVDeckGitHub();
+                    
+                    ImGui.Text("You will also need to have configured at least " +
                                "one button on your Stream Deck and properly set connection information.");
                     
                     ImGui.PopStyleColor();
@@ -94,12 +98,7 @@ namespace FFXIVPlugin.ui {
                 ImGui.SetCursorPosY(windowSize.Y - placeholderButtonSize.Y - 4);
                 ImGui.Separator();
                 
-                if (ImGui.Button("GitHub")) {
-                    Process.Start(new ProcessStartInfo() {
-                            FileName = "https://github.com/KazWolfe/XIVDeck",
-                            UseShellExecute = true,
-                    });
-                }
+                if (ImGui.Button("XIVDeck GitHub")) this.OpenXIVDeckGitHub();
 
                 var applyText = "Apply Settings";
                 var applyButtonSize = ImGuiHelpers.GetButtonSize(applyText);
@@ -117,6 +116,13 @@ namespace FFXIVPlugin.ui {
                 }
             }
             ImGui.End();
+        }
+
+        private void OpenXIVDeckGitHub() {
+            Process.Start(new ProcessStartInfo() {
+                FileName = Constants.GithubUrl,
+                UseShellExecute = true,
+            });
         }
     }
 }
