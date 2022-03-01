@@ -8,7 +8,7 @@ library to create an interactive and pleasant human interface experience.
 > **Caution:** This plugin, in its current state, is nowhere near done. While certain core
 > functionality *appears* to work, there are currently very few safety checks and even fewer
 > considerations to "doing things right." While this plugin can be compiled and used, extreme
-> caution is recommended until official binaries and distribution packages are made available.
+> caution is recommended until a full release has been published.
 > 
 > By using this plugin (especially in its current state) you understand that you are at risk
 > of being banned from the game by Square Enix, or worse. I am not responsible if your Miqo'te
@@ -52,6 +52,17 @@ trigger the first gearset for each class that it finds in your active Gearset li
 More action types may come later, depending on user demand, what can actually go on a hotbar, and what
 Dalamud ultimately supports or makes easily accessible. For actions that either cannot be put on a
 hotbar or are not supported, the **Text Command** action will allow calling a command directly.
+
+### Installing the Plugin
+
+The XIVDeck plugins are available for download from [this repository's Releases 
+page](https://github.com/KazWolfe/xivdeck/releases).
+
+To install the Stream Deck plugin, simply open the `XIVDeck-StreamDeckPlugin.streamDeckPlugin`
+file. The Elgato Stream Deck software will take care of all installation steps.
+
+To install the FFXIV plugin, extract `XIVDeck-FFXIVPlugin.zip` to 
+`%APPDATA%\XIVLauncher\devPlugins\XIVDeck`. If this folder does not already exist, please create it.
 
 ### Building the Plugin
 

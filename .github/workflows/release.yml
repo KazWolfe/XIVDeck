@@ -1,0 +1,39 @@
+﻿name: Build XIVDeck
+
+on:
+  release:
+    types: [published]
+    
+jobs:
+  build-ffxivplugin:
+    name: Build XIVDeck FFXIV Plugin
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.100
+      - name: Restore Dependencies
+        run: dotnet restore
+      - name: Download Dalamud
+        run: |
+          Invoke-WebRequest -Uri https://goatcorp.github.io/dalamud-distrib/latest.zip -OutFile latest.zip
+          Expand-Archive -Force latest.zip "$env:AppData\XIVLauncher\addon\Hooks\dev"
+      - name: Build Plugin
+        run: |
+          $ver = '${{ github.ref }}' -replace 'refs/tags/v',''
+          invoke-expression 'dotnet build --no-restore --configuration Release --nologo -p:AssemblyVersion=$ver -p:Version=$ver -p:FileVersion=$ver FFXIVPlugin'
+      - name: Report Build Hash
+        run: |
+          $fileHashInfo = Get-FileHash .\FFXIVPlugin\bin\Release\XIVDeckPlugin\latest.zip;
+          Write-Output "Hash of XIVDeck-FFXIVPlugin: $($fileHashInfo.Hash)";
+      - name: Upload Arifact to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: .\FFXIVPlugin\bin\Release\XIVDeckPlugin\latest.zip
+          asset_name: XIVDeck-FFXIVPlugin.zip
+          asset_content_type: application/zip
