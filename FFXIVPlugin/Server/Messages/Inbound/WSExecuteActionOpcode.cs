@@ -21,9 +21,7 @@ namespace FFXIVPlugin.Server.Messages.Inbound {
             if (!Injections.ClientState.IsLoggedIn)
                 throw new InvalidOperationException("A player is not logged in to the game!");
             
-            TickScheduler.Schedule(delegate {
-                ActionDispatcher.GetStrategyForSlotType(actionType).Execute((uint) this.Action.ActionId, this.Options);
-            });
+            ActionDispatcher.GetStrategyForSlotType(actionType).Execute((uint) this.Action.ActionId, this.Options);
         }
 
         public WSExecuteActionOpcode() : base("execAction") { }

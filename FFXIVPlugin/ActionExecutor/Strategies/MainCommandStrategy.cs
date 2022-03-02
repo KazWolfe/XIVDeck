@@ -5,6 +5,7 @@ using System.Linq;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVPlugin.Base;
+using FFXIVPlugin.Utils;
 using Lumina.Excel.GeneratedSheets;
 
 namespace FFXIVPlugin.ActionExecutor.Strategies {
@@ -32,7 +33,9 @@ namespace FFXIVPlugin.ActionExecutor.Strategies {
             if (this._mainCommandCache.All(command => actionId != command.RowId))
                 throw new InvalidOperationException($"Main command action ID {actionId} is not valid.");
             
-            Framework.Instance()->GetUiModule()->ExecuteMainCommand(actionId);
+            TickScheduler.Schedule(delegate {
+                Framework.Instance()->GetUiModule()->ExecuteMainCommand(actionId);
+            });
         }
 
         public int GetIconId(uint actionId) {

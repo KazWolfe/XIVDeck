@@ -4,6 +4,7 @@ using System.Linq;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVPlugin.Base;
+using FFXIVPlugin.Utils;
 using Lumina.Excel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -90,7 +91,10 @@ namespace FFXIVPlugin.ActionExecutor {
             String command = this.GetCommandToCallAction(this.GetActionById(actionId));
             
             PluginLog.Debug($"Would execute command: {command}");
-            XIVDeckPlugin.Instance.XivCommon.Functions.Chat.SendMessage(command);
+
+            TickScheduler.Schedule(delegate {
+                XIVDeckPlugin.Instance.XivCommon.Functions.Chat.SendMessage(command);
+            });
         }
 
         public int GetIconId(uint actionId) {

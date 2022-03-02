@@ -4,6 +4,7 @@ using System.Linq;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVPlugin.Base;
+using FFXIVPlugin.Utils;
 using Lumina.Excel.GeneratedSheets;
 
 namespace FFXIVPlugin.ActionExecutor.Strategies {
@@ -34,7 +35,9 @@ namespace FFXIVPlugin.ActionExecutor.Strategies {
             String command = $"/mount \"{mount.Singular.RawString}\"";
             
             PluginLog.Debug($"Would execute command: {command}");
-            XIVDeckPlugin.Instance.XivCommon.Functions.Chat.SendMessage(command);
+            TickScheduler.Schedule(delegate {
+                XIVDeckPlugin.Instance.XivCommon.Functions.Chat.SendMessage(command);
+            });
         }
 
         public int GetIconId(uint item) {

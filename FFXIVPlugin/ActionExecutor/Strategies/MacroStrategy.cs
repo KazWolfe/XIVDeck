@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Client.UI.Shell;
+using FFXIVPlugin.Utils;
 
 namespace FFXIVPlugin.ActionExecutor.Strategies {
     public class MacroStrategy : IStrategy {
@@ -37,7 +38,10 @@ namespace FFXIVPlugin.ActionExecutor.Strategies {
             }
 
             PluginLog.Debug($"Would execute macro number {macroNumber}");
-            RaptureShellModule.Instance->ExecuteMacro(macro);
+            
+            TickScheduler.Schedule(delegate {
+                RaptureShellModule.Instance->ExecuteMacro(macro);
+            });
         }
 
         public unsafe int GetIconId(uint item) {

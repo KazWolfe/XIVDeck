@@ -34,6 +34,7 @@ namespace FFXIVPlugin.ActionExecutor.Strategies {
             String command = $"/minion \"{minion.Singular.RawString}\"";
             
             PluginLog.Debug($"Would execute command: {command}");
+            
             XIVDeckPlugin.Instance.XivCommon.Functions.Chat.SendMessage(command);
         }
 

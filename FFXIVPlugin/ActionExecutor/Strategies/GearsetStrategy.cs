@@ -5,6 +5,7 @@ using Dalamud.Logging;
 using Dalamud.Memory;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVPlugin.Base;
+using FFXIVPlugin.Utils;
 
 namespace FFXIVPlugin.ActionExecutor.Strategies {
     public unsafe class GearsetStrategy : IStrategy {
@@ -44,7 +45,9 @@ namespace FFXIVPlugin.ActionExecutor.Strategies {
             String command = $"/gearset change {gearset.Slot + 1}";
             
             PluginLog.Debug($"Would execute command: {command}");
-            XIVDeckPlugin.Instance.XivCommon.Functions.Chat.SendMessage(command);
+            TickScheduler.Schedule(delegate {
+                XIVDeckPlugin.Instance.XivCommon.Functions.Chat.SendMessage(command);
+            });
         }
 
         public int GetIconId(uint slot) {
