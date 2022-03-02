@@ -1,4 +1,6 @@
-﻿using FFXIVPlugin.Utils;
+﻿using System;
+using FFXIVPlugin.Base;
+using FFXIVPlugin.Utils;
 using NetCoreServer;
 
 namespace FFXIVPlugin.Server.Messages.Inbound {
@@ -7,6 +9,9 @@ namespace FFXIVPlugin.Server.Messages.Inbound {
 
         public override void Process(WsSession session) {
             var plugin = XIVDeckPlugin.Instance;
+            
+            if (!Injections.ClientState.IsLoggedIn)
+                throw new InvalidOperationException("A player is not logged in to the game!");
             
             TickScheduler.Schedule(delegate {
                 plugin.XivCommon.Functions.Chat.SendMessage(this.Command);

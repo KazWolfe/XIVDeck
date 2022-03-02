@@ -1,5 +1,6 @@
 ﻿using System;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
+using FFXIVPlugin.Base;
 using FFXIVPlugin.Utils;
 using NetCoreServer;
 using Newtonsoft.Json;
@@ -13,6 +14,9 @@ namespace FFXIVPlugin.Server.Messages.Inbound {
             var plugin = XIVDeckPlugin.Instance;
             
             var hotbarModule = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule();
+
+            if (!Injections.ClientState.IsLoggedIn)
+                throw new InvalidOperationException("A player is not logged in to the game!");
 
             switch (this.HotbarId) {
                 // Safety checks

@@ -17,6 +17,9 @@ namespace FFXIVPlugin.Server.Messages.Inbound {
             if (this.Id < 1)
                 throw new ArgumentException( "Cannot switch to a class with ID less than 1");
             
+            if (!Injections.ClientState.IsLoggedIn)
+                throw new InvalidOperationException("A player is not logged in to the game!");
+            
             _gameStateCache.Refresh();
             
             foreach (var gearset in _gameStateCache.Gearsets!) {

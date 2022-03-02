@@ -39,6 +39,7 @@ namespace FFXIVPlugin.Utils {
                 this._function();
             } catch (Exception e) {
                 PluginLog.Error(e, "Exception running a Framework tick event");
+                Injections.Chat.PrintError($"[XIVDeck] There was an issue running a task: {e.GetType()}: {e.Message}");
             }
             this.Dispose();
         }

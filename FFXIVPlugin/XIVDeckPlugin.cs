@@ -40,7 +40,6 @@ namespace FFXIVPlugin
             
             // Load cache of unlocked events
             this.GameStateCache = GameStateCache.Load();
-            this.GameStateCache.Refresh();
 
             // Various managers for advanced hooking into the game
             this.XivCommon = new XivCommonBase();
@@ -53,8 +52,8 @@ namespace FFXIVPlugin
 
             this.PluginUi = new PluginUI(this);
 
-            this.PluginInterface.UiBuilder.Draw += DrawUI;
-            this.PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUI;
+            this.PluginInterface.UiBuilder.Draw += this.DrawUI;
+            this.PluginInterface.UiBuilder.OpenConfigUi += this.DrawConfigUI;
 
             Injections.ClientState.Login += this.OnLogin;
             this.InitializeNag();
@@ -79,6 +78,9 @@ namespace FFXIVPlugin
         }
 
         private void OnLogin(object _, EventArgs __) {
+            // game state isn't ready until login succeeds, so we wait for it to be ready before updating cache
+            this.GameStateCache.Refresh();
+
             if (!this.Configuration.HasLinkedStreamDeckPlugin) {
                 this.PluginUi.SettingsVisible = true;
             }

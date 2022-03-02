@@ -3,8 +3,10 @@
         <Product>XIVDeck Game Plugin</Product>
         <Authors>Kaz Wolfe</Authors>
         <Company>Blacksite Technologies</Company>
-        <Version>0.0.1.0</Version>
-        <AssemblyVersion>0.0.1.0</AssemblyVersion>
+        <Version>0.0.2</Version>
+
+        <AssemblyName>XIVDeckPlugin</AssemblyName>
+        <AssemblyVersion>0.0.2</AssemblyVersion>
 
         <Description>A plugin to interface between the StreamDeck API and Final Fantasy XIV.</Description>
         <Copyright>(c) 2022, Frank Slezak</Copyright>
@@ -33,7 +35,6 @@
     <PropertyGroup>
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-        <AssemblyName>XIVDeckPlugin</AssemblyName>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -105,7 +106,7 @@
         <Delete Files="@(DeleteAssemblies)" />
     </Target>
 
-    <Target Name="PackagePlugin" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+    <Target Name="PackagePlugin" AfterTargets="CleanOutDir" Condition="'$(Configuration)' == 'Release'">
         <DalamudPackager ProjectDir="$(ProjectDir)" OutputPath="$(OutputPath)" AssemblyName="$(AssemblyName)" MakeZip="true" />
     </Target>
 
