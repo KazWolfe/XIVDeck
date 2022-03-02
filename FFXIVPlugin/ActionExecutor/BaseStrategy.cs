@@ -45,7 +45,7 @@ namespace FFXIVPlugin.ActionExecutor {
         protected abstract int GetIconForAction(T action);
         protected abstract string GetCommandToCallAction(T action);
 
-        protected virtual uint[] GetIllegalActionIDs() {
+        protected virtual IEnumerable<uint> GetIllegalActionIDs() {
             return Array.Empty<uint>();
         }
 
@@ -71,7 +71,7 @@ namespace FFXIVPlugin.ActionExecutor {
                 if (row.RowId == 0) continue;
                 if (this.GetIllegalActionIDs().Contains(row.RowId)) continue;
 
-                var actionName = GetNameForAction(row);
+                var actionName = this.GetNameForAction(row);
                 if (string.IsNullOrEmpty(actionName)) continue;
 
                 this._actionCache.Add(new ExecutableAction() {

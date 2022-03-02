@@ -1,17 +1,34 @@
-﻿using FFXIVClientStructs.FFXIV.Client.Game.UI;
+﻿using System.Collections.Generic;
+using System.Linq;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using FFXIVPlugin.Base;
 using Lumina.Excel.GeneratedSheets;
 
 namespace FFXIVPlugin.ActionExecutor.Strategies {
     public class GeneralActionStrategy : FixedCommandStrategy<GeneralAction> {
-        protected override uint[] GetIllegalActionIDs() {
-            return new uint[] {
-                11, // empty
+        protected override unsafe IEnumerable<uint> GetIllegalActionIDs() {
+            var illegalActions = new List<uint> {
                 13, // Advanced Materia Melding - automatically injected on use of Materia Melding
-                18, // Set Down - can only be used in special content
-                23, // Dismount - can only be used in special content
-                24  // Flying Mount Roulette - does not exist in game UI
             };
+
+            foreach (var action in Injections.DataManager.GetExcelSheet<GeneralAction>()!) {
+                if (illegalActions.Contains(action.RowId)) continue;
+                
+                // empty or non-ui actions are considered illegal
+                if (action.UIPriority == 0 || action.Name.RawString == "") {
+                    illegalActions.Add(action.RowId);
+                    continue;
+                }
+
+                // consider any locked actions illegal
+                if (action.UnlockLink != 0 && !UIState.Instance()->Hotbar.IsActionUnlocked(action.UnlockLink)) {
+                    illegalActions.Add(action.RowId);
+                    continue;
+                }
+            }
+
+            return illegalActions;
         }
 
         protected override string GetNameForAction(GeneralAction action) {
