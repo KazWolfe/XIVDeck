@@ -9,18 +9,21 @@ namespace XIVDeck.FFXIVPlugin.Utils {
     public class HotbarWatcher {
         private XIVDeckPlugin _plugin;
         private HotBars _hotbarCache;
-        
+
         public HotbarWatcher(XIVDeckPlugin plugin) {
             Injections.Framework.Update += this.OnGameUpdate;
             this._plugin = plugin;
         }
 
         public unsafe void OnGameUpdate(Framework framework) {
-            var hotbarModule = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->GetUiModule()->GetRaptureHotbarModule();
+            var hotbarModule =
+                FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->GetUiModule()->
+                    GetRaptureHotbarModule();
 
-            if (this.checkHotbarEquality(hotbarModule->HotBar, this._hotbarCache)) {
+            if (this.CheckHotbarEquality(hotbarModule->HotBar, this._hotbarCache)) {
                 // no-op
-            } else {
+            }
+            else {
                 PluginLog.Debug("Detected a change to hotbar(s)!");
                 this._hotbarCache = hotbarModule->HotBar;
 
@@ -29,13 +32,15 @@ namespace XIVDeck.FFXIVPlugin.Utils {
             }
         }
 
-        private unsafe bool checkHotbarEquality(HotBars left, HotBars right) {
+        private unsafe bool CheckHotbarEquality(HotBars left, HotBars right) {
             for (int i = 0; i < 17; i++) {
                 var hotbar = left[i];
                 for (int j = 0; j < 16; j++) {
-                    var slot = hotbar->Slot[j];
-                    
-                    if (slot->CommandId != right[i]->Slot[j]->CommandId) {
+                    var leftSlot = hotbar->Slot[j];
+                    var rightSlot = right[i]->Slot[j];
+
+                    if (leftSlot->CommandId != rightSlot->CommandId || leftSlot->Icon != rightSlot->Icon ||
+                        leftSlot->CommandType != rightSlot->CommandType) {
                         return false;
                     }
                 }
