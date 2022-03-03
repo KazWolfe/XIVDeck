@@ -2,7 +2,7 @@
 using NetCoreServer;
 using Newtonsoft.Json;
 
-namespace FFXIVPlugin.Server.Messages.Inbound {
+namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
     public class WSEchoInboundMessage : BaseInboundMessage {
         public string Data { get; set; }
 

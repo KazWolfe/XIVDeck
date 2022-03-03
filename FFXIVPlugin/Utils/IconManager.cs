@@ -7,13 +7,13 @@ using Dalamud;
 using Dalamud.Logging;
 using Dalamud.Plugin;
 using Dalamud.Utility;
-using FFXIVPlugin.Base;
 using ImGuiScene;
 using Lumina.Data.Files;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using XIVDeck.FFXIVPlugin.Base;
 
-namespace FFXIVPlugin.Utils {
+namespace XIVDeck.FFXIVPlugin.Utils {
     
     // borrowed from https://github.com/Caraxi/RemindMe/blob/master/IconManager.cs
     public class IconManager : IDisposable {

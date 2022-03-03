@@ -1,7 +1,7 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel.GeneratedSheets;
 
-namespace FFXIVPlugin.ActionExecutor.Strategies {
+namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
     public class WaymarkStrategy : FixedCommandStrategy<FieldMarker> {
         protected override string GetNameForAction(FieldMarker action) {
             return action.Name.RawString;

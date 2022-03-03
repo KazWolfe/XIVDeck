@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <RootNamespace>StreamDeckBridge</RootNamespace>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <!-- No C# code exists for this project, so we don't really have anything to build... -->
+        <NoBuild>true</NoBuild>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <IncludeSymbols>false</IncludeSymbols>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <StreamDeckBundler>$(appdata)\Elgato\StreamDeck\</StreamDeckBundler>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <TypeScriptCompile Include="src\*.*" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="src\assets\css" />
+      <Folder Include="src\assets\images" />
+    </ItemGroup>
+
+</Project>

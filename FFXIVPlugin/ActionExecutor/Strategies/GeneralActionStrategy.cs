@@ -2,10 +2,10 @@
 using System.Linq;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using FFXIVPlugin.Base;
 using Lumina.Excel.GeneratedSheets;
+using XIVDeck.FFXIVPlugin.Base;
 
-namespace FFXIVPlugin.ActionExecutor.Strategies {
+namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
     public class GeneralActionStrategy : FixedCommandStrategy<GeneralAction> {
         protected override unsafe IEnumerable<uint> GetIllegalActionIDs() {
             var illegalActions = new List<uint> {

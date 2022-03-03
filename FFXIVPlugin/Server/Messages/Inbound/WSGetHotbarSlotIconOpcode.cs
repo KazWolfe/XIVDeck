@@ -4,7 +4,7 @@ using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using NetCoreServer;
 using Newtonsoft.Json;
 
-namespace FFXIVPlugin.Server.Messages.Inbound {
+namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
     public class WSGetHotbarSlotIconOpcode : BaseInboundMessage {
         [JsonRequired][JsonProperty("hotbarId")] public int HotbarId { get; set; }
         [JsonRequired][JsonProperty("slotId")] public int SlotId { get; set; }

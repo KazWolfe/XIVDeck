@@ -1,11 +1,11 @@
 ﻿using System;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
-using FFXIVPlugin.Base;
-using FFXIVPlugin.Utils;
 using NetCoreServer;
 using Newtonsoft.Json;
+using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Utils;
 
-namespace FFXIVPlugin.Server.Messages.Inbound {
+namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
     public class WSExecuteHotbarSlotOpcode : BaseInboundMessage {
         [JsonRequired] public int HotbarId { get; set; }
         [JsonRequired] public int SlotId { get; set; }

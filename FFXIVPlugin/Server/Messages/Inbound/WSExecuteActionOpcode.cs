@@ -1,12 +1,12 @@
 ﻿using System;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using FFXIVPlugin.ActionExecutor;
-using FFXIVPlugin.Base;
-using FFXIVPlugin.Utils;
+using XIVDeck.FFXIVPlugin.Utils;
 using NetCoreServer;
 using Newtonsoft.Json;
+using XIVDeck.FFXIVPlugin.ActionExecutor;
+using XIVDeck.FFXIVPlugin.Base;
 
-namespace FFXIVPlugin.Server.Messages.Inbound {
+namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
     public class WSExecuteActionOpcode : BaseInboundMessage {
         [JsonRequired] public ExecutableAction Action { get; set; }
         

@@ -1,4 +1,4 @@
-﻿namespace FFXIVPlugin.Server.Messages.Outbound {
+﻿namespace XIVDeck.FFXIVPlugin.Server.Messages.Outbound {
     public class WSClientReady  : BaseOutboundMessage {
         private static string MESSAGE_NAME = "gameReady";
 

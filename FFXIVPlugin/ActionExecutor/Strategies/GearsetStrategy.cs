@@ -4,10 +4,10 @@ using System.Linq;
 using Dalamud.Logging;
 using Dalamud.Memory;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using FFXIVPlugin.Base;
-using FFXIVPlugin.Utils;
+using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Utils;
 
-namespace FFXIVPlugin.ActionExecutor.Strategies {
+namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
     public unsafe class GearsetStrategy : IStrategy {
         private static GameStateCache _gameStateCache = XIVDeckPlugin.Instance.GameStateCache;
         private static RaptureGearsetModule* _gsModule = RaptureGearsetModule.Instance();

@@ -1,13 +1,13 @@
 ﻿using System;
 using Dalamud.Logging;
-using FFXIVPlugin.Base;
-using FFXIVPlugin.Server.Messages.Outbound;
-using FFXIVPlugin.Utils;
 using Lumina.Excel.GeneratedSheets;
 using NetCoreServer;
 using Newtonsoft.Json;
+using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
+using XIVDeck.FFXIVPlugin.Utils;
 
-namespace FFXIVPlugin.Server.Messages.Inbound {
+namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
     public class WSSwitchClassOpcode : BaseInboundMessage {
         private static GameStateCache _gameStateCache = XIVDeckPlugin.Instance.GameStateCache;
         

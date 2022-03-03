@@ -5,7 +5,7 @@ using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using ImGuiNET;
 
-namespace FFXIVPlugin.UI {
+namespace XIVDeck.FFXIVPlugin.UI {
     class PluginUI : IDisposable {
         private XIVDeckPlugin _plugin;
     

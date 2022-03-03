@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using NetCoreServer;
 using Newtonsoft.Json;
 
-namespace FFXIVPlugin.Server.Messages {
+namespace XIVDeck.FFXIVPlugin.Server.Messages {
     
     [SuppressMessage("ReSharper", "UnassignedGetOnlyAutoProperty", Justification = "JSON serializer will initialize these fields")]
     public class BaseInboundMessage {

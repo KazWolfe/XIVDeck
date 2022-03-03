@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using FFXIVPlugin.ActionExecutor;
 using NetCoreServer;
 using Newtonsoft.Json;
+using XIVDeck.FFXIVPlugin.ActionExecutor;
 
-namespace FFXIVPlugin.Server.Messages.Inbound {
+namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
     public class WSGetActionIconOpcode : BaseInboundMessage {
         [JsonRequired][JsonProperty("action")] public ExecutableAction Action;
 

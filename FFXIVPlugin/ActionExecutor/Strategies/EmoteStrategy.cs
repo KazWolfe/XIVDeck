@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using FFXIVPlugin.Base;
-using FFXIVPlugin.Utils;
 using Lumina.Excel.GeneratedSheets;
+using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Utils;
 
-namespace FFXIVPlugin.ActionExecutor.Strategies {
+namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
     public class EmoteStrategy : IStrategy {
         private static readonly GameStateCache GameStateCache = XIVDeckPlugin.Instance.GameStateCache;
         

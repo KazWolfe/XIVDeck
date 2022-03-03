@@ -5,7 +5,7 @@
         <Company>Blacksite Technologies</Company>
         <Version>0.0.2</Version>
 
-        <AssemblyName>XIVDeckPlugin</AssemblyName>
+        <AssemblyName>XIVDeck.FFXIVPlugin</AssemblyName>
         <AssemblyVersion>0.0.2</AssemblyVersion>
 
         <Description>A plugin to interface between the StreamDeck API and Final Fantasy XIV.</Description>
@@ -40,12 +40,6 @@
     <PropertyGroup>
         <DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
     </PropertyGroup>
-
-    <ItemGroup>
-        <Content Include="..\StreamDeckPlugin\assets\images\icon@2x.png" Link="images\icon.png">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
 
     <ItemGroup>
 
@@ -87,6 +81,13 @@
             <HintPath>$(DalamudLibPath)Lumina.Excel.dll</HintPath>
             <Private>false</Private>
         </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\SDPlugin\assets\images\icon@2x.png">
+        <Link>images\icon.png</Link>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
     
     <!-- Build steps -->

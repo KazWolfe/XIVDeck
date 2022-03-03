@@ -3,7 +3,7 @@ using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace FFXIVPlugin.Server.Messages.Outbound {
+namespace XIVDeck.FFXIVPlugin.Server.Messages.Outbound {
     public class SerialiazableHotbarSlot {
         public uint CommandId;
         

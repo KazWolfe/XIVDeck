@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Logging;
-using FFXIVPlugin.Base;
 using Lumina.Excel;
 using Lumina.Excel.GeneratedSheets;
 using NetCoreServer;
 using Newtonsoft.Json;
+using XIVDeck.FFXIVPlugin.Base;
 
-namespace FFXIVPlugin.Server.Messages.Inbound {
+namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
     public class SerializableGameClass {
         private static List<SerializableGameClass> _cache = new();
 

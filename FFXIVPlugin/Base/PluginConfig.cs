@@ -3,7 +3,7 @@ using System;
 using Dalamud.Configuration;
 using Dalamud.Plugin;
 
-namespace FFXIVPlugin.Base {
+namespace XIVDeck.FFXIVPlugin.Base {
     [Serializable]
     public class PluginConfig : IPluginConfiguration {
         public int Version { get; set; } = 0;

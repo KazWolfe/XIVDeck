@@ -1,7 +1,7 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel.GeneratedSheets;
 
-namespace FFXIVPlugin.ActionExecutor.Strategies {
+namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
     public class MarkerStrategy : FixedCommandStrategy<Marker> {
         protected override string GetNameForAction(Marker action) {
             return action.Name.RawString;

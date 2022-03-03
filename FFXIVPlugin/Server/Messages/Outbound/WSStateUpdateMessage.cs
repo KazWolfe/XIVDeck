@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace FFXIVPlugin.Server.Messages.Outbound {
+namespace XIVDeck.FFXIVPlugin.Server.Messages.Outbound {
     /**
      * A WebSocket message to disclose a generic update of state, generally for actions or some other case where it
      * would be a good idea for the Stream Deck plugin to refresh (a subset of) information.

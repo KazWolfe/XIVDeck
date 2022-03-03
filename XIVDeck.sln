@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFXIVPlugin", "FFXIVPlugin\FFXIVPlugin.csproj", "{3B131829-50B8-4E72-BEBA-1762F0C61294}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XIVDeck.FFXIVPlugin", "FFXIVPlugin\XIVDeck.FFXIVPlugin.csproj", "{3B131829-50B8-4E72-BEBA-1762F0C61294}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamDeckPlugin", "StreamDeckPlugin\StreamDeckPlugin.csproj", "{299F16FD-C8AC-4774-95E5-7311D085595E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XIVDeck.SDPlugin", "SDPlugin\XIVDeck.SDPlugin.csproj", "{299F16FD-C8AC-4774-95E5-7311D085595E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

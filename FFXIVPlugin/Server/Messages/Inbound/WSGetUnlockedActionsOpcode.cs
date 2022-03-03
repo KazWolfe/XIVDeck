@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using FFXIVPlugin.ActionExecutor;
 using NetCoreServer;
 using Newtonsoft.Json;
+using XIVDeck.FFXIVPlugin.ActionExecutor;
 
-namespace FFXIVPlugin.Server.Messages.Inbound {
+namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
     public class WSGetUnlockedActionsOpcode : BaseInboundMessage {
         public override void Process(WsSession session) {
             // refresh the cache first so we have all the newest data available

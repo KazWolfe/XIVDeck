@@ -2,12 +2,12 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Dalamud.Logging;
-using FFXIVPlugin.Base;
 using NetCoreServer;
 using Newtonsoft.Json;
+using XIVDeck.FFXIVPlugin.Base;
 
 
-namespace FFXIVPlugin.Server.Messages.Inbound {
+namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
     [SuppressMessage("ReSharper", "UnassignedGetOnlyAutoProperty", Justification = "JSON serializer will initialize values")]
     public class WSInitMessage : BaseInboundMessage {
         public string Data { get; set; }

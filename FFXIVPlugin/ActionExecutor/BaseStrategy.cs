@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using FFXIVPlugin.Base;
-using FFXIVPlugin.Utils;
 using Lumina.Excel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Utils;
 
-namespace FFXIVPlugin.ActionExecutor {
+namespace XIVDeck.FFXIVPlugin.ActionExecutor {
     public class ExecutableAction {
         [JsonProperty("name")] public string ActionName; // optional, will realistically only ever be sent
         [JsonProperty("id")] public int ActionId;

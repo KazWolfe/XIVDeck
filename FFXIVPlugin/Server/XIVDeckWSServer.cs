@@ -3,15 +3,15 @@ using System.IO;
 using System.Net;
 using System.Text;
 using Dalamud.Logging;
-using FFXIVPlugin.Base;
-using FFXIVPlugin.Server.Messages;
-using FFXIVPlugin.Server.Messages.Inbound;
-using FFXIVPlugin.Server.Messages.Outbound;
 using NetCoreServer;
 using Newtonsoft.Json;
+using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Server.Messages;
+using XIVDeck.FFXIVPlugin.Server.Messages.Inbound;
+using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 using Buffer = System.Buffer;
 
-namespace FFXIVPlugin.Server {
+namespace XIVDeck.FFXIVPlugin.Server {
     public class XIVDeckWSServer : WsServer {
         public XIVDeckWSServer(int port) : base(IPAddress.Loopback, port) {
             this.OptionDualMode = true;

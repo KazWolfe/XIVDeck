@@ -4,11 +4,11 @@ using Dalamud.Hooking;
 using Dalamud.Logging;
 using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using FFXIVPlugin.Server.Messages.Outbound;
 using Newtonsoft.Json;
+using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 using Framework = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework;
 
-namespace FFXIVPlugin.Base {
+namespace XIVDeck.FFXIVPlugin.Base {
     public unsafe class SigHelper : IDisposable {
         private static class Signatures {
             internal const string ExecuteHotbarSlot = "E9 ?? ?? ?? ?? 48 8D 91 ?? ?? ?? ?? E9";

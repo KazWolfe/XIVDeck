@@ -1,9 +1,9 @@
 ﻿using System;
-using FFXIVPlugin.Base;
-using FFXIVPlugin.Utils;
 using NetCoreServer;
+using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Utils;
 
-namespace FFXIVPlugin.Server.Messages.Inbound {
+namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
     public class WSChatMessage : BaseInboundMessage {
         public string Command { get; set; }
 

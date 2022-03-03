@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace FFXIVPlugin.Server.Messages.Outbound {
+namespace XIVDeck.FFXIVPlugin.Server.Messages.Outbound {
     public class WSShowSDAlert  : BaseOutboundMessage {
         private static string MESSAGE_NAME = "sdAlert";
 

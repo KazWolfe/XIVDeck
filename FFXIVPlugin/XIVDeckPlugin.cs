@@ -1,13 +1,13 @@
 ﻿using System;
 using Dalamud.Plugin;
 using FFXIVClientStructs;
-using FFXIVPlugin.Base;
-using FFXIVPlugin.Server;
-using FFXIVPlugin.UI;
-using FFXIVPlugin.Utils;
 using XivCommon;
+using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Server;
+using XIVDeck.FFXIVPlugin.UI;
+using XIVDeck.FFXIVPlugin.Utils;
 
-namespace FFXIVPlugin
+namespace XIVDeck.FFXIVPlugin
 {
     public sealed class XIVDeckPlugin : IDalamudPlugin {
         public static XIVDeckPlugin Instance;

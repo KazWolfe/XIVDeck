@@ -15,13 +15,18 @@ description: |-
 changelog: |-
   ***THIS PLUGIN IS IN THE PRERELEASE/TESTING PHASE***
   
-  Release and testing notes are available at the following URL:
-    
-    https://github.com/KazWolfe/XIVDeck/releases/tag/v0.0.1
+  Release 0.0.2 fixes the following problems:
+    - The plugin is not installable due to improper naming of, well, everything.
+    - Add error handling to TickScheduler to post exceptions to chat.
+    - Add some extra safety checks in a few critical places
+    - Fix a problem where game state was being loaded too early, resulting in improper locks.
+    - Fix a problem where too much was being passed to Framework
+    - Fix a problem where locked General Actions were not showing
   
-  Please report all problems to KazWolfe in the Dalamud Support server or by opening an Issue on GitHub.
+  Release 0.0.2 does not modify the XIVDeck Stream Deck Plugin. 
+  Release Notes: https://github.com/KazWolfe/XIVDeck/releases/tag/v0.0.2
   
-repo_url: https://github.com/kazwolfe/XIVDeck/
+repo_url: https://github.com/KazWolfe/XIVDeck/
 tags:
   - stream deck
   - ui

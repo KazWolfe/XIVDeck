@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using FFXIVPlugin.ActionExecutor.Strategies;
+using XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
-namespace FFXIVPlugin.ActionExecutor {
+namespace XIVDeck.FFXIVPlugin.ActionExecutor {
     public class ActionDispatcher {
         
         /* STRATEGIES

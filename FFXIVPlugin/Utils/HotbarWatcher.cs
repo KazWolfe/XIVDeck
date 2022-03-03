@@ -1,11 +1,11 @@
 ﻿using Dalamud.Game;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using FFXIVPlugin.Base;
-using FFXIVPlugin.Server.Messages.Outbound;
 using Newtonsoft.Json;
+using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 
-namespace FFXIVPlugin.Utils {
+namespace XIVDeck.FFXIVPlugin.Utils {
     public class HotbarWatcher {
         private XIVDeckPlugin _plugin;
         private HotBars _hotbarCache;

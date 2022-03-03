@@ -13,7 +13,7 @@ using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel.GeneratedSheets;
 
-namespace FFXIVPlugin.Base {
+namespace XIVDeck.FFXIVPlugin.Base {
     // borrowed from https://github.com/goaaats/Dalamud.FindAnything/blob/master/Dalamud.FindAnything/GameStateCache.cs
     public unsafe class GameStateCache {
         // E8 ?? ?? ?? ?? 84 C0 74 A4

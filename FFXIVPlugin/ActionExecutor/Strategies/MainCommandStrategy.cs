@@ -4,11 +4,11 @@ using System.Diagnostics;
 using System.Linq;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using FFXIVPlugin.Base;
-using FFXIVPlugin.Utils;
 using Lumina.Excel.GeneratedSheets;
+using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Utils;
 
-namespace FFXIVPlugin.ActionExecutor.Strategies {
+namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
     public class MainCommandStrategy : IStrategy {
         private readonly List<MainCommand> _mainCommandCache = new();
         

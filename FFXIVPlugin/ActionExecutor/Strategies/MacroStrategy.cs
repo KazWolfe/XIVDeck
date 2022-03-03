@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Client.UI.Shell;
-using FFXIVPlugin.Utils;
+using XIVDeck.FFXIVPlugin.Utils;
 
-namespace FFXIVPlugin.ActionExecutor.Strategies {
+namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
     public class MacroStrategy : IStrategy {
         private static unsafe RaptureMacroModule.Macro* GetMacro(bool shared, int id) {
             var macroPage = shared ? RaptureMacroModule.Instance->Shared : RaptureMacroModule.Instance->Individual;

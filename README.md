@@ -56,13 +56,15 @@ hotbar or are not supported, the **Text Command** action will allow calling a co
 ### Installing the Plugin
 
 The XIVDeck plugins are available for download from [this repository's Releases 
-page](https://github.com/KazWolfe/xivdeck/releases).
+page](https://github.com/KazWolfe/XIVDeck/releases).
 
 To install the Stream Deck plugin, simply open the `XIVDeck-StreamDeckPlugin.streamDeckPlugin`
 file. The Elgato Stream Deck software will take care of all installation steps.
 
-To install the FFXIV plugin, extract `XIVDeck-FFXIVPlugin.zip` to 
-`%APPDATA%\XIVLauncher\devPlugins\XIVDeck`. If this folder does not already exist, please create it.
+To install the FFXIV plugin, it is generally recommended that you use the Dalamud Testing repository
+to get the latest published build. Alternatively, you can download the last release from GitHub and 
+extract `XIVDeck.FFXIVPlugin.zip` to`%APPDATA%\XIVLauncher\devPlugins\XIVDeck.FFXIVPlugin`. If this 
+folder does not already exist, please create it.
 
 ### Building the Plugin
 
