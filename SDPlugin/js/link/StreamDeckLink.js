@@ -11,6 +11,7 @@
 
         function connectElgatoWS(port, uuid, messageType, applicationInfo, actionInfo) {
             this.uuid = uuid;
+            applicationInfo = JSON.parse(applicationInfo);
 
             // kill any existing websockets
             if (elgatoWebsocket) {

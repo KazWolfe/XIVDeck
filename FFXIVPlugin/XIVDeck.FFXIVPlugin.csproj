@@ -3,10 +3,10 @@
         <Product>XIVDeck Game Plugin</Product>
         <Authors>Kaz Wolfe</Authors>
         <Company>Blacksite Technologies</Company>
-        <Version>0.0.2</Version>
+        <Version>0.0.3</Version>
 
         <AssemblyName>XIVDeck.FFXIVPlugin</AssemblyName>
-        <AssemblyVersion>0.0.2</AssemblyVersion>
+        <AssemblyVersion>0.0.3</AssemblyVersion>
 
         <Description>A plugin to interface between the StreamDeck API and Final Fantasy XIV.</Description>
         <Copyright>(c) 2022, Frank Slezak</Copyright>

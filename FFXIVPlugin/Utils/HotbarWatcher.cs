@@ -8,45 +8,47 @@ using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 namespace XIVDeck.FFXIVPlugin.Utils {
     public class HotbarWatcher {
         private XIVDeckPlugin _plugin;
-        private HotBars _hotbarCache;
+        private HotBarSlot[,] _hotbarCache = new HotBarSlot[17,16];
 
         public HotbarWatcher(XIVDeckPlugin plugin) {
             Injections.Framework.Update += this.OnGameUpdate;
             this._plugin = plugin;
         }
 
-        public unsafe void OnGameUpdate(Framework framework) {
+        private unsafe void OnGameUpdate(Framework framework) {
             var hotbarModule =
                 FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->GetUiModule()->
                     GetRaptureHotbarModule();
 
-            if (this.CheckHotbarEquality(hotbarModule->HotBar, this._hotbarCache)) {
-                // no-op
+            var hotbarUpdated = false;
+            
+            for (var hotbarId = 0; hotbarId < 17; hotbarId++) {
+                var hotbar = hotbarModule->HotBar[hotbarId];
+                
+                for (var slotId = 0; slotId < 16; slotId++) {
+                    var gameSlot = hotbar->Slot[slotId];
+                    var cachedSlot = this._hotbarCache[hotbarId, slotId];
+
+                    if (gameSlot->CommandId == cachedSlot.CommandId && 
+                        gameSlot->Icon == cachedSlot.Icon &&
+                        gameSlot->CommandType == cachedSlot.CommandType) continue;
+                    
+                    hotbarUpdated = true;
+                    this._hotbarCache[hotbarId, slotId] = new HotBarSlot {
+                            CommandId = gameSlot->CommandId,
+                            Icon = gameSlot->Icon,
+                            CommandType = gameSlot->CommandType
+                    };
+                }
             }
-            else {
+            
+
+            if (hotbarUpdated) {
                 PluginLog.Debug("Detected a change to hotbar(s)!");
-                this._hotbarCache = hotbarModule->HotBar;
 
                 var wsServer = this._plugin.XivDeckWsServer;
                 wsServer.MulticastText(JsonConvert.SerializeObject(new WSHotbarUpdateMessage(this._hotbarCache)));
             }
-        }
-
-        private unsafe bool CheckHotbarEquality(HotBars left, HotBars right) {
-            for (int i = 0; i < 17; i++) {
-                var hotbar = left[i];
-                for (int j = 0; j < 16; j++) {
-                    var leftSlot = hotbar->Slot[j];
-                    var rightSlot = right[i]->Slot[j];
-
-                    if (leftSlot->CommandId != rightSlot->CommandId || leftSlot->Icon != rightSlot->Icon ||
-                        leftSlot->CommandType != rightSlot->CommandType) {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
         }
 
         public void Dispose() {

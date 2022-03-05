@@ -37,7 +37,7 @@
         this.websocket = new WebSocket("ws://localhost:" + this.port + "/xivdeck");
         
         this.websocket.onopen = () => {
-            this.websocket.sendJSON({ "opcode": "init", "version": "0.0.2" });  // todo: read plugin version
+            this.websocket.sendJSON({ "opcode": "init", "version": $SD.applicationInfo.plugin.version });
             this.isGameAlive = true;
 
             this.eventManager.emit("_wsOpened", {});

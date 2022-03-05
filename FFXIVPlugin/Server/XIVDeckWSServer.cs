@@ -24,7 +24,7 @@ namespace XIVDeck.FFXIVPlugin.Server {
 
     public class XIVDeckRoute : WsSession {
         public XIVDeckRoute(WsServer server) : base(server) { }
-
+        
         public override void OnWsReceived(byte[] buffer, long offset, long size) {
             string rawMessage = Encoding.UTF8.GetString(buffer, (int) offset, (int) size);
             PluginLog.Debug($"Got WS message - {rawMessage}");
@@ -99,7 +99,6 @@ namespace XIVDeck.FFXIVPlugin.Server {
                     }));
                 }
             }
-
         }
 
         public new void SendClose(int code, string text) {

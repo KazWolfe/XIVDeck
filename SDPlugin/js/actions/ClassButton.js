@@ -183,6 +183,11 @@ class ClassButton {
             $SD.api.setImage(this.myContext, null, '');
         }
         
+        // if game cache does not contain an icon, don't overwrite what may currently be cached.
+        if (ClassButtonHandler.gameClassCache[this.classId] == null) {
+            return
+        }
+        
         $SD.api.setImage(this.myContext, ClassButtonHandler.gameClassCache[this.classId].iconString, '');
     }
     
