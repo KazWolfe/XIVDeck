@@ -27,6 +27,10 @@ namespace XIVDeck.FFXIVPlugin.Base {
         private readonly IsMountUnlockedDelegate? _isMountUnlocked;
         private readonly IntPtr _mountBitmask;
         private readonly byte* _minionBitmask = null;
+
+        private delegate byte IsOrnamentUnlockedDelegate(IntPtr ornamentBitmask, uint ornamentId);
+        private readonly IsOrnamentUnlockedDelegate? _isOrnamentUnlocked;
+        private readonly IntPtr _ornamentBitmask;
         
         public struct Gearset {
             public int Slot { get; init; }
@@ -37,6 +41,7 @@ namespace XIVDeck.FFXIVPlugin.Base {
         public IReadOnlyList<Emote>? UnlockedEmoteKeys { get; private set; }
         public IReadOnlyList<Mount>? UnlockedMountKeys { get; private set; }
         public IReadOnlyList<Companion>? UnlockedMinionKeys { get; private set; }
+        public IReadOnlyList<Ornament>? UnlockedOrnamentKeys { get; private set; }
         public IReadOnlyList<Gearset>? Gearsets { get; private set; }
 
         internal bool IsMountUnlocked(uint mountId) {
@@ -53,6 +58,14 @@ namespace XIVDeck.FFXIVPlugin.Base {
             }
 
             return ((1 << ((int) minionId & 7)) & this._minionBitmask[minionId >> 3]) > 0;
+        }
+
+        internal bool IsOrnamentUnlocked(uint ornamentId) {
+            if (this._ornamentBitmask == IntPtr.Zero) {
+                return false;
+            }
+
+            return this._isOrnamentUnlocked!(this._ornamentBitmask, ornamentId) > 0;
         }
 
         private GameStateCache() {
@@ -76,6 +89,16 @@ namespace XIVDeck.FFXIVPlugin.Base {
                 PluginLog.Verbose($"minionBitmaskPtr: {minionBitmaskPtr:X}");
                 this._minionBitmask = (byte*) minionBitmaskPtr;
             }
+
+            // todo: this sig can probably be optimized.
+            Injections.SigScanner.TryGetStaticAddressFromSig("48 8D 0D ?? ?? ?? ?? 48 8B D8 E8 ?? ?? ?? ?? BA ?? ?? ?? ?? 41 0F B6 CE", out this._ornamentBitmask);
+            PluginLog.Verbose($"ornamentBitmaskPtr: {this._ornamentBitmask:X}");
+            
+            if (Injections.SigScanner.TryScanText("E8 ?? ?? ?? ?? BA ?? ?? ?? ?? 41 0F B6 CE",
+                    out var ornamentUnlockedPtr)) {
+                PluginLog.Verbose($"ornamentUnlockedPtr: {ornamentUnlockedPtr:X}");
+                this._isOrnamentUnlocked = Marshal.GetDelegateForFunctionPointer<IsOrnamentUnlockedDelegate>(ornamentUnlockedPtr);
+            }
         }
 
         public void Refresh() {
@@ -97,6 +120,11 @@ namespace XIVDeck.FFXIVPlugin.Base {
             if (this._minionBitmask != null) {
                 UnlockedMinionKeys = Injections.DataManager.GetExcelSheet<Companion>()!
                     .Where(x => IsMinionUnlocked(x.RowId)).ToList();
+            }
+
+            if (this._isOrnamentUnlocked != null) {
+                this.UnlockedOrnamentKeys = Injections.DataManager.GetExcelSheet<Ornament>()!
+                    .Where(x => this.IsOrnamentUnlocked(x.RowId)).ToList();
             }
 
             var gsModule = RaptureGearsetModule.Instance();

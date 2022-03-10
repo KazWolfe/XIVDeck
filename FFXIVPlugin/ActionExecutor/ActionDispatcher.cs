@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
@@ -49,6 +50,8 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor {
             this.Strategies[HotbarSlotType.Marker] = new MarkerStrategy();
             this.Strategies[HotbarSlotType.MainCommand] = new MainCommandStrategy();
             this.Strategies[HotbarSlotType.GearSet] = new GearsetStrategy();
+            this.Strategies[HotbarSlotType.ExtraCommand] = new ExtraCommandStrategy();
+            this.Strategies[HotbarSlotType.FashionAccessory] = new OrnamentStrategy();
         }
 
         private IStrategy GetStrategyForType(HotbarSlotType type) {
