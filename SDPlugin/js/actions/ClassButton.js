@@ -1,7 +1,7 @@
 var ClassButtonHandler = {
     type: `${PLUGIN_ID}.actions.switchclass`,
     cache: {}, // on context -> Object
-    gameClassCache: [],
+    gameClassCache: {},
 
     elgatoEventHandlers: {
         // Called when the action is registered (elgato is starting up, new button added, etc.)
@@ -87,6 +87,8 @@ var ClassButtonHandler = {
             if (!domSelector) return;
             
             let domTypeMap = {}
+
+            ClassButtonHandler.gameClassCache.sort((a, b) => (a.sortOrder > b.sortOrder) ? 1 : -1)
             
             for (let i in ClassButtonHandler.gameClassCache) {
                 let gameClass = ClassButtonHandler.gameClassCache[i]
