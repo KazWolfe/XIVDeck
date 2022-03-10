@@ -103,6 +103,8 @@ var ExecuteActionButtonHandler = {
             // do nothing if not in PI
             if (!acTypeSelector) return
             
+            let actionSelectorCategories = {}
+            
             for (let type of Object.keys(unlockedActions)) {
                 acTypeSelector.innerHTML += `<option value="${type}">${type}</option>`
             }
@@ -112,7 +114,24 @@ var ExecuteActionButtonHandler = {
                 let acActionSelector = document.getElementById('acActionSelection')
 
                 for (let action of unlockedActions[settings.actionType]) {
-                    acActionSelector.innerHTML += `<option value="${action.id}">[#${action.id}] ${Utils.toTitleCase(action.name)}</option>`
+                    let parent = acActionSelector;
+                    if (action.category) {
+                        if (!actionSelectorCategories.hasOwnProperty(action.category)) {
+                            let categoryDom = document.createElement("optgroup")
+                            categoryDom.label = action.category
+                            
+                            acActionSelector.append(categoryDom)
+                            actionSelectorCategories[action.category] = categoryDom;
+                        }
+                        
+                        parent = actionSelectorCategories[action.category]
+                    }
+                    
+                    let actionSelection = document.createElement("option")
+                    actionSelection.value = action.id
+                    actionSelection.innerText = `[#${action.id}] ${Utils.toTitleCase(action.name)}`
+                    
+                    parent.append(actionSelection);
                 }
                 
                 if (settings.actionId) {
