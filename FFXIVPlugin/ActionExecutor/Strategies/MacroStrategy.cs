@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Client.UI.Shell;
@@ -8,9 +9,8 @@ using XIVDeck.FFXIVPlugin.Utils;
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
     public class MacroStrategy : IStrategy {
         private static unsafe RaptureMacroModule.Macro* GetMacro(bool shared, int id) {
-            var macroPage = shared ? RaptureMacroModule.Instance->Shared : RaptureMacroModule.Instance->Individual;
-
-            return macroPage[id];
+            var macroPage = shared ? &RaptureMacroModule.Instance->Shared : &RaptureMacroModule.Instance->Individual;
+            return (*macroPage)[id];
         }
         
         public List<ExecutableAction> GetAllowedItems() {
@@ -18,11 +18,8 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             // on the stream deck's side.
             return null;
         }
-        
+
         public unsafe void Execute(uint actionId, dynamic _) {
-            // todo: this should really use a bitfield of _ppppiiiiiiii, p = page, i = id
-            // this existing strategy is a bit naive and annoying
-            
             if (actionId > 199) {
                 throw new ArgumentOutOfRangeException(nameof(actionId), "Action ID must be bound by 0 - 199");
             }
@@ -32,13 +29,12 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             
             RaptureMacroModule.Macro* macro = GetMacro(isSharedMacro, macroNumber);
 
-            // Safety check to make sure we aren't triggering an untriggerable macro
+            // Safety check to make sure we aren't triggering an empty macro
             if (RaptureMacroModule.Instance->GetLineCount(macro) == 0) {
-                throw new ArgumentException("The specified macro is has no commands and cannot be used");
+                throw new ArgumentException("The specified macro is empty and cannot be used");
             }
 
             PluginLog.Debug($"Would execute macro number {macroNumber}");
-            
             TickScheduler.Schedule(delegate {
                 RaptureShellModule.Instance->ExecuteMacro(macro);
             });

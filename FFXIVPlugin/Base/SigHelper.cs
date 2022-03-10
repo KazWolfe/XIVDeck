@@ -18,11 +18,17 @@ namespace XIVDeck.FFXIVPlugin.Base {
             
             // todo: this doesn't handle icon updates until after the macro dialog is closed, so there's some lag.
             internal const string SaveMacro = "45 33 C9 E9 ?? ?? ?? ?? CC CC CC CC CC CC CC CC 48 85 D2";
+
+            internal const string LoadHotbarSlotIcon =
+                "40 53 48 83 EC 20 44 8B 81 ?? ?? ?? ?? 48 8B D9 0F B6 91 ?? ?? ?? ?? E8 ?? ?? ?? ?? 85 C0";
         }
         
         /***** functions *****/
         [Signature(Signatures.ExecuteHotbarSlot, Fallibility = Fallibility.Fallible)]
         private readonly delegate* unmanaged<RaptureHotbarModule*, HotBarSlot*, void> _execHotbarSlot = null!;
+
+        [Signature(Signatures.LoadHotbarSlotIcon, Fallibility = Fallibility.Fallible)]
+        private readonly delegate* unmanaged<HotBarSlot*, bool> _refreshHotbarIcon = null!;
 
         
         /***** hooks *****/
@@ -75,6 +81,14 @@ namespace XIVDeck.FFXIVPlugin.Base {
             this._execHotbarSlot(hotbarModulePtr, (HotBarSlot*) ptr);
             
             Marshal.FreeHGlobal(ptr);
+        }
+
+        public bool RefreshHotbarSlotIcon(HotBarSlot* slot) {
+            if (this._refreshHotbarIcon == null) {
+                throw new InvalidOperationException("Couldn't find RaptureHotbarModule::ExecuteSlot");
+            }
+
+            return this._refreshHotbarIcon( slot );
         }
 
         private IntPtr DetourGearsetSave(IntPtr a1, IntPtr a2) {

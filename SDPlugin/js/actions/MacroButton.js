@@ -76,7 +76,7 @@ var ExecuteMacroButtonHandler = {
             
             if (actionInfo.payload.settings.hasOwnProperty('macroId') && actionInfo.payload.settings.macroId !== null) {
                 let userMacroNumber = actionInfo.payload.settings.macroId % 100
-                let shareState = (actionInfo.payload.settings.macroId / 100) > 0 ? "shared" : "individual"
+                let shareState = Math.floor(actionInfo.payload.settings.macroId / 100) > 0 ? "shared" : "individual"
                 
                 let sharedDom = document.querySelector(`input[name="macroType"][value="${shareState}"]`)
                 
