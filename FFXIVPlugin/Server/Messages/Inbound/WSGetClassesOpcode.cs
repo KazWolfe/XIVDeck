@@ -7,6 +7,7 @@ using Lumina.Excel.GeneratedSheets;
 using NetCoreServer;
 using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Game;
 
 namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
     public class SerializableGameClass {

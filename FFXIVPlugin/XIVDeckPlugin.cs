@@ -3,6 +3,7 @@ using Dalamud.Plugin;
 using FFXIVClientStructs;
 using XivCommon;
 using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Server;
 using XIVDeck.FFXIVPlugin.UI;
 using XIVDeck.FFXIVPlugin.Utils;

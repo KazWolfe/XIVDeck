@@ -1,6 +1,5 @@
 ﻿using System;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using XIVDeck.FFXIVPlugin.Utils;
 using NetCoreServer;
 using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.ActionExecutor;

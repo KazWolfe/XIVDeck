@@ -5,6 +5,7 @@ using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
@@ -18,7 +19,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
         public List<ExecutableAction> GetAllowedItems() {
             _gameStateCache.Refresh();
 
-            return _gameStateCache.UnlockedMountKeys!.Select(mount => new ExecutableAction() {
+            return _gameStateCache.UnlockedMounts!.Select(mount => new ExecutableAction() {
                 ActionId = (int) mount.RowId, 
                 ActionName = mount.Singular.RawString, 
                 HotbarSlotType = HotbarSlotType.Mount

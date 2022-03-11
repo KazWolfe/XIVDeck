@@ -6,7 +6,6 @@ using NetCoreServer;
 using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.Base;
 
-
 namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
     [SuppressMessage("ReSharper", "UnassignedGetOnlyAutoProperty", Justification = "JSON serializer will initialize values")]
     public class WSInitMessage : BaseInboundMessage {

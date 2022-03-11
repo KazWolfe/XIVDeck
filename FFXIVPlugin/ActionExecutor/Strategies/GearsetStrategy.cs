@@ -4,7 +4,7 @@ using System.Linq;
 using Dalamud.Logging;
 using Dalamud.Memory;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {

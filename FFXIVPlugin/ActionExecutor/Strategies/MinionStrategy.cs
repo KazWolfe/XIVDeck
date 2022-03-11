@@ -5,6 +5,7 @@ using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Game;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
     public class MinionStrategy : IStrategy {
@@ -17,7 +18,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
         public List<ExecutableAction> GetAllowedItems() {
             GameStateCache.Refresh();
 
-            return GameStateCache.UnlockedMinionKeys!.Select(minion => new ExecutableAction() {
+            return GameStateCache.UnlockedMinions!.Select(minion => new ExecutableAction() {
                 ActionId = (int) minion.RowId, 
                 ActionName = minion.Singular.RawString, 
                 HotbarSlotType = HotbarSlotType.Minion

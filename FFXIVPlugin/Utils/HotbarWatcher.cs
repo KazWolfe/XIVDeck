@@ -1,5 +1,4 @@
-﻿using System;
-using Dalamud.Game;
+﻿using Dalamud.Game;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Newtonsoft.Json;

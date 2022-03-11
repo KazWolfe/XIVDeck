@@ -5,6 +5,7 @@ using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Game;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
     public class OrnamentStrategy : IStrategy {
@@ -17,7 +18,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
         public List<ExecutableAction> GetAllowedItems() {
             GameStateCache.Refresh();
             
-            return GameStateCache.UnlockedOrnamentKeys!.Select(ornament => new ExecutableAction() {
+            return GameStateCache.UnlockedOrnaments!.Select(ornament => new ExecutableAction() {
                 ActionId = (int) ornament.RowId, 
                 ActionName = ornament.Singular.RawString, 
                 HotbarSlotType = HotbarSlotType.FashionAccessory

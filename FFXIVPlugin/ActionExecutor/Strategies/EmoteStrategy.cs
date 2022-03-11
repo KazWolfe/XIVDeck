@@ -5,6 +5,7 @@ using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
@@ -18,7 +19,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
         public List<ExecutableAction> GetAllowedItems() {
             GameStateCache.Refresh();
 
-            return GameStateCache.UnlockedEmoteKeys!.Select(emote => new ExecutableAction() {
+            return GameStateCache.UnlockedEmotes!.Select(emote => new ExecutableAction() {
                 ActionId = (int) emote.RowId, 
                 ActionName = emote.Name.RawString, 
                 HotbarSlotType = HotbarSlotType.Emote
@@ -33,7 +34,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
                 throw new KeyNotFoundException($"The emote \"{emote.Name.RawString}\" does not have an associated text command");
             }
 
-            if (!GameStateCache.UnlockedEmoteKeys!.Contains(emote)) {
+            if (!GameStateCache.IsEmoteUnlocked(emote.RowId)) {
                 throw new InvalidOperationException($"The emote \"{emote.Name.RawString}\" isn't unlocked and therefore can't be used.");
             }
 
