@@ -14,7 +14,7 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
 
             foreach (var (type, strategy) in ActionDispatcher.GetStrategies()) {
                 var allowedItems = strategy.GetAllowedItems();
-                if (allowedItems == null) continue;
+                if (allowedItems == null || allowedItems.Count == 0) continue;
                 
                 actions[type] = allowedItems;
             }

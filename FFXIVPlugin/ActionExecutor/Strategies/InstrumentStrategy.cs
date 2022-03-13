@@ -19,10 +19,14 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
         }
 
         public unsafe bool IsPerformUnlocked() {
-            return UIState.Instance()->Hotbar.IsActionUnlocked(68555);
+            // APPARENTLY unlock 255 is performance?!
+            return XIVDeckPlugin.Instance.XivCommon.Functions.Journal.IsQuestCompleted(68555) &&
+                   UIState.Instance()->Hotbar.IsActionUnlocked(255);
         }
         
         public List<ExecutableAction> GetAllowedItems() {
+            if (!this.IsPerformUnlocked()) return null;
+            
             return PerformSheet.Where(i => i.RowId > 0).Select(instrument => new ExecutableAction {
                 ActionId = (int) instrument.RowId, 
                 ActionName = instrument.Instrument.RawString, 
