@@ -76,7 +76,7 @@
   "Name": "XIVDeck",
   "Icon": "assets/images/icon",
   "URL": "https://wolf.dev/",
-  "Version": "0.0.4",
+  "Version": "0.0.5",
   "OS": [{
       "Platform": "windows",
       "MinimumVersion" : "10"
