@@ -3,7 +3,7 @@ using Lumina.Data;
 using Lumina.Excel;
 using Lumina.Text;
 
-namespace XIVDeck.FFXIVPlugin.Data.Sheets {
+namespace XIVDeck.FFXIVPlugin.Game.Sheets {
     
     [Sheet("ExtraCommand")]
     public class ExtraCommand : ExcelRow {

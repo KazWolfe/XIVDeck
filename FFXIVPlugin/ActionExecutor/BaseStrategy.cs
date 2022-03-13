@@ -52,7 +52,8 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor {
         }
 
         public T GetActionById(uint id) {
-            return Injections.DataManager.Excel.GetSheet<T>().GetRow(id);
+            // should never be null, T is inherently handled by Lumina
+            return Injections.DataManager.Excel.GetSheet<T>()!.GetRow(id);
         }
 
         public List<ExecutableAction> GetAllowedItems() {
@@ -91,7 +92,12 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor {
                 throw new ArgumentException($"The action with ID {actionId} is marked as illegal and cannot be used.");
             
             String command = this.GetCommandToCallAction(this.GetActionById(actionId));
-            
+
+            if (command == null) {
+                PluginLog.Warning("An ExecutableAction returned without a command. This shouldn't happen, but isn't fatal either.");
+                return;
+            }
+
             PluginLog.Debug($"Would execute command: {command}");
 
             TickScheduler.Schedule(delegate {

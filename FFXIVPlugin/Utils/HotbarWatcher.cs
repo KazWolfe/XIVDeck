@@ -1,4 +1,5 @@
-﻿using Dalamud.Game;
+﻿using System;
+using Dalamud.Game;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Newtonsoft.Json;
@@ -6,7 +7,7 @@ using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 
 namespace XIVDeck.FFXIVPlugin.Utils {
-    public class HotbarWatcher {
+    public class HotbarWatcher : IDisposable {
         private XIVDeckPlugin _plugin;
         private HotBarSlot[,] _hotbarCache = new HotBarSlot[17,16];
 
@@ -65,6 +66,8 @@ namespace XIVDeck.FFXIVPlugin.Utils {
 
         public void Dispose() {
             Injections.Framework.Update -= this.OnGameUpdate;
+            
+            GC.SuppressFinalize(this);
         }
     }
 }

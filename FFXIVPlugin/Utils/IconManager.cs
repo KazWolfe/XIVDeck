@@ -37,6 +37,8 @@ namespace XIVDeck.FFXIVPlugin.Utils {
 
             PluginLog.Debug($"Disposed {c} icon textures.");
             this._iconTextures.Clear();
+            
+            GC.SuppressFinalize(this);
         }
         
         private void LoadIconTexture(int iconId, bool hq = false) {

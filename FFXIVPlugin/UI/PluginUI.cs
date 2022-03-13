@@ -26,6 +26,7 @@ namespace XIVDeck.FFXIVPlugin.UI {
         }
 
         public void Dispose() {
+            GC.SuppressFinalize(this);
         }
 
         public void Draw() {

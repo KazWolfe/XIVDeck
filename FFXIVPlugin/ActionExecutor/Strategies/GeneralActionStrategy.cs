@@ -23,7 +23,6 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
                 // consider any locked actions illegal
                 if (action.UnlockLink != 0 && !UIState.Instance()->Hotbar.IsActionUnlocked(action.UnlockLink)) {
                     illegalActions.Add(action.RowId);
-                    continue;
                 }
             }
 

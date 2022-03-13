@@ -1,6 +1,6 @@
 ﻿using System;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using XIVDeck.FFXIVPlugin.Data.Sheets;
+using XIVDeck.FFXIVPlugin.Game.Sheets;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
     public class ExtraCommandStrategy : FixedCommandStrategy<ExtraCommand> {

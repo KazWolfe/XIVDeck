@@ -39,19 +39,17 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
         [JsonProperty("parentClass")] public int ParentClass { get; set; }
         
         [JsonProperty("hasGearset")] public bool HasGearset { get; set; }
-
-        [NonSerialized] private ClassJob _classJob;
-
+        
         public SerializableGameClass(int id) {
             this.Id = id;
-            this._classJob = _classSheet!.GetRow((uint) id);
+            var classJob = _classSheet!.GetRow((uint) id);
 
-            if (this._classJob == null) {
+            if (classJob == null) {
                 throw new ArgumentOutOfRangeException(nameof(id), $"A class with ID {id} does not exist.");
             }
 
-            this.Name = this._classJob.Name.RawString;
-            this.CategoryName = (this._classJob.UIPriority / 10) switch {
+            this.Name = classJob.Name.RawString;
+            this.CategoryName = (classJob.UIPriority / 10) switch {
                 0 => "Tank",
                 1 => "Healer",
                 2 => "Melee DPS",
@@ -63,11 +61,11 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
                 _ => throw new IndexOutOfRangeException($"Unrecognized job category for class ID: {this.Id}")
             };
 
-            this.SortOrder = this._classJob.UIPriority;
+            this.SortOrder = classJob.UIPriority;
             this.IconId = 062100 + this.Id;
             this.IconData = XIVDeckPlugin.Instance.IconManager.GetIconAsPngString(this.IconId);
 
-            this.ParentClass = (int) this._classJob.ClassJobParent.Row;
+            this.ParentClass = (int) classJob.ClassJobParent.Row;
         }
     }
     

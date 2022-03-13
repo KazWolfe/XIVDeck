@@ -51,6 +51,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor {
             this.Strategies[HotbarSlotType.GearSet] = new GearsetStrategy();
             this.Strategies[HotbarSlotType.ExtraCommand] = new ExtraCommandStrategy();
             this.Strategies[HotbarSlotType.FashionAccessory] = new OrnamentStrategy();
+            this.Strategies[HotbarSlotType.PerformanceInstrument] = new InstrumentStrategy();
         }
 
         private IStrategy GetStrategyForType(HotbarSlotType type) {

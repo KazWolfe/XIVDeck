@@ -42,18 +42,20 @@ namespace XIVDeck.FFXIVPlugin.Game {
         private Hook<RaptureMacroModule_WriteFile> RMM_WriteFileHook { get; init; }
 
         /***** the actual class *****/
-        private XIVDeckPlugin _plugin = XIVDeckPlugin.Instance;
+        private readonly XIVDeckPlugin _plugin = XIVDeckPlugin.Instance;
         
         internal SigHelper() {
             SignatureHelper.Initialise(this);
 
-            this.RGM_WriteFileHook?.Enable();
-            this.RMM_WriteFileHook?.Enable();
+            this.RGM_WriteFileHook.Enable();
+            this.RMM_WriteFileHook.Enable();
         }
 
         public void Dispose() {
             this.RGM_WriteFileHook?.Dispose();
             this.RMM_WriteFileHook?.Dispose();
+            
+            GC.SuppressFinalize(this);
         }
 
         public void ExecuteHotbarSlot(HotBarSlot* slot) {
@@ -70,7 +72,7 @@ namespace XIVDeck.FFXIVPlugin.Game {
             }
             var hotbarModulePtr = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule();
 
-            HotBarSlot slot = new HotBarSlot {
+            var slot = new HotBarSlot {
                 CommandType = commandType,
                 CommandId = commandId
             };
