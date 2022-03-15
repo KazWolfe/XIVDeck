@@ -39,7 +39,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             }).ToList();
         }
 
-        public void Execute(uint actionSlot, dynamic _) {
+        public void Execute(uint actionSlot, dynamic? _) {
             var gearset =  this.GetGearsetBySlot(actionSlot);
 
             if (gearset == null)

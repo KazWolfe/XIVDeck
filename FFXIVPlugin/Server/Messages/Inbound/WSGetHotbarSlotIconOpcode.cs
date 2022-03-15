@@ -9,7 +9,7 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
         [JsonRequired][JsonProperty("hotbarId")] public int HotbarId { get; set; }
         [JsonRequired][JsonProperty("slotId")] public int SlotId { get; set; }
 
-        public unsafe override void Process(WsSession session) {
+        public override unsafe void Process(WsSession session) {
             var plugin = XIVDeckPlugin.Instance;
 
             var hotbarModule =

@@ -1,13 +1,11 @@
 ﻿using System;
-using Dalamud.Logging;
 using NetCoreServer;
-using XivCommon.Functions;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
     public class WSCommandMessage : BaseInboundMessage {
-        public string Command { get; set; }
+        public string Command { get; set; } = default!;
         public bool SafeMode = true; // this can be overridden by the serializer *if you know what you're doing*.
                                      // instructions will not be provided. 
 

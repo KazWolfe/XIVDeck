@@ -9,8 +9,8 @@ using XIVDeck.FFXIVPlugin.Base;
 namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
     [SuppressMessage("ReSharper", "UnassignedGetOnlyAutoProperty", Justification = "JSON serializer will initialize values")]
     public class WSInitMessage : BaseInboundMessage {
-        public string Data { get; set; }
-        public string Version { get; set; }
+        public string Data { get; set; } = default!;
+        public string Version { get; set; } = default!;
 
         public override void Process(WsSession session) {
             if (System.Version.Parse(this.Version) < System.Version.Parse(Constants.MinimumSDPluginVersion)) {

@@ -11,10 +11,10 @@ using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor {
     public class ExecutableAction {
-        [JsonProperty("name")] public string ActionName; // optional, will realistically only ever be sent
+        [JsonProperty("name")] public string? ActionName; // optional, will realistically only ever be sent
         [JsonProperty("id")] public int ActionId;
 
-        [JsonProperty("category")] public string Category; // optional, send-only. used for grouping where available
+        [JsonProperty("category")] public string? Category; // optional, send-only. used for grouping where available
         
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty("type")] public HotbarSlotType HotbarSlotType;
@@ -25,7 +25,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor {
         /**
          * Execute an event with the given Action ID, depending on the strategy for this action type.
          */
-        public void Execute(uint actionId, dynamic options = null);
+        public void Execute(uint actionId, dynamic? options = null);
 
         /**
          * Get the Icon ID used for a specific action type
@@ -36,7 +36,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor {
          * Get a dynamic list of items allowed by this strategy.
          * 
          */
-        public List<ExecutableAction> GetAllowedItems();
+        public List<ExecutableAction>? GetAllowedItems();
     }
 
     public abstract class FixedCommandStrategy<T> : IStrategy where T : ExcelRow {
@@ -45,13 +45,13 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor {
         protected abstract string GetNameForAction(T action);
         protected abstract HotbarSlotType GetHotbarSlotType();
         protected abstract int GetIconForAction(T action);
-        protected abstract string GetCommandToCallAction(T action);
+        protected abstract string? GetCommandToCallAction(T action);
 
         protected virtual IEnumerable<uint> GetIllegalActionIDs() {
             return Array.Empty<uint>();
         }
 
-        public T GetActionById(uint id) {
+        public T? GetActionById(uint id) {
             // should never be null, T is inherently handled by Lumina
             return Injections.DataManager.Excel.GetSheet<T>()!.GetRow(id);
         }
@@ -63,7 +63,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor {
                 return this._actionCache;
             }
 
-            ExcelSheet<T> sheet = Injections.DataManager.Excel.GetSheet<T>();
+            ExcelSheet<T> sheet = Injections.DataManager.Excel.GetSheet<T>()!;
 
             if (sheet == null) {
                 throw new NullReferenceException($"A sheet of type {typeof(T).Name} does not exist.");
@@ -87,11 +87,17 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor {
             return this._actionCache;
         }
         
-        public void Execute(uint actionId, dynamic options = null) {
+        public void Execute(uint actionId, dynamic? options = null) {
             if (this.GetIllegalActionIDs().Contains(actionId))
                 throw new ArgumentException($"The action with ID {actionId} is marked as illegal and cannot be used.");
+
+            var action = this.GetActionById(actionId);
+
+            if (action == null) {
+                throw new ArgumentNullException(nameof(actionId), $"An action of type {typeof(T)} with ID {actionId} does not exist.");
+            }
             
-            String command = this.GetCommandToCallAction(this.GetActionById(actionId));
+            String? command = this.GetCommandToCallAction(action);
 
             if (command == null) {
                 PluginLog.Warning("An ExecutableAction returned without a command. This shouldn't happen, but isn't fatal either.");
@@ -106,7 +112,9 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor {
         }
 
         public int GetIconId(uint actionId) {
-            return this.GetIconForAction(this.GetActionById(actionId));
+            var action = this.GetActionById(actionId);
+
+            return action == null ? 0 : this.GetIconForAction(action);
         }
     }
 }

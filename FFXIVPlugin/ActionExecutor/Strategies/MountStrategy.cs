@@ -12,7 +12,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
     public class MountStrategy : IStrategy {
         private static GameStateCache _gameStateCache = XIVDeckPlugin.Instance.GameStateCache;
         
-        public Mount GetMountById(uint id) {
+        public Mount? GetMountById(uint id) {
             return Injections.DataManager.Excel.GetSheet<Mount>()!.GetRow(id);
         }
         
@@ -26,8 +26,12 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             }).ToList();
         }
 
-        public void Execute(uint actionId, dynamic _) {
-            Mount mount = this.GetMountById(actionId);
+        public void Execute(uint actionId, dynamic? _) {
+            Mount? mount = this.GetMountById(actionId);
+
+            if (mount == null) {
+                throw new ArgumentNullException(nameof(actionId), $"No mount with ID {actionId} exists.");
+            }
             
             if (!_gameStateCache.IsMountUnlocked(actionId)) {
                 throw new InvalidOperationException($"The mount \"{mount.Singular.RawString}\" isn't unlocked and therefore can't be used.");
@@ -42,8 +46,8 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
         }
 
         public int GetIconId(uint item) {
-            Mount mount = GetMountById(item);
-            return mount.Icon;
+            return this.GetMountById(item)?.Icon ?? 0;
+
         }
     }
 }

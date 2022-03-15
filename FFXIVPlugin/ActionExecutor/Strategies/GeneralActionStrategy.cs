@@ -35,11 +35,11 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             return illegalActions;
         }
         
-        private GeneralAction GetActionById(uint actionId) {
+        private GeneralAction? GetActionById(uint actionId) {
             return ActionSheet.GetRow(actionId);
         }
 
-        public unsafe void Execute(uint actionId, dynamic _) {
+        public unsafe void Execute(uint actionId, dynamic? _) {
             var action = this.GetActionById(actionId);
             
             if (action == null) {
@@ -53,7 +53,6 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             
             if (action.UnlockLink != 0 && !UIState.Instance()->Hotbar.IsActionUnlocked(action.UnlockLink)) {
                 throw new InvalidOperationException($"The action \"{action.Name.RawString}\" is not yet unlocked.");
-                
             }
 
             TickScheduler.Schedule(delegate {

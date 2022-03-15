@@ -12,7 +12,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
     public class MinionStrategy : IStrategy {
         private static readonly GameStateCache GameStateCache = XIVDeckPlugin.Instance.GameStateCache;
         
-        public Companion GetMinionById(uint id) {
+        public Companion? GetMinionById(uint id) {
             return Injections.DataManager.Excel.GetSheet<Companion>()!.GetRow(id);
         }
         
@@ -26,8 +26,12 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             }).ToList();
         }
 
-        public void Execute(uint actionId, dynamic _) {
-            Companion minion = this.GetMinionById(actionId);
+        public void Execute(uint actionId, dynamic? _) {
+            Companion? minion = this.GetMinionById(actionId);
+            
+            if (minion == null) {
+                throw new ArgumentNullException(nameof(actionId), $"No minion with ID {actionId} exists.");
+            }
 
             if (!GameStateCache.IsMinionUnlocked(actionId)) {
                 throw new InvalidOperationException($"The minion \"{minion.Singular.RawString}\" isn't unlocked and therefore can't be used.");
@@ -43,8 +47,8 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
         }
 
         public int GetIconId(uint item) {
-            Companion minion = this.GetMinionById(item);
-            return minion.Icon;
+            return this.GetMinionById(item)?.Icon ?? 0;
+
         }
     }
 }

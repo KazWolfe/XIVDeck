@@ -11,6 +11,7 @@
         <Copyright>(c) 2022, Frank Slezak</Copyright>
         <IsPackable>false</IsPackable>
         <NeutralLanguage>en</NeutralLanguage>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <PropertyGroup Label="Target">

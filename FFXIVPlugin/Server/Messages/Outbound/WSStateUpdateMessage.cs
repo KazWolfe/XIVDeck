@@ -9,8 +9,16 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Outbound {
         private static string MESSAGE_NAME = "stateUpdate";
         
         [JsonProperty("type")] public string StateType { get; set; }
-        [JsonProperty("params")] public string Parameters { get; set; }
+        [JsonProperty("params")] public string? Parameters { get; set; }
 
-        public WSStateUpdateMessage() : base(MESSAGE_NAME) { }
+        public WSStateUpdateMessage(string stateType, string parameters) : base(MESSAGE_NAME) {
+            this.StateType = stateType;
+            this.Parameters = parameters;
+        }
+
+        public WSStateUpdateMessage(string stateType) : base(MESSAGE_NAME) {
+            this.StateType = stateType;
+            this.Parameters = null;
+        }
     }
 }

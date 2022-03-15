@@ -1,5 +1,4 @@
 ﻿using System;
-using Dalamud.Logging;
 
 namespace XIVDeck.FFXIVPlugin.Utils {
     public class ChatUtil {

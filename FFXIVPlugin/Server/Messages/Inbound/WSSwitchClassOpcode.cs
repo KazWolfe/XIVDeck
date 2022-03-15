@@ -5,7 +5,6 @@ using NetCoreServer;
 using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game;
-using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {

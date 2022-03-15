@@ -7,9 +7,8 @@ namespace XIVDeck.FFXIVPlugin.Game.Sheets {
     
     [Sheet("ExtraCommand")]
     public class ExtraCommand : ExcelRow {
-
-        public SeString Name { get; private set; }
-        public SeString Description { get; private set; }
+        public SeString Name { get; private set; } = default!;
+        public SeString Description { get; private set; } = default!;
         
         public int Icon { get; set; }
         public sbyte UIPriority { get; set; }
@@ -18,8 +17,8 @@ namespace XIVDeck.FFXIVPlugin.Game.Sheets {
             this.RowId = parser.RowId;
             this.SubRowId = parser.SubRowId;
 
-            this.Name = parser.ReadColumn<SeString>(0);
-            this.Description = parser.ReadColumn<SeString>(1);
+            this.Name = parser.ReadColumn<SeString>(0) ?? new SeString("");
+            this.Description = parser.ReadColumn<SeString>(1) ?? new SeString("");
             this.Icon = parser.ReadColumn<int>(2);
             this.UIPriority = parser.ReadColumn<sbyte>(3);
         }

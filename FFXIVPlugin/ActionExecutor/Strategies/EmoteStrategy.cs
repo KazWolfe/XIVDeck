@@ -12,7 +12,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
     public class EmoteStrategy : IStrategy {
         private static readonly GameStateCache GameStateCache = XIVDeckPlugin.Instance.GameStateCache;
         
-        public Emote GetEmoteById(uint id) {
+        public Emote? GetEmoteById(uint id) {
             return Injections.DataManager.Excel.GetSheet<Emote>()!.GetRow(id);
         }
         
@@ -26,9 +26,14 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             }).ToList();
         }
 
-        public void Execute(uint actionId, dynamic _) {
-            Emote emote = this.GetEmoteById(actionId);
-            TextCommand textCommand = emote.TextCommand.Value;
+        public void Execute(uint actionId, dynamic? _) {
+            Emote? emote = this.GetEmoteById(actionId);
+            
+            if (emote == null) {
+                throw new ArgumentNullException(nameof(actionId), $"No emote with ID {actionId} exists.");
+            }
+            
+            TextCommand? textCommand = emote.TextCommand.Value;
 
             if (textCommand == null) {
                 throw new KeyNotFoundException($"The emote \"{emote.Name.RawString}\" does not have an associated text command.");
@@ -46,8 +51,8 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
         }
 
         public int GetIconId(uint item) {
-            Emote emote = this.GetEmoteById(item);
-            return emote.Icon;
+            return this.GetEmoteById(item)?.Icon ?? 0;
+
         }
     }
 }

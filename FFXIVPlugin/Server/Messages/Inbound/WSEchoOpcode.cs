@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
     public class WSEchoInboundMessage : BaseInboundMessage {
-        public string Data { get; set; }
+        public string Data { get; set; } = default!;
 
         public override void Process(WsSession session) {
             var reply = new Dictionary<string, string> {

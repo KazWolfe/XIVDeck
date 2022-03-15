@@ -29,7 +29,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
         }
         
         
-        public unsafe void Execute(uint actionId, dynamic options = null) {
+        public unsafe void Execute(uint actionId, dynamic? _) {
             if (this._mainCommandCache.All(command => actionId != command.RowId))
                 throw new InvalidOperationException($"Main command action ID {actionId} is not valid.");
             
@@ -39,7 +39,8 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
         }
 
         public int GetIconId(uint actionId) {
-            return Injections.DataManager.Excel.GetSheet<MainCommand>()!.GetRow(actionId)!.Icon;
+            var action = Injections.DataManager.Excel.GetSheet<MainCommand>()!.GetRow(actionId);
+            return action?.Icon ?? 0;
         }
 
         public List<ExecutableAction> GetAllowedItems() {

@@ -8,10 +8,10 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages {
     [SuppressMessage("ReSharper", "UnassignedGetOnlyAutoProperty", Justification = "JSON serializer will initialize these fields")]
     public class BaseInboundMessage {
         public string Opcode { get; set; }
-        public string SDContext { get; set; }
+        public string? SDContext { get; set; }
         public int Nonce { get; }
 
-        public BaseInboundMessage(string opcode, string sdContext = null) {
+        public BaseInboundMessage(string opcode, string? sdContext = null) {
             this.Opcode = opcode;
             this.SDContext = sdContext;
         }

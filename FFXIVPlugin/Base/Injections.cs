@@ -12,6 +12,9 @@ using Dalamud.Game.Libc;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 
+// disable nullable warnings as all of these are injected. if they're missing, we have serious issues.
+#pragma warning disable CS8618
+
 namespace XIVDeck.FFXIVPlugin.Base {
     
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
@@ -29,5 +32,6 @@ namespace XIVDeck.FFXIVPlugin.Base {
         [PluginService] public static ObjectTable Objects { get; private set; }
         [PluginService] public static SigScanner SigScanner { get; private set; }
         [PluginService] public static TargetManager TargetManager { get; private set; }
-        [PluginService] public static ToastGui Toasts { get; private set; }    }
+        [PluginService] public static ToastGui Toasts { get; private set; }    
+    }
 }

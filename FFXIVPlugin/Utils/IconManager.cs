@@ -20,7 +20,7 @@ namespace XIVDeck.FFXIVPlugin.Utils {
 
         private readonly DalamudPluginInterface _pluginInterface;
         private bool _disposed;
-        private readonly Dictionary<(int, bool), TextureWrap> _iconTextures = new();
+        private readonly Dictionary<(int, bool), TextureWrap?> _iconTextures = new();
 
         public IconManager(DalamudPluginInterface pluginInterface) {
             this._pluginInterface = pluginInterface;
@@ -32,7 +32,7 @@ namespace XIVDeck.FFXIVPlugin.Utils {
             PluginLog.Debug("Disposing icon textures");
             foreach (var texture in this._iconTextures.Values.Where(texture => texture != null)) {
                 c++;
-                texture.Dispose();
+                texture?.Dispose();
             }
 
             PluginLog.Debug($"Disposed {c} icon textures.");
@@ -44,7 +44,7 @@ namespace XIVDeck.FFXIVPlugin.Utils {
         private void LoadIconTexture(int iconId, bool hq = false) {
             Task.Run(() => {
                 try {
-                    var iconTex = this.GetIcon(iconId, hq);
+                    var iconTex = this.GetIcon(iconId, hq) ?? this.GetIcon(0, hq)!;
                     
                     var tex = this._pluginInterface.UiBuilder.LoadImageRaw(iconTex.GetRgbaImageData(), iconTex.Header.Width, iconTex.Header.Height, 4);
 
@@ -60,9 +60,9 @@ namespace XIVDeck.FFXIVPlugin.Utils {
             });
         }
         
-        public TexFile GetIcon(int iconId, bool hq = false, bool highres = false) => this.GetIcon(Injections.DataManager.Language, iconId, hq, highres);
+        public TexFile? GetIcon(int iconId, bool hq = false, bool highres = false) => this.GetIcon(Injections.DataManager.Language, iconId, hq, highres);
         
-        public TexFile GetIcon(ClientLanguage iconLanguage, int iconId, bool hq = false, bool highres = false)
+        public TexFile? GetIcon(ClientLanguage iconLanguage, int iconId, bool hq = false, bool highres = false)
         {
             string type;
             switch (iconLanguage)
@@ -85,15 +85,12 @@ namespace XIVDeck.FFXIVPlugin.Utils {
             return this.GetIcon(type, iconId, hq, highres);
         }
 
-        public TexFile GetIcon(string type, int iconId, bool hq = false, bool highres = false) 
-        {
-            type ??= string.Empty;
-            
+        public TexFile? GetIcon(string type, int iconId, bool hq = false, bool highres = false) {
             if (type.Length > 0 && !type.EndsWith("/"))
                 type += "/";
             
             var formatStr = $"ui/icon/{{0:D3}}000/{(hq?"hq/":"")}{{1}}{{2:D6}}{(highres?"_hr1":"")}.tex";
-            TexFile file = Injections.DataManager.GetFile<TexFile>(string.Format(formatStr, (iconId / 1000), type, iconId));
+            TexFile? file = Injections.DataManager.GetFile<TexFile>(string.Format(formatStr, (iconId / 1000), type, iconId));
 
             if (file == null && highres) {
                 // high-res probably doesn't exist, fallback and try low-res instead
@@ -104,11 +101,11 @@ namespace XIVDeck.FFXIVPlugin.Utils {
             return file != null || type.Length <= 0 ? file : Injections.DataManager.GetFile<TexFile>(string.Format(formatStr, (iconId / 1000), string.Empty, iconId));
         }
 
-        public TextureWrap GetIconTexture(int iconId, bool hq = false) {
+        public TextureWrap? GetIconTexture(int iconId, bool hq = false) {
             if (this._disposed) return null;
             if (this._iconTextures.ContainsKey((iconId, hq))) return this._iconTextures[(iconId, hq)];
             this._iconTextures.Add((iconId, hq), null);
-            LoadIconTexture(iconId, hq);
+            this.LoadIconTexture(iconId, hq);
             return this._iconTextures[(iconId, hq)];
         }
         
@@ -119,7 +116,8 @@ namespace XIVDeck.FFXIVPlugin.Utils {
         }
 
         public string GetIconAsPngString(int iconId, bool hq = false) {
-            var icon = this.GetIcon("", iconId, hq, true);
+            var icon = this.GetIcon("", iconId, hq, true) ?? this.GetIcon("", 0, hq, true)!;
+
             var image = GetImage(icon);
 
             using var stream = new MemoryStream();

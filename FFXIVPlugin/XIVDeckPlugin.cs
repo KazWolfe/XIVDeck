@@ -11,7 +11,7 @@ using XIVDeck.FFXIVPlugin.Utils;
 namespace XIVDeck.FFXIVPlugin
 {
     public sealed class XIVDeckPlugin : IDalamudPlugin {
-        public static XIVDeckPlugin Instance;
+        public static XIVDeckPlugin Instance = null!;
         
         public string Name => Constants.PluginName;
         
@@ -25,7 +25,7 @@ namespace XIVDeck.FFXIVPlugin
         public GameStateCache GameStateCache { get; }
 
         private HotbarWatcher HotbarWatcher;
-        public XIVDeckWSServer XivDeckWsServer;
+        public XIVDeckWSServer XivDeckWsServer = null!;
 
         public XIVDeckPlugin(DalamudPluginInterface pluginInterface) {
             // Injections management
@@ -78,7 +78,7 @@ namespace XIVDeck.FFXIVPlugin
             this.PluginUi.SettingsVisible = true;
         }
 
-        private void OnLogin(object _, EventArgs __) {
+        private void OnLogin(object? _, EventArgs? __) {
             // game state isn't ready until login succeeds, so we wait for it to be ready before updating cache
             this.GameStateCache.Refresh();
 

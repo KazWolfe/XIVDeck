@@ -11,11 +11,8 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Outbound {
         public HotbarSlotType CommandType;
 
         public int IconId;
-        public string PngData;
-
-        // stops newtonsoft from complaining
-        public SerializableHotbarSlot() { }
-
+        public string? PngData;
+        
         public unsafe SerializableHotbarSlot(HotBarSlot* slot) {
             this.CommandId = slot->CommandId;
             this.CommandType = slot->CommandType;

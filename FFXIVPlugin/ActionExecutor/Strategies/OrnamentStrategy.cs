@@ -12,7 +12,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
     public class OrnamentStrategy : IStrategy {
         private static readonly GameStateCache GameStateCache = XIVDeckPlugin.Instance.GameStateCache;
         
-        public Ornament GetOrnamentById(uint id) {
+        public Ornament? GetOrnamentById(uint id) {
             return Injections.DataManager.Excel.GetSheet<Ornament>()!.GetRow(id);
         }
         
@@ -26,8 +26,12 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             }).ToList();
         }
 
-        public void Execute(uint actionId, dynamic _) {
-            Ornament ornament = this.GetOrnamentById(actionId);
+        public void Execute(uint actionId, dynamic? _) {
+            Ornament? ornament = this.GetOrnamentById(actionId);
+
+            if (ornament == null) {
+                throw new ArgumentNullException(nameof(actionId), $"No fashion accessory with ID {actionId} exists.");
+            }
 
             if (!GameStateCache.IsOrnamentUnlocked(actionId)) {
                 throw new InvalidOperationException($"The fashion accessory \"{ornament.Singular.RawString}\" isn't unlocked and therefore can't be used.");
@@ -42,8 +46,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
         }
 
         public int GetIconId(uint item) {
-            Ornament ornament = this.GetOrnamentById(item);
-            return ornament.Icon;
+            return this.GetOrnamentById(item)?.Icon ?? 0;
         }
     }
 }

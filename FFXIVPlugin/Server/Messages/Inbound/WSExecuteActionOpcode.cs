@@ -7,12 +7,12 @@ using XIVDeck.FFXIVPlugin.Base;
 
 namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
     public class WSExecuteActionOpcode : BaseInboundMessage {
-        [JsonRequired] public ExecutableAction Action { get; set; }
+        [JsonRequired] public ExecutableAction Action { get; set; } = default!;
         
         /**
          * Options to pass to the execution strategy (if any)
          */
-        public dynamic Options { get; set; }
+        public dynamic? Options { get; set; } = default!;
 
         public override void Process(WsSession session) {
             HotbarSlotType actionType = this.Action.HotbarSlotType;

@@ -5,8 +5,8 @@ using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.ActionExecutor;
 
 namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
-    public class WSGetActionIconOpcode : BaseInboundMessage {
-        [JsonRequired][JsonProperty("action")] public ExecutableAction Action;
+    public class WSGetActionIconOpcode : BaseInboundMessage { 
+        [JsonRequired][JsonProperty("action")] public ExecutableAction Action = default!;
 
         public override void Process(WsSession session) {
             var plugin = XIVDeckPlugin.Instance;
@@ -23,7 +23,7 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
 
             session.SendTextAsync(JsonConvert.SerializeObject(reply));
         }
-        
+
         public WSGetActionIconOpcode() : base("getActionIcon") { }
 
     }

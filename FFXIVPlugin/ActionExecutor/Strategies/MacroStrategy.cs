@@ -12,13 +12,13 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             return (*macroPage)[id];
         }
         
-        public List<ExecutableAction> GetAllowedItems() {
+        public List<ExecutableAction>? GetAllowedItems() {
             // this will always return null as macros are a bit... weird. macro selection will take place completely
             // on the stream deck's side.
             return null;
         }
 
-        public unsafe void Execute(uint actionId, dynamic _) {
+        public unsafe void Execute(uint actionId, dynamic? _) {
             if (actionId > 199) {
                 throw new ArgumentOutOfRangeException(nameof(actionId), $"Macro ID {actionId} is invalid.");
             }

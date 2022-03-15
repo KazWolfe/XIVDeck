@@ -25,7 +25,7 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
             return _cache;
         }
         
-        private static ExcelSheet<ClassJob> _classSheet = Injections.DataManager.GetExcelSheet<ClassJob>();
+        private static ExcelSheet<ClassJob> _classSheet = Injections.DataManager.GetExcelSheet<ClassJob>()!;
         
         [JsonProperty("id")] public int Id { get; set; }
         [JsonProperty("name")] public string Name { get; set; }
@@ -42,7 +42,7 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
         
         public SerializableGameClass(int id) {
             this.Id = id;
-            var classJob = _classSheet!.GetRow((uint) id);
+            var classJob = _classSheet.GetRow((uint) id);
 
             if (classJob == null) {
                 throw new ArgumentOutOfRangeException(nameof(id), $"A class with ID {id} does not exist.");

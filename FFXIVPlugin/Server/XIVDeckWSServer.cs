@@ -29,7 +29,7 @@ namespace XIVDeck.FFXIVPlugin.Server {
             string rawMessage = Encoding.UTF8.GetString(buffer, (int) offset, (int) size);
             PluginLog.Debug($"Got WS message - {rawMessage}");
             
-            BaseInboundMessage message = JsonConvert.DeserializeObject<BaseInboundMessage>(rawMessage);
+            BaseInboundMessage? message = JsonConvert.DeserializeObject<BaseInboundMessage>(rawMessage);
 
             if (message == null) {
                 PluginLog.Warning($"Got invalid message from WebSocket - {rawMessage}");
@@ -94,9 +94,7 @@ namespace XIVDeck.FFXIVPlugin.Server {
 
                 // Error handling logic - send an alert back to the Stream Deck so we can show a failed icon.
                 if (message.SDContext != null) {
-                    this.SendText(JsonConvert.SerializeObject(new WSShowSDAlert {
-                        Context = message.SDContext
-                    }));
+                    this.SendText(JsonConvert.SerializeObject(new WSShowSDAlert(message.SDContext)));
                 }
             }
         }
