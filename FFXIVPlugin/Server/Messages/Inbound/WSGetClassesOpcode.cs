@@ -58,7 +58,7 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
                 10 => "Disciple of the Hand",
                 20 => "Disciple of the Land",
                 
-                _ => throw new IndexOutOfRangeException($"Unrecognized job category for class ID: {this.Id}")
+                _ => throw new IndexOutOfRangeException($"Unrecognized job category for class ID {this.Id}. REPORT THIS BUG!")
             };
 
             this.SortOrder = classJob.UIPriority;

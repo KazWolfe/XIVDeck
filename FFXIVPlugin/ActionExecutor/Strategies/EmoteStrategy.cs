@@ -31,7 +31,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             TextCommand textCommand = emote.TextCommand.Value;
 
             if (textCommand == null) {
-                throw new KeyNotFoundException($"The emote \"{emote.Name.RawString}\" does not have an associated text command");
+                throw new KeyNotFoundException($"The emote \"{emote.Name.RawString}\" does not have an associated text command.");
             }
 
             if (!GameStateCache.IsEmoteUnlocked(emote.RowId)) {
@@ -41,7 +41,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             PluginLog.Debug($"Would execute command: {textCommand.Command.RawString}");
             
             TickScheduler.Schedule(delegate {
-                XIVDeckPlugin.Instance.XivCommon.Functions.Chat.SendMessage(textCommand.Command.RawString);
+                ChatUtil.SendSanitizedChatMessage(textCommand.Command.RawString);
             });
         }
 

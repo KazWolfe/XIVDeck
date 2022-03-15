@@ -1,53 +1,95 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using Lumina.Excel;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
-    public class GeneralActionStrategy : FixedCommandStrategy<GeneralAction> {
-        protected override unsafe IEnumerable<uint> GetIllegalActionIDs() {
+    public class GeneralActionStrategy : IStrategy {
+        private List<uint> _illegalActionCache = new();
+        private static readonly ExcelSheet<GeneralAction> ActionSheet = Injections.DataManager.Excel.GetSheet<GeneralAction>()!;
+
+        private IEnumerable<uint> GetIllegalActionIDs() {
+            if (this._illegalActionCache.Count > 0) {
+                return this._illegalActionCache;
+            }
+            
             var illegalActions = new List<uint> {
                 13, // Advanced Materia Melding - automatically injected on use of Materia Melding
             };
 
-            foreach (var action in Injections.DataManager.GetExcelSheet<GeneralAction>()!) {
+            foreach (var action in ActionSheet) {
                 if (illegalActions.Contains(action.RowId)) continue;
                 
                 // empty or non-ui actions are considered illegal
                 if (action.UIPriority == 0 || action.Name.RawString == "") {
                     illegalActions.Add(action.RowId);
-                    continue;
-                }
-
-                // consider any locked actions illegal
-                if (action.UnlockLink != 0 && !UIState.Instance()->Hotbar.IsActionUnlocked(action.UnlockLink)) {
-                    illegalActions.Add(action.RowId);
                 }
             }
 
+            this._illegalActionCache = illegalActions;
             return illegalActions;
         }
-
-        protected override string GetNameForAction(GeneralAction action) {
-            return action.Name.RawString;
+        
+        private GeneralAction GetActionById(uint actionId) {
+            return ActionSheet.GetRow(actionId);
         }
 
-        protected override HotbarSlotType GetHotbarSlotType() {
-            return HotbarSlotType.GeneralAction;
-        }
-
-        protected override int GetIconForAction(GeneralAction action) {
-            return action.Icon;
-        }
-
-        protected override unsafe string GetCommandToCallAction(GeneralAction action) {
-            // ERRATA - replace Materia Melding with Advanced Materia Melding if unlocked
-            if (action.RowId == 12 && UIState.Instance()->Hotbar.IsActionUnlocked(12)) {
-                action = this.GetActionById(13);
+        public unsafe void Execute(uint actionId, dynamic _) {
+            var action = this.GetActionById(actionId);
+            
+            if (action == null) {
+                throw new ArgumentOutOfRangeException(nameof(actionId), $"No action with ID {actionId} exists.");
             }
             
-            return $"/generalaction \"{action.Name.RawString}\"";
+            if (this.GetIllegalActionIDs().Contains(actionId)) {
+                throw new ArgumentOutOfRangeException(nameof(actionId),
+                    $"The action \"{action.Name.RawString}\" (ID {actionId}) is marked as illegal and cannot be used.");
+            }
+            
+            if (action.UnlockLink != 0 && !UIState.Instance()->Hotbar.IsActionUnlocked(action.UnlockLink)) {
+                throw new InvalidOperationException($"The action \"{action.Name.RawString}\" is not yet unlocked.");
+                
+            }
+
+            TickScheduler.Schedule(delegate {
+                ChatUtil.SendSanitizedChatMessage($"/generalaction \"{action.Name.RawString}\"");
+            });
+        }
+
+        public unsafe int GetIconId(uint actionId) { 
+            // ERRATA - replace Materia Melding with Advanced Materia Melding if unlocked
+            if (actionId == 12 && UIState.Instance()->Hotbar.IsActionUnlocked(12)) {
+                actionId = 13;
+            }
+            
+            return this.GetActionById(actionId)?.Icon ?? 0;
+        }
+
+        public unsafe List<ExecutableAction> GetAllowedItems() {
+            List<ExecutableAction> actions = new(); 
+            
+            foreach (var action in ActionSheet) {
+                if (this.GetIllegalActionIDs().Contains(action.RowId)) {
+                    continue;
+                }
+                
+                if (action.UnlockLink != 0 && !UIState.Instance()->Hotbar.IsActionUnlocked(action.UnlockLink)) {
+                    continue;
+                }
+                
+                actions.Add(new ExecutableAction {
+                    ActionId = (int) action.RowId,
+                    ActionName = action.Name.RawString,
+                    HotbarSlotType = HotbarSlotType.GeneralAction
+                });
+            }
+
+            return actions;
         }
     }
 }

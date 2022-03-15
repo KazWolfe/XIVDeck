@@ -20,7 +20,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
 
         public unsafe void Execute(uint actionId, dynamic _) {
             if (actionId > 199) {
-                throw new ArgumentOutOfRangeException(nameof(actionId), "Action ID must be bound by 0 - 199");
+                throw new ArgumentOutOfRangeException(nameof(actionId), $"Macro ID {actionId} is invalid.");
             }
 
             bool isSharedMacro = actionId / 100 == 1;
@@ -30,7 +30,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
 
             // Safety check to make sure we aren't triggering an empty macro
             if (RaptureMacroModule.Instance->GetLineCount(macro) == 0) {
-                throw new ArgumentException("The specified macro is empty and cannot be used");
+                throw new ArgumentException("The specified macro is empty and cannot be used.");
             }
 
             PluginLog.Debug($"Would execute macro number {macroNumber}");

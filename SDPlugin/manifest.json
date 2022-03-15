@@ -2,7 +2,7 @@
   "Actions": [
     {
       "Icon": "assets/images/chat",
-      "Name": "Text Command / Message",
+      "Name": "Text Command",
       "States": [
         {
           "Image": "assets/images/chat",
@@ -10,7 +10,7 @@
           "FontSize": "16"
         }
       ],
-      "Tooltip": "Send a chat command or message to Final Fantasy XIV",
+      "Tooltip": "Execute a Text Command in game",
       "UUID": "dev.wolf.xivdeck.sdplugin.actions.SendCommand"
     },
     {

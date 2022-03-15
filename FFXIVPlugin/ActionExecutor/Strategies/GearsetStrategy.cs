@@ -12,15 +12,15 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
         private static GameStateCache _gameStateCache = XIVDeckPlugin.Instance.GameStateCache;
         private static RaptureGearsetModule* _gsModule = RaptureGearsetModule.Instance();
         
-        public GameStateCache.Gearset GetGearsetBySlot(uint slot) {
+        public GameStateCache.Gearset? GetGearsetBySlot(uint slot) {
             // we want to intentionally bypass the cache here as the cache is a bit messy and, well, not always up to
             // date. this can get called quite a bit, so we don't want to force updating everything each time (which
             // (invalidates the entire point of the cache).
             
             var gsEntry = _gsModule->Gearset[(int) slot - 1];
 
-            if (gsEntry == null || !gsEntry->Flags.HasFlag(RaptureGearsetModule.GearsetFlag.Exists)) 
-                throw new ArgumentException($"The gearset in slot {slot} could not be found");
+            if (gsEntry == null || !gsEntry->Flags.HasFlag(RaptureGearsetModule.GearsetFlag.Exists))
+                return null;
 
             return new GameStateCache.Gearset {
                 Slot = gsEntry->ID,
@@ -41,17 +41,24 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
 
         public void Execute(uint actionSlot, dynamic _) {
             var gearset =  this.GetGearsetBySlot(actionSlot);
-            
-            String command = $"/gearset change {gearset.Slot + 1}";
+
+            if (gearset == null)
+                throw new ArgumentException($"No gearset exists in slot number {actionSlot}.");
+
+            String command = $"/gearset change {gearset.Value.Slot + 1}";
             
             PluginLog.Debug($"Would execute command: {command}");
             TickScheduler.Schedule(delegate {
-                XIVDeckPlugin.Instance.XivCommon.Functions.Chat.SendMessage(command);
+                ChatUtil.SendSanitizedChatMessage(command);
             });
         }
 
         public int GetIconId(uint slot) {
-            return 062800 + (int) this.GetGearsetBySlot(slot).ClassJob;
+            var gearset = this.GetGearsetBySlot(slot);
+
+            if (gearset == null) return 0;
+            
+            return 062800 + (int) gearset.Value.ClassJob;
         }
     }
 }

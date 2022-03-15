@@ -6,6 +6,7 @@ using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
     public class MinionStrategy : IStrategy {
@@ -36,7 +37,9 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             
             PluginLog.Debug($"Would execute command: {command}");
             
-            XIVDeckPlugin.Instance.XivCommon.Functions.Chat.SendMessage(command);
+            TickScheduler.Schedule(delegate {
+                ChatUtil.SendSanitizedChatMessage(command);
+            });
         }
 
         public int GetIconId(uint item) {

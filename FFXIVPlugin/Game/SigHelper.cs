@@ -4,6 +4,8 @@ using Dalamud.Hooking;
 using Dalamud.Logging;
 using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
+using FFXIVClientStructs.FFXIV.Client.System.Memory;
+using FFXIVClientStructs.FFXIV.Client.System.String;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
@@ -21,6 +23,8 @@ namespace XIVDeck.FFXIVPlugin.Game {
 
             internal const string LoadHotbarSlotIcon =
                 "40 53 48 83 EC 20 44 8B 81 ?? ?? ?? ?? 48 8B D9 0F B6 91 ?? ?? ?? ?? E8 ?? ?? ?? ?? 85 C0";
+
+            internal const string SanitizeChatString = "E8 ?? ?? ?? ?? EB 0A 48 8D 4C 24 ?? E8 ?? ?? ?? ?? 48 8D 8D";
         }
         
         /***** functions *****/
@@ -29,7 +33,9 @@ namespace XIVDeck.FFXIVPlugin.Game {
 
         [Signature(Signatures.LoadHotbarSlotIcon, Fallibility = Fallibility.Fallible)]
         private readonly delegate* unmanaged<HotBarSlot*, bool> _refreshHotbarIcon = null!;
-
+        
+        [Signature(Signatures.SanitizeChatString, Fallibility = Fallibility.Fallible)]
+        private readonly delegate* unmanaged<Utf8String*, int, IntPtr, void> _sanitizeChatString = null!;
         
         /***** hooks *****/
         private delegate IntPtr RaptureGearsetModule_WriteFile(IntPtr a1, IntPtr a2);
@@ -91,6 +97,18 @@ namespace XIVDeck.FFXIVPlugin.Game {
             }
 
             return this._refreshHotbarIcon( slot );
+        }
+
+        public string GetSanitizedString(string input) {
+            var uString = Utf8String.FromString(input);
+            
+            this._sanitizeChatString(uString, 0x27F, IntPtr.Zero);
+            var output = uString->ToString();
+            
+            uString->Dtor();
+            IMemorySpace.Free(uString);
+            
+            return output;
         }
 
         private IntPtr DetourGearsetSave(IntPtr a1, IntPtr a2) {

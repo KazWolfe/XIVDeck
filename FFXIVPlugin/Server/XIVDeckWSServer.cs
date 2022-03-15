@@ -51,7 +51,7 @@ namespace XIVDeck.FFXIVPlugin.Server {
                 
                 // command/text
                 case "command":
-                    message = JsonConvert.DeserializeObject<WSChatMessage>(rawMessage);
+                    message = JsonConvert.DeserializeObject<WSCommandMessage>(rawMessage);
                     break;
 
                 // hotbar
@@ -89,7 +89,7 @@ namespace XIVDeck.FFXIVPlugin.Server {
             try {
                 message.Process(this);
             } catch (Exception ex) {
-                Injections.Chat.PrintError($"[XIVDeck] An error occured while processing a websocket message: {ex.GetType()}: {ex.Message}");
+                Injections.Chat.PrintError($"[XIVDeck] {ex.Message}");
                 PluginLog.Error(ex, "The WebSocket server encountered an error processing a message.");
 
                 // Error handling logic - send an alert back to the Stream Deck so we can show a failed icon.

@@ -40,17 +40,17 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             // about this.
             
             if (!this.IsPerformUnlocked()) {
-                throw new InvalidOperationException("Performance mode hasn't been unlocked yet!");
+                throw new InvalidOperationException("Performance mode hasn't yet been unlocked.");
             }
             
             if (Injections.Condition[ConditionFlag.Performing]) {
-                throw new InvalidOperationException("Cannot switch instruments while in Performance mode!");
+                throw new InvalidOperationException("Cannot switch instruments while actively in Perform mode.");
             }
 
             var instrument = this.GetInstrumentById(actionId);
 
             if (instrument == null) {
-                throw new ArgumentOutOfRangeException(nameof(actionId), "No instrument with the specified ID exists");
+                throw new ArgumentOutOfRangeException(nameof(actionId), $"No instrument with ID {actionId} exists.");
             }
             
             TickScheduler.Schedule(delegate {

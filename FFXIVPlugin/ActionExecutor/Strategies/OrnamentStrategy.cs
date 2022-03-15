@@ -6,6 +6,7 @@ using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
     public class OrnamentStrategy : IStrategy {
@@ -35,7 +36,9 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             String command = $"/fashion \"{ornament.Singular.RawString}\"";
             
             PluginLog.Debug($"Would execute command: {command}");
-            XIVDeckPlugin.Instance.XivCommon.Functions.Chat.SendMessage(command);
+            TickScheduler.Schedule(delegate {
+                ChatUtil.SendSanitizedChatMessage(command);
+            });
         }
 
         public int GetIconId(uint item) {

@@ -29,7 +29,7 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
                 TickScheduler.Schedule(delegate {
                     var command = $"/gs change {gearset.Slot}";
                     PluginLog.Debug($"Would send command: {command}");
-                    XIVDeckPlugin.Instance.XivCommon.Functions.Chat.SendMessage(command);
+                    ChatUtil.SendSanitizedChatMessage(command);
                 });
 
                 return;
@@ -40,11 +40,10 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
             var classJob = sheet!.GetRow((uint) this.Id);
 
             if (classJob == null) 
-                throw new ArgumentException($"Class with ID {this.Id} does not exist!");
+                throw new ArgumentException($"A class with ID {this.Id} does not exist!");
             
-            Injections.Chat.PrintError($"Couldn't switch to {classJob.NameEnglish.RawString} because you " +
+            throw new ArgumentException($"Couldn't switch to {classJob.NameEnglish.RawString} because you " +
                                        $"don't have a gearset for this class. Make one and try again.");
-            session.SendText(JsonConvert.SerializeObject(new WSShowSDAlert(this.SDContext)));
         }
 
         public WSSwitchClassOpcode() : base("switchClass") { }
