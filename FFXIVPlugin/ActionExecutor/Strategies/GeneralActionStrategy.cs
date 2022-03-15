@@ -54,6 +54,10 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             if (action.UnlockLink != 0 && !UIState.Instance()->Hotbar.IsActionUnlocked(action.UnlockLink)) {
                 throw new InvalidOperationException($"The action \"{action.Name.RawString}\" is not yet unlocked.");
             }
+            
+            if (actionId == 12 && UIState.Instance()->Hotbar.IsActionUnlocked(12)) {
+                action = this.GetActionById(13)!;
+            }
 
             TickScheduler.Schedule(delegate {
                 ChatUtil.SendSanitizedChatMessage($"/generalaction \"{action.Name.RawString}\"");
