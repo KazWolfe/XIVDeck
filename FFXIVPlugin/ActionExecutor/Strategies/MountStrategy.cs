@@ -22,6 +22,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             return _gameStateCache.UnlockedMounts!.Select(mount => new ExecutableAction() {
                 ActionId = (int) mount.RowId, 
                 ActionName = mount.Singular.RawString, 
+                IconId = mount.Icon,
                 HotbarSlotType = HotbarSlotType.Mount
             }).ToList();
         }

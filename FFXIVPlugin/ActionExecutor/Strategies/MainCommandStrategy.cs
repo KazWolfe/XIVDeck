@@ -47,6 +47,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             return this._mainCommandCache.Select(command => new ExecutableAction() {
                 ActionId = (int) command.RowId, 
                 ActionName = command.Name.RawString, 
+                IconId = command.Icon,
                 Category = command.MainCommandCategory.Value!.Name.ToString(),
                 HotbarSlotType = HotbarSlotType.MainCommand
             }).ToList();

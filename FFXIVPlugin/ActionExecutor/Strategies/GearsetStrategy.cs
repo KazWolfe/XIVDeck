@@ -35,7 +35,8 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             return _gameStateCache.Gearsets!.Select(gearset => new ExecutableAction {
                 ActionId = gearset.Slot, 
                 ActionName = gearset.Name, 
-                HotbarSlotType = HotbarSlotType.GearSet,
+                IconId = 062800 + (int) gearset.ClassJob,
+                HotbarSlotType = HotbarSlotType.GearSet
             }).ToList();
         }
 

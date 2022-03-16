@@ -4,7 +4,7 @@ using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
-    public class WSCommandMessage : BaseInboundMessage {
+    public class WSCommandOpcode : BaseInboundMessage {
         public string Command { get; set; } = default!;
         public bool SafeMode = true; // this can be overridden by the serializer *if you know what you're doing*.
                                      // instructions will not be provided. 
@@ -22,6 +22,6 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
             });
         }
 
-        public WSCommandMessage() : base("command") { }
+        public WSCommandOpcode() : base("command") { }
     }
 }

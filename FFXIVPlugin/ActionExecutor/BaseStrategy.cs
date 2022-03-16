@@ -13,6 +13,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor {
     public class ExecutableAction {
         [JsonProperty("name")] public string? ActionName; // optional, will realistically only ever be sent
         [JsonProperty("id")] public int ActionId;
+        [JsonProperty("iconId")] public int IconId;
 
         [JsonProperty("category")] public string? Category; // optional, send-only. used for grouping where available
         
@@ -80,6 +81,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor {
                 this._actionCache.Add(new ExecutableAction() {
                     ActionId = (int) row.RowId,
                     ActionName = actionName,
+                    IconId = this.GetIconForAction(row),
                     HotbarSlotType = this.GetHotbarSlotType()
                 });
             }

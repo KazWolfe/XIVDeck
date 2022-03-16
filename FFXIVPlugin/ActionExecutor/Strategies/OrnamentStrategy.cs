@@ -22,6 +22,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             return GameStateCache.UnlockedOrnaments!.Select(ornament => new ExecutableAction() {
                 ActionId = (int) ornament.RowId, 
                 ActionName = ornament.Singular.RawString, 
+                IconId = ornament.Icon,
                 HotbarSlotType = HotbarSlotType.FashionAccessory
             }).ToList();
         }

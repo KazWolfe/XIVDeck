@@ -22,6 +22,8 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             return GameStateCache.UnlockedEmotes!.Select(emote => new ExecutableAction() {
                 ActionId = (int) emote.RowId, 
                 ActionName = emote.Name.RawString, 
+                IconId = emote.Icon,
+                Category = emote.EmoteCategory.Value?.Name.RawString ?? null,
                 HotbarSlotType = HotbarSlotType.Emote
             }).ToList();
         }

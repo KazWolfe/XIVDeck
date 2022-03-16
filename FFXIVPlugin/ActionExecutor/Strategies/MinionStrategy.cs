@@ -22,6 +22,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             return GameStateCache.UnlockedMinions!.Select(minion => new ExecutableAction() {
                 ActionId = (int) minion.RowId, 
                 ActionName = minion.Singular.RawString, 
+                IconId = minion.Icon,
                 HotbarSlotType = HotbarSlotType.Minion
             }).ToList();
         }

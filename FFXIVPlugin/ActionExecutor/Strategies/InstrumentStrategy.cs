@@ -29,6 +29,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             return PerformSheet.Where(i => i.RowId > 0).Select(instrument => new ExecutableAction {
                 ActionId = (int) instrument.RowId, 
                 ActionName = instrument.Instrument.RawString, 
+                IconId = instrument.Order,
                 HotbarSlotType = HotbarSlotType.PerformanceInstrument
             }).ToList();
         }

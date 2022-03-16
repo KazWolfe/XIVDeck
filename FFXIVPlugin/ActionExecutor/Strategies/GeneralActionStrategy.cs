@@ -88,6 +88,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
                 actions.Add(new ExecutableAction {
                     ActionId = (int) action.RowId,
                     ActionName = action.Name.RawString,
+                    IconId = action.Icon,
                     HotbarSlotType = HotbarSlotType.GeneralAction
                 });
             }

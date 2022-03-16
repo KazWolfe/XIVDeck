@@ -9,6 +9,7 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages {
     public class BaseInboundMessage {
         public string Opcode { get; set; }
         public string? SDContext { get; set; }
+        public dynamic? Context { get; set; } // 
         public int Nonce { get; }
 
         public BaseInboundMessage(string opcode, string? sdContext = null) {
@@ -22,6 +23,7 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages {
     public class BaseOutboundMessage {
         [JsonProperty("messageType")] public string MessageType { get; set; }
         [JsonProperty("nonce")] public int Nonce { get; set; }
+        // [JsonProperty("context")] public dynamic? Context { get; set; }
 
         public BaseOutboundMessage(string messageType, int nonce) {
             this.MessageType = messageType;

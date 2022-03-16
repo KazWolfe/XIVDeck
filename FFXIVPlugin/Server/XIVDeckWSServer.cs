@@ -49,9 +49,14 @@ namespace XIVDeck.FFXIVPlugin.Server {
                     message = JsonConvert.DeserializeObject<WSEchoInboundMessage>(rawMessage);
                     break;
                 
+                // common
+                case "getIcon":
+                    message = JsonConvert.DeserializeObject<WSGetIconOpcode>(rawMessage);
+                    break;
+                
                 // command/text
                 case "command":
-                    message = JsonConvert.DeserializeObject<WSCommandMessage>(rawMessage);
+                    message = JsonConvert.DeserializeObject<WSCommandOpcode>(rawMessage);
                     break;
 
                 // hotbar
