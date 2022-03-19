@@ -10,7 +10,7 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
         [JsonRequired] public int HotbarId { get; set; }
         [JsonRequired] public int SlotId { get; set; }
 
-        public override unsafe void Process(WsSession session) {
+        public override unsafe BaseOutboundMessage? Process(WsSession session) {
             var plugin = XIVDeckPlugin.Instance;
             
             var hotbarModule = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule();
@@ -36,6 +36,8 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
                 var hotbarItem = hotbarModule->HotBar[this.HotbarId]->Slot[this.SlotId];
                 plugin.SigHelper.ExecuteHotbarSlot(hotbarItem);
             });
+
+            return null;
         }
 
         public WSExecuteHotbarSlotOpcode() : base("execHotbar") { }

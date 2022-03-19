@@ -43,7 +43,7 @@ namespace XIVDeck.FFXIVPlugin.Server {
                 
                 // system messages
                 case "init":
-                    message = JsonConvert.DeserializeObject<WSInitMessage>(rawMessage);
+                    message = JsonConvert.DeserializeObject<WSInitOpcode>(rawMessage);
                     break;
                 case "echo":
                     message = JsonConvert.DeserializeObject<WSEchoInboundMessage>(rawMessage);
@@ -91,17 +91,23 @@ namespace XIVDeck.FFXIVPlugin.Server {
                 throw new InvalidDataException($"Message failed deserialization: {rawMessage}");
             }
 
+            BaseOutboundMessage? reply = null;
             try {
-                message.Process(this);
+                reply = message.Process(this);
+
+                if (reply != null) 
+                    reply.Context = message.Context;
             } catch (Exception ex) {
                 Injections.Chat.PrintError($"[XIVDeck] {ex.Message}");
                 PluginLog.Error(ex, "The WebSocket server encountered an error processing a message.");
 
-                // Error handling logic - send an alert back to the Stream Deck so we can show a failed icon.
-                if (message.SDContext != null) {
-                    this.SendText(JsonConvert.SerializeObject(new WSShowSDAlert(message.SDContext)));
-                }
+                this.SendText(JsonConvert.SerializeObject(new WSReplyMessage(message.Context, ex)));
+                return;
             }
+
+            this.SendText(reply != null
+                ? JsonConvert.SerializeObject(reply)
+                : JsonConvert.SerializeObject(new WSReplyMessage(message.Context)));
         }
 
         public new void SendClose(int code, string text) {

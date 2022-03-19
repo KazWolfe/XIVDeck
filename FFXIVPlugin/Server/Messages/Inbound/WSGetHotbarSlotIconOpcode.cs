@@ -9,7 +9,7 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
         [JsonRequired][JsonProperty("hotbarId")] public int HotbarId { get; set; }
         [JsonRequired][JsonProperty("slotId")] public int SlotId { get; set; }
 
-        public override unsafe void Process(WsSession session) {
+        public override unsafe WSHotbarSlotIconMessage Process(WsSession session) {
             var plugin = XIVDeckPlugin.Instance;
 
             var hotbarModule =
@@ -32,19 +32,27 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
             var iconId = hotbarItem->Icon;
             
             String pngString = plugin.IconManager.GetIconAsPngString(iconId % 1000000, iconId >= 1000000);
-            
-            var reply = new Dictionary<string, dynamic> {
-                ["messageType"] = "hotbarIcon",
-                ["hotbarId"] = this.HotbarId,
-                ["slotId"] = this.SlotId,
-                ["iconId"] = iconId,
-                ["iconData"] = pngString
-            };
 
-            session.SendTextAsync(JsonConvert.SerializeObject(reply));
+            return new WSHotbarSlotIconMessage {
+                HotbarId = this.HotbarId,
+                SlotId = this.SlotId,
+                IconId = iconId,
+                IconData = pngString
+            };
         }
         
         public WSGetHotbarSlotIconOpcode() : base("getHotbarIcon") { }
+    }
 
+    public class WSHotbarSlotIconMessage : BaseOutboundMessage {
+        [JsonProperty("hotbarId")] public int HotbarId;
+        [JsonProperty("slotId")] public int SlotId;
+        
+        [JsonProperty("iconId")] public int IconId;
+        [JsonProperty("iconData")] public string IconData = default!;
+        
+        public WSHotbarSlotIconMessage() : base("hotbarIcon") {
+
+        }
     }
 }

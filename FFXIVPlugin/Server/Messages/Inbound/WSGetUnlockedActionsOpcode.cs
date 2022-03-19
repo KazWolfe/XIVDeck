@@ -3,10 +3,11 @@ using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using NetCoreServer;
 using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.ActionExecutor;
+using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 
 namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
     public class WSGetUnlockedActionsOpcode : BaseInboundMessage {
-        public override void Process(WsSession session) {
+        public override WSUnlockedActionsMessage Process(WsSession session) {
             // refresh the cache first so we have all the newest data available
             XIVDeckPlugin.Instance.GameStateCache.Refresh();
             
@@ -19,15 +20,20 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
                 actions[type] = allowedItems;
             }
 
-            var reply = new Dictionary<string, dynamic> {
-                ["messageType"] = "unlockedActions",
-                ["data"] = actions
-            };
-
-            session.SendTextAsync(JsonConvert.SerializeObject(reply));
+            return new WSUnlockedActionsMessage(actions);
         }
         
         public WSGetUnlockedActionsOpcode() : base("getUnlockedActions") { }
 
+    }
+
+    public class WSUnlockedActionsMessage : BaseOutboundMessage {
+        // ToDo: Rename this field to `actions`.
+        [JsonProperty("data")]
+        public Dictionary<HotbarSlotType, List<ExecutableAction>> AllowedActions;
+
+        public WSUnlockedActionsMessage(Dictionary<HotbarSlotType, List<ExecutableAction>> allowedActions) : base("unlockedActions") { 
+            this.AllowedActions = allowedActions;
+        }
     }
 }

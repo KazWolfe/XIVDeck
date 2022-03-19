@@ -9,7 +9,7 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
         public bool SafeMode = true; // this can be overridden by the serializer *if you know what you're doing*.
                                      // instructions will not be provided. 
 
-        public override void Process(WsSession session) {
+        public override BaseOutboundMessage? Process(WsSession session) {
             if (!Injections.ClientState.IsLoggedIn)
                 throw new InvalidOperationException("A player is not logged in to the game!");
 
@@ -20,6 +20,8 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
             TickScheduler.Schedule(delegate {
                 ChatUtil.SendSanitizedChatMessage(this.Command, this.SafeMode);
             });
+
+            return null;
         }
 
         public WSCommandOpcode() : base("command") { }

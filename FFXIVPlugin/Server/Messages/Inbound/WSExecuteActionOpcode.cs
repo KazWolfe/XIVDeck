@@ -14,13 +14,15 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
          */
         public dynamic? Options { get; set; } = default!;
 
-        public override void Process(WsSession session) {
+        public override BaseOutboundMessage? Process(WsSession session) {
             HotbarSlotType actionType = this.Action.HotbarSlotType;
             
             if (!Injections.ClientState.IsLoggedIn)
                 throw new InvalidOperationException("A player is not logged in to the game!");
             
             ActionDispatcher.GetStrategyForSlotType(actionType).Execute((uint) this.Action.ActionId, this.Options);
+
+            return null;
         }
 
         public WSExecuteActionOpcode() : base("execAction") { }

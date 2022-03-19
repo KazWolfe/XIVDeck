@@ -8,16 +8,16 @@ using XIVDeck.FFXIVPlugin.Base;
 
 namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
     [SuppressMessage("ReSharper", "UnassignedGetOnlyAutoProperty", Justification = "JSON serializer will initialize values")]
-    public class WSInitMessage : BaseInboundMessage {
+    public class WSInitOpcode : BaseInboundMessage {
         public string Data { get; set; } = default!;
         public string Version { get; set; } = default!;
 
-        public override void Process(WsSession session) {
+        public override BaseOutboundMessage? Process(WsSession session) {
             if (System.Version.Parse(this.Version) < System.Version.Parse(Constants.MinimumSDPluginVersion)) {
                 session.SendClose(1008, "The version of the Stream Deck plugin is too old.");
                 PluginLog.Warning($"The currently-installed version of the XIVDeck Stream Deck plugin " +
                                   $"is {this.Version}, but version {Constants.MinimumSDPluginVersion} is needed.");
-                return;
+                return null;
             }
             
             var reply = new Dictionary<string, string> {
@@ -35,8 +35,10 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
                 XIVDeckPlugin.Instance.Configuration.HasLinkedStreamDeckPlugin = true;
                 XIVDeckPlugin.Instance.Configuration.Save();
             }
+
+            return null;
         }
 
-        public WSInitMessage() : base("init") { }
+        public WSInitOpcode() : base("init") { }
     }
 }

@@ -13,7 +13,7 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
         
         [JsonProperty("id")] int Id { get; set; }
 
-        public override void Process(WsSession session) {
+        public override BaseOutboundMessage? Process(WsSession session) {
             if (this.Id < 1)
                 throw new ArgumentException( "Cannot switch to a class with ID less than 1");
             
@@ -31,7 +31,7 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
                     ChatUtil.SendSanitizedChatMessage(command);
                 });
 
-                return;
+                return null;
             }
             
             // pretty error handling
