@@ -26,7 +26,7 @@ var ExecuteMacroButtonHandler = {
             let thisInstance = ExecuteMacroButtonHandler.cache[event.context];
             if (!thisInstance) { ExecuteMacroButtonHandler.elgatoEventHandlers.willAppear(event) }
 
-            thisInstance.execute(event);
+            thisInstance.execute();
         },
 
         // Called when the user releases a Stream Deck button.

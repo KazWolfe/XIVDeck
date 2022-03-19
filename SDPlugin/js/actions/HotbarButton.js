@@ -26,7 +26,7 @@
             let thisInstance = ExecuteHotbarSlotButtonHandler.cache[event.context];
             if (!thisInstance) { ExecuteHotbarSlotButtonHandler.elgatoEventHandlers.willAppear(event) }
 
-            thisInstance.execute(event);
+            thisInstance.execute();
         },
 
         // Called when the user releases a Stream Deck button.

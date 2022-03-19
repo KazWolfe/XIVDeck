@@ -9,32 +9,26 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages {
     public class BaseInboundMessage {
         public string Opcode { get; set; }
         public string? SDContext { get; set; }
-        public dynamic? Context { get; set; } // 
-        public int Nonce { get; }
+        public dynamic? Context { get; set; } // context will just be parroted
 
-        public BaseInboundMessage(string opcode, string? sdContext = null) {
+        public BaseInboundMessage(string opcode, dynamic? context = null) {
             this.Opcode = opcode;
-            this.SDContext = sdContext;
+            this.Context = context;
         }
 
-        public virtual void Process(WsSession session) { }
+        public virtual BaseOutboundMessage? Process(WsSession session) {
+            return null;
+        }
     }
 
     public class BaseOutboundMessage {
         [JsonProperty("messageType")] public string MessageType { get; set; }
-        [JsonProperty("nonce")] public int Nonce { get; set; }
-        // [JsonProperty("context")] public dynamic? Context { get; set; }
+        
+        [JsonProperty("context")] public dynamic? Context { get; set; }
 
-        public BaseOutboundMessage(string messageType, int nonce) {
+        public BaseOutboundMessage(string messageType, dynamic? context = null) {
             this.MessageType = messageType;
-            this.Nonce = nonce;
-        }
-
-        public BaseOutboundMessage(string messageType) {
-            var rng = new Random();
-
-            this.MessageType = messageType;
-            this.Nonce = rng.Next();
+            this.Context = context;
         }
     }
 }

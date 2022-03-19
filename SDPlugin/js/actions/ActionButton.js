@@ -28,7 +28,7 @@ var ExecuteActionButtonHandler = {
             let thisInstance = ExecuteActionButtonHandler.cache[event.context];
             if (!thisInstance) { ExecuteActionButtonHandler.elgatoEventHandlers.willAppear(event) }
 
-            thisInstance.execute(event);
+            thisInstance.execute();
         },
 
         // Called when the user releases a Stream Deck button.

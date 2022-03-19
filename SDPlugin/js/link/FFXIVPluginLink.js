@@ -15,6 +15,9 @@
         
         if (!this.websocket && !interactive) return;
         
+        payload.context = {};
+        payload.context['messageId'] = 123;
+        
         this.websocket.sendJSON(payload);
     }
 

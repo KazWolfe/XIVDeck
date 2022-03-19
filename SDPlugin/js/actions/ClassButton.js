@@ -27,7 +27,7 @@ var ClassButtonHandler = {
             let thisInstance = ClassButtonHandler.cache[event.context];
             if (!thisInstance) { ClassButtonHandler.elgatoEventHandlers.willAppear(event) }
 
-            thisInstance.execute(event);
+            thisInstance.execute();
         },
 
         // Called when the user releases a Stream Deck button.
