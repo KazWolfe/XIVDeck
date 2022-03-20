@@ -1,7 +1,7 @@
 ﻿export class AsyncLock {
     disable: Function;
     promise: Promise<void>;
-    
+
     constructor() {
         this.disable = () => { }
         this.promise = Promise.resolve()

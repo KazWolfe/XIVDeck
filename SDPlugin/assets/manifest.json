@@ -72,7 +72,7 @@
   "SDKVersion": 2,
   "Author": "Kaz Wolfe",
   "CodePath": "plugin.html",
-  "PropertyInspectorPath": "inspector.html",
+  "PropertyInspectorPath": "propertyInspector.html",
   "Description": "Integrate with Final Fantasy XIV for a mogtastic experience in-game!",
   "Name": "XIVDeck",
   "Icon": "assets/images/icon",

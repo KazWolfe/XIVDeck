@@ -4,7 +4,7 @@ import {KeyDownEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugi
 import plugin from "../../plugin";
 import {ExecuteCommandOpcode} from "../../link/ffxivplugin/messages/CommandMessages";
 
-type CommandButtonSettings = {
+export type CommandButtonSettings = {
     command: string
 }
 

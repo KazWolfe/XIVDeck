@@ -8,7 +8,7 @@ import {
 } from "../../link/ffxivplugin/messages/HotbarMessages";
 import plugin from "../../plugin";
 
-type HotbarButtonSettings = {
+export type HotbarButtonSettings = {
     hotbarId: number,
     slotId: number
 }
@@ -48,6 +48,10 @@ export class HotbarButton extends BaseButton {
     async render() : Promise<void> {
         if (!plugin.xivPluginLink.isReady()) {
             return;
+        }
+
+        if (this.hotbarId == null || this.slotId == null) {
+            return
         }
         
         let response: HotbarSlotIconMessage;

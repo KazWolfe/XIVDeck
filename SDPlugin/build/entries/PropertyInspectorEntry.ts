@@ -1,3 +1,3 @@
-import propertyInspector from '../../src/inspector';
+import piInstance from '../../src/inspector';
 
-export default propertyInspector.createStreamdeckConnector();
+export default piInstance.sdPluginLink.createStreamdeckConnector();

@@ -2,6 +2,7 @@
     name: string | null;
     id: number;
     type: string;
+    category: string | null,
 }
 
 export type FFXIVClass = {
@@ -16,4 +17,9 @@ export type FFXIVClass = {
     
     parentClass: number,
     hasGearset: boolean
+}
+
+export type StateMessage = {
+    type: string,
+    params: string | null
 }

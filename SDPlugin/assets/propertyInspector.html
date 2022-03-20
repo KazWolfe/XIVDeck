@@ -3,18 +3,25 @@
 <title>{{ PLUGIN_NS }} - PropertyInspector</title>
 <link rel="stylesheet" href="css/sdpi.css">
 <link rel="stylesheet" href="css/propertyInspector.css">
-<script src="js/propertyInspector.js"></script>
 
 <div class="sdpi-wrapper">
-  <!-- @see https://developer.elgato.com/documentation/stream-deck/sdk/property-inspector/ -->
-  <div class="sdpi-item">
-    <div class="sdpi-item-label">API Token</div>
-    <input class="sdpi-item-value" name="api_token" placeholder="Enter your Everhour API Token" required data-type="global">
+  <!-- injection for errors -->
+  <div class="sdpi-item" id="errorDisplay" style="display: none">
   </div>
-  <div class="hint">Get this from your <a class="info" href="https://app.everhour.com/#/account/profile" target="_blank">My Profile</a> page</div>
-  <div class="sdpi-item" data-actions="start_task">
-    <div class="sdpi-item-label">Task ID</div>
-    <input class="sdpi-item-value" name="task_id" placeholder="The ID of the task (including prefix)" required data-type="local">
+
+  <!-- Local settings for this action itself -->
+  <div class="sdpi-heading">Action Configuration</div>
+  <div id="dynamicPI"></div>
+
+  <!-- Global settings -->
+  <div class="sdpi-heading">Plugin Configuration</div>
+  <div id="globalPI"></div>
+  <div class="sdpi-item">
+    <label class="sdpi-item-label" for="global.port">XIVDeck Port</label>
+    <input class="sdpi-item-value" id="global.port" value="" placeholder="Port Number" size="10" maxlength="5" min="1024" max="59999">
   </div>
 </div>
+
+<script src="js/propertyInspector.js"></script>
+
 

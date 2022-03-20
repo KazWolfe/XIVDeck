@@ -37,6 +37,10 @@ const config = (environment: unknown, options: { mode: string; env: unknown }): 
             },
           }
         ],
+      }),
+      new webpack.ProvidePlugin({
+        $: 'jquery/src/jquery',
+        jquery: 'jquery/src/jquery'
       })
     ],
     module: {

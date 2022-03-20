@@ -23,8 +23,20 @@ export class GetActionIconOpcode extends FFXIVOpcode {
     }
 }
 
+export class GetUnlockedActionsOpcode extends FFXIVOpcode {
+    static override MESSAGE_OPCODE: string = "getUnlockedActions"
+
+    constructor() {
+        super(GetUnlockedActionsOpcode.MESSAGE_OPCODE);
+    }  
+}
+
 export type ActionIconMessage = {
     action: FFXIVAction,
     iconId: number,
     iconData: string
+}
+
+export type UnlockedActionsMessage = {
+    data: object
 }

@@ -8,8 +8,7 @@ import {
     GetActionIconOpcode
 } from "../../link/ffxivplugin/messages/ActionMessages";
 
-type MacroButtonSettings = { 
-    isSharedMacro: boolean,
+export type MacroButtonSettings = { 
     macroId: number
 }
 
@@ -38,12 +37,16 @@ export class MacroButton extends BaseButton {
     }
 
     async render() {
+        if (!this.useGameIcon) {
+            this.setImage("");
+            return
+        }
+
         if (!plugin.xivPluginLink.isReady()) {
             return;
         }
 
-        if (!this.useGameIcon) {
-            this.setImage("");
+        if (this.macroId == null) {
             return
         }
 

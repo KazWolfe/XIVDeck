@@ -39,7 +39,7 @@ export class FFXIVPluginLink {
         return this._websocket.sendRequest(payload, { requestId: uuidv4() });
     }
     
-    public connect(doRetry: boolean = true): void {
+    public connect(doRetry: boolean = true): Promise<unknown> | undefined {
         // if the game currently isn't alive, there's nothing for us to do.
         if (!this.isGameAlive) {
             console.warn("[XIVDeck - FFXIVLink] Attempted websocket connection while game should be dead.")
@@ -69,7 +69,7 @@ export class FFXIVPluginLink {
         this._websocket.onUnpackedMessage.addListener(this._onWSMessage.bind(this))
         this._websocket.onClose.addListener(this._onWSClose.bind(this));
 
-        this._websocket.open();
+        return this._websocket.open();
     }
     
     private _onWSMessage(data: any): void {

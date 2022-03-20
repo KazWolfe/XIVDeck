@@ -8,7 +8,7 @@ import {
 } from "../../link/ffxivplugin/messages/ClassMessages";
 import plugin from "../../plugin";
 
-type ClassButtonSettings = {
+export type ClassButtonSettings = {
     classId: number
 }
 
@@ -38,6 +38,15 @@ export class ClassButton extends BaseButton {
     async render(): Promise<void> {
         if (!this.useGameIcon) {
             this.setImage("");
+            return
+        }
+
+        if (!plugin.xivPluginLink.isReady()) {
+            return;
+        }
+
+        if (this.classId == null) {
+            return
         }
         
         let myClass = await plugin.xivPluginLink.send(new GetClassOpcode(this.classId)) as GameClassMessage;
