@@ -1,5 +1,5 @@
 ﻿export type GlobalSettings = {
-    wsConfig: {
+    ws: {
         port: number
     }
 }

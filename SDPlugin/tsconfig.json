@@ -1,16 +1,25 @@
-﻿{
+{
   "compilerOptions": {
-    "outDir": "./dist/",
+    /* Visit https://aka.ms/tsconfig.json to read more about this file */
+    "target": "esnext",
     "module": "commonjs",
-    "target": "es6",
-    "sourceMap": true,
-    "resolveJsonModule": true,
+    "declaration": false,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
     "noImplicitReturns": true,
-    "noImplicitOverride": true,
-    "strict": true
-  },
-  "exclude": [
-    "node_modules"
-  ],
-  "include": ["./src/**/*"]
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+
+  }
 }

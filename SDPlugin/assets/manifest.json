@@ -66,6 +66,7 @@
       "UUID": "dev.wolf.xivdeck.sdplugin.actions.SwitchClass"
     }
   ],
+  "PluginUUID": "dev.wolf.xivdeck",
   "Category": "XIVDeck",
   "CategoryIcon": "assets/images/category",
   "SDKVersion": 2,

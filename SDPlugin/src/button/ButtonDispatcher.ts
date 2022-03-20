@@ -3,12 +3,11 @@ import {BaseButton} from "./BaseButton";
 import {ActionButton} from "./buttons/ActionButton";
 import {HotbarButton} from "./buttons/HotbarButton";
 import {CommandButton} from "./buttons/CommandButton";
-import {GearsetButton} from "./buttons/GearsetButton";
 import {MacroButton} from "./buttons/MacroButton";
 import plugin from "../plugin";
-import {GetSettingsEvent} from "@rweich/streamdeck-events/dist/Events/Streamdeck/Received";
 import {DidReceiveSettingsEvent} from "@rweich/streamdeck-events/dist/Events/Received";
 import AbstractStateEvent from "@rweich/streamdeck-events/dist/Events/Received/Plugin/AbstractStateEvent";
+import {ClassButton} from "./buttons/ClassButton";
 
 export class ButtonDispatcher {
     private _contextCache: Map<string, BaseButton> = new Map<string, BaseButton>();
@@ -17,20 +16,20 @@ export class ButtonDispatcher {
         let button: BaseButton;
 
         switch (event.action) {
-            case "dev.wolf.xivdeck.sdplugin.actions.SendCommand":
+            case "dev.wolf.xivdeck.sdplugin.actions.sendcommand":
                 button = new CommandButton(event);
                 break;
-            case "dev.wolf.xivdeck.sdplugin.actions.ExecHotbar":
+            case "dev.wolf.xivdeck.sdplugin.actions.exechotbar":
                 button = new HotbarButton(event);
                 break;
-            case "dev.wolf.xivdeck.sdplugin.actions.ExecAction":
+            case "dev.wolf.xivdeck.sdplugin.actions.execaction":
                 button = new ActionButton(event);
                 break;
-            case "dev.wolf.xivdeck.sdplugin.actions.ExecMacro":
+            case "dev.wolf.xivdeck.sdplugin.actions.execmacro":
                 button = new MacroButton(event);
                 break;
-            case "dev.wolf.xivdeck.sdplugin.actions.SwitchClass":
-                button = new GearsetButton(event);
+            case "dev.wolf.xivdeck.sdplugin.actions.switchclass":
+                button = new ClassButton(event);
                 break;
             default:
                 throw new Error(`Undefined action type: ${event.action}`)
@@ -45,7 +44,7 @@ export class ButtonDispatcher {
     private _destructButton(context: string) {
         let button = this._contextCache.get(context);
         
-        if (button == undefined) {
+        if (button == null) {
             console.debug(`Couldn't delete button with context ${context} as it doesnt exist in cache.`)
             return
         }
@@ -55,6 +54,9 @@ export class ButtonDispatcher {
     }
     
     handleWillAppear(event: WillAppearEvent): void {
+        // bust the icon cache for test/debug purposes
+        plugin.sdPluginLink.setImage("", event.context);
+        
         this._constructButton(event);
     }
     

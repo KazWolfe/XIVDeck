@@ -15,14 +15,9 @@
     <PropertyGroup>
         <StreamDeckBundler>$(appdata)\Elgato\StreamDeck\</StreamDeckBundler>
     </PropertyGroup>
-
+    
     <ItemGroup>
-      <TypeScriptCompile Include="src\*.*" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="src\assets\css" />
-      <Folder Include="src\assets\images" />
+      <Folder Include="dist" />
     </ItemGroup>
 
 </Project>

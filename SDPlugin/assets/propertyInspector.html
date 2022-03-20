@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<meta charset="utf-8"/>
+<title>{{ PLUGIN_NS }} - PropertyInspector</title>
+<link rel="stylesheet" href="css/sdpi.css">
+<link rel="stylesheet" href="css/propertyInspector.css">
+<script src="js/propertyInspector.js"></script>
+
+<div class="sdpi-wrapper">
+  <!-- @see https://developer.elgato.com/documentation/stream-deck/sdk/property-inspector/ -->
+  <div class="sdpi-item">
+    <div class="sdpi-item-label">API Token</div>
+    <input class="sdpi-item-value" name="api_token" placeholder="Enter your Everhour API Token" required data-type="global">
+  </div>
+  <div class="hint">Get this from your <a class="info" href="https://app.everhour.com/#/account/profile" target="_blank">My Profile</a> page</div>
+  <div class="sdpi-item" data-actions="start_task">
+    <div class="sdpi-item-label">Task ID</div>
+    <input class="sdpi-item-value" name="task_id" placeholder="The ID of the task (including prefix)" required data-type="local">
+  </div>
+</div>
+
