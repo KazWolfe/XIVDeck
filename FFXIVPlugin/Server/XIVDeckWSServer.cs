@@ -82,6 +82,9 @@ namespace XIVDeck.FFXIVPlugin.Server {
                 case "getClasses":
                     message = JsonConvert.DeserializeObject<WSGetClassesOpcode>(rawMessage);
                     break;
+                case "getClass":
+                    message = JsonConvert.DeserializeObject<WSGetClassOpcode>(rawMessage);
+                    break;
                 case "switchClass":
                     message = JsonConvert.DeserializeObject<WSSwitchClassOpcode>(rawMessage);
                     break;
