@@ -1,13 +1,10 @@
-﻿using System.Collections.Generic;
-using NetCoreServer;
-using Newtonsoft.Json;
-
+﻿
 namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
     public class WSEchoInboundMessage : BaseInboundMessage {
         public string Data { get; set; } = default!;
 
-        public override WSEchoOutboundMessage Process(WsSession session) {
-            return new WSEchoOutboundMessage(this.Data);
+        public override void Process(XIVDeckRoute session) {
+            session.SendMessage(new WSEchoOutboundMessage(this.Data));
         }
 
         public WSEchoInboundMessage() : base("echo") { }

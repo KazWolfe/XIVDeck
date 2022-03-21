@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
-using NetCoreServer;
 using Newtonsoft.Json;
 
 namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
@@ -9,7 +7,7 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
         [JsonRequired][JsonProperty("hotbarId")] public int HotbarId { get; set; }
         [JsonRequired][JsonProperty("slotId")] public int SlotId { get; set; }
 
-        public override unsafe WSHotbarSlotIconMessage Process(WsSession session) {
+        public override unsafe void Process(XIVDeckRoute session) {
             var plugin = XIVDeckPlugin.Instance;
 
             var hotbarModule =
@@ -33,12 +31,12 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
             
             String pngString = plugin.IconManager.GetIconAsPngString(iconId % 1000000, iconId >= 1000000);
 
-            return new WSHotbarSlotIconMessage {
+            session.SendMessage(new WSHotbarSlotIconMessage() {
                 HotbarId = this.HotbarId,
                 SlotId = this.SlotId,
                 IconId = iconId,
-                IconData = pngString
-            };
+                IconData = pngString,
+            });
         }
         
         public WSGetHotbarSlotIconOpcode() : base("getHotbarIcon") { }

@@ -1,6 +1,7 @@
 ﻿using System;
-using NetCoreServer;
+
 using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
@@ -9,7 +10,7 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
         public bool SafeMode = true; // this can be overridden by the serializer *if you know what you're doing*.
                                      // instructions will not be provided. 
 
-        public override BaseOutboundMessage? Process(WsSession session) {
+        public override void Process(XIVDeckRoute session) {
             if (!Injections.ClientState.IsLoggedIn)
                 throw new InvalidOperationException("A player is not logged in to the game!");
 
@@ -20,8 +21,8 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
             TickScheduler.Schedule(delegate {
                 ChatUtil.SendSanitizedChatMessage(this.Command, this.SafeMode);
             });
-
-            return null;
+            
+            session.SendMessage(new WSReplyMessage(this.Context));
         }
 
         public WSCommandOpcode() : base("command") { }

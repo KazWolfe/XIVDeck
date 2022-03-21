@@ -7,7 +7,9 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Outbound {
 
         [JsonProperty("success")] public bool Success = true;
         [JsonProperty("exception")] public Exception? Exception;
-        
+
+        public WSReplyMessage() : base(MESSAGE_NAME) { }
+
         public WSReplyMessage(dynamic context, Exception? ex = null) : base(MESSAGE_NAME) {
             this.Context = context;
 

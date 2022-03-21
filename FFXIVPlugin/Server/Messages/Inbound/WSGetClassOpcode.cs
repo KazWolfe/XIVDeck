@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Dalamud.Logging;
-using Lumina.Excel;
-using Lumina.Excel.GeneratedSheets;
-using NetCoreServer;
+﻿
 using Newtonsoft.Json;
-using XIVDeck.FFXIVPlugin.Base;
-using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Server.Types;
 
 namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
     public class WSGetClassOpcode : BaseInboundMessage {
         [JsonProperty("id")] public int ClassId;
         
-        public override WSClassMessage Process(WsSession session) {
-            return new WSClassMessage(this.ClassId);
+        public override void Process(XIVDeckRoute session) {
+            session.SendMessage(new WSClassMessage(this.ClassId));
         }
 
         public WSGetClassOpcode() : base("getClasses") { }

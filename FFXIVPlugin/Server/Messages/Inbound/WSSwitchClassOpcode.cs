@@ -1,10 +1,10 @@
 ﻿using System;
 using Dalamud.Logging;
 using Lumina.Excel.GeneratedSheets;
-using NetCoreServer;
 using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
@@ -13,7 +13,7 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
         
         [JsonProperty("id")] int Id { get; set; }
 
-        public override BaseOutboundMessage? Process(WsSession session) {
+        public override void Process(XIVDeckRoute session) {
             if (this.Id < 1)
                 throw new ArgumentException( "Cannot switch to a class with ID less than 1");
             
@@ -31,7 +31,8 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
                     ChatUtil.SendSanitizedChatMessage(command);
                 });
 
-                return null;
+                session.SendMessage(new WSReplyMessage());
+                return;
             }
             
             // pretty error handling

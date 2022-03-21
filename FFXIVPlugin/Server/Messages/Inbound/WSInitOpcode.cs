@@ -2,7 +2,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Dalamud.Logging;
-using NetCoreServer;
 using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.Base;
 
@@ -12,12 +11,12 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
         public string Data { get; set; } = default!;
         public string Version { get; set; } = default!;
 
-        public override BaseOutboundMessage? Process(WsSession session) {
+        public override void Process(XIVDeckRoute session) {
             if (System.Version.Parse(this.Version) < System.Version.Parse(Constants.MinimumSDPluginVersion)) {
                 session.SendClose(1008, "The version of the Stream Deck plugin is too old.");
                 PluginLog.Warning($"The currently-installed version of the XIVDeck Stream Deck plugin " +
                                   $"is {this.Version}, but version {Constants.MinimumSDPluginVersion} is needed.");
-                return null;
+                return;
             }
             
             var reply = new Dictionary<string, string> {
@@ -35,8 +34,6 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
                 XIVDeckPlugin.Instance.Configuration.HasLinkedStreamDeckPlugin = true;
                 XIVDeckPlugin.Instance.Configuration.Save();
             }
-
-            return null;
         }
 
         public WSInitOpcode() : base("init") { }

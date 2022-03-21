@@ -1,8 +1,8 @@
 ﻿using System;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
-using NetCoreServer;
 using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
@@ -10,7 +10,7 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
         [JsonRequired] public int HotbarId { get; set; }
         [JsonRequired] public int SlotId { get; set; }
 
-        public override unsafe BaseOutboundMessage? Process(WsSession session) {
+        public override unsafe void Process(XIVDeckRoute session) {
             var plugin = XIVDeckPlugin.Instance;
             
             var hotbarModule = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule();
@@ -36,8 +36,8 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
                 var hotbarItem = hotbarModule->HotBar[this.HotbarId]->Slot[this.SlotId];
                 plugin.SigHelper.ExecuteHotbarSlot(hotbarItem);
             });
-
-            return null;
+            
+            session.SendMessage(new WSReplyMessage());
         }
 
         public WSExecuteHotbarSlotOpcode() : base("execHotbar") { }

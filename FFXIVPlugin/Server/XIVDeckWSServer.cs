@@ -25,6 +25,8 @@ namespace XIVDeck.FFXIVPlugin.Server {
     public class XIVDeckRoute : WsSession {
         public XIVDeckRoute(WsServer server) : base(server) { }
 
+        private dynamic? Context;
+
         public override void OnWsReceived(byte[] buffer, long offset, long size) {
             // helps prevent totally crashing the game if the WS server doesn't know what the hell to do with a
             // message.
@@ -51,6 +53,11 @@ namespace XIVDeck.FFXIVPlugin.Server {
                 throw new ArgumentNullException(nameof(message), $"Message decoded to null - {rawMessage}");
             }
 
+            // FixMe: this is *hacky as hell* and will probably break badly at some point.
+            // It only works for now because the WS server runs single-threaded and game-initialized messages
+            // don't actually use this route.
+            this.Context = message.Context;
+            
             switch (message.Opcode) {
                 default:
                     PluginLog.Warning($"Received message with unknown opcode: {message.Opcode}");
@@ -109,25 +116,25 @@ namespace XIVDeck.FFXIVPlugin.Server {
                 throw new InvalidDataException($"Message failed deserialization: {rawMessage}");
             }
 
-            BaseOutboundMessage? reply = null;
             try {
-                reply = message.Process(this);
-
-                if (reply != null) 
-                    reply.Context = message.Context;
+                message.Process(this);
             } catch (Exception ex) {
                 Injections.Chat.PrintError($"[XIVDeck] {ex.Message}");
                 PluginLog.Error(ex, "The WebSocket server encountered an error processing a message.");
 
+                // Error handling logic - send an alert back to the Stream Deck so we can show a failed icon.
                 this.SendText(JsonConvert.SerializeObject(new WSReplyMessage(message.Context, ex)));
-                return;
             }
-
-            this.SendText(reply != null
-                ? JsonConvert.SerializeObject(reply)
-                : JsonConvert.SerializeObject(new WSReplyMessage(message.Context)));
         }
 
+        public void SendMessage(BaseOutboundMessage message) {
+            if (this.Context != null) {
+                message.Context = this.Context;
+            }
+            
+            this.SendText(JsonConvert.SerializeObject(message));
+        }
+        
         public new void SendClose(int code, string text) {
             byte [] status= BitConverter.GetBytes((short)code);
             Array.Reverse(status);

@@ -1,9 +1,9 @@
 ﻿using System;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using NetCoreServer;
 using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.ActionExecutor;
 using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 
 namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
     public class WSExecuteActionOpcode : BaseInboundMessage {
@@ -14,15 +14,15 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
          */
         public dynamic? Options { get; set; } = default!;
 
-        public override BaseOutboundMessage? Process(WsSession session) {
+        public override void Process(XIVDeckRoute session) {
             HotbarSlotType actionType = this.Action.HotbarSlotType;
             
             if (!Injections.ClientState.IsLoggedIn)
                 throw new InvalidOperationException("A player is not logged in to the game!");
             
             ActionDispatcher.GetStrategyForSlotType(actionType).Execute((uint) this.Action.ActionId, this.Options);
-
-            return null;
+            
+            session.SendMessage(new WSReplyMessage());
         }
 
         public WSExecuteActionOpcode() : base("execAction") { }

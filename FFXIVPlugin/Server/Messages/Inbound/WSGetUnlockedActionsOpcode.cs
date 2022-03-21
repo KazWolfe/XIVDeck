@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using NetCoreServer;
 using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.ActionExecutor;
-using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 
 namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
     public class WSGetUnlockedActionsOpcode : BaseInboundMessage {
-        public override WSUnlockedActionsMessage Process(WsSession session) {
+        public override void Process(XIVDeckRoute session) {
             // refresh the cache first so we have all the newest data available
             XIVDeckPlugin.Instance.GameStateCache.Refresh();
             
@@ -20,7 +18,7 @@ namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound {
                 actions[type] = allowedItems;
             }
 
-            return new WSUnlockedActionsMessage(actions);
+            session.SendMessage(new WSUnlockedActionsMessage(actions));
         }
         
         public WSGetUnlockedActionsOpcode() : base("getUnlockedActions") { }
