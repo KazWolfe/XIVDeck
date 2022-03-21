@@ -5,6 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 import {WebSocketAsPromisedFaster} from "../../../lib/WebSocketAsPromisedFaster"
 
 import WebSocketAsPromised = require("websocket-as-promised");
+import plugin from "../../plugin";
+import {FFXIVGenericResponse} from "./GameTypes";
 
 export class FFXIVPluginLink {
     // static so that event registrations can survive re-initialization
@@ -33,10 +35,18 @@ export class FFXIVPluginLink {
     
     public async send(payload: FFXIVOpcode): Promise<unknown> {
         if (!this.isGameAlive || !this._websocket) {
-            throw new Error("The game does not appear to be alive, or a websocket has not been created yet.")
+            return Promise.reject(Error("The game does not appear to be alive, or a websocket has not been created yet."));
         }
         
         return this._websocket.sendRequest(payload, { requestId: uuidv4() });
+    }
+    
+    public async sendExpectingGeneric(payload: FFXIVOpcode): Promise<void> {
+        let resp = await plugin.xivPluginLink.send(payload) as FFXIVGenericResponse;
+
+        if (!resp.success) {
+            throw new Error(`The game plugin reported an error: ${resp.exception}`)
+        }
     }
     
     public connect(doRetry: boolean = true): Promise<unknown> | undefined {
@@ -101,7 +111,15 @@ export class FFXIVPluginLink {
     public close(): void {
         this._doConnectionRetries = false;
         
-        if (this._websocket != null) this._websocket.close();
+        if (this._websocket != null) {
+            this._websocket.ws.close();
+            this._websocket.close();
+            this._websocket = null;
+        } 
+    }
+    
+    public gracefulClose(): void {
+        this._websocket?.close();
     }
     
     public isReady(): boolean {
@@ -110,14 +128,6 @@ export class FFXIVPluginLink {
 
     public on(name: string, fn: Function): Function | undefined {
         return FFXIVPluginLink.eventManager.on(name, fn);
-    }
-    
-    public nowAndOn(eventName: string, fn: Function): Function | undefined {
-        if (this.isReady() && this.isGameAlive) {
-            fn();
-        }
-        
-        return this.on(eventName, fn);
     }
     
     private emit(name: string, data: any): void {

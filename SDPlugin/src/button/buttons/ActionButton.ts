@@ -34,12 +34,12 @@ export class ActionButton extends BaseButton {
         this.render();
     }
 
-    execute(event: KeyDownEvent): void {
+    async execute(event: KeyDownEvent): Promise<void> {
         if (this.actionType == null || this.actionId == null) {
             throw Error("Not action type/ID was defined for this button!");
         }
         
-        plugin.xivPluginLink.send(new ExecuteActionOpcode(this.actionType, this.actionId));
+        await this._sendExec(new ExecuteActionOpcode(this.actionType, this.actionId))
     }
     
     async render() {

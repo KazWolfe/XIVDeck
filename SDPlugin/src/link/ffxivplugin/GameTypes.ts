@@ -23,3 +23,11 @@ export type StateMessage = {
     type: string,
     params: string | null
 }
+
+export type FFXIVGenericResponse = {
+    success: boolean,
+    exception: null | { 
+        ClassName: string
+        Message: string | null
+    } 
+}

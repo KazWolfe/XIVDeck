@@ -28,12 +28,12 @@ export class MacroButton extends BaseButton {
         this._xivEventListeners.add(plugin.xivPluginLink.on("initReply", this.render.bind(this)));
     }
 
-    execute(event: KeyDownEvent): void {
+    async execute(event: KeyDownEvent): Promise<void> {
         if (this.macroId == null) {
             throw Error("No macro ID was defined for this button!");
         }
 
-        plugin.xivPluginLink.send(new ExecuteActionOpcode("Macro", this.macroId));
+        await plugin.xivPluginLink.sendExpectingGeneric(new ExecuteActionOpcode("Macro", this.macroId));
     }
 
     async render() {

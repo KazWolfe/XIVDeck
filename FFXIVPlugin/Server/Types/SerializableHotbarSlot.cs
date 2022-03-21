@@ -9,7 +9,6 @@ namespace XIVDeck.FFXIVPlugin.Server.Types {
         [JsonProperty("type")] public HotbarSlotType SlotType;
         [JsonProperty("iconId")] public int IconId;
 
-        [JsonProperty("iconData")] public string IconData;
-    
+        [JsonProperty("iconData")] public string IconData = default!;
     }
 }

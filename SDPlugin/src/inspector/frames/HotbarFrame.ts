@@ -120,7 +120,7 @@ export class HotbarFrame extends BaseFrame<HotbarButtonSettings> {
             
         this.hotbarId = hotbarNum;
         this._setSlotFieldParams();
-        if (!PIUtils.validateMinMaxOfNumberField(this.slotField)) {
+        if (!this.slotField.validity.valid) {
             if (changedHotbar) {
                 this.slotField.value = "";
             }

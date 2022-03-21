@@ -27,12 +27,12 @@ export class ClassButton extends BaseButton {
         this._xivEventListeners.add(plugin.xivPluginLink.on("initReply", this.render.bind(this)));
     }
     
-    execute(event: KeyDownEvent): void {
+    async execute(event: KeyDownEvent): Promise<void> {
         if (this.classId == null) {
             throw new Error("No class specified for this button");
         }
 
-        plugin.xivPluginLink.send(new SwitchClassOpcode(this.classId))
+        await this._sendExec(new SwitchClassOpcode(this.classId));
     }
     
     async render(): Promise<void> {

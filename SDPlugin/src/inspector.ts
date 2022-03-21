@@ -31,7 +31,7 @@ class XIVDeckInspector {
     }
 
     handleDidReceiveGlobalSettings(event: DidReceiveGlobalSettingsEvent) {
-        let globalSettings = {...(event.settings as GlobalSettings), ...DefaultGlobalSettings};
+        let globalSettings = {...DefaultGlobalSettings, ...(event.settings as GlobalSettings)};
         this.globalInspector.loadSettings(globalSettings);
         
         this._initializeXIVLinkWS(globalSettings.ws.port)

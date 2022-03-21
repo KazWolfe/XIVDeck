@@ -75,16 +75,15 @@ export class ButtonDispatcher {
     handleKeyDown(event: KeyDownEvent) {
         let button = this._contextCache.get(event.context);
         
-        if (button == undefined) {
+        if (!button) {
             plugin.sdPluginLink.showAlert(event.context);
             throw Error("Somehow got a button that wasn't in cache!");
         }
         
-        try {
-            button.execute(event);
-        } catch (ex) {
-            button.showAlert();
-            console.error("Error trying to execute button", ex, event);
-        }
+        button.execute(event)
+            .catch((e) => {
+                button!.showAlert();
+                console.error("Error trying to execute button:", e, event);
+            });
     }
 }

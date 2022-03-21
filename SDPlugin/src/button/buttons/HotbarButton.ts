@@ -33,12 +33,12 @@ export class HotbarButton extends BaseButton {
         this.render();
     }
 
-    execute(event: KeyDownEvent): void {
+    async execute(event: KeyDownEvent): Promise<void> {
         if (this.hotbarId == null || this.slotId == null) {
             throw new Error("No hotbarId/slotId defined for this button");
         }
         
-        plugin.xivPluginLink.send(new ExecuteHotbarSlotOpcode(this.hotbarId, this.slotId));
+        await this._sendExec(new ExecuteHotbarSlotOpcode(this.hotbarId, this.slotId));
     }
     
     async handleUpdate() : Promise<void> {

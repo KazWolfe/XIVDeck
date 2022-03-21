@@ -21,19 +21,34 @@ namespace XIVDeck.FFXIVPlugin.Server {
             return new XIVDeckRoute(this);
         }
     }
-
+    
     public class XIVDeckRoute : WsSession {
         public XIVDeckRoute(WsServer server) : base(server) { }
-        
+
         public override void OnWsReceived(byte[] buffer, long offset, long size) {
+            // helps prevent totally crashing the game if the WS server doesn't know what the hell to do with a
+            // message.
+            
+            try {
+               this._processWSMessage(buffer, offset, size); 
+            } catch (Exception ex) {
+                PluginLog.Error("Failed reading low-level WS message", ex);
+                Injections.Chat.PrintError("[XIVDeck] XIVDeck ran into a problem processing a WebSocket " +
+                                           "message. If you see this message, please report a bug and attach your " +
+                                           "dalamud.log file.");
+            }
+        }
+
+        private void _processWSMessage(byte[] buffer, long offset, long size) {
             string rawMessage = Encoding.UTF8.GetString(buffer, (int) offset, (int) size);
             PluginLog.Debug($"Got WS message - {rawMessage}");
+
+            JsonConvert.DeserializeObject(rawMessage, typeof(BaseInboundMessage));
             
             BaseInboundMessage? message = JsonConvert.DeserializeObject<BaseInboundMessage>(rawMessage);
 
             if (message == null) {
-                PluginLog.Warning($"Got invalid message from WebSocket - {rawMessage}");
-                return;
+                throw new ArgumentNullException(nameof(message), $"Message decoded to null - {rawMessage}");
             }
 
             switch (message.Opcode) {

@@ -18,11 +18,11 @@ export class CommandButton extends BaseButton {
         this.command = settings.command;
     }
 
-    execute(event: KeyDownEvent): void {
-        if (this.command == null) {
+    async execute(event: KeyDownEvent): Promise<void> {
+        if (this.command == null || this.command === "/") {
             throw new Error("No command specified for this button");
         }
         
-        plugin.xivPluginLink.send(new ExecuteCommandOpcode(this.command))
+       await this._sendExec(new ExecuteCommandOpcode(this.command));
     }
 }
