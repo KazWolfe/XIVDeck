@@ -55,7 +55,7 @@ export class ButtonDispatcher {
     
     handleWillAppear(event: WillAppearEvent): void {
         // bust the icon cache for test/debug purposes
-        plugin.sdPluginLink.setImage("", event.context);
+        // plugin.sdPluginLink.setImage("", event.context);
         
         this._constructButton(event);
     }

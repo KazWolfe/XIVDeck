@@ -7,7 +7,7 @@ import {GlobalFrame} from "./inspector/frames/GlobalFrame";
 
 class XIVDeckInspector {
     sdPluginLink: SDInspector = new Streamdeck().propertyinspector();
-    xivPluginLink: FFXIVPluginLink = new FFXIVPluginLink();
+    xivPluginLink: FFXIVPluginLink = new FFXIVPluginLink(this.sdPluginLink);
     
     // state for this inspector
     uuid: string = "";

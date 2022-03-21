@@ -11,7 +11,7 @@ import {ButtonDispatcher} from "./button/ButtonDispatcher";
 
 class XIVDeckPlugin {
     sdPluginLink: SDPlugin = new Streamdeck().plugin();
-    xivPluginLink: FFXIVPluginLink = new FFXIVPluginLink();
+    xivPluginLink: FFXIVPluginLink = new FFXIVPluginLink(this.sdPluginLink);
     
     private dispatcher: ButtonDispatcher = new ButtonDispatcher();
     
@@ -31,8 +31,6 @@ class XIVDeckPlugin {
     handleDidReceiveGlobalSettings(event: DidReceiveGlobalSettingsEvent) {
         let globalSettings = {...DefaultGlobalSettings, ...(event.settings as GlobalSettings)};
         this.xivPluginLink.port = globalSettings.ws.port;
-        
-        console.warn(this, event, globalSettings);
         
         // if a connection already exists and is running, close it and re-open it. otherwise, just start a new connect
         if (this.xivPluginLink.isReady()) {

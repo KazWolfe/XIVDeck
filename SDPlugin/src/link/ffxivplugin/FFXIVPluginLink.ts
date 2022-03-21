@@ -5,8 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 import {WebSocketAsPromisedFaster} from "../../../lib/WebSocketAsPromisedFaster"
 
 import WebSocketAsPromised = require("websocket-as-promised");
-import plugin from "../../plugin";
 import {FFXIVGenericResponse} from "./GameTypes";
+import AbstractStreamdeckConnector from "@rweich/streamdeck-ts/dist/AbstractStreamdeckConnector";
 
 export class FFXIVPluginLink {
     // static so that event registrations can survive re-initialization
@@ -15,10 +15,14 @@ export class FFXIVPluginLink {
     public port: number = 37984;
     private _websocket: WebSocketAsPromised | null = null;
     
+    private _plugin: AbstractStreamdeckConnector
+    
     isGameAlive: boolean = false;
     private _doConnectionRetries: boolean = true;
     
-    constructor() { }
+    constructor(instance: AbstractStreamdeckConnector) {
+        this._plugin = instance;
+    }
     
     private static _attachContext(data: object, requestId: string | number): object {
         return Object.assign({"context": {"requestId": requestId}}, data);
@@ -42,7 +46,7 @@ export class FFXIVPluginLink {
     }
     
     public async sendExpectingGeneric(payload: FFXIVOpcode): Promise<void> {
-        let resp = await plugin.xivPluginLink.send(payload) as FFXIVGenericResponse;
+        let resp = await this.send(payload) as FFXIVGenericResponse;
 
         if (!resp.success) {
             throw new Error(`The game plugin reported an error: ${resp.exception}`)
@@ -70,7 +74,9 @@ export class FFXIVPluginLink {
         });
         
         this._websocket.onOpen.addListener(() => {
-            this.send(new InitOpcode("0.0.1")); // todo: figure out some way to read the version dynamically
+            let pInfo = this._plugin.info.plugin as Record<string, string>;
+            
+            this.send(new InitOpcode(pInfo.version));
             this.emit("_wsOpened", null);
             
             this.isGameAlive = true;
