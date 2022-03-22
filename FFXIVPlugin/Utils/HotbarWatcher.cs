@@ -4,6 +4,7 @@ using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Server;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 
 namespace XIVDeck.FFXIVPlugin.Utils {
@@ -58,9 +59,10 @@ namespace XIVDeck.FFXIVPlugin.Utils {
 
             if (hotbarUpdated) {
                 PluginLog.Debug("Detected a change to hotbar(s)!");
+                var message = new WSHotbarUpdateMessage(this._hotbarCache);
 
-                var wsServer = this._plugin.XivDeckWsServer;
-                wsServer.MulticastText(JsonConvert.SerializeObject(new WSHotbarUpdateMessage(this._hotbarCache)));
+                this._plugin.XivDeckWsServer.MulticastText(JsonConvert.SerializeObject(message));
+                WSEventNotifier.Instance?.BroadcastMessage(message);
             }
         }
 

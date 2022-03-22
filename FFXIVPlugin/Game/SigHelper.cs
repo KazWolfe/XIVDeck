@@ -8,6 +8,7 @@ using FFXIVClientStructs.FFXIV.Client.System.Memory;
 using FFXIVClientStructs.FFXIV.Client.System.String;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Newtonsoft.Json;
+using XIVDeck.FFXIVPlugin.Server;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 // ReSharper disable InconsistentNaming - matching expected documentation things
 // ReSharper disable UnusedAutoPropertyAccessor.Local - handled by siggingway and reflection
@@ -116,8 +117,10 @@ namespace XIVDeck.FFXIVPlugin.Game {
         private IntPtr DetourGearsetSave(IntPtr a1, IntPtr a2) {
             PluginLog.Debug("Gearset update!");
             var tmp =  this.RGM_WriteFileHook!.Original(a1, a2);
-            
-            this._plugin.XivDeckWsServer.MulticastText(JsonConvert.SerializeObject(new WSStateUpdateMessage("GearSet")));
+
+            var message = new WSStateUpdateMessage("GearSet");
+            this._plugin.XivDeckWsServer.MulticastText(JsonConvert.SerializeObject(message));
+            WSEventNotifier.Instance?.BroadcastMessage(message);
 
             return tmp;
         }
@@ -125,8 +128,10 @@ namespace XIVDeck.FFXIVPlugin.Game {
         private IntPtr DetourMacroSave(IntPtr a1, IntPtr a2, IntPtr a3) {
             PluginLog.Debug("Macro update!");
             var tmp = this.RMM_WriteFileHook!.Original(a1, a2, a3);
-            
-            this._plugin.XivDeckWsServer.MulticastText(JsonConvert.SerializeObject(new WSStateUpdateMessage("Macro")));
+
+            var message = new WSStateUpdateMessage("Macro");
+            this._plugin.XivDeckWsServer.MulticastText(JsonConvert.SerializeObject(message));
+            WSEventNotifier.Instance?.BroadcastMessage(message);
 
             return tmp;
         }

@@ -114,6 +114,7 @@ namespace XIVDeck.FFXIVPlugin.UI {
                     }
                     
                     this._plugin.InitializeWSServer();
+                    this._plugin.InitializeWebServer();
                 }
             }
             ImGui.End();

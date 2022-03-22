@@ -26,6 +26,7 @@ namespace XIVDeck.FFXIVPlugin
 
         private HotbarWatcher HotbarWatcher;
         public XIVDeckWSServer XivDeckWsServer = null!;
+        public XIVDeckWebServer XIVDeckWebServer = null!;
 
         public XIVDeckPlugin(DalamudPluginInterface pluginInterface) {
             // Injections management
@@ -50,6 +51,7 @@ namespace XIVDeck.FFXIVPlugin
             
             // Start the websocket server itself.
             this.InitializeWSServer();
+            this.InitializeWebServer();
 
             this.PluginUi = new PluginUI(this);
 
@@ -65,6 +67,7 @@ namespace XIVDeck.FFXIVPlugin
 
             this.HotbarWatcher.Dispose();
             this.XivDeckWsServer.Dispose();
+            this.XIVDeckWebServer.Dispose();
             this.SigHelper.Dispose();
 
             Injections.ClientState.Login -= this.OnLogin;
@@ -91,6 +94,15 @@ namespace XIVDeck.FFXIVPlugin
             if (Injections.ClientState.IsLoggedIn && !this.Configuration.HasLinkedStreamDeckPlugin) {
                 this.PluginUi.SettingsVisible = true;
             }
+        }
+
+        internal void InitializeWebServer() {
+            if (this.XIVDeckWebServer is {IsRunning: true}) {
+                this.XIVDeckWebServer.Dispose();
+            }
+
+            this.XIVDeckWebServer = new XIVDeckWebServer(this.Configuration.WebSocketPort + 1);
+            this.XIVDeckWebServer.StartServer();
         }
 
         internal void InitializeWSServer() {

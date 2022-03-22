@@ -48,6 +48,9 @@
         <!-- WebSocket server and management library -->
         <PackageReference Include="NetCoreServer" Version="5.1.0" />
         
+        <!-- Webserver and socketing -->
+        <PackageReference Include="EmbedIO" Version="3.4.3" />
+        
         <!-- Dalamud things -->
         <PackageReference Include="DalamudPackager" Version="2.1.5" />
         <PackageReference Include="ILRepack" Version="2.1.0-beta1" GeneratePathProperty="true" />
@@ -90,6 +93,8 @@
     </ItemGroup>
     
     <!-- Build steps -->
+    
+    <!--
     <Target Name="ILRepack" AfterTargets="Build">
         <ItemGroup>
             <InputAssemblies Include="$(TargetPath)" />
@@ -104,7 +109,7 @@
         </ItemGroup>
         <Message Text="Deleting @(DeleteAssemblies)" Importance="high" />
         <Delete Files="@(DeleteAssemblies)" />
-    </Target>
+    </Target> -->
 
     <Target Name="PackagePlugin" AfterTargets="CleanOutDir" Condition="'$(Configuration)' == 'Release'">
         <DalamudPackager ProjectDir="$(ProjectDir)" OutputPath="$(OutputPath)" AssemblyName="$(AssemblyName)" MakeZip="true" />
