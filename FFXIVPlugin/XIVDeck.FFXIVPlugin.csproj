@@ -17,7 +17,7 @@
     <PropertyGroup Label="Target">
         <PlatformTarget>x64</PlatformTarget>
         <TargetFramework>net5.0-windows</TargetFramework>
-        <LangVersion>preview</LangVersion>
+        <LangVersion>10</LangVersion>
         <Platforms>x64</Platforms>
         <Configurations>Debug;Release</Configurations>
     </PropertyGroup>
@@ -42,7 +42,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-
         <!-- Image conversion to extract PNGs from Lumina -->
         <PackageReference Include="SixLabors.ImageSharp" Version="2.0.0" />
         

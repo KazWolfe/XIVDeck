@@ -25,7 +25,10 @@ namespace XIVDeck.FFXIVPlugin.Server {
     public class XIVDeckRoute : WsSession {
         public XIVDeckRoute(WsServer server) : base(server) { }
 
-        private dynamic? Context;
+        // FixMe: this is *hacky as hell* and will probably break badly at some point.
+        // It only works for now because the WS server runs single-threaded and game-initialized messages
+        // don't actually use this route.
+        private dynamic? _context;
 
         public override void OnWsReceived(byte[] buffer, long offset, long size) {
             // helps prevent totally crashing the game if the WS server doesn't know what the hell to do with a
@@ -52,11 +55,8 @@ namespace XIVDeck.FFXIVPlugin.Server {
             if (message == null) {
                 throw new ArgumentNullException(nameof(message), $"Message decoded to null - {rawMessage}");
             }
-
-            // FixMe: this is *hacky as hell* and will probably break badly at some point.
-            // It only works for now because the WS server runs single-threaded and game-initialized messages
-            // don't actually use this route.
-            this.Context = message.Context;
+            
+            this._context = message.Context;
             
             switch (message.Opcode) {
                 default:
@@ -128,8 +128,8 @@ namespace XIVDeck.FFXIVPlugin.Server {
         }
 
         public void SendMessage(BaseOutboundMessage message) {
-            if (this.Context != null) {
-                message.Context = this.Context;
+            if (this._context != null) {
+                message.Context = this._context;
             }
             
             this.SendText(JsonConvert.SerializeObject(message));

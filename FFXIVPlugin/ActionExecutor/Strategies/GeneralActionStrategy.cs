@@ -6,12 +6,26 @@ using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
-    public class GeneralActionStrategy : IStrategy {
+    public class GeneralActionStrategy : IActionStrategy {
         private List<uint> _illegalActionCache = new();
         private static readonly ExcelSheet<GeneralAction> ActionSheet = Injections.DataManager.Excel.GetSheet<GeneralAction>()!;
+
+        private static ExecutableAction GetExecutableAction(GeneralAction action) {
+            return new ExecutableAction {
+                ActionId = (int) action.RowId,
+                ActionName = action.Name.RawString,
+                IconId = action.Icon,
+                HotbarSlotType = HotbarSlotType.GeneralAction
+            };
+        }
+        
+        private static GeneralAction? GetActionById(uint actionId) {
+            return ActionSheet.GetRow(actionId);
+        }
 
         private IEnumerable<uint> GetIllegalActionIDs() {
             if (this._illegalActionCache.Count > 0) {
@@ -34,13 +48,22 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             this._illegalActionCache = illegalActions;
             return illegalActions;
         }
-        
-        private GeneralAction? GetActionById(uint actionId) {
-            return ActionSheet.GetRow(actionId);
+
+        public unsafe ExecutableAction? GetExecutableActionById(uint actionId) {
+            var action = GetActionById(actionId);
+
+            if (action == null) return null;
+            
+            // ERRATA - swap out melding
+            if (actionId == 12 && UIState.Instance()->Hotbar.IsActionUnlocked(12)) {
+                action = GetActionById(13)!;
+            }
+
+            return GetExecutableAction(action);
         }
 
         public unsafe void Execute(uint actionId, dynamic? _) {
-            var action = this.GetActionById(actionId);
+            var action = GetActionById(actionId);
             
             if (action == null) {
                 throw new ArgumentOutOfRangeException(nameof(actionId), $"No action with ID {actionId} exists.");
@@ -52,11 +75,11 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             }
             
             if (action.UnlockLink != 0 && !UIState.Instance()->Hotbar.IsActionUnlocked(action.UnlockLink)) {
-                throw new InvalidOperationException($"The action \"{action.Name.RawString}\" is not yet unlocked.");
+                throw new ActionLockedException($"The action \"{action.Name.RawString}\" is not yet unlocked.");
             }
             
             if (actionId == 12 && UIState.Instance()->Hotbar.IsActionUnlocked(12)) {
-                action = this.GetActionById(13)!;
+                action = GetActionById(13)!;
             }
 
             TickScheduler.Schedule(delegate {
@@ -70,7 +93,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
                 actionId = 13;
             }
             
-            return this.GetActionById(actionId)?.Icon ?? 0;
+            return GetActionById(actionId)?.Icon ?? 0;
         }
 
         public unsafe List<ExecutableAction> GetAllowedItems() {
@@ -85,12 +108,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
                     continue;
                 }
                 
-                actions.Add(new ExecutableAction {
-                    ActionId = (int) action.RowId,
-                    ActionName = action.Name.RawString,
-                    IconId = action.Icon,
-                    HotbarSlotType = HotbarSlotType.GeneralAction
-                });
+                actions.Add(GetExecutableAction(action));
             }
 
             return actions;

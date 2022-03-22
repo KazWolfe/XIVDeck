@@ -6,12 +6,16 @@ using FFXIVClientStructs.FFXIV.Client.UI.Shell;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
-    public class MacroStrategy : IStrategy {
+    public class MacroStrategy : IActionStrategy {
         private static unsafe RaptureMacroModule.Macro* GetMacro(bool shared, int id) {
             var macroPage = shared ? &RaptureMacroModule.Instance->Shared : &RaptureMacroModule.Instance->Individual;
             return (*macroPage)[id];
         }
-        
+
+        public ExecutableAction? GetExecutableActionById(uint actionId) {
+            return null;
+        }
+
         public List<ExecutableAction>? GetAllowedItems() {
             // this will always return null as macros are a bit... weird. macro selection will take place completely
             // on the stream deck's side.

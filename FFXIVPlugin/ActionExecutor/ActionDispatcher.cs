@@ -2,6 +2,8 @@
 using System.Linq;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
+using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Exceptions;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor {
     public class ActionDispatcher {
@@ -22,10 +24,9 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor {
          * 
          */
         
+        private static readonly ActionDispatcher Instance = new();
         
-        public static ActionDispatcher Instance = new ActionDispatcher();
-        
-        public static IStrategy GetStrategyForSlotType(HotbarSlotType type) {
+        public static IActionStrategy GetStrategyForSlotType(HotbarSlotType type) {
             return Instance.GetStrategyForType(type);
         }
 
@@ -33,11 +34,18 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor {
             return Instance._GetSupportedActions();
         }
 
-        public static Dictionary<HotbarSlotType, IStrategy> GetStrategies() {
+        public static Dictionary<HotbarSlotType, IActionStrategy> GetStrategies() {
             return Instance.Strategies;
         }
+        
+        public static void Execute(HotbarSlotType actionType, int actionId, IDictionary<string, dynamic>? options = null) {
+            if (!Injections.ClientState.IsLoggedIn)
+                throw new PlayerNotLoggedInException();
+            
+            GetStrategyForSlotType(actionType).Execute((uint) actionId, options);
+        }
 
-        private Dictionary<HotbarSlotType, IStrategy> Strategies { get; } = new();
+        private Dictionary<HotbarSlotType, IActionStrategy> Strategies { get; } = new();
 
         private ActionDispatcher() {
             this.Strategies[HotbarSlotType.Emote] = new EmoteStrategy();
@@ -54,7 +62,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor {
             this.Strategies[HotbarSlotType.PerformanceInstrument] = new InstrumentStrategy();
         }
 
-        private IStrategy GetStrategyForType(HotbarSlotType type) {
+        private IActionStrategy GetStrategyForType(HotbarSlotType type) {
             return this.Strategies[type];
         }
 

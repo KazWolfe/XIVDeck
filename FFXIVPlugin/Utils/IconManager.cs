@@ -115,15 +115,19 @@ namespace XIVDeck.FFXIVPlugin.Utils {
             return Image.LoadPixelData<Bgra32>(tex.ImageData, tex.Header.Width, tex.Header.Height);
         }
 
-        public string GetIconAsPngString(int iconId, bool hq = false) {
+        public byte[] GetIconAsPng(int iconId, bool hq = false) {
             var icon = this.GetIcon("", iconId, hq, true) ?? this.GetIcon("", 0, hq, true)!;
 
             var image = GetImage(icon);
 
             using var stream = new MemoryStream();
             image.SaveAsPng(stream);
-            byte[] pngBytes = stream.ToArray();
-                
+            return stream.ToArray();
+        }
+
+        public string GetIconAsPngString(int iconId, bool hq = false) {
+            var pngBytes = this.GetIconAsPng(iconId, hq);
+            
             return "data:image/png;base64," + Convert.ToBase64String(pngBytes);
         }
     }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
@@ -9,17 +8,25 @@ using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
-    public class MainCommandStrategy : IStrategy {
+    public class MainCommandStrategy : IActionStrategy {
         private readonly List<MainCommand> _mainCommandCache = new();
+
+        private static ExecutableAction GetExecutableAction(MainCommand mainCommand) {
+            return new ExecutableAction {
+                ActionId = (int) mainCommand.RowId,
+                ActionName = mainCommand.Name.RawString,
+                IconId = mainCommand.Icon,
+                Category = mainCommand.MainCommandCategory.Value!.Name.ToString(),
+                HotbarSlotType = HotbarSlotType.MainCommand
+            };
+        }
         
         public MainCommandStrategy() {
             // initialize the MainCommand cache with valid action types as part of construction.
             // this value is fixed so this is safe-ish.
 
-            var sheet = Injections.DataManager.Excel.GetSheet<MainCommand>();
+            var sheet = Injections.DataManager.Excel.GetSheet<MainCommand>()!;
 
-            Debug.Assert(sheet != null, nameof(sheet) + " != null");
-            
             foreach (var command in sheet) {
                 // cheap but effective test; this ignores basically anything that's not in a menu
                 if (command.Category == 0) continue;
@@ -27,8 +34,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
                 this._mainCommandCache.Add(command);
             }
         }
-        
-        
+
         public unsafe void Execute(uint actionId, dynamic? _) {
             if (this._mainCommandCache.All(command => actionId != command.RowId))
                 throw new InvalidOperationException($"Main command action ID {actionId} is not valid.");
@@ -44,13 +50,13 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
         }
 
         public List<ExecutableAction> GetAllowedItems() {
-            return this._mainCommandCache.Select(command => new ExecutableAction() {
-                ActionId = (int) command.RowId, 
-                ActionName = command.Name.RawString, 
-                IconId = command.Icon,
-                Category = command.MainCommandCategory.Value!.Name.ToString(),
-                HotbarSlotType = HotbarSlotType.MainCommand
-            }).ToList();
+            return this._mainCommandCache.Select(GetExecutableAction).ToList();
         }
+
+        public ExecutableAction? GetExecutableActionById(uint actionId) {
+            var action = Injections.DataManager.Excel.GetSheet<MainCommand>()!.GetRow(actionId);
+            return action == null ? null : GetExecutableAction(action);
+        }
+        
     }
 }

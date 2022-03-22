@@ -7,13 +7,23 @@ using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
-    public class InstrumentStrategy : IStrategy {
+    public class InstrumentStrategy : IActionStrategy {
         private static readonly ExcelSheet<Perform> PerformSheet = Injections.DataManager.Excel.GetSheet<Perform>()!;
-        
-        public Perform? GetInstrumentById(uint id) {
+
+        private static ExecutableAction GetExecutableAction(Perform instrument) {
+            return new ExecutableAction {
+                ActionId = (int) instrument.RowId,
+                ActionName = instrument.Instrument.RawString,
+                IconId = instrument.Order,
+                HotbarSlotType = HotbarSlotType.PerformanceInstrument
+            };
+        }
+
+        private static Perform? GetActionById(uint id) {
             return PerformSheet.GetRow(id);
         }
 
@@ -22,16 +32,14 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             return XIVDeckPlugin.Instance.XivCommon.Functions.Journal.IsQuestCompleted(68555) &&
                    UIState.Instance()->Hotbar.IsActionUnlocked(255);
         }
-        
+
+        public ExecutableAction? GetExecutableActionById(uint actionId) {
+            var action = GetActionById(actionId);
+            return action == null ? null : GetExecutableAction(action);
+        }
+
         public List<ExecutableAction>? GetAllowedItems() {
-            if (!this.IsPerformUnlocked()) return null;
-            
-            return PerformSheet.Where(i => i.RowId > 0).Select(instrument => new ExecutableAction {
-                ActionId = (int) instrument.RowId, 
-                ActionName = instrument.Instrument.RawString, 
-                IconId = instrument.Order,
-                HotbarSlotType = HotbarSlotType.PerformanceInstrument
-            }).ToList();
+            return !this.IsPerformUnlocked() ? null : PerformSheet.Where(i => i.RowId > 0).Select(GetExecutableAction).ToList();
         }
 
         public void Execute(uint actionId, dynamic? _) {
@@ -40,14 +48,14 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             // about this.
             
             if (!this.IsPerformUnlocked()) {
-                throw new InvalidOperationException("Performance mode hasn't yet been unlocked.");
+                throw new ActionLockedException("Performance mode hasn't yet been unlocked.");
             }
             
             if (Injections.Condition[ConditionFlag.Performing]) {
                 throw new InvalidOperationException("Cannot switch instruments while actively in Perform mode.");
             }
 
-            var instrument = this.GetInstrumentById(actionId);
+            var instrument = GetActionById(actionId);
 
             if (instrument == null) {
                 throw new ArgumentOutOfRangeException(nameof(actionId), $"No instrument with ID {actionId} exists.");
@@ -59,7 +67,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
         }
 
         public int GetIconId(uint actionId) {
-            return this.GetInstrumentById(actionId)?.Order ?? 0;
+            return GetActionById(actionId)?.Order ?? 0;
         }
     }
 }
