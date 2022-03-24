@@ -26,7 +26,6 @@ namespace XIVDeck.FFXIVPlugin
         public GameStateCache GameStateCache { get; }
 
         private readonly HotbarWatcher _hotbarWatcher;
-        public XIVDeckWSServer XivDeckWsServer = null!;
         private XIVDeckWebServer _xivDeckWebServer = null!;
 
         public XIVDeckPlugin(DalamudPluginInterface pluginInterface) {
@@ -52,7 +51,6 @@ namespace XIVDeck.FFXIVPlugin
             this._hotbarWatcher = new HotbarWatcher(this);
             
             // Start the websocket server itself.
-            this.InitializeWSServer();
             this.InitializeWebServer();
 
             this.PluginUi = new PluginUI(this);
@@ -68,7 +66,6 @@ namespace XIVDeck.FFXIVPlugin
             this.PluginUi.Dispose();
 
             this._hotbarWatcher.Dispose();
-            this.XivDeckWsServer.Dispose();
             this._xivDeckWebServer.Dispose();
             this.SigHelper.Dispose();
 
@@ -103,20 +100,8 @@ namespace XIVDeck.FFXIVPlugin
                 this._xivDeckWebServer.Dispose();
             }
 
-            this._xivDeckWebServer = new XIVDeckWebServer(this.Configuration.WebSocketPort + 1);
+            this._xivDeckWebServer = new XIVDeckWebServer(this.Configuration.WebSocketPort);
             this._xivDeckWebServer.StartServer();
-        }
-
-        internal void InitializeWSServer() {
-            // This is its own method as we may need to restart the websocket server later in the plugin lifecycle.
-            // For example, if we change the server port, it doesn't make sense to restart the game.
-            
-            if (this.XivDeckWsServer is {IsStarted: true}) {
-                this.XivDeckWsServer.Dispose();
-            }
-
-            this.XivDeckWsServer = new XIVDeckWSServer(this.Configuration.WebSocketPort);
-            this.XivDeckWsServer.Start();
         }
     }
 }

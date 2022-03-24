@@ -3,6 +3,7 @@ import AbstractStateEvent from "@rweich/streamdeck-events/dist/Events/Received/P
 import {KeyDownEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
 import plugin from "../../plugin";
 import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
+import {StateMessage} from "../../link/ffxivplugin/GameTypes";
 
 export type MacroButtonSettings = { 
     macroId: number
@@ -22,6 +23,7 @@ export class MacroButton extends BaseButton {
 
         this.render();
         this._xivEventListeners.add(plugin.xivPluginLink.on("initReply", this.render.bind(this)));
+        this._xivEventListeners.add(plugin.xivPluginLink.on("stateUpdate", this.stateUpdate.bind(this)));
     }
 
     async execute(event: KeyDownEvent): Promise<void> {
@@ -30,6 +32,12 @@ export class MacroButton extends BaseButton {
         }
         
         await FFXIVApi.Action.executeAction("Macro", this.macroId);
+    }
+
+    async stateUpdate(message: StateMessage) : Promise<void> {
+        if (message.type != "Macro") return;
+
+        await this.render();
     }
 
     async render() {

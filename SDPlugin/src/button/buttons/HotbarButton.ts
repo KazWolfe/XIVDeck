@@ -3,6 +3,7 @@ import AbstractStateEvent from "@rweich/streamdeck-events/dist/Events/Received/P
 import {KeyDownEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
 import plugin from "../../plugin";
 import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
+import {StateMessage} from "../../link/ffxivplugin/GameTypes";
 
 export type HotbarButtonSettings = {
     hotbarId: number,
@@ -25,7 +26,7 @@ export class HotbarButton extends BaseButton {
         
         // render if already exists and set up hooks to wait for events
         this._xivEventListeners.add(plugin.xivPluginLink.on("initReply", this.render.bind(this)));
-        this._xivEventListeners.add(plugin.xivPluginLink.on("hotbarUpdate", this.handleUpdate.bind(this)));
+        this._xivEventListeners.add(plugin.xivPluginLink.on("stateUpdate", this.stateUpdate.bind(this)));
         this.render();
     }
 
@@ -37,7 +38,9 @@ export class HotbarButton extends BaseButton {
         await FFXIVApi.Hotbar.triggerHotbarSlot(this.hotbarId, this.slotId);
     }
     
-    async handleUpdate() : Promise<void> {
+    async stateUpdate(message: StateMessage) : Promise<void> {
+        if (message.type != "Hotbar") return;
+        
         await this.render();
     }
     

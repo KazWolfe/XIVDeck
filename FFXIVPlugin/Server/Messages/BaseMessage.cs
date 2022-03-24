@@ -1,29 +1,27 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Threading.Tasks;
+using EmbedIO.WebSockets;
 using Newtonsoft.Json;
 
-namespace XIVDeck.FFXIVPlugin.Server.Messages {
-    
-    [SuppressMessage("ReSharper", "UnassignedGetOnlyAutoProperty", Justification = "JSON serializer will initialize these fields")]
-    public class BaseInboundMessage {
-        public string Opcode { get; set; }
-        public dynamic? Context { get; set; } // context will just be parroted
+namespace XIVDeck.FFXIVPlugin.Server.Messages;
 
-        public BaseInboundMessage(string opcode, dynamic? context = null) {
-            this.Opcode = opcode;
-            this.Context = context;
-        }
+public class BaseInboundMessage {
+    public string Opcode { get; set; } = default!;
 
-        public virtual void Process(XIVDeckRoute session) { }
+    public BaseInboundMessage(string opcode) {
+        this.Opcode = opcode;
     }
 
-    public class BaseOutboundMessage {
-        [JsonProperty("messageType")] public string MessageType { get; set; }
-        
-        [JsonProperty("context")] public dynamic? Context { get; set; }
+    public BaseInboundMessage() { }
 
-        public BaseOutboundMessage(string messageType, dynamic? context = null) {
-            this.MessageType = messageType;
-            this.Context = context;
-        }
+    public virtual Task Process(IWebSocketContext context) {
+        return Task.FromResult(true);
+    }
+}
+
+public class BaseOutboundMessage {
+    [JsonProperty("messageType")] public string MessageType { get; set; }
+ 
+    public BaseOutboundMessage(string messageType) {
+        this.MessageType = messageType;
     }
 }

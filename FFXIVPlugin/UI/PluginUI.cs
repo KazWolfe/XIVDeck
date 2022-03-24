@@ -113,7 +113,6 @@ namespace XIVDeck.FFXIVPlugin.UI {
                         this._plugin.Configuration.Save();
                     }
                     
-                    this._plugin.InitializeWSServer();
                     this._plugin.InitializeWebServer();
                 }
             }

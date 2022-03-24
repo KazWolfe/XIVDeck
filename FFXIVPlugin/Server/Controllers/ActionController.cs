@@ -69,6 +69,8 @@ public class ActionController : WebApiController {
             throw HttpException.Forbidden(ex.Message, ex);
         } catch (ActionNotFoundException ex) {
             throw HttpException.NotFound(ex.Message, ex);
+        } catch (IllegalGameStateException ex) {
+            throw HttpException.BadRequest(ex.Message, ex);
         }
     }
 }

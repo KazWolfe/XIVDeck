@@ -31,7 +31,6 @@ export class ClassFrame extends BaseFrame<ClassButtonSettings> {
         this.classSelector.onchange = this._onClassUpdate.bind(this);
 
         this.domParent.append(sdItem);
-        this.populateClasses().then(_ => {});
     }
     
     async populateClasses(): Promise<void> {

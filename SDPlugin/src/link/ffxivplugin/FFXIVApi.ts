@@ -18,7 +18,7 @@ export class FFXIVApi {
         if (method == "GET" || method == "HEAD" ) {
             response = await fetch(url, {method: method})
         } else {
-            response = await fetch(url, {method: method, body: (body == null) ? JSON.stringify(body) : undefined})
+            response = await fetch(url, {method: method, body: JSON.stringify(body)})
         }
         
         if (!response.ok) {
@@ -59,7 +59,7 @@ export class FFXIVApi {
         private static get base(): string { return FFXIVApi.getBaseUrl() + "/classes" }
 
         public static async getClasses(unlocked: boolean = false): Promise<FFXIVClass[]> {
-            return await FFXIVApi._requestWrapper(FFXIVApi.GameClass.base + unlocked ? "/available" : "") as FFXIVClass[];
+            return await FFXIVApi._requestWrapper(FFXIVApi.GameClass.base + (unlocked ? "/available" : "")) as FFXIVClass[];
         }
 
         public static async getClass(classId: number): Promise<FFXIVClass> {

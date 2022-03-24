@@ -47,11 +47,13 @@ class XIVDeckInspector {
         // The PI can't actually determine if the game is alive or not, so we'll force it to think it is.
         this.xivPluginLink.isGameAlive = true;
         
-        this.xivPluginLink.connect(false)?.catch(_ => {
+        this.xivPluginLink.on("_wsClosed", () => {
             let errElement = document.getElementById("errorDisplay")!;
             errElement.setAttribute("style", "");
             errElement.append(this.PIHelpers.generateConnectionErrorDom());
-        });
+        })
+        
+        this.xivPluginLink.connect(false);
     }
     
 }

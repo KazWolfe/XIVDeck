@@ -1,109 +1,92 @@
 ﻿import {EventEmitter} from "../../util/EventEmitter";
 import {FFXIVOpcode} from "./MessageBase";
-import {InitOpcode} from "./messages/outbound/InitOpcode"
-import { v4 as uuidv4 } from 'uuid';
-import {WebSocketAsPromisedFaster} from "../../../lib/WebSocketAsPromisedFaster"
-
-import WebSocketAsPromised = require("websocket-as-promised");
-import {FFXIVGenericResponse} from "./GameTypes";
+import {InitOpcode} from "./messages/outbound/InitOpcode";
 import AbstractStreamdeckConnector from "@rweich/streamdeck-ts/dist/AbstractStreamdeckConnector";
 
 export class FFXIVPluginLink {
     public static instance: FFXIVPluginLink;
-    
+
     // static so that event registrations can survive re-initialization
     static eventManager: EventEmitter = new EventEmitter();
-    
+
     public port: number = 37984;
-    private _websocket: WebSocketAsPromised | null = null;
-    
-    private _plugin: AbstractStreamdeckConnector
-    
+    private _websocket: WebSocket | null = null;
+
+    private _plugin: AbstractStreamdeckConnector;
+
     isGameAlive: boolean = false;
     private _doConnectionRetries: boolean = true;
-    
+
     constructor(instance: AbstractStreamdeckConnector) {
         this._plugin = instance;
         FFXIVPluginLink.instance = this;
     }
-    
-    get baseUrl() : string {
-        return `http://localhost:${this.port + 1}`
-    }
-    
-    private static _attachContext(data: object, requestId: string | number): object {
-        return Object.assign({"context": {"requestId": requestId}}, data);
-    }
-    
-    private static _retrieveContext(data: any) : string | number | undefined {
-        if (typeof(data) != "object") return undefined;
-        if (data['context'] == undefined || typeof(data['context']) != "object") return undefined;
-        if (data['context']['requestId'] == undefined) return undefined;
 
-        return data['context']['requestId'];
+    get baseUrl(): string {
+        return `http://localhost:${this.port}`;
     }
-    
+
     public async send(payload: FFXIVOpcode): Promise<unknown> {
         if (!this.isGameAlive || !this._websocket) {
             return Promise.reject(Error("The game does not appear to be alive, or a websocket has not been created yet."));
         }
-        
-        return this._websocket.sendRequest(payload, { requestId: uuidv4() });
+
+        return this._websocket.send(JSON.stringify(payload));
     }
-    
-    public connect(doRetry: boolean = true): Promise<unknown> | undefined {
+
+    public connect(doRetry: boolean = true): void {
         // if the game currently isn't alive, there's nothing for us to do.
         if (!this.isGameAlive) {
-            console.warn("[XIVDeck - FFXIVLink] Attempted websocket connection while game should be dead.")
+            console.warn("[XIVDeck - FFXIVLink] Attempted websocket connection while game should be dead.");
             return;
         }
-        
+
         if (this._websocket != null) {
             console.warn("[XIVDeck - FFXIVLink] A connect was called with an already-existing websocket!");
             return;
         }
-        
+
         this._doConnectionRetries = doRetry;
-        this._websocket = new WebSocketAsPromisedFaster(`ws://localhost:${this.port}/xivdeck`, {
-            packMessage: ((data) => JSON.stringify(data)),
-            unpackMessage: ((data) => JSON.parse(data.toString())),
-            attachRequestId: FFXIVPluginLink._attachContext,
-            extractRequestId: FFXIVPluginLink._retrieveContext
-        });
-        
-        this._websocket.onOpen.addListener(() => {
+        this._websocket = new WebSocket(`ws://localhost:${this.port}/ws`);
+
+        this._websocket.onopen = () => {
             let pInfo = this._plugin.info.plugin as Record<string, string>;
-            
+
             this.send(new InitOpcode(pInfo.version));
             this.emit("_wsOpened", null);
-            
-            this.isGameAlive = true;
-        });
-        
-        this._websocket.onUnpackedMessage.addListener(this._onWSMessage.bind(this))
-        this._websocket.onClose.addListener(this._onWSClose.bind(this));
 
-        return this._websocket.open();
+            this.isGameAlive = true;
+        };
+
+        this._websocket.onmessage = this._onWSMessage.bind(this);
+        this._websocket.onclose = this._onWSClose.bind(this);
     }
-    
-    private _onWSMessage(data: any): void {
+
+    private _onWSMessage(event: MessageEvent): void {
+        let data = JSON.parse(event.data);
+
         console.debug("[XIVDeck - FFXIVPluginLink] Got message from websocket", data);
-        
+
         if (!data.hasOwnProperty('messageType')) {
             console.warn("[XIVDeck - FFXIVPluginLink] Malformed message from XIV Plugin, missing messageType", data);
-            return
+            return;
         }
-        
+
         this.emit(data.messageType, data);
     }
-    
-    private _onWSClose(): void {
-        console.debug("[XIVDeck - FFXIVPluginLink] Connection to WebSocket server lost!")
+
+    private _onWSClose(event: CloseEvent): void {
+        console.debug("[XIVDeck - FFXIVPluginLink] Connection to WebSocket server lost!");
         this.emit("_wsClosed", {});
         this._websocket = null;
         
         if (!this._doConnectionRetries || !this.isGameAlive) return;
-        
+
+        if (event.code == 1002 || event.code == 1008) {
+            console.warn("The WebSocket server requested we not retry connection.");
+            return;
+        }
+
         // retry a connection after 500 milliseconds, specifying connection retry logic.
         // because of how websocket closes work, a failed connection will emit a close and will hit this repeatedly.
         setTimeout(this.connect.bind(this), 500);
@@ -114,26 +97,25 @@ export class FFXIVPluginLink {
      */
     public close(): void {
         this._doConnectionRetries = false;
-        
+
         if (this._websocket != null) {
-            this._websocket.ws.close();
             this._websocket.close();
             this._websocket = null;
-        } 
+        }
     }
-    
+
     public gracefulClose(): void {
         this._websocket?.close();
     }
-    
+
     public isReady(): boolean {
-        return ((this._websocket != null) && (this._websocket.isOpened));
+        return ((this._websocket != null) && (this._websocket.readyState == 1));
     }
 
     public on(name: string, fn: Function): Function | undefined {
         return FFXIVPluginLink.eventManager.on(name, fn);
     }
-    
+
     private emit(name: string, data: any): void {
         FFXIVPluginLink.eventManager.emit(name, data);
     }

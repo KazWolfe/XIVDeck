@@ -9,17 +9,17 @@ namespace XIVDeck.FFXIVPlugin.Server;
 
 public class XIVDeckWebServer : IDisposable {
     private readonly IWebServer _host;
-    private readonly WSEventNotifier _wsModule;
+    private readonly XIVDeckWSServer _xivDeckWSModule;
 
     public XIVDeckWebServer(int port) {
-        this._wsModule = new WSEventNotifier("/ws");
+        this._xivDeckWSModule = new XIVDeckWSServer("/ws");
         
         this._host = new WebServer(o => o
             .WithUrlPrefixes(GenerateUrlPrefixes(port))
             .WithMode(HttpListenerMode.EmbedIO)
         );
             
-        this._host.WithModule(this._wsModule);
+        this._host.WithModule(this._xivDeckWSModule);
 
         this.ConfigureDalamudLogging();
         this.ConfigureErrorHandlers();
@@ -33,7 +33,7 @@ public class XIVDeckWebServer : IDisposable {
     }
 
     public void Dispose() {
-        this._wsModule.Dispose();
+        this._xivDeckWSModule.Dispose();
         this._host.Dispose();
     }
 

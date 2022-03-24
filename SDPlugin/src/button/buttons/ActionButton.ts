@@ -56,7 +56,7 @@ export class ActionButton extends BaseButton {
     }
     
     private stateUpdate(message: StateMessage) {
-        if (this.actionType == "GearSet" && message.type == "gearSet") {
+        if (this.actionType == "GearSet" && message.type == "GearSet") {
             this.render();
         }
     }

@@ -56,13 +56,9 @@ namespace XIVDeck.FFXIVPlugin.Utils {
                 }
             }
             
-
             if (hotbarUpdated) {
                 PluginLog.Debug("Detected a change to hotbar(s)!");
-                var message = new WSHotbarUpdateMessage(this._hotbarCache);
-
-                this._plugin.XivDeckWsServer.MulticastText(JsonConvert.SerializeObject(message));
-                WSEventNotifier.Instance?.BroadcastMessage(message);
+                XIVDeckWSServer.Instance?.BroadcastMessage(new WSStateUpdateMessage("Hotbar"));
             }
         }
 

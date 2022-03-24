@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Client.UI.Shell;
+using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
@@ -33,17 +34,16 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
 
         public unsafe void Execute(uint actionId, dynamic? _) {
             if (actionId > 199) {
-                throw new ArgumentOutOfRangeException(nameof(actionId), $"Macro ID {actionId} is invalid.");
+                throw new ActionNotFoundException(HotbarSlotType.Macro, actionId);
             }
 
-            bool isSharedMacro = actionId / 100 == 1;
-            int macroNumber = (int) actionId % 100;
-            
-            RaptureMacroModule.Macro* macro = GetMacro(isSharedMacro, macroNumber);
+            var isSharedMacro = actionId / 100 == 1;
+            var macroNumber = (int) actionId % 100;
+            var macro = GetMacro(isSharedMacro, macroNumber);
 
             // Safety check to make sure we aren't triggering an empty macro
             if (RaptureMacroModule.Instance->GetLineCount(macro) == 0) {
-                throw new ArgumentException("The specified macro is empty and cannot be used.");
+                throw new IllegalGameStateException("The specified macro is empty and cannot be used.");
             }
 
             PluginLog.Debug($"Would execute macro number {macroNumber}");

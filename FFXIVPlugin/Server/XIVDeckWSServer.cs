@@ -1,171 +1,65 @@
 ﻿using System;
-using System.IO;
-using System.Net;
-using System.Text;
+using System.Threading.Tasks;
 using Dalamud.Logging;
-using NetCoreServer;
+using EmbedIO.WebSockets;
 using Newtonsoft.Json;
-using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Server.Helpers;
 using XIVDeck.FFXIVPlugin.Server.Messages;
-using XIVDeck.FFXIVPlugin.Server.Messages.Inbound;
-using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
-using Buffer = System.Buffer;
 
 namespace XIVDeck.FFXIVPlugin.Server {
-    public class XIVDeckWSServer : WsServer {
-        public XIVDeckWSServer(int port) : base(IPAddress.Loopback, port) {
-            this.OptionDualMode = true;
+    public class XIVDeckWSServer : WebSocketModule {
+        public static XIVDeckWSServer? Instance { get; private set; }
+        
+        public XIVDeckWSServer(string urlPath) : base(urlPath, true) {
+            // this is a bit hacky, but *should* be alright as the server shouldn't actually ever create more than one.
+            // if it does, the instance will be replaced and any notifiers will point to the new (proper) place. I hope.
+            Instance = this;
+            WSOpcodeWiring.Autowire();
         }
 
-        protected override TcpSession CreateSession() {
-            return new XIVDeckRoute(this);
-        }
-    }
-    
-    public class XIVDeckRoute : WsSession {
-        public XIVDeckRoute(WsServer server) : base(server) { }
-
-        // FixMe: this is *hacky as hell* and will probably break badly at some point.
-        // It only works for now because the WS server runs single-threaded and game-initialized messages
-        // don't actually use this route.
-        private dynamic? _context;
-
-        public override void OnWsReceived(byte[] buffer, long offset, long size) {
-            // helps prevent totally crashing the game if the WS server doesn't know what the hell to do with a
-            // message.
+        protected override async Task OnMessageReceivedAsync(IWebSocketContext context, byte[] buffer, IWebSocketReceiveResult result) {
+            // crash protection - prevents WS from taking down all of FFXIV if a message fails to decode
             
             try {
-               this._processWSMessage(buffer, offset, size); 
+                await this._onMessage(context, buffer, result);
             } catch (Exception ex) {
-                PluginLog.Error("Failed reading low-level WS message", ex);
-                Injections.Chat.PrintError("[XIVDeck] XIVDeck ran into a problem processing a WebSocket " +
-                                           "message. If you see this message, please report a bug and attach your " +
-                                           "dalamud.log file.");
+                PluginLog.Error(ex, "Got an exception on websocket process");
             }
         }
 
-        private void _processWSMessage(byte[] buffer, long offset, long size) {
-            string rawMessage = Encoding.UTF8.GetString(buffer, (int) offset, (int) size);
-            PluginLog.Debug($"Got WS message - {rawMessage}");
-
-            JsonConvert.DeserializeObject(rawMessage, typeof(BaseInboundMessage));
-            
-            BaseInboundMessage? message = JsonConvert.DeserializeObject<BaseInboundMessage>(rawMessage);
+        private async Task _onMessage(IWebSocketContext context, byte[] buffer, IWebSocketReceiveResult result) {
+            var rawData = this.Encoding.GetString(buffer);
+            var message = JsonConvert.DeserializeObject<BaseInboundMessage>(rawData);
 
             if (message == null) {
-                throw new ArgumentNullException(nameof(message), $"Message decoded to null - {rawMessage}");
-            }
-            
-            this._context = message.Context;
-            
-            switch (message.Opcode) {
-                default:
-                    PluginLog.Warning($"Received message with unknown opcode: {message.Opcode}");
-                    return;
-                
-                // system messages
-                case "init":
-                    message = JsonConvert.DeserializeObject<WSInitOpcode>(rawMessage);
-                    break;
-                case "echo":
-                    message = JsonConvert.DeserializeObject<WSEchoInboundMessage>(rawMessage);
-                    break;
-                
-                // common
-                case "getIcon":
-                    message = JsonConvert.DeserializeObject<WSGetIconOpcode>(rawMessage);
-                    break;
-                
-                // command/text
-                case "command":
-                    message = JsonConvert.DeserializeObject<WSCommandOpcode>(rawMessage);
-                    break;
-
-                // hotbar
-                case "execHotbar":
-                    message = JsonConvert.DeserializeObject<WSExecuteHotbarSlotOpcode>(rawMessage);
-                    break;
-                case "getHotbarIcon":
-                    message = JsonConvert.DeserializeObject<WSGetHotbarSlotIconOpcode>(rawMessage);
-                    break;
-                
-                // actions
-                case "getUnlockedActions":
-                    message = JsonConvert.DeserializeObject<WSGetUnlockedActionsOpcode>(rawMessage);
-                    break;
-                case "getActionIcon":
-                    message = JsonConvert.DeserializeObject<WSGetActionIconOpcode>(rawMessage);
-                    break;
-                case "execAction":
-                    message = JsonConvert.DeserializeObject<WSExecuteActionOpcode>(rawMessage);
-                    break;
-                
-                // class switching
-                case "getClasses":
-                    message = JsonConvert.DeserializeObject<WSGetClassesOpcode>(rawMessage);
-                    break;
-                case "getClass":
-                    message = JsonConvert.DeserializeObject<WSGetClassOpcode>(rawMessage);
-                    break;
-                case "switchClass":
-                    message = JsonConvert.DeserializeObject<WSSwitchClassOpcode>(rawMessage);
-                    break;
+                PluginLog.Warning($"WebSocket message failed to deserialize to base: {rawData}");
+                return;
             }
 
-            if (message == null) {
-                throw new InvalidDataException($"Message failed deserialization: {rawMessage}");
+            var instance = WSOpcodeWiring.GetInstance(message.Opcode, rawData);
+
+            if (instance == null) {
+                PluginLog.Warning($"WebSocket message failed to deserialize to instance: {rawData}");
+                return ;
             }
 
-            try {
-                message.Process(this);
-            } catch (Exception ex) {
-                Injections.Chat.PrintError($"[XIVDeck] {ex.Message}");
-                PluginLog.Error(ex, "The WebSocket server encountered an error processing a message.");
-
-                // Error handling logic - send an alert back to the Stream Deck so we can show a failed icon.
-                this.SendText(JsonConvert.SerializeObject(new WSReplyMessage(message.Context, ex)));
-            }
+            await instance.Process(context);
         }
 
-        public void SendMessage(BaseOutboundMessage message) {
-            if (this._context != null) {
-                message.Context = this._context;
-            }
-            
-            this.SendText(JsonConvert.SerializeObject(message));
+        public new void Dispose() {
+            Instance = null;
+            base.Dispose();
         }
         
-        public new void SendClose(int code, string text) {
-            byte [] status= BitConverter.GetBytes((short)code);
-            Array.Reverse(status);
-            byte[] datas = this.Combine(status, Encoding.UTF8.GetBytes(text));
-            this.SendClose(0, datas, 0, datas.Length);            
-            base.Disconnect();
-
+        public void BroadcastString(string payload) {
+            this.BroadcastAsync(payload);
         }
 
-        private byte[] Combine(byte[] first, byte[] second) {
-            byte[] ret = new byte[first.Length + second.Length];
-            Buffer.BlockCopy(first, 0, ret, 0, first.Length);
-            Buffer.BlockCopy(second, 0, ret, first.Length, second.Length);
-            return ret;
-        }
-
-        public override void OnWsConnected(HttpRequest request) {
-            // only listen to requests coming to xivdeck specifically.
-            if (this.Request.Url != "/xivdeck") {
-                this.SendClose(1008, "Unknown request URL.");
-                return;
-            }
-
-            if (this.Socket.RemoteEndPoint is not IPEndPoint point) {
-                this.SendClose(1008, "Illegal remote endpoint type");
-                return;
-            }
+        public void BroadcastMessage(BaseOutboundMessage message) {
+            var serializedData = JsonConvert.SerializeObject(message);
             
-            if (!IPAddress.IsLoopback(point.Address)) {
-                this.SendClose(1008, "For security purposes, non-local connections are rejected.");
-            }
+            this.BroadcastString(serializedData);
         }
     }
-}
+}; 
+
