@@ -6,7 +6,6 @@ using EmbedIO.Routing;
 using EmbedIO.WebApi;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using XIVDeck.FFXIVPlugin.ActionExecutor;
-using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 

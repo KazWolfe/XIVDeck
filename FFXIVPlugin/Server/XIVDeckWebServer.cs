@@ -1,7 +1,6 @@
 ﻿using System;
 using Dalamud.Logging;
 using EmbedIO;
-using EmbedIO.WebSockets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 

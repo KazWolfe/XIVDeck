@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Dalamud.Logging;
-using EmbedIO;
-using EmbedIO.WebApi;
 using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.Server.Messages;
 
 namespace XIVDeck.FFXIVPlugin.Server.Helpers;
 
-[System.AttributeUsage(System.AttributeTargets.Class)]
-public class WSOpcodeAttribute : System.Attribute {
+[AttributeUsage(AttributeTargets.Class)]
+public class WSOpcodeAttribute : Attribute {
     public readonly string Opcode;
 
     public WSOpcodeAttribute(string opcode) {

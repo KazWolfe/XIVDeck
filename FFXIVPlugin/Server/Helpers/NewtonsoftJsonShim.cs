@@ -5,14 +5,11 @@ using EmbedIO;
 using EmbedIO.Utilities;
 using EmbedIO.WebApi;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace XIVDeck.FFXIVPlugin.Server.Helpers; 
 
 public static class NewtonsoftJsonShim {
-    private static readonly JsonSerializerSettings JSettings = new() {
-        
-    };
+    private static readonly JsonSerializerSettings JSettings = new();
     
     public static async Task Serialize(IHttpContext context, object? data) {
         Validate.NotNull(nameof(context), context).Response.ContentType = MimeType.Json;

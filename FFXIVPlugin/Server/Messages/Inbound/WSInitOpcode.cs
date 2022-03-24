@@ -1,11 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-using System.Text;
+﻿using System.Reflection;
 using System.Threading.Tasks;
 using Dalamud.Logging;
 using EmbedIO.WebSockets;
-using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;

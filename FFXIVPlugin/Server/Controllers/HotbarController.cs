@@ -69,7 +69,7 @@ public class HotbarController : WebApiController {
         PluginLog.Debug("timing: TriggerHotbarSlot ended");
     }
 
-    private bool SafetyCheckHotbar(int hotbarId, int slotId) {
+    private void SafetyCheckHotbar(int hotbarId, int slotId) {
         switch (hotbarId) {
             // Safety checks
             case < 0 or > 17:
@@ -79,7 +79,5 @@ public class HotbarController : WebApiController {
             case >= 10 when slotId is < 0 or > 15: // cross hotbars
                 throw new ArgumentException("When Hotbar ID >= 10, Slot ID must be between 0 and 15");
         }
-
-        return true;
     }
 }

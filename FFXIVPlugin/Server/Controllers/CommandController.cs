@@ -1,5 +1,4 @@
-﻿using System;
-using EmbedIO;
+﻿using EmbedIO;
 using EmbedIO.Routing;
 using EmbedIO.WebApi;
 using XIVDeck.FFXIVPlugin.Base;
