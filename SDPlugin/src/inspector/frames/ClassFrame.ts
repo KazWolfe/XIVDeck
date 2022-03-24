@@ -1,9 +1,9 @@
 ﻿import {BaseFrame} from "../BaseFrame";
 import {ClassButtonSettings} from "../../button/buttons/ClassButton";
 import piInstance from "../../inspector";
-import {GameClassesMessage, GetClassesOpcode} from "../../link/ffxivplugin/messages/ClassMessages";
 import {StringUtils} from "../../util/StringUtils";
 import {PIUtils} from "../../util/PIUtils";
+import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
 
 export class ClassFrame extends BaseFrame<ClassButtonSettings> {
     classSelector: HTMLSelectElement;
@@ -36,13 +36,12 @@ export class ClassFrame extends BaseFrame<ClassButtonSettings> {
     
     async populateClasses(): Promise<void> {
         let groupCache: Map<string, HTMLOptGroupElement> = new Map<string, HTMLOptGroupElement>()
-        let classData = await piInstance.xivPluginLink.send(new GetClassesOpcode()) as GameClassesMessage;
+        let classData = await FFXIVApi.GameClass.getClasses(true);
         
-        // sort and filter this list down to only viable classes
-        classData.classes = classData.classes.sort((a, b) => (a.sortOrder > b.sortOrder) ? 1 : -1);
-        classData.classes = classData.classes.filter((c) => classData.available.includes(c.id));
+        // sort this list properly
+        classData = classData.sort((a, b) => (a.sortOrder > b.sortOrder) ? 1 : -1);
         
-        classData.classes.forEach((cl) => {
+        classData.forEach((cl) => {
             let group = groupCache.get(cl.categoryName);
             if (group == null) {
                 group = document.createElement("optgroup");

@@ -12,8 +12,17 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             return (*macroPage)[id];
         }
 
-        public ExecutableAction? GetExecutableActionById(uint actionId) {
-            return null;
+        public unsafe ExecutableAction GetExecutableActionById(uint actionId) {
+            var macro = GetMacro((actionId / 100 > 0), ((int) actionId % 100));
+
+            // Macros are weird, inasmuch as they can't be null. Something will always exist, even if empty.
+            return new ExecutableAction {
+                ActionId = (int) actionId,
+                ActionName = macro->Name.ToString(),
+                Category = null,
+                HotbarSlotType = HotbarSlotType.Macro,
+                IconId = (int) macro->IconId
+            };
         }
 
         public List<ExecutableAction>? GetAllowedItems() {

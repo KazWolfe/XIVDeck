@@ -1,12 +1,8 @@
 ﻿import {BaseButton} from "../BaseButton";
 import AbstractStateEvent from "@rweich/streamdeck-events/dist/Events/Received/Plugin/AbstractStateEvent";
 import {KeyDownEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
-import {
-    GameClassMessage,
-    GetClassOpcode,
-    SwitchClassOpcode
-} from "../../link/ffxivplugin/messages/ClassMessages";
 import plugin from "../../plugin";
+import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
 
 export type ClassButtonSettings = {
     classId: number
@@ -31,8 +27,8 @@ export class ClassButton extends BaseButton {
         if (this.classId == null) {
             throw new Error("No class specified for this button");
         }
-
-        await this._sendExec(new SwitchClassOpcode(this.classId));
+        
+        await FFXIVApi.GameClass.triggerClass(this.classId);
     }
     
     async render(): Promise<void> {
@@ -49,8 +45,7 @@ export class ClassButton extends BaseButton {
             return
         }
         
-        let myClass = await plugin.xivPluginLink.send(new GetClassOpcode(this.classId)) as GameClassMessage;
-        
-        this.setImage(myClass.class.iconData);
+        let classInfo = await FFXIVApi.GameClass.getClass(this.classId);
+        this.setImage(await FFXIVApi.getIcon(classInfo.iconId));
     }
 }

@@ -1,10 +1,10 @@
 ﻿import {BaseFrame} from "../BaseFrame";
 import {ActionButtonSettings} from "../../button/buttons/ActionButton";
 import {FFXIVAction} from "../../link/ffxivplugin/GameTypes";
-import {GetUnlockedActionsOpcode, UnlockedActionsMessage} from "../../link/ffxivplugin/messages/ActionMessages";
 import piInstance from "../../inspector";
 import {PIUtils} from "../../util/PIUtils";
 import {StringUtils} from "../../util/StringUtils";
+import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
 
 const NAME_SUBSTITUTIONS: Record<string, string> = {
     "FieldMarker": "Waymark",
@@ -47,9 +47,7 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
     }
 
     async loadGameData(): Promise<void> {
-        let response: UnlockedActionsMessage;
-        response = await piInstance.xivPluginLink.send(new GetUnlockedActionsOpcode()) as UnlockedActionsMessage;
-        this.actionData = new Map<string, FFXIVAction[]>(Object.entries(response.data));
+        this.actionData = await FFXIVApi.Action.getActions();
         
         this._renderTypes();
         this._renderItems();
@@ -66,6 +64,8 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
     private _renderTypes() {
         this.typeSelector.options.length = 0;
         this.typeSelector.add(PIUtils.createDefaultSelection("action type"));
+        
+        console.log(this.actionData, typeof(this.actionData))
         
         this.actionData.forEach((_, k) => {
             let option = document.createElement("option");

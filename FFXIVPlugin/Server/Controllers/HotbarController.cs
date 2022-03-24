@@ -1,4 +1,5 @@
 ﻿using System;
+using Dalamud.Logging;
 using EmbedIO;
 using EmbedIO.Routing;
 using EmbedIO.WebApi;
@@ -15,7 +16,6 @@ public class HotbarController : WebApiController {
     [Route(HttpVerbs.Get, "/{hotbarId}/{slotId}")]
     public unsafe SerializableHotbarSlot GetHotbarSlot(int hotbarId, int slotId) {
         var plugin = XIVDeckPlugin.Instance;
-
         var hotbarModule = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule();
 
         try {
@@ -26,42 +26,47 @@ public class HotbarController : WebApiController {
 
         var hotbarItem = hotbarModule->HotBar[hotbarId]->Slot[slotId];
         var iconId = hotbarItem->Icon;
-        
-        String pngString = plugin.IconManager.GetIconAsPngString(iconId % 1000000, iconId >= 1000000);
 
         return new SerializableHotbarSlot {
             HotbarId = hotbarId,
             SlotId = slotId,
             IconId = iconId,
             SlotType = hotbarItem->CommandType,
-            IconData = pngString
+            CommandId = (int) hotbarItem->CommandId,
+            IconData = plugin.IconManager.GetIconAsPngString(iconId % 1000000, iconId >= 1000000)
         };
         
     }
     
     [Route(HttpVerbs.Post, "/{hotbarId}/{slotId}/execute")]
     public unsafe void TriggerHotbarSlot(int hotbarId, int slotId) {
+        PluginLog.Debug("timing: TriggerHotbarSlot started");
         var plugin = XIVDeckPlugin.Instance;
-        
         var hotbarModule = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule();
-
-        if (!Injections.ClientState.IsLoggedIn)
-            throw new InvalidOperationException("A player is not logged in to the game!");
 
         try {
             this.SafetyCheckHotbar(hotbarId, slotId);
-        } catch (ArgumentException ex) {
-            throw HttpException.NotAcceptable(ex.Message);
+        } catch (ArgumentException ex) { 
+            throw HttpException.BadRequest("An invalid hotbar or slot was triggered.", ex);
         }
+        
+        // this really should not be here as it's mixing the controller with business logic, but it can't really be
+        // put anywhere else either.
+        if (!Injections.ClientState.IsLoggedIn)
+            throw HttpException.Unauthorized("A player is not logged in to the game!");
 
         // Trigger the hotbar event on the next Framework tick, and also in the Framework (game main) thread.
         // For whatever reason, the game *really* doesn't like when a user casts a Weaponskill or Ability from a
         // non-game thread (as would be the case for API calls). Why this works normally for Spells and other
         // actions will forever be a mystery. 
+        PluginLog.Debug("timing: pre-TickScheduler");
         TickScheduler.Schedule(delegate { 
+            PluginLog.Debug("timing: TickScheduler start");
             var hotbarItem = hotbarModule->HotBar[hotbarId]->Slot[slotId];
             plugin.SigHelper.ExecuteHotbarSlot(hotbarItem);
+            PluginLog.Debug("timing: TickScheduler end");
         });
+        PluginLog.Debug("timing: TriggerHotbarSlot ended");
     }
 
     private bool SafetyCheckHotbar(int hotbarId, int slotId) {

@@ -93,14 +93,12 @@
     </ItemGroup>
     
     <!-- Build steps -->
-    
-    <!--
     <Target Name="ILRepack" AfterTargets="Build">
         <ItemGroup>
             <InputAssemblies Include="$(TargetPath)" />
             <InputAssemblies Include="$(TargetDir)*.dll" Exclude="$(TargetPath)" />
         </ItemGroup>
-        <Exec Command="$(PkgILRepack)\tools\ILRepack.exe /lib:$(DalamudLibPath) /out:$(TargetDir)$(TargetFileName) @(InputAssemblies, ' ')" />    
+        <Exec Command="$(PkgILRepack)\tools\ILRepack.exe /lib:$(DalamudLibPath) /lib:$(TargetDir) /out:$(TargetDir)$(TargetFileName) @(InputAssemblies, ' ')" />    
     </Target>
 
     <Target Name="CleanOutDir" AfterTargets="ILRepack">
@@ -109,7 +107,7 @@
         </ItemGroup>
         <Message Text="Deleting @(DeleteAssemblies)" Importance="high" />
         <Delete Files="@(DeleteAssemblies)" />
-    </Target> -->
+    </Target>
 
     <Target Name="PackagePlugin" AfterTargets="CleanOutDir" Condition="'$(Configuration)' == 'Release'">
         <DalamudPackager ProjectDir="$(ProjectDir)" OutputPath="$(OutputPath)" AssemblyName="$(AssemblyName)" MakeZip="true" />

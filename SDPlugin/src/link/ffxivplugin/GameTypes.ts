@@ -3,6 +3,7 @@
     id: number;
     type: string;
     category: string | null,
+    iconId: number
 }
 
 export type FFXIVClass = {
@@ -30,4 +31,12 @@ export type FFXIVGenericResponse = {
         ClassName: string
         Message: string | null
     } 
+}
+
+export type FFXIVHotbarSlot = {
+    hotbarId: number;
+    slotId: number;
+
+    iconId: number;
+    iconData: string;
 }

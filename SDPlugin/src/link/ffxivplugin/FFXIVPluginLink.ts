@@ -9,6 +9,8 @@ import {FFXIVGenericResponse} from "./GameTypes";
 import AbstractStreamdeckConnector from "@rweich/streamdeck-ts/dist/AbstractStreamdeckConnector";
 
 export class FFXIVPluginLink {
+    public static instance: FFXIVPluginLink;
+    
     // static so that event registrations can survive re-initialization
     static eventManager: EventEmitter = new EventEmitter();
     
@@ -22,6 +24,11 @@ export class FFXIVPluginLink {
     
     constructor(instance: AbstractStreamdeckConnector) {
         this._plugin = instance;
+        FFXIVPluginLink.instance = this;
+    }
+    
+    get baseUrl() : string {
+        return `http://localhost:${this.port + 1}`
     }
     
     private static _attachContext(data: object, requestId: string | number): object {
@@ -36,21 +43,12 @@ export class FFXIVPluginLink {
         return data['context']['requestId'];
     }
     
-    
     public async send(payload: FFXIVOpcode): Promise<unknown> {
         if (!this.isGameAlive || !this._websocket) {
             return Promise.reject(Error("The game does not appear to be alive, or a websocket has not been created yet."));
         }
         
         return this._websocket.sendRequest(payload, { requestId: uuidv4() });
-    }
-    
-    public async sendExpectingGeneric(payload: FFXIVOpcode): Promise<void> {
-        let resp = await this.send(payload) as FFXIVGenericResponse;
-
-        if (!resp.success) {
-            throw new Error(`The game plugin reported an error: ${resp.exception}`)
-        }
     }
     
     public connect(doRetry: boolean = true): Promise<unknown> | undefined {
@@ -66,7 +64,7 @@ export class FFXIVPluginLink {
         }
         
         this._doConnectionRetries = doRetry;
-        this._websocket = new WebSocketAsPromisedFaster("ws://localhost:" + this.port + "/xivdeck", {
+        this._websocket = new WebSocketAsPromisedFaster(`ws://localhost:${this.port}/xivdeck`, {
             packMessage: ((data) => JSON.stringify(data)),
             unpackMessage: ((data) => JSON.parse(data.toString())),
             attachRequestId: FFXIVPluginLink._attachContext,

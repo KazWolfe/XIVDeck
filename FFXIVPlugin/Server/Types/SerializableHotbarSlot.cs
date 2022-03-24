@@ -9,6 +9,8 @@ namespace XIVDeck.FFXIVPlugin.Server.Types {
 
         [JsonProperty("type")] [JsonConverter(typeof(StringEnumConverter))]
         public HotbarSlotType SlotType;
+
+        [JsonProperty("commandId")] public int CommandId;
         
         [JsonProperty("iconId")] public int IconId;
 

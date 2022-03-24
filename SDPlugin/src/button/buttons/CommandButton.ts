@@ -1,8 +1,7 @@
 ﻿import {BaseButton} from "../BaseButton";
 import AbstractStateEvent from "@rweich/streamdeck-events/dist/Events/Received/Plugin/AbstractStateEvent";
 import {KeyDownEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
-import plugin from "../../plugin";
-import {ExecuteCommandOpcode} from "../../link/ffxivplugin/messages/CommandMessages";
+import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
 
 export type CommandButtonSettings = {
     command: string
@@ -23,6 +22,6 @@ export class CommandButton extends BaseButton {
             throw new Error("No command specified for this button");
         }
         
-       await this._sendExec(new ExecuteCommandOpcode(this.command));
+       await FFXIVApi.runTextCommand(this.command);
     }
 }

@@ -1,12 +1,8 @@
 ﻿import {BaseButton} from "../BaseButton";
 import AbstractStateEvent from "@rweich/streamdeck-events/dist/Events/Received/Plugin/AbstractStateEvent";
 import {KeyDownEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
-import {
-    ExecuteHotbarSlotOpcode,
-    GetHotbarSlotIconOpcode,
-    HotbarSlotIconMessage
-} from "../../link/ffxivplugin/messages/HotbarMessages";
 import plugin from "../../plugin";
+import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
 
 export type HotbarButtonSettings = {
     hotbarId: number,
@@ -38,7 +34,7 @@ export class HotbarButton extends BaseButton {
             throw new Error("No hotbarId/slotId defined for this button");
         }
         
-        await this._sendExec(new ExecuteHotbarSlotOpcode(this.hotbarId, this.slotId));
+        await FFXIVApi.Hotbar.triggerHotbarSlot(this.hotbarId, this.slotId);
     }
     
     async handleUpdate() : Promise<void> {
@@ -54,8 +50,7 @@ export class HotbarButton extends BaseButton {
             return
         }
         
-        let response: HotbarSlotIconMessage;
-        response = await plugin.xivPluginLink.send(new GetHotbarSlotIconOpcode(this.hotbarId, this.slotId)) as HotbarSlotIconMessage;
+        let response = await FFXIVApi.Hotbar.getHotbarSlot(this.hotbarId, this.slotId);
         this.setImage(response.iconData);
     }
 }

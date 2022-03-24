@@ -1,7 +1,5 @@
 ﻿import {KeyDownEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
 import plugin from "../plugin";
-import {FFXIVOpcode} from "../link/ffxivplugin/MessageBase";
-import {FFXIVGenericResponse} from "../link/ffxivplugin/GameTypes";
 
 type SetterTargets = 'hardware' | 'software' | 'both';
 
@@ -23,11 +21,6 @@ export abstract class BaseButton {
         this._xivEventListeners.forEach((eventDeleter) => {
             if (eventDeleter) eventDeleter();
         });
-    }
-    
-    /* execute wrapper, stylistic */
-    protected async _sendExec(message: FFXIVOpcode): Promise<void> {
-        await plugin.xivPluginLink.sendExpectingGeneric(message);
     }
     
     

@@ -2,11 +2,7 @@
 import AbstractStateEvent from "@rweich/streamdeck-events/dist/Events/Received/Plugin/AbstractStateEvent";
 import {KeyDownEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
 import plugin from "../../plugin";
-import {
-    ActionIconMessage,
-    ExecuteActionOpcode,
-    GetActionIconOpcode
-} from "../../link/ffxivplugin/messages/ActionMessages";
+import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
 
 export type MacroButtonSettings = { 
     macroId: number
@@ -32,8 +28,8 @@ export class MacroButton extends BaseButton {
         if (this.macroId == null) {
             throw Error("No macro ID was defined for this button!");
         }
-
-        await plugin.xivPluginLink.sendExpectingGeneric(new ExecuteActionOpcode("Macro", this.macroId));
+        
+        await FFXIVApi.Action.executeAction("Macro", this.macroId);
     }
 
     async render() {
@@ -49,10 +45,8 @@ export class MacroButton extends BaseButton {
         if (this.macroId == null) {
             return
         }
-
-        let response: ActionIconMessage;
-        response = await plugin.xivPluginLink.send(new GetActionIconOpcode("Macro", this.macroId)) as ActionIconMessage;
-
-        this.setImage(response.iconData);
+        
+        let actionData = await FFXIVApi.Action.getAction("Macro", this.macroId);
+        this.setImage(await FFXIVApi.getIcon(actionData.iconId));
     }
 }

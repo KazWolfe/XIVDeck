@@ -8,18 +8,18 @@ using XIVDeck.FFXIVPlugin.Base;
 
 namespace XIVDeck.FFXIVPlugin.Server.Types {
     public class SerializableGameClass {
-        private static List<SerializableGameClass> _cache = new();
+        private static readonly List<SerializableGameClass> Cache = new();
 
         public static List<SerializableGameClass> GetCache() {
-            if (_cache.Count != 0) return _cache;
+            if (Cache.Count != 0) return Cache;
             
             foreach (var gameClass in Injections.DataManager.GetExcelSheet<ClassJob>()!) {
-                _cache.Add(new SerializableGameClass((int) gameClass.RowId));
+                Cache.Add(new SerializableGameClass((int) gameClass.RowId));
             }
                 
-            PluginLog.Debug($"Populated GameClassCache with {_cache.Count} entries.");
+            PluginLog.Debug($"Populated GameClassCache with {Cache.Count} entries.");
 
-            return _cache;
+            return Cache;
         }
         
         private static ExcelSheet<ClassJob> _classSheet = Injections.DataManager.GetExcelSheet<ClassJob>()!;
@@ -31,7 +31,6 @@ namespace XIVDeck.FFXIVPlugin.Server.Types {
         [JsonProperty("sortOrder")] public int SortOrder { get; }
 
         [JsonProperty("iconId")] public int IconId { get; }
-        [JsonProperty("iconData")] public string IconData { get; }
         
         [JsonProperty("parentClass")] public int ParentClass { get; set; }
         
@@ -60,8 +59,7 @@ namespace XIVDeck.FFXIVPlugin.Server.Types {
 
             this.SortOrder = classJob.UIPriority;
             this.IconId = 062100 + this.Id;
-            this.IconData = XIVDeckPlugin.Instance.IconManager.GetIconAsPngString(this.IconId);
-
+            
             this.ParentClass = (int) classJob.ClassJobParent.Row;
         }
     }

@@ -21,7 +21,7 @@ export class GlobalFrame extends BaseFrame<GlobalSettings> {
     }
     
     renderHTML(): void {
-        this.domParent.append(PIUtils.createPILabeledElement("WS Port", this.portField));
+        this.domParent.append(PIUtils.createPILabeledElement("XIVDeck Port", this.portField));
         
         this.portField.onchange = this._onPortChange.bind(this);
     }

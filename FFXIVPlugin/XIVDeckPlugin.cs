@@ -5,6 +5,7 @@ using XivCommon;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Server;
+using XIVDeck.FFXIVPlugin.Server.Types;
 using XIVDeck.FFXIVPlugin.UI;
 using XIVDeck.FFXIVPlugin.Utils;
 
@@ -24,9 +25,9 @@ namespace XIVDeck.FFXIVPlugin
         
         public GameStateCache GameStateCache { get; }
 
-        private HotbarWatcher HotbarWatcher;
+        private readonly HotbarWatcher _hotbarWatcher;
         public XIVDeckWSServer XivDeckWsServer = null!;
-        public XIVDeckWebServer XIVDeckWebServer = null!;
+        private XIVDeckWebServer _xivDeckWebServer = null!;
 
         public XIVDeckPlugin(DalamudPluginInterface pluginInterface) {
             // Injections management
@@ -40,14 +41,15 @@ namespace XIVDeck.FFXIVPlugin
             this.Configuration = this.PluginInterface.GetPluginConfig() as PluginConfig ?? new PluginConfig();
             this.Configuration.Initialize(this.PluginInterface);
             
-            // Load cache of unlocked events
+            // Load caches of various things into plugin memory for reference later
             this.GameStateCache = GameStateCache.Load();
+            SerializableGameClass.GetCache();
 
             // Various managers for advanced hooking into the game
             this.XivCommon = new XivCommonBase();
             this.SigHelper = new SigHelper();
             this.IconManager = new IconManager(this.PluginInterface);
-            this.HotbarWatcher = new HotbarWatcher(this);
+            this._hotbarWatcher = new HotbarWatcher(this);
             
             // Start the websocket server itself.
             this.InitializeWSServer();
@@ -65,9 +67,9 @@ namespace XIVDeck.FFXIVPlugin
         public void Dispose() {
             this.PluginUi.Dispose();
 
-            this.HotbarWatcher.Dispose();
+            this._hotbarWatcher.Dispose();
             this.XivDeckWsServer.Dispose();
-            this.XIVDeckWebServer.Dispose();
+            this._xivDeckWebServer.Dispose();
             this.SigHelper.Dispose();
 
             Injections.ClientState.Login -= this.OnLogin;
@@ -97,12 +99,12 @@ namespace XIVDeck.FFXIVPlugin
         }
 
         internal void InitializeWebServer() {
-            if (this.XIVDeckWebServer is {IsRunning: true}) {
-                this.XIVDeckWebServer.Dispose();
+            if (this._xivDeckWebServer is {IsRunning: true}) {
+                this._xivDeckWebServer.Dispose();
             }
 
-            this.XIVDeckWebServer = new XIVDeckWebServer(this.Configuration.WebSocketPort + 1);
-            this.XIVDeckWebServer.StartServer();
+            this._xivDeckWebServer = new XIVDeckWebServer(this.Configuration.WebSocketPort + 1);
+            this._xivDeckWebServer.StartServer();
         }
 
         internal void InitializeWSServer() {

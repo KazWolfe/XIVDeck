@@ -2,13 +2,8 @@
 import {KeyDownEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
 import AbstractStateEvent from "@rweich/streamdeck-events/dist/Events/Received/Plugin/AbstractStateEvent";
 import plugin from "../../plugin";
-import {
-    ActionIconMessage,
-    ExecuteActionOpcode,
-    GetActionIconOpcode
-} from "../../link/ffxivplugin/messages/ActionMessages";
-import {GetHotbarSlotIconOpcode, HotbarSlotIconMessage} from "../../link/ffxivplugin/messages/HotbarMessages";
 import {StateMessage} from "../../link/ffxivplugin/GameTypes";
+import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
 
 export type ActionButtonSettings = {
     actionType: string,
@@ -39,7 +34,7 @@ export class ActionButton extends BaseButton {
             throw Error("Not action type/ID was defined for this button!");
         }
         
-        await this._sendExec(new ExecuteActionOpcode(this.actionType, this.actionId))
+        await FFXIVApi.Action.executeAction(this.actionType, this.actionId);
     }
     
     async render() {
@@ -55,11 +50,9 @@ export class ActionButton extends BaseButton {
         if (this.actionType == null || this.actionId == null) {
             return;
         }
-
-        let response: ActionIconMessage;
-        response = await plugin.xivPluginLink.send(new GetActionIconOpcode(this.actionType, this.actionId)) as ActionIconMessage;
-
-        this.setImage(response.iconData);
+        
+        let actionInfo = await FFXIVApi.Action.getAction(this.actionType, this.actionId);
+        this.setImage(await FFXIVApi.getIcon(actionInfo.iconId));
     }
     
     private stateUpdate(message: StateMessage) {
