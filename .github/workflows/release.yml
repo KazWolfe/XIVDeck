@@ -13,7 +13,7 @@ jobs:
       - name: Set up .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 5.0.100
+          dotnet-version: 6.0.x
       - name: Restore Dependencies
         run: dotnet restore
       - name: Download Dalamud
@@ -40,31 +40,33 @@ jobs:
 
   build-sdplugin:
     name: Build XIVDeck Stream Deck Plugin
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
+    
+    defaults: 
+      run:
+        working-directory: ./SDPlugin
+    
     steps:
       - uses: actions/checkout@v2
-      - name: Download Stream Deck Distribution Tool
+      - name: Install Dependencies
+        run: npm install
+      - name: Patch Version
         run: |
-          Invoke-WebRequest -Uri https://developer.elgato.com/documentation/stream-deck/distributiontool/DistributionToolWindows.zip -OutFile packager.zip
-          Expand-Archive -Force packager.zip "$env:TEMP\elgato-distrib"
-      - name: Move Files to Expected Structure
-        run: |
-          New-Item -ItemType "directory" "dist\dev.wolf.xivdeck.sdPlugin"
-          Copy-Item "SDPlugin\*" -Destination "dist\dev.wolf.xivdeck.sdPlugin" -Recurse
-      - name: Run Distribution Bundler
-        run: |
-          Invoke-Expression "$env:TEMP\elgato-distrib\DistributionTool.exe -b -i dist\dev.wolf.xivdeck.sdPlugin -o dist"
+          export APP_VERSION=$(echo '${{ github.ref }}' | sed "s!refs/tags/v!!")
+          npm version $APP_VERSION --no-git-tag-version
+      - name: Build for Release
+        run: npm run build-release
+      - name: Package Plugin
+        run: (cd dist && zip -r dev.wolf.xivdeck.streamDeckPlugin dev.wolf.xivdeck.sdPlugin)
       - name: Report Build Hash
-        run: |
-          $fileHashInfo = Get-FileHash dist\dev.wolf.xivdeck.streamDeckPlugin;
-          Write-Output "Hash of the Stream Deck Plugin: $($fileHashInfo.Hash)";
+        run: echo "[Build Audit] $(sha256sum dist/dev.wolf.xivdeck.streamDeckPlugin)"
       - name: Upload Arifact to Release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: .\dist\dev.wolf.xivdeck.streamDeckPlugin
+          asset_path: ./SDPlugin/dist/dev.wolf.xivdeck.streamDeckPlugin
           asset_name: XIVDeck.streamDeckPlugin
           asset_content_type: application/zip
           

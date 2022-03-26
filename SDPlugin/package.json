@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build-prod": "webpack --mode production",
+    "build-release": "webpack --mode production",
     "build": "webpack --mode development",
     "watch": "webpack --mode development --watch --progress"
   },

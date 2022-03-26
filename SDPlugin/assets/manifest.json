@@ -77,15 +77,19 @@
   "Name": "XIVDeck",
   "Icon": "assets/images/icon",
   "URL": "https://wolf.dev/",
-  "Version": "0.1.0",
-  "OS": [{
+  "Version": "{{ PLUGIN_VERSION }}",
+  "OS": [
+    {
       "Platform": "windows",
-      "MinimumVersion" : "10"
-  }],
+      "MinimumVersion": "10"
+    }
+  ],
   "Software": {
-    "MinimumVersion" : "5.0"
+    "MinimumVersion": "5.0"
   },
   "ApplicationsToMonitor": {
-    "windows": [ "ffxiv_dx11.exe" ]
+    "windows": [
+      "ffxiv_dx11.exe"
+    ]
   }
 }

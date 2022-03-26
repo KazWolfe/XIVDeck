@@ -7,6 +7,7 @@ import copyWebpackPlugin from 'copy-webpack-plugin';
 
 const config = (environment: unknown, options: { mode: string; env: unknown }): webpack.Configuration => {
   let pluginNs = manifestNs;
+  let pluginVersion = process.env.npm_package_version!;
 
   return {
     entry: {
@@ -18,6 +19,7 @@ const config = (environment: unknown, options: { mode: string; env: unknown }): 
       library: 'connectElgatoStreamDeckSocket',
       libraryExport: 'default',
       path: path.resolve(__dirname, 'dist/' + pluginNs + '.sdPlugin/js'),
+      filename: '[name].js'
     },
     plugins: [
       new copyWebpackPlugin({
@@ -28,12 +30,23 @@ const config = (environment: unknown, options: { mode: string; env: unknown }): 
             toType: 'dir',
             transform: (content, path) => {
               if (/manifest\.json$/.test(path)) {
-                return content.toString().replaceAll('assets/', '')
+                // This is hacky as hell, but for whatever reason actually parsing JSON fails. So we'll just do this
+                // the cheaty way.
+                return content.toString()
+                    .replaceAll('assets/', '')
+                    .replaceAll('{{ PLUGIN_VERSION }}', pluginVersion);
               }
-              if (!/\.html/.test(path)) {
-                return content;
+              
+              // patch variables in HTML
+              if (/\.html/.test(path)) {
+                return content.toString()
+                    .replaceAll('{{ PLUGIN_NS }}', pluginNs)
+                    .replaceAll('{{ PLUGIN_VERSION }}', pluginVersion);
+                
               }
-              return content.toString().replace('{{ PLUGIN_NS }}', pluginNs);
+
+              // otherwise, return unmodified content
+              return content;
             },
           }
         ],
@@ -68,7 +81,7 @@ const config = (environment: unknown, options: { mode: string; env: unknown }): 
       extensions: ['.ts', '.js'],
     },
     optimization: {
-      splitChunks: {}
+      splitChunks: { }
     }
   };
 
