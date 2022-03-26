@@ -50,7 +50,7 @@
         
         <!-- Webserver and socketing -->
         <PackageReference Include="EmbedIO" Version="3.4.3" />
-        
+
         <!-- Dalamud things -->
         <PackageReference Include="DalamudPackager" Version="2.1.5" />
         <PackageReference Include="ILRepack" Version="2.1.0-beta1" GeneratePathProperty="true" />

@@ -21,7 +21,7 @@ public class HotbarController : WebApiController {
         try {
             this.SafetyCheckHotbar(hotbarId, slotId);
         } catch (ArgumentException ex) {
-            throw HttpException.NotAcceptable(ex.Message);
+            throw HttpException.BadRequest(ex.Message);
         }
 
         var hotbarItem = hotbarModule->HotBar[hotbarId]->Slot[slotId];
@@ -53,7 +53,7 @@ public class HotbarController : WebApiController {
         // this really should not be here as it's mixing the controller with business logic, but it can't really be
         // put anywhere else either.
         if (!Injections.ClientState.IsLoggedIn)
-            throw HttpException.Unauthorized("A player is not logged in to the game!");
+            throw HttpException.BadRequest("A player is not logged in to the game!");
 
         // Trigger the hotbar event on the next Framework tick, and also in the Framework (game main) thread.
         // For whatever reason, the game *really* doesn't like when a user casts a Weaponskill or Ability from a

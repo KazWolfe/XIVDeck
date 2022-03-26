@@ -20,7 +20,7 @@ export class ClassButton extends BaseButton {
         
         // try to render now, and schedule defer
         this.render();
-        this._xivEventListeners.add(plugin.xivPluginLink.on("initReply", this.render.bind(this)));
+        this._xivEventListeners.add(plugin.xivPluginLink.on("_ready", this.render.bind(this)));
     }
     
     async execute(event: KeyDownEvent): Promise<void> {

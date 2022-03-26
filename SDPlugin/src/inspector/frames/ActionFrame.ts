@@ -33,7 +33,7 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
         
         this.typeSelector.add(PIUtils.createDefaultSelection("action type"));
         
-        piInstance.xivPluginLink.on("initReply", this.loadGameData.bind(this));
+        piInstance.xivPluginLink.on("_ready", this.loadGameData.bind(this));
     }
 
     loadSettings(settings: ActionButtonSettings): void {

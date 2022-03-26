@@ -25,7 +25,7 @@ export class HotbarButton extends BaseButton {
         this.slotId = settings.slotId;
         
         // render if already exists and set up hooks to wait for events
-        this._xivEventListeners.add(plugin.xivPluginLink.on("initReply", this.render.bind(this)));
+        this._xivEventListeners.add(plugin.xivPluginLink.on("_ready", this.render.bind(this)));
         this._xivEventListeners.add(plugin.xivPluginLink.on("stateUpdate", this.stateUpdate.bind(this)));
         this.render();
     }

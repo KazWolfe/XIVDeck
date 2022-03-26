@@ -24,7 +24,7 @@ export class ActionButton extends BaseButton {
         this.actionType = settings.actionType;
         this.actionId = settings.actionId;
 
-        this._xivEventListeners.add(plugin.xivPluginLink.on("initReply", this.render.bind(this)));
+        this._xivEventListeners.add(plugin.xivPluginLink.on("_ready", this.render.bind(this)));
         this._xivEventListeners.add(plugin.xivPluginLink.on("stateUpdate", this.stateUpdate.bind(this)));
         this.render();
     }

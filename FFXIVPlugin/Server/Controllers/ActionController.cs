@@ -63,7 +63,7 @@ public class ActionController : WebApiController {
         try {
             ActionDispatcher.Execute(slotType, id);
         } catch (PlayerNotLoggedInException ex) {
-            throw HttpException.Unauthorized(ex.Message, ex);
+            throw HttpException.BadRequest(ex.Message, ex);
         } catch (ActionLockedException ex) {
             throw HttpException.Forbidden(ex.Message, ex);
         } catch (ActionNotFoundException ex) {

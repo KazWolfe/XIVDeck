@@ -14,7 +14,7 @@ public class CommandController : WebApiController {
     [Route(HttpVerbs.Post, "/")]
     public void ExecuteCommand([JsonData] SerializableTextCommand command) {
         if (!Injections.ClientState.IsLoggedIn)
-            throw HttpException.Unauthorized("A player is not logged in to the game!");
+            throw HttpException.BadRequest("A player is not logged in to the game!");
 
         if (command.Command == null)
             throw HttpException.BadRequest("A command is required for execution");

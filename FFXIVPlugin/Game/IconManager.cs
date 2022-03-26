@@ -13,7 +13,7 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using XIVDeck.FFXIVPlugin.Base;
 
-namespace XIVDeck.FFXIVPlugin.Utils; 
+namespace XIVDeck.FFXIVPlugin.Game; 
 
 // borrowed from https://github.com/Caraxi/RemindMe/blob/master/IconManager.cs
 public class IconManager : IDisposable {

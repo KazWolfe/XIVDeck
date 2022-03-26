@@ -2,6 +2,7 @@
 import {FFXIVOpcode} from "./MessageBase";
 import {InitOpcode} from "./messages/outbound/InitOpcode";
 import AbstractStreamdeckConnector from "@rweich/streamdeck-ts/dist/AbstractStreamdeckConnector";
+import {FFXIVInitReply} from "./GameTypes";
 
 export class FFXIVPluginLink {
     public static instance: FFXIVPluginLink;
@@ -9,12 +10,14 @@ export class FFXIVPluginLink {
     // static so that event registrations can survive re-initialization
     static eventManager: EventEmitter = new EventEmitter();
 
+    // settings
     public port: number = 37984;
+    public isGameAlive: boolean = false;
+    public apiKey: string = "";
+    
+    // internal state
     private _websocket: WebSocket | null = null;
-
     private _plugin: AbstractStreamdeckConnector;
-
-    isGameAlive: boolean = false;
     private _doConnectionRetries: boolean = true;
 
     constructor(instance: AbstractStreamdeckConnector) {
@@ -60,6 +63,15 @@ export class FFXIVPluginLink {
 
         this._websocket.onmessage = this._onWSMessage.bind(this);
         this._websocket.onclose = this._onWSClose.bind(this);
+
+        
+        this.on("initReply", this._onInitReceive.bind(this));
+    }
+    
+    private _onInitReceive(data: FFXIVInitReply) {
+        this.apiKey = data.apiKey;
+        
+        this.emit("_ready", null)
     }
 
     private _onWSMessage(event: MessageEvent): void {

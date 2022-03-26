@@ -3,13 +3,14 @@ using Dalamud.Logging;
 using EmbedIO;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
+using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.Server;
 
 public class XIVDeckWebServer : IDisposable {
     private readonly IWebServer _host;
     private readonly XIVDeckWSServer _xivDeckWSModule;
-
+    
     public XIVDeckWebServer(int port) {
         this._xivDeckWSModule = new XIVDeckWSServer("/ws");
         
@@ -19,8 +20,17 @@ public class XIVDeckWebServer : IDisposable {
         );
             
         this._host.WithModule(this._xivDeckWSModule);
+        this._host.WithModule(new AuthModule("/"));
+        
+        this._host.OnAny(context => {
+            PluginLog.Debug($"Got HTTP request {context.Request.HttpMethod} {context.Request.Url.PathAndQuery}");
+            throw RequestHandler.PassThrough();
+        });
+        
+        this._host.StateChanged += (_, e) => {
+            PluginLog.Debug($"EmbedIO server changed state to {e.NewState.ToString()}");
+        };
 
-        this.ConfigureDalamudLogging();
         this.ConfigureErrorHandlers();
         ApiControllerWiring.Autowire(this._host);
     }
@@ -49,20 +59,13 @@ public class XIVDeckWebServer : IDisposable {
 
         this._host.OnHttpException = (ctx, ex) => {
             PluginLog.Warning((Exception) ex, $"Got HTTP {ex.StatusCode} while processing request: {ctx.Request.HttpMethod} {ctx.Request.Url.PathAndQuery}");
-            Injections.Chat.PrintError($"[XIVDeck] {ex.Message}");
-            return HttpExceptionHandler.Default(ctx, ex);
-        };
-    }
 
-    private void ConfigureDalamudLogging() {
-        // this is a hacky shim, but it works so *eh*
-        this._host.OnAny(context => {
-            PluginLog.Debug($"Got HTTP request {context.Request.HttpMethod} {context.Request.Url.PathAndQuery}");
-            throw RequestHandler.PassThrough();
-        });
-        
-        this._host.StateChanged += (_, e) => {
-            PluginLog.Information($"EmbedIO server changed state to {e.NewState.ToString()}");
+            // Bit of an ugly shim, but allows us to suppress messages related to auth
+            if (ex.StatusCode != 401) {
+                Injections.Chat.PrintError($"[XIVDeck] {ex.Message}");
+            }
+            
+            return HttpExceptionHandler.Default(ctx, ex);
         };
     }
 }

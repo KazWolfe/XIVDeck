@@ -5,20 +5,24 @@ import {FFXIVPluginLink} from "./FFXIVPluginLink";
 type HTTPVerb = "GET" | "HEAD" | "POST" | "PUT" | "PATCH" | "DELETE"
 
 export class FFXIVApi {
-    private static getBaseUrl(): string | null {
+    private static getBaseUrl(): string | undefined {
         return FFXIVPluginLink.instance.baseUrl;
     }
     
-    private static async _requestWrapper(url: string, method: HTTPVerb = "GET", body: unknown = null) : Promise<unknown> {
+    private static async _requestWrapper(url: string, method: HTTPVerb = "GET", body: unknown = null) : Promise<Response | any> {
         if (this.getBaseUrl() == null) {
             throw new Error("XIV API not initialized yet! Requests should not be getting made...")
         }
         
+        let headers = {
+            "Authorization": `Bearer ${FFXIVPluginLink.instance.apiKey}`
+        }
+        
         let response: Response
         if (method == "GET" || method == "HEAD" ) {
-            response = await fetch(url, {method: method})
+            response = await fetch(url, {method: method, headers: headers})
         } else {
-            response = await fetch(url, {method: method, body: JSON.stringify(body)})
+            response = await fetch(url, {method: method, body: JSON.stringify(body), headers: headers})
         }
         
         if (!response.ok) {
@@ -30,11 +34,18 @@ export class FFXIVApi {
             return await response.json();
         }
         
-        return;
+        return response;
     }
 
     public static async getIcon(iconId: number, hq: boolean = false): Promise<string> {
-        return await WebUtils.urlContentToDataUri(this.getBaseUrl() + `/icon/${iconId}?hq=${hq}`)
+        let response = await this._requestWrapper(this.getBaseUrl() + `/icon/${iconId}?hq=${hq}`);
+        let blob = await response.blob();
+        
+        return new Promise( callback =>{
+                let reader = new FileReader() ;
+                reader.onload = function(){ callback(this.result!.toString()!) } ;
+                reader.readAsDataURL(blob) ;
+            });
     }
     
     public static async runTextCommand(command: string) : Promise<void> {

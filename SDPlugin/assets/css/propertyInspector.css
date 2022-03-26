@@ -5,3 +5,9 @@
 .sdpi-item[data-actions] {
   display: none;
 }
+
+.version-info {
+  text-align: right;
+  color: #444444;
+  margin-right: 10px;
+}

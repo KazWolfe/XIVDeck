@@ -41,10 +41,10 @@ public class ClassController : WebApiController {
     [Route(HttpVerbs.Post, "/{id}/execute")]
     public void SwitchClass(int id) {
         if (id < 1) 
-            throw HttpException.NotAcceptable("Cannot switch to a class with ID less than 1");
+            throw HttpException.BadRequest("Cannot switch to a class with ID less than 1");
         
         if (!Injections.ClientState.IsLoggedIn)
-            throw HttpException.Unauthorized("A player is not logged in to the game!");
+            throw HttpException.BadRequest("A player is not logged in to the game!");
 
         this._gameStateCache.Refresh();
         

@@ -22,7 +22,7 @@ export class MacroButton extends BaseButton {
         this.macroId = settings.macroId;
 
         this.render();
-        this._xivEventListeners.add(plugin.xivPluginLink.on("initReply", this.render.bind(this)));
+        this._xivEventListeners.add(plugin.xivPluginLink.on("_ready", this.render.bind(this)));
         this._xivEventListeners.add(plugin.xivPluginLink.on("stateUpdate", this.stateUpdate.bind(this)));
     }
 

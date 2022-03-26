@@ -15,7 +15,7 @@ export class ClassFrame extends BaseFrame<ClassButtonSettings> {
         this.classSelector = document.createElement("select")
         this.classSelector.id = "classSelector";
         
-        piInstance.xivPluginLink.on("initReply", this.populateClasses.bind(this))
+        piInstance.xivPluginLink.on("_ready", this.populateClasses.bind(this))
     }
     
     loadSettings(settings: ClassButtonSettings): void {

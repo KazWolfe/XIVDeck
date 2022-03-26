@@ -25,12 +25,9 @@ export type StateMessage = {
     params: string | null
 }
 
-export type FFXIVGenericResponse = {
-    success: boolean,
-    exception: null | { 
-        ClassName: string
-        Message: string | null
-    } 
+export type FFXIVInitReply = {
+    version: string,
+    apiKey: string
 }
 
 export type FFXIVHotbarSlot = {

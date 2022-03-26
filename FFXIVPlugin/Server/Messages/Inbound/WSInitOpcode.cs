@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Threading.Tasks;
 using Dalamud.Logging;
+using EmbedIO.Authentication;
 using EmbedIO.WebSockets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
@@ -22,10 +23,10 @@ public class WSInitOpcode : BaseInboundMessage {
             return;
         }
 
-        var version = Assembly.GetExecutingAssembly().GetName().Version!.ToString();
-        var reply = new WSInitReplyMessage(version, "DUMMY_API_KEY");
-
+        var xivPluginVersion = Assembly.GetExecutingAssembly().GetName().Version!.ToString();
+        var reply = new WSInitReplyMessage(xivPluginVersion, AuthHelper.Instance.Secret);
         await WebUtils.SendMessage(context, reply);
+        PluginLog.Information($"XIVDeck Stream Deck Plugin version {this.Version} has connected!");
 
         // check for first-run
         if (!XIVDeckPlugin.Instance.Configuration.HasLinkedStreamDeckPlugin) {

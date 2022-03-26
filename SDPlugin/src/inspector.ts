@@ -4,6 +4,7 @@ import {DidReceiveGlobalSettingsEvent, DidReceiveSettingsEvent} from "@rweich/st
 import {PIDispatcher} from "./inspector/PIDispatcher";
 import {DefaultGlobalSettings, GlobalSettings} from "./util/GlobalSettings";
 import {GlobalFrame} from "./inspector/frames/GlobalFrame";
+import {FFXIVInitReply} from "./link/ffxivplugin/GameTypes";
 
 class XIVDeckInspector {
     sdPluginLink: SDInspector = new Streamdeck().propertyinspector();
@@ -27,6 +28,13 @@ class XIVDeckInspector {
             this.uuid = event.uuid;
             this.sdPluginLink.getGlobalSettings(event.uuid);
             // this.sdPluginLink.getSettings(event.uuid);
+
+            // load version into DOM (hacky)
+            let pInfo = this.sdPluginLink.info.plugin as Record<string, string>;
+            let rtVersion = document.getElementById('runtime-version');
+            if (rtVersion) {
+                rtVersion.innerText = pInfo.version;
+            }
         }));
     }
 
@@ -51,7 +59,14 @@ class XIVDeckInspector {
             let errElement = document.getElementById("errorDisplay")!;
             errElement.setAttribute("style", "");
             errElement.append(this.PIHelpers.generateConnectionErrorDom());
-        })
+        });
+        
+        this.xivPluginLink.on("initReply", (data: FFXIVInitReply) => {
+            let verElement = document.getElementById("xivdeck-game-version");
+            if (verElement) {
+                verElement.innerText = data.version;
+            }
+        });
         
         this.xivPluginLink.connect(false);
     }
