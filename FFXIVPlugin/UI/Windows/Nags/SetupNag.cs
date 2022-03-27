@@ -32,7 +32,7 @@ public class SetupNag : NagWindow {
                    "companion XIVDeck Stream Deck Plugin from GitHub.");
         
         if (ImGui.Button("Open XIVDeck Download Page")) {
-            PluginUI.OpenXIVDeckGitHub($"/releases/tag/v{StringUtils.GetMajMinRev()}");
+            PluginUI.OpenXIVDeckGitHub($"/releases/tag/v{StringUtils.GetMajMinBuild()}");
         }
             
         ImGui.Spacing();

@@ -7,7 +7,7 @@ import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
 
 export class ClassFrame extends BaseFrame<ClassButtonSettings> {
     classSelector: HTMLSelectElement;
-    selected: string = "default"; // prevent against race to load in visible settings
+    selected: number = -1; // prevent against race to load in visible settings
     
     constructor() {
         super();
@@ -19,8 +19,7 @@ export class ClassFrame extends BaseFrame<ClassButtonSettings> {
     }
     
     loadSettings(settings: ClassButtonSettings): void {
-        this.classSelector.value = this.selected;
-        this.selected = settings.classId.toString();
+        this.selected = settings.classId || this.selected;
     }
 
     renderHTML(): void {
@@ -62,7 +61,7 @@ export class ClassFrame extends BaseFrame<ClassButtonSettings> {
             this.classSelector.add(v);
         })
 
-        this.classSelector.value = this.selected;
+        this.classSelector.value = (this.selected >= 0) ? this.selected.toString() : "default";
     }
     
     private _onClassUpdate(_: Event): void {
@@ -73,10 +72,10 @@ export class ClassFrame extends BaseFrame<ClassButtonSettings> {
             return
         }
         
-        this.selected = selected;
+        this.selected = parseInt(selected);
         
         this.setSettings({
-            classId: parseInt(selected),
+            classId: this.selected,
         });
     }
 }

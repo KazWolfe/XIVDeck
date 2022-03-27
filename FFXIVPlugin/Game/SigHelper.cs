@@ -21,9 +21,11 @@ public unsafe class SigHelper : IDisposable {
         // todo: this is *way* too broad. this game is very write-happy when it comes to gearset updates.
         internal const string SaveGearset = "48 89 5C 24 ?? 48 89 74 24 ?? 57 48 83 EC 30 48 8B F2 48 8B F9 33 D2";
             
-        // todo: this doesn't handle icon updates until after the macro dialog is closed, so there's some lag.
-        //       this signature is also extremely prone to breakage. 
-        internal const string SaveMacro = "45 33 C9 E9 ?? ?? ?? ?? CC CC CC CC CC CC CC CC 48 85 D2";
+        // This signature appears to be called whenever the Macro Agent does some form of update operation on a macro.
+        // I'm not exactly sure what this method docs, but it seems to be relatively reliable.
+        // According to aers, this might be related to marking the macro page as modified for file update purposes.
+        // called in UI::Agent::AgentMacro::ReceiveEvent a few times - generally immediately after LOBYTE(x) = 1 call
+        internal const string UpdateMacro = "E8 ?? ?? ?? ?? 83 3E 00";
 
         internal const string LoadHotbarSlotIcon =
             "40 53 48 83 EC 20 44 8B 81 ?? ?? ?? ?? 48 8B D9 0F B6 91 ?? ?? ?? ?? E8 ?? ?? ?? ?? 85 C0";
@@ -43,13 +45,13 @@ public unsafe class SigHelper : IDisposable {
         
     /***** hooks *****/
     private delegate IntPtr RaptureGearsetModule_WriteFile(IntPtr a1, IntPtr a2);
-    private delegate IntPtr RaptureMacroModule_WriteFile(IntPtr a1, IntPtr a2, IntPtr a3);
+    private delegate IntPtr MacroUpdate(IntPtr a1, IntPtr macroPage, IntPtr macroNumber);
         
     [Signature(Signatures.SaveGearset, DetourName = nameof(DetourGearsetSave))]
     private Hook<RaptureGearsetModule_WriteFile>? RGM_WriteFileHook { get; init; }
         
-    [Signature(Signatures.SaveMacro, DetourName = nameof(DetourMacroSave))]
-    private Hook<RaptureMacroModule_WriteFile>? RMM_WriteFileHook { get; init; }
+    [Signature(Signatures.UpdateMacro, DetourName = nameof(DetourMacroUpdate))]
+    private Hook<MacroUpdate>? MacroUpdateHook { get; init; }
 
     /***** the actual class *****/
         
@@ -57,12 +59,12 @@ public unsafe class SigHelper : IDisposable {
         SignatureHelper.Initialise(this);
 
         this.RGM_WriteFileHook?.Enable();
-        this.RMM_WriteFileHook?.Enable();
+        this.MacroUpdateHook?.Enable();
     }
 
     public void Dispose() {
         this.RGM_WriteFileHook?.Dispose();
-        this.RMM_WriteFileHook?.Dispose();
+        this.MacroUpdateHook?.Dispose();
             
         GC.SuppressFinalize(this);
     }
@@ -123,10 +125,10 @@ public unsafe class SigHelper : IDisposable {
         return tmp;
     }
 
-    private IntPtr DetourMacroSave(IntPtr a1, IntPtr a2, IntPtr a3) {
+    private IntPtr DetourMacroUpdate(IntPtr a1, IntPtr macroPage, IntPtr macroSlot) {
         PluginLog.Debug("Macro update!");
-        var tmp = this.RMM_WriteFileHook!.Original(a1, a2, a3);
-            
+        var tmp = this.MacroUpdateHook!.Original(a1, macroPage, macroSlot);
+        
         XIVDeckWSServer.Instance?.BroadcastMessage(new WSStateUpdateMessage("Macro"));
 
         return tmp;

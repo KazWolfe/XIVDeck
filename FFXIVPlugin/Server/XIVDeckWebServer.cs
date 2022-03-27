@@ -12,12 +12,14 @@ public class XIVDeckWebServer : IDisposable {
     
     public XIVDeckWebServer(int port) {
         this._xivDeckWSModule = new XIVDeckWSServer("/ws");
-        
+
         this._host = new WebServer(o => o
             .WithUrlPrefixes(GenerateUrlPrefixes(port))
             .WithMode(HttpListenerMode.EmbedIO)
         );
-            
+
+        // todo: remove transition module eventually
+        this._host.WithModule(new XIVDeckWSTransition("/xivdeck"));
         this._host.WithModule(this._xivDeckWSModule);
         this._host.WithModule(new AuthModule("/"));
         

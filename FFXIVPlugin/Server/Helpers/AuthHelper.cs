@@ -48,7 +48,7 @@ public class AuthModule : WebModuleBase {
     protected override Task OnRequestAsync(IHttpContext context) {
         
         // websocket is allowed to skip auth
-        if (context.RequestedPath == "/ws") {
+        if (context.RequestedPath is "/ws" or "/xivdeck") {
             return Task.CompletedTask;
         }
         
