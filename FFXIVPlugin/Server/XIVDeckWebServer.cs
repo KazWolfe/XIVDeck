@@ -60,8 +60,9 @@ public class XIVDeckWebServer : IDisposable {
         this._host.OnHttpException = (ctx, ex) => {
             PluginLog.Warning((Exception) ex, $"Got HTTP {ex.StatusCode} while processing request: {ctx.Request.HttpMethod} {ctx.Request.Url.PathAndQuery}");
 
-            // Bit of an ugly shim, but allows us to suppress messages related to auth
-            if (ex.StatusCode != 401) {
+            // Only show messages to users if it's a POST request (button action)
+            if (ctx.Request.HttpVerb == HttpVerbs.Post) {
+                Injections.Toasts.ShowError($"[XIVDeck] {ex.Message}");
                 Injections.Chat.PrintError($"[XIVDeck] {ex.Message}");
             }
             

@@ -1,11 +1,12 @@
 ﻿using System.Reflection;
 using System.Threading.Tasks;
 using Dalamud.Logging;
-using EmbedIO.Authentication;
 using EmbedIO.WebSockets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
+using XIVDeck.FFXIVPlugin.UI.Windows;
+using XIVDeck.FFXIVPlugin.UI.Windows.Nags;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.Server.Messages.Inbound;
@@ -15,11 +16,17 @@ public class WSInitOpcode : BaseInboundMessage {
     public string Version { get; set; } = default!;
     
     public override async Task Process(IWebSocketContext context) {
+        // hide all nags
+        NagWindow.CloseAllNags();
+        
         if (System.Version.Parse(this.Version) < System.Version.Parse(Constants.MinimumSDPluginVersion)) {
             await context.WebSocket.CloseAsync(CloseStatusCode.ProtocolError,
                 "The version of the Stream Deck plugin is too old.", context.CancellationToken);
+            
             PluginLog.Warning($"The currently-installed version of the XIVDeck Stream Deck plugin " +
                               $"is {this.Version}, but version {Constants.MinimumSDPluginVersion} is needed.");
+            ForcedUpdateNag.Show();
+
             return;
         }
 

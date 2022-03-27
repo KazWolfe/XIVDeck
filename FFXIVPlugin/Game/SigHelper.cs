@@ -22,6 +22,7 @@ public unsafe class SigHelper : IDisposable {
         internal const string SaveGearset = "48 89 5C 24 ?? 48 89 74 24 ?? 57 48 83 EC 30 48 8B F2 48 8B F9 33 D2";
             
         // todo: this doesn't handle icon updates until after the macro dialog is closed, so there's some lag.
+        //       this signature is also extremely prone to breakage. 
         internal const string SaveMacro = "45 33 C9 E9 ?? ?? ?? ?? CC CC CC CC CC CC CC CC 48 85 D2";
 
         internal const string LoadHotbarSlotIcon =

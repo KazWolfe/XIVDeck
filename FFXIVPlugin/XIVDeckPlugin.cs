@@ -7,7 +7,8 @@ using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Server;
 using XIVDeck.FFXIVPlugin.Server.Types;
 using XIVDeck.FFXIVPlugin.UI;
-using XIVDeck.FFXIVPlugin.Utils;
+using XIVDeck.FFXIVPlugin.UI.Windows;
+using XIVDeck.FFXIVPlugin.UI.Windows.Nags;
 
 namespace XIVDeck.FFXIVPlugin; 
 
@@ -20,7 +21,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
     public DalamudPluginInterface PluginInterface { get; init; }
     public PluginConfig Configuration { get; init; }
     public IconManager IconManager { get; set; }
-    private PluginUI PluginUi { get; init; }
+    public PatchedWindowSystem WindowSystem;
     public XivCommonBase XivCommon { get; }
     public SigHelper SigHelper { get; }
         
@@ -50,13 +51,12 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         this.SigHelper = new SigHelper();
         this.IconManager = new IconManager(this.PluginInterface);
         this._hotbarWatcher = new HotbarWatcher();
-            
+        this.WindowSystem = new PatchedWindowSystem(this.Name);
+
         // Start the websocket server itself.
         this.InitializeWebServer();
-
-        this.PluginUi = new PluginUI(this);
-
-        this.PluginInterface.UiBuilder.Draw += this.DrawUI;
+        
+        this.PluginInterface.UiBuilder.Draw += this.WindowSystem.Draw;
         this.PluginInterface.UiBuilder.OpenConfigUi += this.DrawConfigUI;
 
         Injections.ClientState.Login += this.OnLogin;
@@ -64,7 +64,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
     }
 
     public void Dispose() {
-        this.PluginUi.Dispose();
+        this.WindowSystem.RemoveAllWindows();
 
         this._hotbarWatcher.Dispose();
         this._xivDeckWebServer.Dispose();
@@ -73,26 +73,22 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         Injections.ClientState.Login -= this.OnLogin;
     }
 
-    private void DrawUI() {
-        this.PluginUi.Draw();
-    }
-
-    private void DrawConfigUI() {
-        this.PluginUi.SettingsVisible = true;
+    internal void DrawConfigUI() {
+        var instance = this.WindowSystem.GetWindow(SettingsWindow.WindowKey);
+        
+        if (instance == null) {
+            this.WindowSystem.AddWindow(new SettingsWindow());
+        }
     }
 
     private void OnLogin(object? _, EventArgs? __) {
         // game state isn't ready until login succeeds, so we wait for it to be ready before updating cache
         this.GameStateCache.Refresh();
-
-        if (!this.Configuration.HasLinkedStreamDeckPlugin) {
-            this.PluginUi.SettingsVisible = true;
-        }
     }
 
     private void InitializeNag() {
-        if (Injections.ClientState.IsLoggedIn && !this.Configuration.HasLinkedStreamDeckPlugin) {
-            this.PluginUi.SettingsVisible = true;
+        if (!this.Configuration.HasLinkedStreamDeckPlugin) {
+            SetupNag.Show();
         }
     }
 

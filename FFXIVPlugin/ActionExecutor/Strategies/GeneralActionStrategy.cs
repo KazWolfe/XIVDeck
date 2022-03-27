@@ -83,7 +83,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             }
 
             TickScheduler.Schedule(delegate {
-                ChatUtil.SendSanitizedChatMessage($"/generalaction \"{action.Name.RawString}\"");
+                ChatUtils.SendSanitizedChatMessage($"/generalaction \"{action.Name.RawString}\"");
             });
         }
 

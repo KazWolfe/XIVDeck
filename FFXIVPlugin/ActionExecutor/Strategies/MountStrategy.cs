@@ -47,7 +47,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             
             PluginLog.Debug($"Would execute command: {command}");
             TickScheduler.Schedule(delegate {
-                ChatUtil.SendSanitizedChatMessage(command);
+                ChatUtils.SendSanitizedChatMessage(command);
             });
         }
         

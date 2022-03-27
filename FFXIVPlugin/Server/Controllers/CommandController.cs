@@ -14,17 +14,17 @@ public class CommandController : WebApiController {
     [Route(HttpVerbs.Post, "/")]
     public void ExecuteCommand([JsonData] SerializableTextCommand command) {
         if (!Injections.ClientState.IsLoggedIn)
-            throw HttpException.BadRequest("A player is not logged in to the game!");
+            throw HttpException.BadRequest("A player is not logged in to the game.");
 
-        if (command.Command == null)
-            throw HttpException.BadRequest("A command is required for execution");
+        if (command.Command is null or "" or "/")
+            throw HttpException.BadRequest("A command to run must be specified.");
 
         // only allow use of commands here for safety purposes (validating chat is hard)
         if (!command.Command.StartsWith("/") && command.SafeMode)
             throw HttpException.BadRequest("Commands must start with a slash.");
             
         TickScheduler.Schedule(delegate {
-            ChatUtil.SendSanitizedChatMessage(command.Command, command.SafeMode);
+            ChatUtils.SendSanitizedChatMessage(command.Command, command.SafeMode);
         });
     }
 }

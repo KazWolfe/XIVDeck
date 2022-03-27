@@ -48,7 +48,7 @@ public class ActionController : WebApiController {
         var action = ActionDispatcher.GetStrategyForSlotType(slotType).GetExecutableActionById((uint) id);
         
         if (action == null) {
-            throw HttpException.NotFound($"No action with {id} exists for type {type}");
+            throw HttpException.NotFound($"No action with {id} exists for type {type}.");
         }
 
         return action;

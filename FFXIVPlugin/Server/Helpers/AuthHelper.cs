@@ -31,7 +31,8 @@ public class AuthHelper {
 
         var key = challenge.Replace("Bearer ", "");
 
-        if (key == DevTestKey && XIVDeckPlugin.Instance.PluginInterface.IsDev) {
+        // If this plugin is running in dev mode, allow use of the dev test key for authentication instead.
+        if (XIVDeckPlugin.Instance.PluginInterface.IsDev && key == DevTestKey) {
             return true;
         }
         
@@ -55,7 +56,7 @@ public class AuthModule : WebModuleBase {
         var authHeader = context.Request.Headers[HttpHeaderNames.Authorization];
 
         if (!AuthHelper.Instance.VerifyAuth(authHeader)) 
-            throw HttpException.Unauthorized("API key missing or invalid");
+            throw HttpException.Unauthorized("API key missing or invalid.");
         
         ((IHttpContextImpl) context).User = new GenericPrincipal(new GenericIdentity(""), new[] {"api"});
         

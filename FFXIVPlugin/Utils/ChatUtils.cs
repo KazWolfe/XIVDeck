@@ -2,7 +2,7 @@
 
 namespace XIVDeck.FFXIVPlugin.Utils; 
 
-public static class ChatUtil {
+public static class ChatUtils {
     
     // borrowed base logic from ChatTwo by ascclemens
     public static void SendSanitizedChatMessage(string text, bool commandOnly = true) {
