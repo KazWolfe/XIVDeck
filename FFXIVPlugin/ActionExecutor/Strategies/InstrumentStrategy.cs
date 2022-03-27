@@ -8,7 +8,7 @@ using Lumina.Excel;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
-using XIVDeck.FFXIVPlugin.Utils;
+using XIVDeck.FFXIVPlugin.Game;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
     public class InstrumentStrategy : IActionStrategy {

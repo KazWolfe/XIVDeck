@@ -5,6 +5,7 @@ import {PIDispatcher} from "./inspector/PIDispatcher";
 import {DefaultGlobalSettings, GlobalSettings} from "./util/GlobalSettings";
 import {GlobalFrame} from "./inspector/frames/GlobalFrame";
 import {FFXIVInitReply} from "./link/ffxivplugin/GameTypes";
+import {PIUtils} from "./util/PIUtils";
 
 class XIVDeckInspector {
     sdPluginLink: SDInspector = new Streamdeck().propertyinspector();
@@ -14,7 +15,6 @@ class XIVDeckInspector {
     uuid: string = "";
     dispatcher: PIDispatcher = new PIDispatcher();
     globalInspector: GlobalFrame = new GlobalFrame();
-    private PIHelpers: any;
     
     constructor() {
         console.log(this);
@@ -58,7 +58,7 @@ class XIVDeckInspector {
         this.xivPluginLink.on("_wsClosed", () => {
             let errElement = document.getElementById("errorDisplay")!;
             errElement.setAttribute("style", "");
-            errElement.append(this.PIHelpers.generateConnectionErrorDom());
+            errElement.append(PIUtils.generateConnectionErrorDom());
         });
         
         this.xivPluginLink.on("initReply", (data: FFXIVInitReply) => {

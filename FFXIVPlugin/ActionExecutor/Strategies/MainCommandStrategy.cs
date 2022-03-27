@@ -5,7 +5,7 @@ using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
-using XIVDeck.FFXIVPlugin.Utils;
+using XIVDeck.FFXIVPlugin.Game;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
     public class MainCommandStrategy : IActionStrategy {

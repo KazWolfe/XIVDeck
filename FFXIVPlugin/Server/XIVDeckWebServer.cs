@@ -3,7 +3,6 @@ using Dalamud.Logging;
 using EmbedIO;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
-using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.Server;
 

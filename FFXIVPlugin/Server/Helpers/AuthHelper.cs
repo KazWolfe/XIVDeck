@@ -2,7 +2,6 @@
 using System.Security.Principal;
 using System.Threading.Tasks;
 using EmbedIO;
-using EmbedIO.Authentication;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.Server.Helpers; 

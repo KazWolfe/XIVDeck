@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using Dalamud.Interface;
+﻿using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using ImGuiNET;
 using XIVDeck.FFXIVPlugin.Utils;

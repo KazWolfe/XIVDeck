@@ -5,9 +5,9 @@ using EmbedIO.Routing;
 using EmbedIO.WebApi;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 using XIVDeck.FFXIVPlugin.Server.Types;
-using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.Server.Controllers;
 
