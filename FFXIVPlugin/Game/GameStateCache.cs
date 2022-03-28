@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dalamud.Logging;
 using Dalamud.Memory;
 using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
@@ -14,6 +15,8 @@ namespace XIVDeck.FFXIVPlugin.Game {
     // ... and then promptly adapted and destroyed. I am sorry, goat.
     public unsafe class GameStateCache {
         private static class Signatures {
+            internal const string PlayerStatus = "48 8D 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 84 C0 75 0F FF C3";
+
             internal const string IsEmoteUnlocked = "E8 ?? ?? ?? ?? 84 C0 74 A4";
             
             internal const string MinionBitmask = "48 8D 0D ?? ?? ?? ?? 0F B6 04 08 84 D0 75 10 B8 ?? ?? ?? ?? 48 8B 5C 24";
@@ -23,6 +26,8 @@ namespace XIVDeck.FFXIVPlugin.Game {
 
             internal const string IsOrnamentUnlocked = "E8 ?? ?? ?? ?? BA ?? ?? ?? ?? 41 0F B6 CE";
             internal const string OrnamentBitmask = "48 8D 0D ?? ?? ?? ?? 48 8B D8 E8 ?? ?? ?? ?? BA ?? ?? ?? ?? 41 0F B6 CE";
+
+            internal const string IsMcGuffinUnlocked = "8D 42 FF 3C 03 77 44";
         }
         
         public struct Gearset {
@@ -40,8 +45,14 @@ namespace XIVDeck.FFXIVPlugin.Game {
 
         [Signature(Signatures.IsOrnamentUnlocked, Fallibility = Fallibility.Fallible)]
         private readonly delegate* unmanaged<IntPtr, uint, byte> _isOrnamentUnlocked = null;
+
+        [Signature(Signatures.IsMcGuffinUnlocked, Fallibility = Fallibility.Fallible)]
+        private readonly delegate* unmanaged<IntPtr, uint, byte> _isMcGuffinUnlocked = null;
         
         // Fields //
+        [Signature(Signatures.PlayerStatus, ScanType = ScanType.StaticAddress)]
+        private readonly IntPtr? _playerStatus = null;
+        
         [Signature(Signatures.MinionBitmask, ScanType = ScanType.StaticAddress)]
         private readonly IntPtr? _minionBitmask = null;
         
@@ -88,6 +99,17 @@ namespace XIVDeck.FFXIVPlugin.Game {
             }
 
             return this._isOrnamentUnlocked(this._ornamentBitmask.Value, ornamentId) > 0;
+        }
+
+        internal bool IsMcGuffinUnlocked(uint mcguffinId) {
+            if (this._playerStatus == null || this._playerStatus.Value == IntPtr.Zero) {
+                return false;
+            }
+
+            var result = this._isMcGuffinUnlocked(this._playerStatus.Value, (byte) mcguffinId);
+            PluginLog.Debug($"McGuffin {mcguffinId}: {result}");
+
+            return result > 0;
         }
 
         private GameStateCache() {

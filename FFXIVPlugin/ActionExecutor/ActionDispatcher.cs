@@ -60,6 +60,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor {
             this.Strategies[HotbarSlotType.ExtraCommand] = new ExtraCommandStrategy();
             this.Strategies[HotbarSlotType.FashionAccessory] = new OrnamentStrategy();
             this.Strategies[HotbarSlotType.PerformanceInstrument] = new InstrumentStrategy();
+            this.Strategies[HotbarSlotType.Collection] = new CollectionStrategy();
         }
 
         private IActionStrategy GetStrategyForType(HotbarSlotType type) {

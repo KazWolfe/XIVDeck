@@ -52,7 +52,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
             }
             
             if (Injections.Condition[ConditionFlag.Performing]) {
-                throw new InvalidOperationException("Cannot switch instruments while actively in Perform mode.");
+                throw new IllegalGameStateException("Cannot switch instruments while actively in Perform mode.");
             }
 
             var instrument = GetActionById(actionId);
