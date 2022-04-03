@@ -39,7 +39,7 @@ public class MinionStrategy : IActionStrategy {
     }
 
     public void Execute(uint actionId, dynamic? _) {
-        Companion? minion = GetMinionById(actionId);
+        var minion = GetMinionById(actionId);
             
         if (minion == null) {
             throw new ArgumentNullException(nameof(actionId), $"No minion with ID {actionId} exists.");

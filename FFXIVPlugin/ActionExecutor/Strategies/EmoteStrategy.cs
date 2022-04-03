@@ -41,13 +41,13 @@ public class EmoteStrategy : IActionStrategy {
     }
 
     public void Execute(uint actionId, dynamic? _) {
-        Emote? emote = GetEmoteById(actionId);
+        var emote = GetEmoteById(actionId);
             
         if (emote == null) {
             throw new ActionNotFoundException(HotbarSlotType.Emote, actionId);
         }
             
-        TextCommand? textCommand = emote.TextCommand.Value;
+        var textCommand = emote.TextCommand.Value;
 
         if (textCommand == null) {
             throw new KeyNotFoundException($"The emote \"{emote.Name}\" does not have an associated text command.");

@@ -61,7 +61,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         this.PluginInterface.UiBuilder.Draw += this.WindowSystem.Draw;
         this.PluginInterface.UiBuilder.OpenConfigUi += this.DrawConfigUI;
 
-        Injections.ClientState.Login += this.OnLogin;
+        Injections.ClientState.Login += DalamudHooks.OnGameLogin;
         this.InitializeNag();
     }
 
@@ -73,7 +73,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         this._chatLinkWiring.Dispose();
         this.SigHelper.Dispose();
 
-        Injections.ClientState.Login -= this.OnLogin;
+        Injections.ClientState.Login -= DalamudHooks.OnGameLogin;
     }
 
     internal void DrawConfigUI() {
@@ -82,13 +82,6 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         if (instance == null) {
             this.WindowSystem.AddWindow(new SettingsWindow());
         }
-    }
-
-    private void OnLogin(object? _, EventArgs? __) {
-        // game state isn't ready until login succeeds, so we wait for it to be ready before updating cache
-        this.GameStateCache.Refresh();
-        
-        DeferredChat.SendDeferredMessages(6000);
     }
 
     private void InitializeNag() {

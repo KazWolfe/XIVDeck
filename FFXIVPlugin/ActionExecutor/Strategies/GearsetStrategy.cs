@@ -58,7 +58,7 @@ public unsafe class GearsetStrategy : IActionStrategy {
         if (gearset == null)
             throw new ArgumentException($"No gearset exists in slot number {actionSlot}.");
 
-        String command = $"/gearset change {gearset.Value.Slot + 1}";
+        var command = $"/gearset change {gearset.Value.Slot + 1}";
             
         PluginLog.Debug($"Would execute command: {command}");
         TickScheduler.Schedule(delegate {

@@ -51,6 +51,8 @@ public class ActionDispatcher {
     private Dictionary<HotbarSlotType, IActionStrategy> Strategies { get; } = new();
 
     private ActionDispatcher() {
+        // once again, autowiring. this is a net LoC loss, but looks cleaner than just manually populating the list
+        // IMO. 
         foreach (var type in Assembly.GetExecutingAssembly().GetTypes()) {
             if (!type.GetInterfaces().Contains(typeof(IActionStrategy))) {
                 continue;
@@ -77,6 +79,7 @@ public class ActionDispatcher {
     }
 }
 
+[AttributeUsage(AttributeTargets.Class)]
 public class ActionStrategyAttribute : Attribute {
     public HotbarSlotType HotbarSlotType;
 

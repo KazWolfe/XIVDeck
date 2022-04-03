@@ -9,6 +9,7 @@ using FFXIVClientStructs.FFXIV.Client.System.String;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using XIVDeck.FFXIVPlugin.Server;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
+
 // ReSharper disable InconsistentNaming - matching expected documentation things
 // ReSharper disable UnusedAutoPropertyAccessor.Local - handled by siggingway and reflection
 

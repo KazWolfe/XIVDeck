@@ -1,11 +1,12 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using EmbedIO;
 using EmbedIO.WebApi;
 
 namespace XIVDeck.FFXIVPlugin.Server.Helpers;
 
-[System.AttributeUsage(System.AttributeTargets.Class)]
-public class ApiControllerAttribute : System.Attribute {
+[AttributeUsage(AttributeTargets.Class)]
+public class ApiControllerAttribute : Attribute {
     public readonly string BaseUrl;
 
     public ApiControllerAttribute(string baseUrl) {

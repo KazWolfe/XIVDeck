@@ -57,7 +57,7 @@ public class WSInitOpcode : BaseInboundMessage {
                 .AddUiForeground(514)
                 .AddText($"[XIVDeck] Your version of the XIVDeck Stream Deck Plugin is out of date. Please " +
                                  "consider installing ")
-                .Add(ChatLinkWiring.GetPayload(LinkCode.GetGithubReleaseLink)!)
+                .Add(ChatLinkWiring.GetPayload(LinkCode.GetGithubReleaseLink))
                 .AddUiForeground($"\xE0BB version {StringUtils.GetMajMinBuild()}", 32)
                 .Add(RawPayload.LinkTerminator)
                 .AddText(" from GitHub!")

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
@@ -40,7 +39,7 @@ public class OrnamentStrategy : IActionStrategy {
     }
 
     public void Execute(uint actionId, dynamic? _) {
-        Ornament? ornament = GetOrnamentById(actionId);
+        var ornament = GetOrnamentById(actionId);
 
         if (ornament == null) {
             throw new ActionNotFoundException(HotbarSlotType.FashionAccessory, actionId);
@@ -50,7 +49,7 @@ public class OrnamentStrategy : IActionStrategy {
             throw new ActionLockedException($"The fashion accessory \"{ornament.Singular}\" isn't unlocked and therefore can't be used.");
         }
             
-        String command = $"/fashion \"{ornament.Singular}\"";
+        var command = $"/fashion \"{ornament.Singular}\"";
         PluginLog.Debug($"Would execute command: {command}");
         TickScheduler.Schedule(delegate {
             ChatUtils.SendSanitizedChatMessage(command);
