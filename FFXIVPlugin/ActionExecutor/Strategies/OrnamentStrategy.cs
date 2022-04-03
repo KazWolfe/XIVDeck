@@ -11,6 +11,7 @@ using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
+[ActionStrategy(HotbarSlotType.FashionAccessory)]
 public class OrnamentStrategy : IActionStrategy {
     private static readonly GameStateCache GameStateCache = XIVDeckPlugin.Instance.GameStateCache;
 

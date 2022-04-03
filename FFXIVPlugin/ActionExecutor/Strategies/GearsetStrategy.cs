@@ -9,6 +9,7 @@ using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
+[ActionStrategy(HotbarSlotType.GearSet)]
 public unsafe class GearsetStrategy : IActionStrategy {
     private static readonly GameStateCache GameStateCache = XIVDeckPlugin.Instance.GameStateCache;
     private static readonly RaptureGearsetModule* GearsetModule = RaptureGearsetModule.Instance();

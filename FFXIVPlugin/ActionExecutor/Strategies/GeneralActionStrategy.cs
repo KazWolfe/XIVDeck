@@ -13,6 +13,7 @@ using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
+[ActionStrategy(HotbarSlotType.GeneralAction)]
 public class GeneralActionStrategy : IActionStrategy {
     private List<uint> _illegalActionCache = new();
     private static readonly ExcelSheet<GeneralAction> ActionSheet = Injections.DataManager.Excel.GetSheet<GeneralAction>()!;

@@ -9,6 +9,7 @@ using XIVDeck.FFXIVPlugin.Game;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
+[ActionStrategy(HotbarSlotType.MainCommand)]
 public class MainCommandStrategy : IActionStrategy {
     private readonly List<MainCommand> _mainCommandCache = new();
 

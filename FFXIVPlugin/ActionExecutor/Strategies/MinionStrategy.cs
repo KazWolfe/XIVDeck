@@ -11,6 +11,7 @@ using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
+[ActionStrategy(HotbarSlotType.Minion)]
 public class MinionStrategy : IActionStrategy {
     private static readonly GameStateCache GameStateCache = XIVDeckPlugin.Instance.GameStateCache;
 

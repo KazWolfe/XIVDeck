@@ -89,6 +89,7 @@ public class SettingsWindow : Window {
             SetupNag.Show();
         }
 
+        // initialize regardless of change(s) so that we can easily restart the server when necessary
         this._plugin.InitializeWebServer();
     }
 }

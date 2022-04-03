@@ -7,6 +7,7 @@ using XIVDeck.FFXIVPlugin.Game;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
+[ActionStrategy(HotbarSlotType.Macro)]
 public class MacroStrategy : IActionStrategy {
     private static unsafe RaptureMacroModule.Macro* GetMacro(bool shared, int id) {
         var macroPage = shared ? &RaptureMacroModule.Instance->Shared : &RaptureMacroModule.Instance->Individual;

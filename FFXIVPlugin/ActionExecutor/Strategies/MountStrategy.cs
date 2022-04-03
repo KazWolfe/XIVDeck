@@ -11,6 +11,7 @@ using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
+[ActionStrategy(HotbarSlotType.Mount)]
 public class MountStrategy : IActionStrategy {
     private static GameStateCache _gameStateCache = XIVDeckPlugin.Instance.GameStateCache;
 

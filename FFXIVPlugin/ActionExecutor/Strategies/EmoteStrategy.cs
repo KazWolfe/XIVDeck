@@ -10,6 +10,7 @@ using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
+[ActionStrategy(HotbarSlotType.Emote)]
 public class EmoteStrategy : IActionStrategy {
     private static readonly GameStateCache GameStateCache = XIVDeckPlugin.Instance.GameStateCache;
 

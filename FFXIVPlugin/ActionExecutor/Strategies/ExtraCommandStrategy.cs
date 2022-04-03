@@ -4,6 +4,7 @@ using XIVDeck.FFXIVPlugin.Game.Sheets;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
+[ActionStrategy(HotbarSlotType.ExtraCommand)]
 public class ExtraCommandStrategy : FixedCommandStrategy<ExtraCommand> {
     protected override string GetNameForAction(ExtraCommand action) {
         return action.Name.ToString();

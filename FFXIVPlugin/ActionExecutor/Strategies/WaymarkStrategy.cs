@@ -3,6 +3,7 @@ using Lumina.Excel.GeneratedSheets;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
+[ActionStrategy(HotbarSlotType.FieldMarker)]
 public class WaymarkStrategy : FixedCommandStrategy<FieldMarker> {
     protected override string GetNameForAction(FieldMarker action) {
         return action.Name.ToString();
