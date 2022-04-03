@@ -76,7 +76,9 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
     }
     
     private _renderItems() {
-        this.actionSelector.options.length = 0;
+        // reset this dropdown and clear out all options
+        this.actionSelector.innerHTML = "";
+
         let groupCache: Map<string, HTMLOptGroupElement> = new Map<string, HTMLOptGroupElement>();
 
         if (this.selectedType == "default") {

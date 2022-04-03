@@ -1,10 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Dalamud.Logging;
 using EmbedIO.WebSockets;
-using Newtonsoft.Json;
-using XIVDeck.FFXIVPlugin.Server.Helpers;
-using XIVDeck.FFXIVPlugin.Server.Messages;
 using XIVDeck.FFXIVPlugin.UI.Windows.Nags;
 
 namespace XIVDeck.FFXIVPlugin.Server; 

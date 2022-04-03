@@ -45,7 +45,7 @@ public class SerializableGameClass {
             throw new ArgumentOutOfRangeException(nameof(id), $"A class with ID {id} does not exist.");
         }
 
-        this.Name = classJob.Name.RawString;
+        this.Name = classJob.Name.ToString();
         this.CategoryName = (classJob.UIPriority / 10) switch {
             0 => "Tank",
             1 => "Healer",

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dalamud.Logging;
 using Dalamud.Memory;
 using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
@@ -105,11 +104,8 @@ namespace XIVDeck.FFXIVPlugin.Game {
             if (this._playerStatus == null || this._playerStatus.Value == IntPtr.Zero) {
                 return false;
             }
-
-            var result = this._isMcGuffinUnlocked(this._playerStatus.Value, (byte) mcguffinId);
-            PluginLog.Debug($"McGuffin {mcguffinId}: {result}");
-
-            return result > 0;
+            
+            return (this._isMcGuffinUnlocked(this._playerStatus.Value, (byte) mcguffinId)) > 0;
         }
 
         private GameStateCache() {

@@ -1,22 +1,22 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel.GeneratedSheets;
 
-namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
-    public class WaymarkStrategy : FixedCommandStrategy<FieldMarker> {
-        protected override string GetNameForAction(FieldMarker action) {
-            return action.Name.RawString;
-        }
+namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
-        protected override HotbarSlotType GetHotbarSlotType() {
-            return HotbarSlotType.FieldMarker;
-        }
+public class WaymarkStrategy : FixedCommandStrategy<FieldMarker> {
+    protected override string GetNameForAction(FieldMarker action) {
+        return action.Name.ToString();
+    }
 
-        protected override int GetIconForAction(FieldMarker action) {
-            return action.UiIcon;
-        }
+    protected override HotbarSlotType GetHotbarSlotType() {
+        return HotbarSlotType.FieldMarker;
+    }
 
-        protected override string GetCommandToCallAction(FieldMarker action) {
-            return $"/waymark \"{action.Name.RawString}\"";
-        }
+    protected override int GetIconForAction(FieldMarker action) {
+        return action.UiIcon;
+    }
+
+    protected override string GetCommandToCallAction(FieldMarker action) {
+        return $"/waymark \"{action.Name}\"";
     }
 }

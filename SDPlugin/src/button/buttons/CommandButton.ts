@@ -24,4 +24,9 @@ export class CommandButton extends BaseButton {
         
        await FFXIVApi.runTextCommand(this.command);
     }
+    
+    async render() {
+        // nothing to render for CommandButtons
+        return;
+    }
 }

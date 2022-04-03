@@ -23,6 +23,10 @@ export class FFXIVPluginLink {
     constructor(instance: AbstractStreamdeckConnector) {
         this._plugin = instance;
         FFXIVPluginLink.instance = this;
+
+        // initreply listener goes into constructor because otherwise it gets called *per connect*, which causes
+        // a huge mess on many retry attempts
+        this.on("initReply", this._onInitReceive.bind(this));
     }
 
     get baseUrl(): string {
@@ -53,6 +57,8 @@ export class FFXIVPluginLink {
         this._websocket = new WebSocket(`ws://localhost:${this.port}/ws`);
 
         this._websocket.onopen = () => {
+            // this shouldn't actually be here, but managing the instance of the application is a significant pain
+            // otherwise, so this is the simpler (albeit uglier) solution to the problem.
             let pInfo = this._plugin.info.plugin as Record<string, string>;
 
             this.send(new InitOpcode(pInfo.version));
@@ -63,9 +69,6 @@ export class FFXIVPluginLink {
 
         this._websocket.onmessage = this._onWSMessage.bind(this);
         this._websocket.onclose = this._onWSClose.bind(this);
-
-        
-        this.on("initReply", this._onInitReceive.bind(this));
     }
     
     private _onInitReceive(data: FFXIVInitReply) {

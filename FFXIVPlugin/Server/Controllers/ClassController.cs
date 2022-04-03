@@ -67,7 +67,7 @@ public class ClassController : WebApiController {
         if (classJob == null) 
             throw HttpException.NotFound($"A class with ID {id} does not exist!");
         
-        throw HttpException.BadRequest($"Couldn't switch to {classJob.NameEnglish.RawString} because you " +
+        throw HttpException.BadRequest($"Couldn't switch to {classJob.NameEnglish} because you " +
                                  $"don't have a gearset for this class. Make one and try again.");
     }
 }

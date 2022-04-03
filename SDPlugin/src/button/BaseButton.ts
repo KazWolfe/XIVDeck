@@ -14,7 +14,7 @@ export abstract class BaseButton {
     }
     
     abstract execute(event: KeyDownEvent): Promise<void>;
-    
+    abstract render(): Promise<void>;
     
     // cleanup tasks, if any, can be specified by overriding this particular method
     public cleanup() {

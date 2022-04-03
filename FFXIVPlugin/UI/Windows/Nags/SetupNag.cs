@@ -1,4 +1,5 @@
-﻿using Dalamud.Interface.Colors;
+﻿using System.Numerics;
+using Dalamud.Interface.Colors;
 using ImGuiNET;
 using XIVDeck.FFXIVPlugin.Utils;
 
@@ -35,10 +36,11 @@ public class SetupNag : NagWindow {
             PluginUI.OpenXIVDeckGitHub($"/releases/tag/v{StringUtils.GetMajMinBuild()}");
         }
             
-        ImGui.Spacing();
+        // spacer, but bigger
+        ImGui.Dummy(new Vector2(0, 15));
         
         ImGui.Text("If the XIVDeck Stream Deck Plugin is already installed, please make sure the port is set " +
-                   "correctly in the configuration and that at least one button exists.");
+                   "correctly in the configuration and that you've created at least one button.");
         
         ImGui.Text($"Current port: {XIVDeckPlugin.Instance.Configuration.WebSocketPort}");
         

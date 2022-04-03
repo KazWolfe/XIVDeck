@@ -8,63 +8,62 @@ using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Utils;
 
-namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies {
-    public class EmoteStrategy : IActionStrategy {
-        private static readonly GameStateCache GameStateCache = XIVDeckPlugin.Instance.GameStateCache;
+namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
-        private static ExecutableAction GetExecutableAction(Emote emote) {
-            return new ExecutableAction {
-                ActionId = (int) emote.RowId, 
-                ActionName = emote.Name.RawString, 
-                IconId = emote.Icon,
-                Category = emote.EmoteCategory.Value?.Name.RawString ?? null,
-                HotbarSlotType = HotbarSlotType.Emote
-            };
-        }
+public class EmoteStrategy : IActionStrategy {
+    private static readonly GameStateCache GameStateCache = XIVDeckPlugin.Instance.GameStateCache;
 
-        private static Emote? GetEmoteById(uint id) {
-            return Injections.DataManager.Excel.GetSheet<Emote>()!.GetRow(id);
-        }
+    private static ExecutableAction GetExecutableAction(Emote emote) {
+        return new ExecutableAction {
+            ActionId = (int) emote.RowId, 
+            ActionName = emote.Name.ToString(), 
+            IconId = emote.Icon,
+            Category = emote.EmoteCategory.Value?.Name.ToString() ?? null,
+            HotbarSlotType = HotbarSlotType.Emote
+        };
+    }
 
-        public ExecutableAction? GetExecutableActionById(uint slotId) {
-            var emote = GetEmoteById(slotId);
+    private static Emote? GetEmoteById(uint id) {
+        return Injections.DataManager.Excel.GetSheet<Emote>()!.GetRow(id);
+    }
 
-            return emote == null ? null : GetExecutableAction(emote);
-        }
+    public ExecutableAction? GetExecutableActionById(uint slotId) {
+        var emote = GetEmoteById(slotId);
 
-        public List<ExecutableAction> GetAllowedItems() {
-            GameStateCache.Refresh();
+        return emote == null ? null : GetExecutableAction(emote);
+    }
 
-            return GameStateCache.UnlockedEmotes!.Select(GetExecutableAction).ToList();
-        }
+    public List<ExecutableAction> GetAllowedItems() {
+        GameStateCache.Refresh();
 
-        public void Execute(uint actionId, dynamic? _) {
-            Emote? emote = GetEmoteById(actionId);
+        return GameStateCache.UnlockedEmotes!.Select(GetExecutableAction).ToList();
+    }
+
+    public void Execute(uint actionId, dynamic? _) {
+        Emote? emote = GetEmoteById(actionId);
             
-            if (emote == null) {
-                throw new ActionNotFoundException(HotbarSlotType.Emote, actionId);
-            }
+        if (emote == null) {
+            throw new ActionNotFoundException(HotbarSlotType.Emote, actionId);
+        }
             
-            TextCommand? textCommand = emote.TextCommand.Value;
+        TextCommand? textCommand = emote.TextCommand.Value;
 
-            if (textCommand == null) {
-                throw new KeyNotFoundException($"The emote \"{emote.Name.RawString}\" does not have an associated text command.");
-            }
-
-            if (!GameStateCache.IsEmoteUnlocked(emote.RowId)) {
-                throw new ActionLockedException($"The emote \"{emote.Name.RawString}\" isn't unlocked and therefore can't be used.");
-            }
-
-            PluginLog.Debug($"Would execute command: {textCommand.Command.RawString}");
-            
-            TickScheduler.Schedule(delegate {
-                ChatUtils.SendSanitizedChatMessage(textCommand.Command.RawString);
-            });
+        if (textCommand == null) {
+            throw new KeyNotFoundException($"The emote \"{emote.Name}\" does not have an associated text command.");
         }
 
-        public int GetIconId(uint item) {
-            return GetEmoteById(item)?.Icon ?? 0;
-
+        if (!GameStateCache.IsEmoteUnlocked(emote.RowId)) {
+            throw new ActionLockedException($"The emote \"{emote.Name}\" isn't unlocked and therefore can't be used.");
         }
+
+        PluginLog.Debug($"Would execute command: {textCommand.Command}");
+        TickScheduler.Schedule(delegate {
+            ChatUtils.SendSanitizedChatMessage(textCommand.Command);
+        });
+    }
+
+    public int GetIconId(uint item) {
+        return GetEmoteById(item)?.Icon ?? 0;
+
     }
 }
