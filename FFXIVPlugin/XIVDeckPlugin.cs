@@ -29,6 +29,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
 
     private readonly HotbarWatcher _hotbarWatcher;
     private XIVDeckWebServer _xivDeckWebServer = null!;
+    private readonly ChatLinkWiring _chatLinkWiring;
 
     public XIVDeckPlugin(DalamudPluginInterface pluginInterface) {
         // Injections management
@@ -50,6 +51,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         this.XivCommon = new XivCommonBase();
         this.SigHelper = new SigHelper();
         this.IconManager = new IconManager(this.PluginInterface);
+        this._chatLinkWiring = new ChatLinkWiring(this.PluginInterface);
         this._hotbarWatcher = new HotbarWatcher();
         this.WindowSystem = new PatchedWindowSystem(this.Name);
 
@@ -68,6 +70,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
 
         this._hotbarWatcher.Dispose();
         this._xivDeckWebServer.Dispose();
+        this._chatLinkWiring.Dispose();
         this.SigHelper.Dispose();
 
         Injections.ClientState.Login -= this.OnLogin;
@@ -84,6 +87,8 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
     private void OnLogin(object? _, EventArgs? __) {
         // game state isn't ready until login succeeds, so we wait for it to be ready before updating cache
         this.GameStateCache.Refresh();
+        
+        DeferredChat.SendDeferredMessages(6000);
     }
 
     private void InitializeNag() {

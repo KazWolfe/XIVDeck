@@ -3,6 +3,7 @@ import {FFXIVOpcode} from "./MessageBase";
 import {InitOpcode} from "./messages/outbound/InitOpcode";
 import AbstractStreamdeckConnector from "@rweich/streamdeck-ts/dist/AbstractStreamdeckConnector";
 import {FFXIVInitReply} from "./GameTypes";
+import {PropertyInspector} from "@rweich/streamdeck-ts";
 
 export class FFXIVPluginLink {
     public static instance: FFXIVPluginLink;
@@ -60,8 +61,9 @@ export class FFXIVPluginLink {
             // this shouldn't actually be here, but managing the instance of the application is a significant pain
             // otherwise, so this is the simpler (albeit uglier) solution to the problem.
             let pInfo = this._plugin.info.plugin as Record<string, string>;
+            let isInspector = this._plugin instanceof PropertyInspector
 
-            this.send(new InitOpcode(pInfo.version));
+            this.send(new InitOpcode(pInfo.version, (isInspector ? "Inspector" : "Plugin")));
             this.emit("_wsOpened", null);
 
             this.isGameAlive = true;
