@@ -30,10 +30,12 @@ public class AuthHelper {
 
         var key = challenge.Replace("Bearer ", "");
 
+#if DEBUG
         // If this plugin is running in dev mode, allow use of the dev test key for authentication instead.
-        if (XIVDeckPlugin.Instance.PluginInterface.IsDev && key == DevTestKey) {
+        if (key == DevTestKey) {
             return true;
         }
+#endif
         
         return key == this.Secret;
     }

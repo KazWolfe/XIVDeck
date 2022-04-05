@@ -31,7 +31,7 @@ public class WSInitOpcode : BaseInboundMessage {
     public override async Task Process(IWebSocketContext context) {
         // hide all nags
         NagWindow.CloseAllNags();
-
+        
         var sdPluginVersion = System.Version.Parse(this.Version);
         
         if (sdPluginVersion < System.Version.Parse(Constants.MinimumSDPluginVersion)) {
@@ -46,19 +46,18 @@ public class WSInitOpcode : BaseInboundMessage {
         }
 
         var xivPluginVersion = Assembly.GetExecutingAssembly().GetName().Version!;
-        var reply = new WSInitReplyMessage(xivPluginVersion.ToString(), AuthHelper.Instance.Secret);
+        var reply = new WSInitReplyMessage(xivPluginVersion.GetMajMinBuild(), AuthHelper.Instance.Secret);
         await WebUtils.SendMessage(context, reply);
-        PluginLog.Information($"XIVDeck Stream Deck Plugin version {this.Version} has connected!");
-        PluginLog.Debug($"Mode: {this.Mode}");
+        PluginLog.Information($"XIVDeck Stream Deck Plugin ({this.Mode}) version {this.Version} has connected!");
 
         // version check
-        if (sdPluginVersion != xivPluginVersion && this.Mode is null or PluginMode.Plugin) {
+        if (sdPluginVersion.IsOlderThan(xivPluginVersion) && (this.Mode is null or PluginMode.Plugin)) {
             var updateMessage = new SeStringBuilder()
                 .AddUiForeground(514)
                 .AddText($"[XIVDeck] Your version of the XIVDeck Stream Deck Plugin is out of date. Please " +
                                  "consider installing ")
                 .Add(ChatLinkWiring.GetPayload(LinkCode.GetGithubReleaseLink))
-                .AddUiForeground($"\xE0BB version {StringUtils.GetMajMinBuild()}", 32)
+                .AddUiForeground($"\xE0BB version {xivPluginVersion.GetMajMinBuild()}", 32)
                 .Add(RawPayload.LinkTerminator)
                 .AddText(" from GitHub!")
                 .AddUiForegroundOff()
