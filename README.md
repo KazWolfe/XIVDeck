@@ -20,7 +20,7 @@ This plugin has two primary components:
 * The [XIVDeck Game Plugin](FFXIVPlugin), which is a Dalamud plugin responsible for interacting
 with Final Fantasy XIV and hosting a local WebSocket server that allows other systems to
 communicate with the game.
-* The [XIVDeck Stream Deck Plugin](StreamDeckPlugin), which is a JavaScript plugin written
+* The [XIVDeck Stream Deck Plugin](SDPlugin), which is a JavaScript plugin written
 using the Elgato Stream Deck SDK. It exposes a number of actions that will allow the game to
 deeply interact with the Stream Deck.
 
@@ -57,11 +57,11 @@ or are not supported, the **Text Command** action will allow calling a command d
 The XIVDeck plugins are available for download from [this repository's Releases 
 page](https://github.com/KazWolfe/XIVDeck/releases).
 
-To install the Stream Deck plugin, simply open the `XIVDeck-StreamDeckPlugin.streamDeckPlugin`
-file. The Elgato Stream Deck software will take care of all installation steps.
+To install the Stream Deck plugin, simply open the `XIVDeck.streamDeckPlugin` file. The Elgato 
+Stream Deck software will take care of all installation steps.
 
 To install the FFXIV plugin, simply enable the Dalamud Testing repository in your local installation
-and install the XIVDeck Game Plugin.
+and install the `XIVDeck Game Plugin`.
 
 ### Building the Plugin
 
