@@ -100,7 +100,7 @@ export class FFXIVPluginLink {
         if (!this._doConnectionRetries || !this.isGameAlive) return;
 
         if (event.code == 1002 || event.code == 1008) {
-            console.warn("The WebSocket server requested we not retry connection.");
+            console.warn(`The WebSocket server requested we not retry connection`, event);
             return;
         }
 
@@ -126,7 +126,7 @@ export class FFXIVPluginLink {
     }
 
     public isReady(): boolean {
-        return ((this._websocket != null) && (this._websocket.readyState == 1));
+        return ((this._websocket != null) && (this._websocket.readyState === 1));
     }
 
     public on(name: string, fn: Function): Function | undefined {

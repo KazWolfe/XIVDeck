@@ -10,7 +10,7 @@ export class FFXIVApi {
     }
     
     private static async _requestWrapper(url: string, method: HTTPVerb = "GET", body: unknown = null) : Promise<Response | any> {
-        if (this.getBaseUrl() == null) {
+        if (this.getBaseUrl() == null || !FFXIVPluginLink.instance.isReady() || FFXIVPluginLink.instance.apiKey == "") {
             throw new Error("XIV API not initialized yet! Requests should not be getting made...")
         }
         

@@ -15,8 +15,7 @@ public static class DeferredChat {
         
         Injections.Chat.Print(message);
     }
-
-    public static void SendDeferredMessages(long millis) {
+    public static void SendDeferredMessages(long millis = 0) {
         TickScheduler.Schedule(() => {
             foreach (var message in DeferredMessages) {
                 Injections.Chat.Print(message);
