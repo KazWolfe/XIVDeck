@@ -17,8 +17,6 @@ namespace XIVDeck.FFXIVPlugin.Game;
 
 public unsafe class SigHelper : IDisposable {
     private static class Signatures {
-        internal const string ExecuteHotbarSlot = "E9 ?? ?? ?? ?? 48 8D 91 ?? ?? ?? ?? E9";
-            
         // todo: this is *way* too broad. this game is very write-happy when it comes to gearset updates.
         internal const string SaveGearset = "48 89 5C 24 ?? 48 89 74 24 ?? 57 48 83 EC 30 48 8B F2 48 8B F9 33 D2";
             
@@ -35,9 +33,6 @@ public unsafe class SigHelper : IDisposable {
     }
         
     /***** functions *****/
-    [Signature(Signatures.ExecuteHotbarSlot, Fallibility = Fallibility.Fallible)]
-    private readonly delegate* unmanaged<RaptureHotbarModule*, HotBarSlot*, void> _execHotbarSlot = null!;
-
     [Signature(Signatures.LoadHotbarSlotIcon, Fallibility = Fallibility.Fallible)]
     private readonly delegate* unmanaged<HotBarSlot*, bool> _refreshHotbarIcon = null!;
         
@@ -69,19 +64,8 @@ public unsafe class SigHelper : IDisposable {
             
         GC.SuppressFinalize(this);
     }
-
-    public void ExecuteHotbarSlot(HotBarSlot* slot) {
-        if (this._execHotbarSlot == null) {
-            throw new InvalidOperationException("Couldn't find RaptureHotbarModule::ExecuteSlot");
-        }
-
-        this._execHotbarSlot( Framework.Instance()->GetUiModule()->GetRaptureHotbarModule(), slot);
-    }
-        
+    
     public void ExecuteHotbarAction(HotbarSlotType commandType, uint commandId, bool safemode = true) {
-        if (this._execHotbarSlot == null) {
-            throw new InvalidOperationException("Couldn't find RaptureHotbarModule::ExecuteSlot");
-        }
         var hotbarModulePtr = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule();
 
         var slot = new HotBarSlot {
@@ -91,9 +75,9 @@ public unsafe class SigHelper : IDisposable {
 
         var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(slot));
         Marshal.StructureToPtr(slot, ptr, false);
-            
-        this._execHotbarSlot(hotbarModulePtr, (HotBarSlot*) ptr);
-            
+
+        hotbarModulePtr->ExecuteSlot((HotBarSlot*) ptr);
+
         Marshal.FreeHGlobal(ptr);
     }
 

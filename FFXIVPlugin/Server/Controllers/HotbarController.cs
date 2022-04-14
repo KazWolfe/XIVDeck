@@ -62,8 +62,7 @@ public class HotbarController : WebApiController {
         PluginLog.Debug("timing: pre-TickScheduler");
         TickScheduler.Schedule(delegate { 
             PluginLog.Debug("timing: TickScheduler start");
-            var hotbarItem = hotbarModule->HotBar[hotbarId]->Slot[slotId];
-            plugin.SigHelper.ExecuteHotbarSlot(hotbarItem);
+            Framework.Instance()->UIModule->GetRaptureHotbarModule()->ExecuteSlotById((uint) hotbarId, (uint) slotId);
             PluginLog.Debug("timing: TickScheduler end");
         });
         PluginLog.Debug("timing: TriggerHotbarSlot ended");

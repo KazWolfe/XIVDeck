@@ -59,7 +59,7 @@ public class GeneralActionStrategy : IActionStrategy {
         if (action == null) return null;
             
         // ERRATA - swap out melding
-        if (actionId == 12 && UIState.Instance()->Hotbar.IsActionUnlocked(12)) {
+        if (actionId == 12 && UIState.Instance()->IsUnlockLinkUnlocked(12)) {
             action = GetActionById(13)!;
         }
 
@@ -78,11 +78,11 @@ public class GeneralActionStrategy : IActionStrategy {
                 $"The action \"{action.Name}\" (ID {actionId}) is marked as illegal and cannot be used.");
         }
             
-        if (action.UnlockLink != 0 && !UIState.Instance()->Hotbar.IsActionUnlocked(action.UnlockLink)) {
+        if (action.UnlockLink != 0 && !UIState.Instance()->IsUnlockLinkUnlocked(action.UnlockLink)) {
             throw new ActionLockedException($"The action \"{action.Name}\" is not yet unlocked.");
         }
             
-        if (actionId == 12 && UIState.Instance()->Hotbar.IsActionUnlocked(12)) {
+        if (actionId == 12 && UIState.Instance()->IsUnlockLinkUnlocked(12)) {
             action = GetActionById(13)!;
         }
 
@@ -96,7 +96,7 @@ public class GeneralActionStrategy : IActionStrategy {
 
     public unsafe int GetIconId(uint actionId) { 
         // ERRATA - replace Materia Melding with Advanced Materia Melding if unlocked
-        if (actionId == 12 && UIState.Instance()->Hotbar.IsActionUnlocked(12)) {
+        if (actionId == 12 && UIState.Instance()->IsUnlockLinkUnlocked(12)) {
             actionId = 13;
         }
             
@@ -111,7 +111,7 @@ public class GeneralActionStrategy : IActionStrategy {
                 continue;
             }
                 
-            if (action.UnlockLink != 0 && !UIState.Instance()->Hotbar.IsActionUnlocked(action.UnlockLink)) {
+            if (action.UnlockLink != 0 && !UIState.Instance()->IsUnlockLinkUnlocked(action.UnlockLink)) {
                 continue;
             }
                 

@@ -1,4 +1,5 @@
 ﻿using System;
+using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using FFXIVClientStructs;
 using XivCommon;
@@ -21,7 +22,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
     public DalamudPluginInterface PluginInterface { get; init; }
     public PluginConfig Configuration { get; init; }
     public IconManager IconManager { get; set; }
-    public PatchedWindowSystem WindowSystem;
+    public WindowSystem WindowSystem;
     public XivCommonBase XivCommon { get; }
     public SigHelper SigHelper { get; }
         
@@ -53,7 +54,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         this.IconManager = new IconManager(this.PluginInterface);
         this._chatLinkWiring = new ChatLinkWiring(this.PluginInterface);
         this._hotbarWatcher = new HotbarWatcher();
-        this.WindowSystem = new PatchedWindowSystem(this.Name);
+        this.WindowSystem = new WindowSystem(this.Name);
 
         // Start the websocket server itself.
         this.InitializeWebServer();

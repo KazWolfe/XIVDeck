@@ -25,8 +25,11 @@ namespace XIVDeck.FFXIVPlugin.Game {
 
             internal const string IsOrnamentUnlocked = "E8 ?? ?? ?? ?? BA ?? ?? ?? ?? 41 0F B6 CE";
             internal const string OrnamentBitmask = "48 8D 0D ?? ?? ?? ?? 48 8B D8 E8 ?? ?? ?? ?? BA ?? ?? ?? ?? 41 0F B6 CE";
-
-            internal const string IsMcGuffinUnlocked = "8D 42 FF 3C 03 77 44";
+            
+            // This sig is (interestingly) hand-found in order to allow Square to change McGuffin counts without
+            // breaking my code. Simple explanation is that ?? is current count of McGuffins, and 40 07 00 00 is a known
+            // offset to the mcguffin field of PlayerStatus.
+            internal const string IsMcGuffinUnlocked = "8D 42 FF 3C ?? 77 44 4C 8B 89 40 07 00 00";
         }
         
         public struct Gearset {
