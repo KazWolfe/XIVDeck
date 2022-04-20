@@ -3,6 +3,7 @@ using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using FFXIVClientStructs;
 using XivCommon;
+using XIVDeck.FFXIVPlugin.ActionExecutor;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Server;
@@ -44,9 +45,10 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         this.Configuration = this.PluginInterface.GetPluginConfig() as PluginConfig ?? new PluginConfig();
         this.Configuration.Initialize(this.PluginInterface);
             
-        // Load caches of various things into plugin memory for reference later
+        // Load in and initialize a lot of various game state and plugin interface things.
         this.GameStateCache = GameStateCache.Load();
         SerializableGameClass.GetCache();
+        ActionDispatcher.GetStrategies();
 
         // Various managers for advanced hooking into the game
         this.XivCommon = new XivCommonBase();
