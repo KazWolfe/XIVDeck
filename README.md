@@ -5,14 +5,6 @@ XIVDeck is a project that attempts to bridge the gap between
 [Elgato Stream Deck](https://www.elgato.com/en/stream-deck). XIVDeck uses the Dalamud plugin
 library to create an interactive and pleasant human interface experience.
 
-> **Caution:** This plugin is still a work-in-progress. While most bugs appear to be resolved
-> and the user experience is generally Pretty Decent™, there are still some rough edges that
-> need to be resolved. 
-> 
-> By using this plugin, you understand that you are at risk of being banned from the game by 
-> Square Enix, or worse. I am not responsible if your Miqo'te turns into a Lalafell through 
-> use of this plugin.
-
 ## Plugin Components
 
 This plugin has two primary components:
@@ -60,8 +52,9 @@ page](https://github.com/KazWolfe/XIVDeck/releases).
 To install the Stream Deck plugin, simply open the `XIVDeck.streamDeckPlugin` file. The Elgato 
 Stream Deck software will take care of all installation steps.
 
-To install the FFXIV plugin, simply enable the Dalamud Testing repository in your local installation
-and install the `XIVDeck Game Plugin`.
+To install the FFXIV plugin, simply add it through the Dalamud Plugin Installer. Note that testing
+versions are also available (and may at times be the only live version), but this requires you to 
+enable Dalamud Testing in your Settings.
 
 ### Building the Plugin
 

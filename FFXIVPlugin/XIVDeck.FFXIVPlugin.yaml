@@ -2,8 +2,6 @@
 author: Kaz Wolfe
 punchline: Integrate your Stream Deck with Final Fantasy XIV!
 description: |-
-  ***THIS PLUGIN IS IN THE PRERELEASE/TESTING PHASE. EXPECT BUGS. YOU HAVE BEEN WARNED.***
-  
   This plugin allows players to place virtually any hotbar-able action onto a Stream Deck, including hotbar slots themselves. Actions are called directly, meaning no keybinds or awkward settings are necessary.
   
   Note that the XIVDeck Stream Deck plugin must also be installed for this plugin to be useful. You can download the Stream Deck plugin from the linked GitHub repository, under the "Releases" section.
