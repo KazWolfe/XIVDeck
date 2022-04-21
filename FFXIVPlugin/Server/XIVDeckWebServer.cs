@@ -1,7 +1,7 @@
 ﻿using System;
 using Dalamud.Logging;
 using EmbedIO;
-using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 
 namespace XIVDeck.FFXIVPlugin.Server;
@@ -54,7 +54,7 @@ public class XIVDeckWebServer : IDisposable {
     private void ConfigureErrorHandlers() {
         this._host.OnUnhandledException = (ctx, ex) => {
             PluginLog.Error(ex, $"Unhandled exception while processing request: {ctx.Request.HttpMethod} {ctx.Request.Url.PathAndQuery}");
-            Injections.Chat.PrintError($"[XIVDeck - ERROR] {ex.Message}");
+            ErrorNotifier.ShowError($"[XIVDeck - ERROR] {ex.Message}");
             return ExceptionHandler.Default(ctx, ex);
         };
 
@@ -63,8 +63,7 @@ public class XIVDeckWebServer : IDisposable {
 
             // Only show messages to users if it's a POST request (button action)
             if (ctx.Request.HttpVerb == HttpVerbs.Post) {
-                Injections.Toasts.ShowError($"[XIVDeck] {ex.Message}");
-                Injections.Chat.PrintError($"[XIVDeck] {ex.Message}");
+                ErrorNotifier.ShowError($"[XIVDeck] {ex.Message}", true);
             }
             
             return HttpExceptionHandler.Default(ctx, ex);

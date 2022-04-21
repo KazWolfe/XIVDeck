@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Dalamud.Game.Text.SeStringHandling;
 using XIVDeck.FFXIVPlugin.Base;
 
@@ -18,6 +17,10 @@ public static class DeferredChat {
         Injections.Chat.Print(message);
     }
     public static void SendDeferredMessages(long millis = 0) {
+        // cancel a pre-existing deferred task if one exists - it seems reasonable that only one deferred send can
+        // exist at once.
+        _deferredTask?.Dispose();
+        
         _deferredTask = TickScheduler.Schedule(() => {
             foreach (var message in DeferredMessages) {
                 Injections.Chat.Print(message);
@@ -26,8 +29,7 @@ public static class DeferredChat {
     }
 
     public static void Cancel() {
-        // cancel the task if it exists, just to make things cleaner
-        _deferredTask?.Dispose();
         DeferredMessages.Clear();
+        _deferredTask?.Dispose();
     } 
 }
