@@ -6,10 +6,10 @@ using XIVDeck.FFXIVPlugin.Base;
 namespace XIVDeck.FFXIVPlugin.Game {
     // borrowed from https://github.com/Eternita-S/NotificationMaster/blob/master/NotificationMaster/TickScheduler.cs
     internal class TickScheduler : IDisposable {
-        internal static void Schedule(Action function, Framework? framework = null, long delay = 0) {
+        internal static TickScheduler Schedule(Action function, Framework? framework = null, long delay = 0) {
             framework ??= Injections.Framework;
 
-            var _ = new TickScheduler(function, framework, delay);
+            return new TickScheduler(function, framework, delay);
         }
 
         private readonly long _executeAt;

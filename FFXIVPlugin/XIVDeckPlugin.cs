@@ -70,6 +70,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
 
     public void Dispose() {
         this.WindowSystem.RemoveAllWindows();
+        DeferredChat.Cancel();
 
         this._hotbarWatcher.Dispose();
         this._xivDeckWebServer.Dispose();
