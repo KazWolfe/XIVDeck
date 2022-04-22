@@ -6,7 +6,7 @@
       "States": [
         {
           "Image": "assets/images/chat",
-          "TitleAlignment": "middle",
+          "TitleAlignment": "bottom",
           "FontSize": "16"
         }
       ],

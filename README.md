@@ -1,9 +1,10 @@
+![XIVDeck Icon](SDPlugin/assets/images/icon@2x.png)
+
 # XIVDeck
 
-XIVDeck is a project that attempts to bridge the gap between 
-[Final Fantasy XIV](https://www.finalfantasyxiv.com/) and the 
-[Elgato Stream Deck](https://www.elgato.com/en/stream-deck). XIVDeck uses the Dalamud plugin
-library to create an interactive and pleasant human interface experience.
+XIVDeck is a project that attempts to bridge the gap between [Final Fantasy XIV][ffxiv] 
+and the [Elgato Stream Deck][streamdeck]. XIVDeck uses the Dalamud plugin library to 
+create an interactive and pleasant human interface experience.
 
 ## Plugin Components
 
@@ -46,19 +47,19 @@ or are not supported, the **Text Command** action will allow calling a command d
 
 ### Installing the Plugin
 
-The XIVDeck plugins are available for download from [this repository's Releases 
-page](https://github.com/KazWolfe/XIVDeck/releases).
+The XIVDeck plugins are available for download from [this repository's Releases page][releases].
 
 To install the Stream Deck plugin, simply open the `XIVDeck.streamDeckPlugin` file. The Elgato 
 Stream Deck software will take care of all installation steps.
 
 To install the FFXIV plugin, simply add it through the Dalamud Plugin Installer. Note that testing
 versions are also available (and may at times be the only live version), but this requires you to 
-enable Dalamud Testing in your Settings.
+[enable Dalamud Testing plugins][dalamudfaq-test] first.
 
 ### Building the Plugin
 
 If for some reason you'd rather be on the bleeding edge, you may also manually build the plugins.
+Note that support is *not* provided for self-built version of the plugin.
 
 The XIVDeck Game Plugin is more or less self-contained and only needs to go through your IDE's
 normal build processes. Currently, the only version that's guaranteed to build (and work) is
@@ -69,3 +70,8 @@ The XIVDeck Stream Deck Plugin can be installed by copying or symlinking the
 `StreamDeckPlugin` folder to `%APPDATA%\Elgato\StreamDeck\Plugins\dev.wolf.xivdeck.sdPlugin`.
 Note that after creating this link, you need to *fully restart* the Stream Deck software for
 the plugin to be detected.
+
+[ffxiv]: https://www.finalfantasyxiv.com
+[streamdeck]: https://www.elgato.com/en/stream-deck
+[releases]: https://github.com/KazWolfe/XIVDeck/releases
+[dalamudfaq-test]: https://goatcorp.github.io/faq/dalamud_troubleshooting.html#q-how-do-i-enable-plugin-test-builds
