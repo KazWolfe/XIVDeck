@@ -98,7 +98,7 @@ public class IconManager : IDisposable {
         var texPath = GetIconPath(lang, iconId, hq, true);
 
         if (texPath.Substring(1, 2) == ":/") {
-            PluginLog.Debug("LOADING ASSET FROM DISK!!!");
+            PluginLog.Verbose($"Using on-disk asset {texPath}");
             texFile = Injections.DataManager.GameData.GetFileFromDisk<TexFile>(texPath);
         } else {
             texFile = Injections.DataManager.GetFile<TexFile>(texPath);

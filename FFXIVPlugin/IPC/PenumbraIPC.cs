@@ -18,6 +18,8 @@ public class PenumbraIPC {
             _penumbraResolveDefaultSubscriber = Injections.PluginInterface.GetIpcSubscriber<string, string>("Penumbra.ResolveDefaultPath");
             PenumbraEnabled = true;
             PluginLog.Information("Enabled Penumbra IPC connection!");
+        } else if (PenumbraApiVersion > 0) {
+            PluginLog.Warning($"Penumbra IPC detected, but version {PenumbraApiVersion} is incompatible!");
         }
     }
     
