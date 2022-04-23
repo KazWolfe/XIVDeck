@@ -25,6 +25,8 @@ public static class DeferredChat {
             foreach (var message in DeferredMessages) {
                 Injections.Chat.Print(message);
             }
+            
+            DeferredMessages.Clear();
         }, delay: millis);
     }
 
