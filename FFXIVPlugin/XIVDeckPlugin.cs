@@ -6,6 +6,7 @@ using XivCommon;
 using XIVDeck.FFXIVPlugin.ActionExecutor;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.IPC;
 using XIVDeck.FFXIVPlugin.Server;
 using XIVDeck.FFXIVPlugin.Server.Types;
 using XIVDeck.FFXIVPlugin.UI;
@@ -57,6 +58,9 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         this._chatLinkWiring = new ChatLinkWiring(this.PluginInterface);
         this._hotbarWatcher = new HotbarWatcher();
         this.WindowSystem = new WindowSystem(this.Name);
+        
+        // IPC registration
+        PenumbraIPC.Initialize();
 
         // Start the websocket server itself.
         this.InitializeWebServer();

@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Threading;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
@@ -16,11 +17,12 @@ public class SettingsWindow : Window {
     // settings
     private int _websocketPort;
     private bool _safeMode = true;
+    private bool _usePenumbraIPC = false;
 
     public SettingsWindow(bool forceMainWindow = true) :
         base(WindowKey, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse, forceMainWindow) {
         
-        this.Size = new Vector2(300, 150);
+        this.Size = new Vector2(300, 250);
         this.SizeCondition = ImGuiCond.FirstUseEver;
         
         this.IsOpen = true;
@@ -29,6 +31,7 @@ public class SettingsWindow : Window {
     public override void OnOpen() {
         this._websocketPort = this._plugin.Configuration.WebSocketPort;
         this._safeMode = this._plugin.Configuration.SafeMode;
+        this._usePenumbraIPC = this._plugin.Configuration.UsePenumbraIPC;
     }
 
     public override void OnClose() {
@@ -61,6 +64,10 @@ public class SettingsWindow : Window {
         ImGuiComponents.HelpMarker("Default port: 37984\n\nRange: 1024-59999");
 
         ImGui.TextWrapped($"Listen IP: 127.0.0.1");
+        
+        ImGui.Dummy(new Vector2(0, 20));
+
+        ImGui.Checkbox("[EXPERIMENTAL] Use Penumbra Icons", ref this._usePenumbraIPC);
 
         /* FOOTER */
         var placeholderButtonSize = ImGuiHelpers.GetButtonSize("placeholder");
@@ -88,6 +95,8 @@ public class SettingsWindow : Window {
             NagWindow.CloseAllNags();
             SetupNag.Show();
         }
+
+        this._plugin.Configuration.UsePenumbraIPC = this._usePenumbraIPC;
 
         // initialize regardless of change(s) so that we can easily restart the server when necessary
         this._plugin.InitializeWebServer();

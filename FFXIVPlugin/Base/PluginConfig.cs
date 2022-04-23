@@ -19,6 +19,8 @@ namespace XIVDeck.FFXIVPlugin.Base {
          * If not, the plugin will display a nag message on startup to install and set up the associated plugin.
          */
         public bool HasLinkedStreamDeckPlugin { get; set; }
+
+        public bool UsePenumbraIPC { get; set; } = false;
         
         public int WebSocketPort { get; set; } = 37984;
 

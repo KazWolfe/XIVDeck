@@ -12,11 +12,14 @@ using Lumina.Data.Files;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.IPC;
 
 namespace XIVDeck.FFXIVPlugin.Game; 
 
 // borrowed from https://github.com/Caraxi/RemindMe/blob/master/IconManager.cs
 public class IconManager : IDisposable {
+    private const string IconFileFormat = "ui/icon/{0:D3}000/{1}{2:D6}{3}.tex";
+    
     private readonly DalamudPluginInterface _pluginInterface;
     private bool _disposed;
     private readonly Dictionary<(int, bool), TextureWrap?> _iconTextures = new();
@@ -64,7 +67,7 @@ public class IconManager : IDisposable {
         this.GetIcon(Injections.DataManager.Language, iconId, hq, highres);
 
     private TexFile? GetIcon(ClientLanguage iconLanguage, int iconId, bool hq = false, bool highres = false) {
-        string type = iconLanguage switch {
+        string language = iconLanguage switch {
             ClientLanguage.Japanese => "ja/",
             ClientLanguage.English => "en/",
             ClientLanguage.German => "de/",
@@ -73,28 +76,51 @@ public class IconManager : IDisposable {
                 "Unknown Language: " + Injections.DataManager.Language)
         };
 
-        return this.GetIcon(type, iconId, hq, highres);
+        return this.GetIcon(language, iconId, hq, highres);
     }
 
-    public TexFile? GetIcon(string type, int iconId, bool hq = false, bool highres = false) {
-        if (type.Length > 0 && !type.EndsWith("/"))
-            type += "/";
+    public static string GetIconPath(string lang, int iconId, bool hq = false, bool highres = false, bool forceOriginal = false) {
+        var path = string.Format(IconFileFormat, 
+            iconId / 1000, (hq ? "hq/" : "") + lang, iconId, highres ? "_hr1" : "");
 
-        var formatStr = $"ui/icon/{{0:D3}}000/{(hq ? "hq/" : "")}{{1}}{{2:D6}}{(highres ? "_hr1" : "")}.tex";
-        TexFile? file =
-            Injections.DataManager.GetFile<TexFile>(string.Format(formatStr, (iconId / 1000), type, iconId));
+        if (PenumbraIPC.PenumbraEnabled && !forceOriginal && XIVDeckPlugin.Instance.Configuration.UsePenumbraIPC)
+            path = PenumbraIPC.ResolvePenumbraPath(path);
 
-        if (file == null && highres) {
-            // high-res probably doesn't exist, fallback and try low-res instead
-            PluginLog.Debug(
-                $"Couldn't get high res icon for {string.Format(formatStr, (iconId / 1000), type, iconId)}");
-            return this.GetIcon(type, iconId, hq);
+        return path;
+    }
+
+    public TexFile? GetIcon(string lang, int iconId, bool hq = false, bool highres = false) {
+        TexFile? texFile;
+        
+        if (lang.Length > 0 && !lang.EndsWith("/"))
+            lang += "/";
+        
+        var texPath = GetIconPath(lang, iconId, hq, true);
+
+        if (texPath.Substring(1, 2) == ":/") {
+            PluginLog.Debug("LOADING ASSET FROM DISK!!!");
+            texFile = Injections.DataManager.GameData.GetFileFromDisk<TexFile>(texPath);
+        } else {
+            texFile = Injections.DataManager.GetFile<TexFile>(texPath);
         }
 
-        return file != null || type.Length <= 0
-            ? file
-            : Injections.DataManager.GetFile<TexFile>(string.Format(formatStr, (iconId / 1000), string.Empty,
-                iconId));
+        // recursion steps:
+        // - attempt to get the high-res file exactly as described.
+        //   - attempt to get the high-res file without language
+        //     - attempt to get the low-res file without language
+        //   - attempt to get the low-res file exactly as described
+        //     - attempt to get the low-res file without language
+        // - give up and return null
+        switch (texFile) {
+            case null when lang.Length > 0:
+                PluginLog.Debug($"Couldn't get lang-specific icon for {texPath}, falling back to no-lang");
+                return this.GetIcon(string.Empty, iconId, hq, true);
+            case null when highres:
+                PluginLog.Debug($"Couldn't get highres icon for {texPath}, falling back to lowres");
+                return this.GetIcon(lang, iconId, hq);
+            default:
+                return texFile;
+        }
     }
 
     public TextureWrap? GetIconTexture(int iconId, bool hq = false) {
