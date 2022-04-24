@@ -12,7 +12,7 @@ using Lumina.Data.Files;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using XIVDeck.FFXIVPlugin.Base;
-using XIVDeck.FFXIVPlugin.IPC;
+using XIVDeck.FFXIVPlugin.IPC.Subscribers;
 
 namespace XIVDeck.FFXIVPlugin.Game; 
 
@@ -83,8 +83,8 @@ public class IconManager : IDisposable {
         var path = string.Format(IconFileFormat, 
             iconId / 1000, (hq ? "hq/" : "") + lang, iconId, highres ? "_hr1" : "");
 
-        if (PenumbraIPC.PenumbraEnabled && !forceOriginal && XIVDeckPlugin.Instance.Configuration.UsePenumbraIPC)
-            path = PenumbraIPC.ResolvePenumbraPath(path);
+        if (PenumbraIPC.Instance is {Enabled: true} && !forceOriginal && XIVDeckPlugin.Instance.Configuration.UsePenumbraIPC)
+            path = PenumbraIPC.Instance.ResolvePenumbraPath(path);
 
         return path;
     }

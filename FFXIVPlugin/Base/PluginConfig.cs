@@ -20,7 +20,10 @@ namespace XIVDeck.FFXIVPlugin.Base {
          */
         public bool HasLinkedStreamDeckPlugin { get; set; }
 
-        public bool UsePenumbraIPC { get; set; } = false;
+        /** 
+         * EXPERIMENTAL - This boolean allows integration with the Penumbra IPC for icon load purposes.
+         */
+        public bool UsePenumbraIPC { get; set; }
         
         public int WebSocketPort { get; set; } = 37984;
 

@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using System.Threading;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
@@ -17,7 +16,7 @@ public class SettingsWindow : Window {
     // settings
     private int _websocketPort;
     private bool _safeMode = true;
-    private bool _usePenumbraIPC = false;
+    private bool _usePenumbraIPC;
 
     public SettingsWindow(bool forceMainWindow = true) :
         base(WindowKey, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse, forceMainWindow) {
@@ -90,13 +89,14 @@ public class SettingsWindow : Window {
         if (this._websocketPort != this._plugin.Configuration.WebSocketPort) {
             this._plugin.Configuration.WebSocketPort = this._websocketPort;
             this._plugin.Configuration.HasLinkedStreamDeckPlugin = false;
-
-            this._plugin.Configuration.Save();
+            
             NagWindow.CloseAllNags();
             SetupNag.Show();
         }
 
         this._plugin.Configuration.UsePenumbraIPC = this._usePenumbraIPC;
+        
+        this._plugin.Configuration.Save();
 
         // initialize regardless of change(s) so that we can easily restart the server when necessary
         this._plugin.InitializeWebServer();

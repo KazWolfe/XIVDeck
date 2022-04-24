@@ -41,8 +41,6 @@ public class HotbarController : WebApiController {
     [Route(HttpVerbs.Post, "/{hotbarId}/{slotId}/execute")]
     public unsafe void TriggerHotbarSlot(int hotbarId, int slotId) {
         PluginLog.Debug("timing: TriggerHotbarSlot started");
-        var plugin = XIVDeckPlugin.Instance;
-        var hotbarModule = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule();
 
         try {
             this.SafetyCheckHotbar(hotbarId, slotId);

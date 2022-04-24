@@ -1,5 +1,4 @@
-﻿using System;
-using Dalamud.Interface.Windowing;
+﻿using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using FFXIVClientStructs;
 using XivCommon;
@@ -33,6 +32,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
     private readonly HotbarWatcher _hotbarWatcher;
     private XIVDeckWebServer _xivDeckWebServer = null!;
     private readonly ChatLinkWiring _chatLinkWiring;
+    private IPCManager _ipcManager;
 
     public XIVDeckPlugin(DalamudPluginInterface pluginInterface) {
         // Injections management
@@ -50,6 +50,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         this.GameStateCache = GameStateCache.Load();
         SerializableGameClass.GetCache();
         ActionDispatcher.GetStrategies();
+        this._ipcManager = new IPCManager();
 
         // Various managers for advanced hooking into the game
         this.XivCommon = new XivCommonBase();
@@ -59,9 +60,6 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         this._hotbarWatcher = new HotbarWatcher();
         this.WindowSystem = new WindowSystem(this.Name);
         
-        // IPC registration
-        PenumbraIPC.Initialize();
-
         // Start the websocket server itself.
         this.InitializeWebServer();
         
@@ -80,6 +78,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         this._xivDeckWebServer.Dispose();
         this._chatLinkWiring.Dispose();
         this.SigHelper.Dispose();
+        this._ipcManager.Dispose();
 
         Injections.ClientState.Login -= DalamudHooks.OnGameLogin;
     }
