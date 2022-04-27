@@ -17,9 +17,7 @@ public class XIVDeckWebServer : IDisposable {
             .WithUrlPrefixes(GenerateUrlPrefixes(port))
             .WithMode(HttpListenerMode.EmbedIO)
         );
-
-        // todo: remove transition module eventually
-        this._host.WithModule(new XIVDeckWSTransition("/xivdeck"));
+        
         this._host.WithModule(this._xivDeckWSModule);
         this._host.WithModule(new AuthModule("/"));
         

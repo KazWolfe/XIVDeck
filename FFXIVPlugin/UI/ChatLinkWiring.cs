@@ -41,7 +41,7 @@ public class ChatLinkWiring : IDisposable {
     
     public static DalamudLinkPayload GetPayload(LinkCode linkCode) {
         if (!Payloads.ContainsKey(linkCode)) {
-            throw new NotImplementedException($"No handler is registered for Link Code {linkCode.ToString()}");
+            throw new ArgumentException($"No handler is registered for Link Code {linkCode.ToString()}");
         }
         
         return Payloads[linkCode];
@@ -61,6 +61,10 @@ public class ChatLinkWiring : IDisposable {
             var opcode = attr.Opcode;
 
             var handler = (IChatLinkHandler) Activator.CreateInstance(type)!;
+            
+            // Mitigates a bug where registering a chat link can sometimes throw an exception that it's already
+            // been registered. Thanks for the tip, Kami!
+            pluginInterface.RemoveChatLinkHandler((uint) opcode);
                 
             PluginLog.Debug($"Registered chat link handler for opcode {attr.Opcode}: {handler.GetType()}");
             Payloads[opcode] = pluginInterface.AddChatLinkHandler((uint) opcode, handler.Handle);

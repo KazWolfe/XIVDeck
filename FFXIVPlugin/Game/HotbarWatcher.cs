@@ -36,7 +36,7 @@ public class HotbarWatcher : IDisposable {
                 // as this method (loading from Slot B) is done by the game itself too. This *may* cause a problem with
                 // other plugins though, maybe?
                 if (gameSlot->Icon == 0 && gameSlot->CommandType != HotbarSlotType.Empty) {
-                    XIVDeckPlugin.Instance.SigHelper.RefreshHotbarSlotIcon(gameSlot);
+                    gameSlot->LoadIconFromSlotB();
                 }
                     
                 var cachedSlot = this._hotbarCache[hotbarId, slotId];

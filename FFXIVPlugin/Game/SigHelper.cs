@@ -26,16 +26,10 @@ public unsafe class SigHelper : IDisposable {
         // called in UI::Agent::AgentMacro::ReceiveEvent a few times - generally immediately after LOBYTE(x) = 1 call
         internal const string UpdateMacro = "E8 ?? ?? ?? ?? 83 3E 00";
 
-        internal const string LoadHotbarSlotIcon =
-            "40 53 48 83 EC 20 44 8B 81 ?? ?? ?? ?? 48 8B D9 0F B6 91 ?? ?? ?? ?? E8 ?? ?? ?? ?? 85 C0";
-
         internal const string SanitizeChatString = "E8 ?? ?? ?? ?? EB 0A 48 8D 4C 24 ?? E8 ?? ?? ?? ?? 48 8D 8D";
     }
         
     /***** functions *****/
-    [Signature(Signatures.LoadHotbarSlotIcon, Fallibility = Fallibility.Fallible)]
-    private readonly delegate* unmanaged<HotBarSlot*, bool> _refreshHotbarIcon = null!;
-        
     [Signature(Signatures.SanitizeChatString, Fallibility = Fallibility.Fallible)]
     private readonly delegate* unmanaged<Utf8String*, int, IntPtr, void> _sanitizeChatString = null!;
         
@@ -79,14 +73,6 @@ public unsafe class SigHelper : IDisposable {
         hotbarModulePtr->ExecuteSlot((HotBarSlot*) ptr);
 
         Marshal.FreeHGlobal(ptr);
-    }
-
-    public bool RefreshHotbarSlotIcon(HotBarSlot* slot) {
-        if (this._refreshHotbarIcon == null) {
-            throw new InvalidOperationException("Couldn't find RaptureHotbarModule::ExecuteSlot");
-        }
-
-        return this._refreshHotbarIcon( slot );
     }
 
     public string GetSanitizedString(string input) {
