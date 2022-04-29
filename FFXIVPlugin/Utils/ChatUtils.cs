@@ -16,6 +16,6 @@ public static class ChatUtils {
         text = text.Replace("\n", " ");
         text = plugin.SigHelper.GetSanitizedString(text);
             
-        plugin.XivCommon.Functions.Chat.SendMessage(text);
+        plugin.SigHelper.SendChatMessage(text);
     }
 }

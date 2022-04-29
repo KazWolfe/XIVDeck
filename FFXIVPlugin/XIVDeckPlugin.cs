@@ -1,7 +1,6 @@
 ﻿using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using FFXIVClientStructs;
-using XivCommon;
 using XIVDeck.FFXIVPlugin.ActionExecutor;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game;
@@ -24,7 +23,6 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
     public PluginConfig Configuration { get; init; }
     public IconManager IconManager { get; set; }
     public WindowSystem WindowSystem;
-    public XivCommonBase XivCommon { get; }
     public SigHelper SigHelper { get; }
         
     public GameStateCache GameStateCache { get; }
@@ -53,7 +51,6 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         this._ipcManager = new IPCManager();
 
         // Various managers for advanced hooking into the game
-        this.XivCommon = new XivCommonBase();
         this.SigHelper = new SigHelper();
         this.IconManager = new IconManager(this.PluginInterface);
         this._chatLinkWiring = new ChatLinkWiring(this.PluginInterface);

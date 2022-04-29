@@ -54,7 +54,6 @@
         <!-- Dalamud things -->
         <PackageReference Include="DalamudPackager" Version="2.1.7" />
         <PackageReference Include="ILRepack" Version="2.1.0-beta1" GeneratePathProperty="true" />
-        <PackageReference Include="XivCommon" Version="5.0.0" />
         <Reference Include="FFXIVClientStructs">
             <HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
             <Private>false</Private>

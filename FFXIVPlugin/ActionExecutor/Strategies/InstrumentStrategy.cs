@@ -31,8 +31,7 @@ public class InstrumentStrategy : IActionStrategy {
 
     public unsafe bool IsPerformUnlocked() {
         // APPARENTLY unlock 255 is performance?!
-        return XIVDeckPlugin.Instance.XivCommon.Functions.Journal.IsQuestCompleted(68555) &&
-               UIState.Instance()->IsUnlockLinkUnlocked(255);
+        return XIVDeckPlugin.Instance.SigHelper.IsQuestCompleted(68555) && UIState.Instance()->IsUnlockLinkUnlocked(255);
     }
 
     public ExecutableAction? GetExecutableActionById(uint actionId) {
