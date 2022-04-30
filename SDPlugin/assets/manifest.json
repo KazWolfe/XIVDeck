@@ -7,7 +7,7 @@
         {
           "Image": "assets/images/chat",
           "TitleAlignment": "bottom",
-          "FontSize": "16"
+          "FontSize": "12"
         }
       ],
       "Tooltip": "Execute a Text Command in game",
@@ -20,7 +20,7 @@
         {
           "Image": "assets/images/hotbar",
           "TitleAlignment": "bottom",
-          "FontSize": "16"
+          "FontSize": "12"
         }
       ],
       "Tooltip": "Press a specific hotbar button defined in the game",
@@ -33,7 +33,7 @@
         {
           "Image": "assets/images/action",
           "TitleAlignment": "bottom",
-          "FontSize": "16"
+          "FontSize": "12"
         }
       ],
       "Tooltip": "Trigger a specific action (mount, minion, etc.) in-game",
@@ -46,7 +46,7 @@
         {
           "Image": "assets/images/macro",
           "TitleAlignment": "bottom",
-          "FontSize": "16"
+          "FontSize": "12"
         }
       ],
       "Tooltip": "Run a User Macro (Individual or Shared) in-game",
