@@ -23,7 +23,7 @@ public class PenumbraIPC : IPluginIpcClient {
         try {
             this._initializeIpc();
         } catch (Exception ex) {
-            PluginLog.Debug(ex, "Failed to initialize Penumbra IPC");
+            PluginLog.Warning(ex, "Failed to initialize Penumbra IPC");
         }
 
         this._penumbraRegisteredSubscriber = Injections.PluginInterface.GetIpcSubscriber<bool>("Penumbra.Initialized");
@@ -43,6 +43,11 @@ public class PenumbraIPC : IPluginIpcClient {
     public int Version => this._penumbraApiVersionSubscriber?.InvokeFunc() ?? 0;
 
    private void _initializeIpc() {
+       if (!XIVDeckPlugin.Instance.PluginInterface.PluginNames.Contains("Penumbra")) {
+           PluginLog.Debug("Penumbra was not found, will not create IPC at this time");
+           return;
+       }
+       
        var versionEndpoint = Injections.PluginInterface.GetIpcSubscriber<int>("Penumbra.ApiVersion");
 
        // this line may explode with an exception, but that should be fine as we'd normally catch that.

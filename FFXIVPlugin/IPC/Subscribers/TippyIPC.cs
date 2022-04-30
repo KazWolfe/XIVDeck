@@ -24,7 +24,7 @@ public class TippyIPC : IPluginIpcClient {
         try {
             this._initializeIpc();
         } catch (Exception ex) {
-            PluginLog.Debug(ex, "Failed to initialize Tippy IPC");
+            PluginLog.Warning(ex, "Failed to initialize Tippy IPC");
         }
 
         // doesn't exist, but just in case.
@@ -44,6 +44,11 @@ public class TippyIPC : IPluginIpcClient {
     public int Version => this._tippyApiVersionSubscriber?.InvokeFunc() ?? 0;
 
     private void _initializeIpc() {
+        if (!XIVDeckPlugin.Instance.PluginInterface.PluginNames.Contains("Tippy")) {
+            PluginLog.Debug("Tippy was not found, will not create IPC at this time");
+            return;
+        }
+        
         var versionEndpoint = Injections.PluginInterface.GetIpcSubscriber<int>("Tippy.APIVersion");
         
         // this line may explode with an exception, but that should be fine as we'd normally catch that.
