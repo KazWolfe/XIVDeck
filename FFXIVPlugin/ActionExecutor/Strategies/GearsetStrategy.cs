@@ -10,9 +10,8 @@ using XIVDeck.FFXIVPlugin.Utils;
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
 [ActionStrategy(HotbarSlotType.GearSet)]
-public unsafe class GearsetStrategy : IActionStrategy {
+public class GearsetStrategy : IActionStrategy {
     private static readonly GameStateCache GameStateCache = XIVDeckPlugin.Instance.GameStateCache;
-    private static readonly RaptureGearsetModule* GearsetModule = RaptureGearsetModule.Instance();
 
     private static ExecutableAction GetExecutableAction(GameStateCache.Gearset gearset) {
         return new ExecutableAction {
@@ -23,12 +22,12 @@ public unsafe class GearsetStrategy : IActionStrategy {
         };
     }
 
-    private static GameStateCache.Gearset? GetGearsetBySlot(uint slot) {
+    private static unsafe GameStateCache.Gearset? GetGearsetBySlot(uint slot) {
         // we want to intentionally bypass the cache here as the cache is a bit messy and, well, not always up to
         // date. this can get called quite a bit, so we don't want to force updating everything each time (which
         // (invalidates the entire point of the cache).
             
-        var gsEntry = GearsetModule->Gearset[(int) slot - 1];
+        var gsEntry = RaptureGearsetModule.Instance()->Gearset[(int) slot - 1];
 
         if (gsEntry == null || !gsEntry->Flags.HasFlag(RaptureGearsetModule.GearsetFlag.Exists))
             return null;

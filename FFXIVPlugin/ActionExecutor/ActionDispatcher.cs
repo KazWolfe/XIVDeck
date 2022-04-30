@@ -65,6 +65,9 @@ public class ActionDispatcher {
 
             var handler = (IActionStrategy) Activator.CreateInstance(type)!;
 
+            // ToDo: Remove - this is a hack to force Lumina to bring everything it needs into memory.
+            handler.GetAllowedItems();
+            
             PluginLog.Debug($"Registered strategy for {Enum.GetName(slotType)}: {handler.GetType()}");
             this.Strategies[slotType] = handler;
         }

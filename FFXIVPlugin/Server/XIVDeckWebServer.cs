@@ -43,6 +43,8 @@ public class XIVDeckWebServer : IDisposable {
     public void Dispose() {
         this._xivDeckWSModule.Dispose();
         this._host.Dispose();
+
+        GC.SuppressFinalize(this);
     }
 
     private static string[] GenerateUrlPrefixes(int port) {
