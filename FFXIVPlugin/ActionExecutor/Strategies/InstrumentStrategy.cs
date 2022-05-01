@@ -30,10 +30,6 @@ public class InstrumentStrategy : IActionStrategy {
     }
 
     public unsafe bool IsPerformUnlocked() {
-        if (!Injections.ClientState.IsLoggedIn) {
-            return false;
-        }
-        
         // APPARENTLY unlock 255 is performance?!
         return XIVDeckPlugin.Instance.SigHelper.IsQuestCompleted(68555) && UIState.Instance()->IsUnlockLinkUnlocked(255);
     }

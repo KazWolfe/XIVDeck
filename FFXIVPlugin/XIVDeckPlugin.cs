@@ -43,16 +43,18 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
 
         this.Configuration = this.PluginInterface.GetPluginConfig() as PluginConfig ?? new PluginConfig();
         this.Configuration.Initialize(this.PluginInterface);
+        
+        // Various managers for advanced hooking into the game
+        this.IconManager = new IconManager(this.PluginInterface);
+        this.SigHelper = new SigHelper();
             
         // Load in and initialize a lot of various game state and plugin interface things.
         this.GameStateCache = GameStateCache.Load();
         SerializableGameClass.GetCache();
         ActionDispatcher.GetStrategies();
         this._ipcManager = new IPCManager();
-
-        // Various managers for advanced hooking into the game
-        this.SigHelper = new SigHelper();
-        this.IconManager = new IconManager(this.PluginInterface);
+        
+        // More plugin interfaces
         this._chatLinkWiring = new ChatLinkWiring(this.PluginInterface);
         this._hotbarWatcher = new HotbarWatcher();
         this.WindowSystem = new WindowSystem(this.Name);
