@@ -25,6 +25,11 @@ namespace XIVDeck.FFXIVPlugin.Base {
          */
         public bool UsePenumbraIPC { get; set; }
         
+        /**
+         * EXPERIMENTAL - This boolean allows using /micon values for the Macro field
+         */
+        public bool UseMIconIcons { get; set; }
+        
         public int WebSocketPort { get; set; } = 37984;
 
         [NonSerialized]

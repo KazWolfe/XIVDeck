@@ -17,6 +17,7 @@ public class SettingsWindow : Window {
     private int _websocketPort;
     private bool _safeMode = true;
     private bool _usePenumbraIPC;
+    private bool _useMIconIcons;
 
     public SettingsWindow(bool forceMainWindow = true) :
         base(WindowKey, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse, forceMainWindow) {
@@ -30,7 +31,10 @@ public class SettingsWindow : Window {
     public override void OnOpen() {
         this._websocketPort = this._plugin.Configuration.WebSocketPort;
         this._safeMode = this._plugin.Configuration.SafeMode;
+        
+        // experimental flags
         this._usePenumbraIPC = this._plugin.Configuration.UsePenumbraIPC;
+        this._useMIconIcons = this._plugin.Configuration.UseMIconIcons;
     }
 
     public override void OnClose() {
@@ -66,7 +70,11 @@ public class SettingsWindow : Window {
         
         ImGui.Dummy(new Vector2(0, 20));
 
-        ImGui.Checkbox("[EXPERIMENTAL] Use Penumbra Icons", ref this._usePenumbraIPC);
+        ImGui.TextColored(ImGuiColors.DalamudYellow, "Experimental Settings");
+        ImGui.Indent();
+        ImGui.Checkbox("Use Penumbra Icons", ref this._usePenumbraIPC);
+        ImGui.Checkbox("Use /micon Icons", ref this._useMIconIcons);
+        ImGui.Unindent();
 
         /* FOOTER */
         var placeholderButtonSize = ImGuiHelpers.GetButtonSize("placeholder");
@@ -95,6 +103,7 @@ public class SettingsWindow : Window {
         }
 
         this._plugin.Configuration.UsePenumbraIPC = this._usePenumbraIPC;
+        this._plugin.Configuration.UseMIconIcons = this._useMIconIcons;
         
         this._plugin.Configuration.Save();
 

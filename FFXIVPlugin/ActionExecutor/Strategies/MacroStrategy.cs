@@ -23,7 +23,7 @@ public class MacroStrategy : IActionStrategy {
             ActionName = macro->Name.ToString(),
             Category = null,
             HotbarSlotType = HotbarSlotType.Macro,
-            IconId = (int) macro->IconId
+            IconId = this.GetIconId(actionId)
         };
     }
 
@@ -54,9 +54,24 @@ public class MacroStrategy : IActionStrategy {
     }
 
     public unsafe int GetIconId(uint item) {
-        // todo: figure out how to get /micon, if set
+        if (XIVDeckPlugin.Instance.Configuration.UseMIconIcons) {
+            return this.GetAdjustedIconId(item);
+        }
+        
         var macro = GetMacro((item / 100 > 0), ((int) item % 100));
-
         return (int) macro->IconId;
+    }
+
+    private int GetAdjustedIconId(uint item) {
+        var macroPage = item / 100;
+        var macroId = item % 100;
+        
+        // It's terrifying that the easiest way to get macro icon information is to just create a virtual
+        // hotbar slot, but it's also the easiest and most effective.
+        var slot = new HotBarSlot();
+        slot.Set(HotbarSlotType.Macro, (macroPage << 8) + macroId);
+        slot.LoadIconFromSlotB();
+
+        return slot.Icon;
     }
 }
