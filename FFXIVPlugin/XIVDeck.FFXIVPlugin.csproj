@@ -108,11 +108,11 @@
         <Delete Files="@(DeleteAssemblies)" />
     </Target>
 
-    <Target Name="PackagePlugin" AfterTargets="CleanOutDir" Condition="'$(Configuration)' == 'Release'">
+    <Target Name="PackagePluginRelease" AfterTargets="CleanOutDir" Condition="'$(Configuration)' == 'Release'">
         <DalamudPackager ProjectDir="$(ProjectDir)" OutputPath="$(OutputPath)" AssemblyName="$(AssemblyName)" MakeZip="true" VersionComponents="3" />
     </Target>
 
-    <Target Name="PackagePlugin" AfterTargets="CleanOutDir" Condition="'$(Configuration)' == 'Debug'">
+    <Target Name="PackagePluginDebug" AfterTargets="CleanOutDir" Condition="'$(Configuration)' == 'Debug'">
         <DalamudPackager ProjectDir="$(ProjectDir)" OutputPath="$(TargetDir)" AssemblyName="$(AssemblyName)" MakeZip="false" VersionComponents="3" />
         <ItemGroup>
             <FinalAssemblies Include="$(TargetDir)\**\*.*" Exclude="$(TargetDir)\$(AssemblyName)\**\*.*" />
