@@ -8,24 +8,16 @@ namespace XIVDeck.FFXIVPlugin.Server;
 
 public class XIVDeckWebServer : IDisposable {
     private readonly IWebServer _host;
-    private readonly XIVDeckWSServer _xivDeckWSModule;
     
     public XIVDeckWebServer(int port) {
-        this._xivDeckWSModule = new XIVDeckWSServer("/ws");
-
         this._host = new WebServer(o => o
             .WithUrlPrefixes(GenerateUrlPrefixes(port))
             .WithMode(HttpListenerMode.EmbedIO)
         );
         
-        this._host.WithModule(this._xivDeckWSModule);
+        this._host.WithModule(new XIVDeckWSServer("/ws"));
         this._host.WithModule(new AuthModule("/"));
-        
-        this._host.OnAny(context => {
-            PluginLog.Debug($"Got HTTP request {context.Request.HttpMethod} {context.Request.Url.PathAndQuery}");
-            throw RequestHandler.PassThrough();
-        });
-        
+
         this._host.StateChanged += (_, e) => {
             PluginLog.Debug($"EmbedIO server changed state to {e.NewState.ToString()}");
         };
@@ -41,7 +33,6 @@ public class XIVDeckWebServer : IDisposable {
     }
 
     public void Dispose() {
-        this._xivDeckWSModule.Dispose();
         this._host.Dispose();
 
         GC.SuppressFinalize(this);

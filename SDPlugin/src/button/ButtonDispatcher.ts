@@ -8,9 +8,15 @@ import plugin from "../plugin";
 import {DidReceiveSettingsEvent} from "@rweich/streamdeck-events/dist/Events/Received";
 import AbstractStateEvent from "@rweich/streamdeck-events/dist/Events/Received/Plugin/AbstractStateEvent";
 import {ClassButton} from "./buttons/ClassButton";
+import {StateMessage} from "../link/ffxivplugin/GameTypes";
+import {FFXIVPluginLink} from "../link/ffxivplugin/FFXIVPluginLink";
 
 export class ButtonDispatcher {
     private _contextCache: Map<string, BaseButton> = new Map<string, BaseButton>();
+    
+    constructor() {
+        FFXIVPluginLink.instance.on("stateUpdate", this._globalStateUpdate.bind(this));
+    }
     
     private _constructButton(event: AbstractStateEvent): BaseButton {
         let button: BaseButton;
@@ -51,6 +57,23 @@ export class ButtonDispatcher {
         
         button.cleanup();
         this._contextCache.delete(context);
+    }
+    
+    private async _globalStateUpdate(event: StateMessage) {
+        console.log("asdf")
+        
+        switch (event.type) {
+            case "DEBUG_ClearIcons":
+                for await (let c of this._contextCache.values()) {
+                    await c.setImage("")
+                }
+                break;
+            case "IconCache":
+                for await (let c of this._contextCache.values()) {
+                    await c.render()
+                }
+                break;
+        }
     }
     
     handleWillAppear(event: WillAppearEvent): void {

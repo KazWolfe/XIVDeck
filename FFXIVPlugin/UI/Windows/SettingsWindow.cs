@@ -68,11 +68,17 @@ public class SettingsWindow : Window {
 
         ImGui.TextWrapped($"Listen IP: 127.0.0.1");
         
+        ImGui.Spacing();
+        ImGui.Checkbox("Use Penumbra Icons", ref this._usePenumbraIPC);
+        ImGuiComponents.HelpMarker("When enabled, this feature will attempt to display icons from Penumbra on " +
+                                   "the Stream Deck. Note that Penumbra must be installed for this setting to have " +
+                                   "any effect.\n\nIf disabled, original game icons will be used instead.\n\n" +
+                                   "Default: Off");
+        
         ImGui.Dummy(new Vector2(0, 20));
 
         ImGui.TextColored(ImGuiColors.DalamudYellow, "Experimental Settings");
         ImGui.Indent();
-        ImGui.Checkbox("Use Penumbra Icons", ref this._usePenumbraIPC);
         ImGui.Checkbox("Use /micon Icons", ref this._useMIconIcons);
         ImGui.Unindent();
 
@@ -83,6 +89,13 @@ public class SettingsWindow : Window {
         ImGui.Separator();
 
         if (ImGui.Button("XIVDeck GitHub")) PluginUI.OpenXIVDeckGitHub();
+        
+#if DEBUG
+        ImGui.SameLine();
+        if (ImGui.Button("Debug")) {
+            DebugWindow.InitializeWindow();
+        }
+#endif
 
         var applyText = "Apply Settings";
         var applyButtonSize = ImGuiHelpers.GetButtonSize(applyText);

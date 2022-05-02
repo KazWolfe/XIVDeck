@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using Dalamud.Logging;
 using EmbedIO;
 using XIVDeck.FFXIVPlugin.Utils;
 
@@ -48,7 +49,8 @@ public class AuthModule : WebModuleBase {
     public override bool IsFinalHandler => false;
     
     protected override Task OnRequestAsync(IHttpContext context) {
-        
+        PluginLog.Debug($"Got HTTP request {context.Request.HttpMethod} {context.Request.Url.PathAndQuery}");
+
         // websocket is allowed to skip auth
         if (context.RequestedPath is "/ws" or "/xivdeck") {
             return Task.CompletedTask;

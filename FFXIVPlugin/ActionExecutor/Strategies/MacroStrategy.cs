@@ -65,13 +65,15 @@ public class MacroStrategy : IActionStrategy {
     private int GetAdjustedIconId(uint item) {
         var macroPage = item / 100;
         var macroId = item % 100;
-        
-        // It's terrifying that the easiest way to get macro icon information is to just create a virtual
-        // hotbar slot, but it's also the easiest and most effective.
-        var slot = new HotBarSlot();
-        slot.Set(HotbarSlotType.Macro, (macroPage << 8) + macroId);
-        slot.LoadIconFromSlotB();
 
-        return slot.Icon;
+        return TickScheduler.RunOnNextFrame(() => {
+            // It's terrifying that the easiest way to get macro icon information is to just create a virtual
+            // hotbar slot, but it's also the easiest and most effective.
+            var slot = new HotBarSlot();
+            slot.Set(HotbarSlotType.Macro, (macroPage << 8) + macroId);
+            slot.LoadIconFromSlotB();
+
+            return slot.Icon;
+        }).Result;
     }
 }
