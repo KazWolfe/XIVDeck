@@ -1,11 +1,11 @@
 ﻿{
   "Actions": [
     {
-      "Icon": "assets/images/chat",
+      "Icon": "assets/images/sidebar/chat",
       "Name": "Text Command",
       "States": [
         {
-          "Image": "assets/images/chat",
+          "Image": "assets/images/defaults/chat",
           "TitleAlignment": "bottom",
           "FontSize": "12"
         }
@@ -14,11 +14,11 @@
       "UUID": "dev.wolf.xivdeck.sdplugin.actions.SendCommand"
     },
     {
-      "Icon": "assets/images/hotbar",
+      "Icon": "assets/images/sidebar/hotbar",
       "Name": "Execute Hotbar Slot",
       "States": [
         {
-          "Image": "assets/images/hotbar",
+          "Image": "assets/images/defaults/hotbar",
           "TitleAlignment": "bottom",
           "FontSize": "12"
         }
@@ -27,11 +27,11 @@
       "UUID": "dev.wolf.xivdeck.sdplugin.actions.ExecHotbar"
     },
     {
-      "Icon": "assets/images/action",
+      "Icon": "assets/images/sidebar/action",
       "Name": "Execute Action",
       "States": [
         {
-          "Image": "assets/images/action",
+          "Image": "assets/images/defaults/action",
           "TitleAlignment": "bottom",
           "FontSize": "12"
         }
@@ -40,11 +40,11 @@
       "UUID": "dev.wolf.xivdeck.sdplugin.actions.ExecAction"
     },
     {
-      "Icon": "assets/images/macro",
+      "Icon": "assets/images/sidebar/macro",
       "Name": "Run In-Game Macro",
       "States": [
         {
-          "Image": "assets/images/macro",
+          "Image": "assets/images/defaults/macro",
           "TitleAlignment": "bottom",
           "FontSize": "12"
         }
@@ -53,11 +53,11 @@
       "UUID": "dev.wolf.xivdeck.sdplugin.actions.ExecMacro"
     },
     {
-      "Icon": "assets/images/gearset",
+      "Icon": "assets/images/sidebar/gearset",
       "Name": "Switch Class",
       "States": [
         {
-          "Image": "assets/images/gearset",
+          "Image": "assets/images/defaults/gearset",
           "TitleAlignment": "bottom",
           "FontSize": "16"
         }

@@ -11,13 +11,4 @@
         <IncludeBuildOutput>false</IncludeBuildOutput>
         <IncludeSymbols>false</IncludeSymbols>
     </PropertyGroup>
-    
-    <PropertyGroup>
-        <StreamDeckBundler>$(appdata)\Elgato\StreamDeck\</StreamDeckBundler>
-    </PropertyGroup>
-    
-    <ItemGroup>
-      <Folder Include="dist" />
-    </ItemGroup>
-
 </Project>

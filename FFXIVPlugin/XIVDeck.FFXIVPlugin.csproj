@@ -45,9 +45,6 @@
         <!-- Image conversion to extract PNGs from Lumina -->
         <PackageReference Include="SixLabors.ImageSharp" Version="2.0.0" />
         
-        <!-- WebSocket server and management library -->
-        <PackageReference Include="NetCoreServer" Version="5.1.0" />
-        
         <!-- Webserver and socketing -->
         <PackageReference Include="EmbedIO" Version="3.4.3" />
 
