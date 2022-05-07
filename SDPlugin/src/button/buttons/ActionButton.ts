@@ -7,7 +7,8 @@ import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
 
 export type ActionButtonSettings = {
     actionType: string,
-    actionId: number
+    actionId: number,
+    actionName: string
 }
 
 export class ActionButton extends BaseButton {

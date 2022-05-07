@@ -5,7 +5,8 @@ import plugin from "../../plugin";
 import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
 
 export type ClassButtonSettings = {
-    classId: number
+    classId: number,
+    className: string
 }
 
 export class ClassButton extends BaseButton {

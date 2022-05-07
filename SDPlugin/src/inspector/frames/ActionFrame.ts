@@ -19,6 +19,7 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
     
     selectedType: string = "default";
     selectedAction: number = -1;
+    selectedActionName: string = "unknown";
 
     constructor() {
         super();
@@ -39,6 +40,9 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
     loadSettings(settings: ActionButtonSettings): void {
         this.selectedType = settings.actionType || this.selectedType;
         this.selectedAction = (settings.actionId !== undefined) ? settings.actionId : this.selectedAction;
+        this.selectedActionName = settings.actionName || this.selectedActionName;
+
+        this._preloadDropdowns();
     }
 
     renderHTML(): void {
@@ -54,10 +58,44 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
         this._fillDropdowns();
     }
     
-    private _fillDropdowns() {
+    private _preloadDropdowns(onlyItem: boolean = false) {
+        if (this.selectedType != "default" && this.selectedAction >= 0) {
+            // If something is selected but game data is not present yet, bring data up so people don't think
+            // their settings are lost. Hacky as hell, but...
+            if (!onlyItem) {
+                let genericType = PIUtils.createDefaultSelection("");
+                genericType.text = StringUtils.expandCaps(NAME_SUBSTITUTIONS[this.selectedType] || this.selectedType);
+                this.typeSelector.add(genericType);
+            }
+            
+            FFXIVApi.Action.getAction(this.selectedType, this.selectedAction)
+                .then((ac) => {
+                    this.selectedActionName = ac.name || this.selectedActionName;
+                }).catch(() => {})
+                .finally(() => {
+                    let genericSelection = document.createElement("option");
+                    genericSelection.disabled = true;
+                    genericSelection.text = `[#${this.selectedAction}] ${StringUtils.toTitleCase(this.selectedActionName)}`;
+                    genericSelection.value = this.selectedAction.toString();
+                    this.actionSelector.add(genericSelection);
+                    this.actionSelector.value = genericSelection.value;
+                });
+        }
+    }
+    
+    private _fillDropdowns(): void {
         if (this.actionData.has(this.selectedType)) {
             this.typeSelector.value = this.selectedType;
             this.actionSelector.value = this.selectedAction.toString();
+            
+            // AAAAAAAAAAA
+            // This handles the edge case where the selected item was not returned by the game, generally the case when
+            // the character logged in does not have this action unlocked.
+            if ([...this.actionSelector.options].map(opt => opt.value).indexOf(this.selectedAction.toString()) < 0) {
+                this._preloadDropdowns(true);
+            }
+        } else {
+            this._preloadDropdowns();
         }
     }
     
@@ -90,7 +128,7 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
         console.debug("Loaded current selectable items for this PI instance", items)
 
         this.actionSelector.add(PIUtils.createDefaultSelection("action"));
-        
+
         items.forEach((ac) => {
             let parent: HTMLSelectElement | HTMLOptGroupElement = this.actionSelector;
             
@@ -107,7 +145,8 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
                 
             let option = document.createElement("option");
             option.value = ac.id.toString();
-            option.innerText = `[#${ac.id}] ${StringUtils.toTitleCase(ac.name || "unknown")}`
+            option.title = StringUtils.toTitleCase(ac.name || "unknown");
+            option.innerText = `[#${ac.id}] ${option.title}`;
             
             parent.append(option);
         });
@@ -130,10 +169,12 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
         }
         
         this.selectedAction = parseInt(newSelection);
+        this.selectedActionName = this.actionSelector.selectedOptions[0].title || "unknown";
         
         this.setSettings({
             actionId: this.selectedAction,
-            actionType: this.selectedType
+            actionType: this.selectedType,
+            actionName: this.selectedActionName
         })
     }
 }

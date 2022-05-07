@@ -8,6 +8,7 @@ import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
 export class ClassFrame extends BaseFrame<ClassButtonSettings> {
     classSelector: HTMLSelectElement;
     selected: number = -1; // prevent against race to load in visible settings
+    selectedName: string = "unknown";
     
     constructor() {
         super();
@@ -20,6 +21,9 @@ export class ClassFrame extends BaseFrame<ClassButtonSettings> {
     
     loadSettings(settings: ClassButtonSettings): void {
         this.selected = settings.classId || this.selected;
+        this.selectedName = settings.className || this.selectedName;
+        
+        this._preloadDropdown();
     }
 
     renderHTML(): void {
@@ -60,8 +64,42 @@ export class ClassFrame extends BaseFrame<ClassButtonSettings> {
         groupCache.forEach((v) => {
             this.classSelector.add(v);
         })
+        
+        // handle the edge case of a class being assigned to the button, but not returned by the game
+        if (this.selected >= 0 && classData.map(cl => cl.id).indexOf(this.selected) < 0) {
+            this._preloadDropdown(groupCache);
+        }
 
         this.classSelector.value = (this.selected >= 0) ? this.selected.toString() : "default";
+    }
+    
+    private _preloadDropdown(groupCache?: Map<string, HTMLOptGroupElement>): void {
+        let parent: HTMLOptGroupElement | HTMLSelectElement = this.classSelector;
+        
+        FFXIVApi.GameClass.getClass(this.selected).then(cl => {
+            this.selectedName = cl.name;
+            
+            if (groupCache == null) {
+                groupCache = new Map<string, HTMLOptGroupElement>();
+            }
+
+            let pc = groupCache.get(cl.categoryName); 
+            if (pc == null) {
+                pc = document.createElement("optgroup");
+                pc.label = cl.categoryName;
+                parent.append(pc);
+            }
+            
+            parent = pc;
+        }).catch(() => { }).finally(() => {
+            let selection: HTMLOptionElement = document.createElement("option");
+            selection.value = this.selected.toString();
+            selection.selected = true;
+            selection.disabled = true;
+            selection.innerText = StringUtils.toTitleCase(this.selectedName);
+
+            parent.append(selection);
+        }) 
     }
     
     private _onClassUpdate(_: Event): void {
@@ -73,9 +111,11 @@ export class ClassFrame extends BaseFrame<ClassButtonSettings> {
         }
         
         this.selected = parseInt(selected);
+        this.selectedName = this.classSelector.selectedOptions[0].text;
         
         this.setSettings({
             classId: this.selected,
+            className: this.selectedName
         });
     }
 }

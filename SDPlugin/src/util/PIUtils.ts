@@ -9,9 +9,9 @@
                 <ul>
                     <li>Final Fantasy XIV is running,</li>
                     <li>The XIVDeck Game Plugin is properly installed and configured,</li>
-                    <li>The connection settings below under "Plugin Configuration" are correct.</li>
+                    <li>The connection settings below are correct.</li>
                 </ul>
-            <p>After verifying all of the above, reload this settings pane to attempt to conect to the game again.</p>
+            <p>After verifying all of the above, refresh this settings pane to attempt to connect to the game again.</p>
         `
 
         return element;
