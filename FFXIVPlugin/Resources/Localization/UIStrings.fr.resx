@@ -19,6 +19,11 @@
     </resheader>
     <data name="XIVDeck" xml:space="preserve">
         <value>XIVDeck</value>
+        <comment>Product name. Do not change.</comment>
+    </data>
+    <data name="StreamDeck" xml:space="preserve">
+        <value>Stream Deck</value>
+        <comment>Product name. Do not change.</comment>
     </data>
     <data name="XIVDeck_Title" xml:space="preserve">
         <value>XIVDeck Game Plugin</value>
@@ -54,7 +59,7 @@
         <value>Hotbar ID must be between 0 and 17</value>
     </data>
     <data name="HotbarController_NormalHotbarInvalidSlotError" xml:space="preserve">
-        <value>When hotbarID &lt; 10, Slot ID must be between 0 and 11</value>
+        <value>When Hotbar ID &lt; 10, Slot ID must be between 0 and 11</value>
     </data>
     <data name="HotbarController_CrossHotbarInvalidSlotError" xml:space="preserve">
         <value>When Hotbar ID &gt;= 10, Slot ID must be between 0 and 15</value>
@@ -76,13 +81,15 @@
     </data>
     <data name="ExtraCommandStrategy_NoCommandError" xml:space="preserve">
         <value>No command exists for Extra Command {0}. REPORT THIS BUG!</value>
+        <comment>This error message is shown when the command to use an "Extra Command" is not found. Because management of extra commands is done manually, additional instructions have been added for the user to report a bug to the developer.
+        </comment>
     </data>
     <data name="FixedCommandStrategy_ActionNotFoundError" xml:space="preserve">
         <value>An action of type {0} with ID {1} does not exist.</value>
     </data>
     <data name="FixedCommandStrategy_IllegalActionError" xml:space="preserve">
         <value>The action with ID {0} is marked as illegal and cannot be used.</value>
-        <comment>"Illegal" in this case mean that this command is specifically marked as unusable, generally for safety purposes.</comment>
+        <comment>Shown when the plugin blocks a user from calling an action marked as illegal (unsafe).</comment>
     </data>
     <data name="FixedCommandStrategy_SheetNotFoundError" xml:space="preserve">
         <value>A sheet of type {0} does not exist.</value>
@@ -137,6 +144,9 @@ Range: {1}-{2}</value>
     <data name="Nag_OpenGithubDownloadButton" xml:space="preserve">
         <value>Open XIVDeck Download Page</value>
     </data>
+    <data name="Nag_OpenSettingsButton" xml:space="preserve">
+        <value>Open XIVDeck Settings</value>
+    </data>
     <data name="ForcedUpdateNag_ResolutionHelp" xml:space="preserve">
         <value>Please download and install the latest version of the Stream Deck plugin from the XIVDeck GitHub to continue using XIVDeck.</value>
     </data>
@@ -155,9 +165,6 @@ Range: {1}-{2}</value>
     <data name="SetupNag_PortChangeHelp" xml:space="preserve">
         <value>If you need to change the port the server is hosted on, you may do so from XIVDeck's settings.</value>
     </data>
-    <data name="Nag_OpenSettingsButton" xml:space="preserve">
-        <value>Open XIVDeck Settings</value>
-    </data>
     <data name="SetupNag_DismissHelp" xml:space="preserve">
         <value>To dismiss this message, resolve the above problem or uninstall the XIVDeck plugin.</value>
     </data>
@@ -172,16 +179,19 @@ Range: {1}-{2}</value>
     </data>
     <data name="GeneralActionStrategy_ActionIllegalError" xml:space="preserve">
         <value>The action "{0}" (ID {1}) is marked as illegal and cannot be used.</value>
-        <comment>"Illegal" in this case mean that this command is specifically marked as unusable, generally for safety purposes.</comment>
+        <comment>Shown when the plugin blocks a user from calling an action marked as illegal (unsafe).</comment>
     </data>
     <data name="InstrumentStrategy_PerformanceLockedError" xml:space="preserve">
-        <value>Performance mode hasn't yet been unlocked.</value>
+        <value>Performance mode hasn't been unlocked yet.</value>
+        <comment>Shown when a user attempts to use a musical instrument without having Performance actions unlocked.</comment>
     </data>
     <data name="InstrumentStrategy_CurrentlyPerformingError" xml:space="preserve">
-        <value>Cannot switch instruments while actively in Perform mode.</value>
+        <value>Cannot switch instruments while in Performance mode.</value>
+        <comment>Shown when a user attempts to switch musical instruments while actively in a Performance.</comment>
     </data>
     <data name="InstrumentStrategy_InstrumentNotFoundError" xml:space="preserve">
         <value>No instrument with ID {0} exists.</value>
+        <comment>Shown when a user attempts to use an invalid or unknown musical instrument.</comment>
     </data>
     <data name="MacroStrategy_MacroEmptyError" xml:space="preserve">
         <value>The specified macro is empty and cannot be used.</value>
@@ -216,5 +226,6 @@ Range: {1}-{2}</value>
     </data>
     <data name="GameClass_UncategorizedError" xml:space="preserve">
         <value>Unrecognized job category for class ID {0}. REPORT THIS BUG!</value>
+        <comment>Shown when plugin data is invalid and requires an update from the developer.</comment>
     </data>
 </root>
