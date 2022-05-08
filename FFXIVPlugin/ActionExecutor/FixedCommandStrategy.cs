@@ -6,6 +6,7 @@ using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor;
@@ -37,7 +38,7 @@ public abstract class FixedCommandStrategy<T> : IActionStrategy where T : ExcelR
         ExcelSheet<T> sheet = Injections.DataManager.Excel.GetSheet<T>()!;
 
         if (sheet == null) {
-            throw new NullReferenceException($"A sheet of type {typeof(T).Name} does not exist.");
+            throw new NullReferenceException(string.Format(UIStrings.FixedCommandStrategy_SheetNotFoundError, typeof(T).Name));
         }
 
         foreach (var row in sheet) {
@@ -68,13 +69,13 @@ public abstract class FixedCommandStrategy<T> : IActionStrategy where T : ExcelR
 
     public void Execute(uint actionId, dynamic? options = null) {
         if (this.GetIllegalActionIDs().Contains(actionId))
-            throw new ArgumentException($"The action with ID {actionId} is marked as illegal and cannot be used.");
+            throw new ArgumentException(string.Format(UIStrings.FixedCommandStrategy_IllegalActionError, actionId));
 
         var action = GetActionById(actionId);
 
         if (action == null) {
             throw new ArgumentNullException(nameof(actionId),
-                $"An action of type {typeof(T)} with ID {actionId} does not exist.");
+                string.Format(UIStrings.FixedCommandStrategy_ActionNotFoundError, typeof(T), actionId));
         }
 
         var command = this.GetCommandToCallAction(action);

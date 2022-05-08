@@ -7,6 +7,7 @@ using EmbedIO.WebApi;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using XIVDeck.FFXIVPlugin.ActionExecutor;
 using XIVDeck.FFXIVPlugin.Exceptions;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 
 namespace XIVDeck.FFXIVPlugin.Server.Controllers; 
@@ -32,7 +33,7 @@ public class ActionController : WebApiController {
     [Route(HttpVerbs.Get, "/{type}")]
     public List<ExecutableAction> GetActionsByType(string type) {
         if (!Enum.TryParse<HotbarSlotType>(type, out var slotType)) {
-            throw HttpException.NotFound($"No registered action of type {type} was found.");
+            throw HttpException.NotFound(string.Format(UIStrings.ActionController_UnknownActionTypeError, type));
         }
 
         var actions = this.GetActions();
@@ -42,13 +43,13 @@ public class ActionController : WebApiController {
     [Route(HttpVerbs.Get, "/{type}/{id}")]
     public ExecutableAction GetAction(string type, int id) {
         if (!Enum.TryParse<HotbarSlotType>(type, out var slotType)) {
-            throw HttpException.NotFound($"No registered action of type {type} was found.");
+            throw HttpException.NotFound(string.Format(UIStrings.ActionController_UnknownActionTypeError, type));
         }
 
         var action = ActionDispatcher.GetStrategyForSlotType(slotType).GetExecutableActionById((uint) id);
         
         if (action == null) {
-            throw HttpException.NotFound($"No action with {id} exists for type {type}.");
+            throw new ActionNotFoundException(slotType, (uint) id);
         }
 
         return action;
@@ -57,7 +58,7 @@ public class ActionController : WebApiController {
     [Route(HttpVerbs.Post, "/{type}/{id}/execute")]
     public void ExecuteAction(string type, int id, [QueryData] NameValueCollection options) {
         if (!Enum.TryParse<HotbarSlotType>(type, out var slotType)) {
-            throw HttpException.NotFound($"No registered action of type {type} was found.");
+            throw HttpException.NotFound(string.Format(UIStrings.ActionController_UnknownActionTypeError, type));
         }
 
         try {

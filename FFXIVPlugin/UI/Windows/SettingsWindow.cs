@@ -4,12 +4,13 @@ using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Windowing;
 using ImGuiNET;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.UI.Windows.Nags;
 
 namespace XIVDeck.FFXIVPlugin.UI.Windows;
 
 public class SettingsWindow : Window {
-    public const string WindowKey = "XIVDeck Game Plugin Settings";
+    public static readonly string WindowKey = "###xivDeckSettingsWindow";
 
     private readonly XIVDeckPlugin _plugin = XIVDeckPlugin.Instance;
 
@@ -43,13 +44,13 @@ public class SettingsWindow : Window {
 
     public override void Draw() {
         var windowSize = ImGui.GetWindowContentRegionMax();
+        this.WindowName = UIStrings.SettingsWindow_Title + WindowKey;
 
         if (!this._safeMode) {
             ImGui.PushTextWrapPos();
             ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudRed);
 
-            ImGui.Text("DANGER: SAFE MODE DISABLED! You may be able to send illegal commands from your " +
-                       "Stream Deck to the game.");
+            ImGui.Text(UIStrings.SettingsWindow_SafeModeDisabledWarning);
 
             ImGui.PopStyleColor();
             ImGui.PopTextWrapPos();
@@ -58,28 +59,25 @@ public class SettingsWindow : Window {
 
         ImGui.PushItemWidth(80);
 
-        if (ImGui.InputInt("API Port", ref this._websocketPort, 0)) {
+        if (ImGui.InputInt(UIStrings.SettingsWindow_APIPort, ref this._websocketPort, 0)) {
             if (this._websocketPort < 1024) this._websocketPort = 1024;
             if (this._websocketPort > 59999) this._websocketPort = 59999;
         }
 
         ImGui.PopItemWidth();
-        ImGuiComponents.HelpMarker("Default port: 37984\n\nRange: 1024-59999");
+        ImGuiComponents.HelpMarker(string.Format(UIStrings.SettingsWindow_APIPort_Help, 37984, 1024, 59999));
 
-        ImGui.TextWrapped($"Listen IP: 127.0.0.1");
+        ImGui.TextWrapped(string.Format(UIStrings.SettingsWindow_ListenIP, "127.0.0.1"));
         
         ImGui.Spacing();
-        ImGui.Checkbox("Use Penumbra Icons", ref this._usePenumbraIPC);
-        ImGuiComponents.HelpMarker("When enabled, this feature will attempt to display icons from Penumbra on " +
-                                   "the Stream Deck. Note that Penumbra must be installed for this setting to have " +
-                                   "any effect.\n\nIf disabled, original game icons will be used instead.\n\n" +
-                                   "Default: Off");
+        ImGui.Checkbox(UIStrings.SettingsWindow_EnablePenumbraIPC, ref this._usePenumbraIPC);
+        ImGuiComponents.HelpMarker(UIStrings.SettingsWindow_EnablePenumbraIPC_Help);
         
         ImGui.Dummy(new Vector2(0, 20));
 
-        ImGui.TextColored(ImGuiColors.DalamudYellow, "Experimental Settings");
+        ImGui.TextColored(ImGuiColors.DalamudYellow, UIStrings.SettingsWindow_ExperimentalSettings);
         ImGui.Indent();
-        ImGui.Checkbox("Use /micon Icons", ref this._useMIconIcons);
+        ImGui.Checkbox(UIStrings.SettingsWindow_Experiment_MIcon, ref this._useMIconIcons);
         ImGui.Unindent();
 
         /* FOOTER */
@@ -88,7 +86,7 @@ public class SettingsWindow : Window {
         ImGui.SetCursorPosY(windowSize.Y - placeholderButtonSize.Y - 2);
         ImGui.Separator();
 
-        if (ImGui.Button("XIVDeck GitHub")) PluginUI.OpenXIVDeckGitHub();
+        if (ImGui.Button(UIStrings.SettingsWindow_GitHubLink)) PluginUI.OpenXIVDeckGitHub();
         
 #if DEBUG
         ImGui.SameLine();
@@ -97,7 +95,7 @@ public class SettingsWindow : Window {
         }
 #endif
 
-        var applyText = "Apply Settings";
+        var applyText = UIStrings.SettingsWindow_ApplyButton;
         var applyButtonSize = ImGuiHelpers.GetButtonSize(applyText);
 
         ImGui.SameLine(windowSize.X - applyButtonSize.X - 20);

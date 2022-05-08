@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Dalamud.Logging;
 using Newtonsoft.Json;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server.Messages;
 
 namespace XIVDeck.FFXIVPlugin.Server.Helpers;
@@ -34,7 +35,8 @@ public static class WSOpcodeWiring {
 
     public static BaseInboundMessage? GetInstance(string opcode, string jsonData) {
         if (!Opcodes.ContainsKey(opcode)) {
-            throw new ArgumentOutOfRangeException(nameof(opcode), $"No message exists with opcode {opcode}");
+            throw new ArgumentOutOfRangeException(nameof(opcode), 
+                string.Format(UIStrings.WSOpcodeWiring_UnknownOpcodeError, opcode));
         }
 
         return (BaseInboundMessage?) JsonConvert.DeserializeObject(jsonData, Opcodes[opcode]);

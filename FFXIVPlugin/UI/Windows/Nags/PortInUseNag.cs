@@ -1,5 +1,6 @@
 ﻿using Dalamud.Interface.Colors;
 using ImGuiNET;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 
 namespace XIVDeck.FFXIVPlugin.UI.Windows.Nags; 
 
@@ -34,7 +35,7 @@ public class PortInUseNag : NagWindow {
                    "free one. To do this, please choose a new port number in the XIVDeck Game Plugin settings, and " +
                    "enter that same port number in the XIVDeck Stream Deck Plugin settings.");
 
-        if (ImGui.Button("Open XIVDeck Settings")) {
+        if (ImGui.Button(UIStrings.Nag_OpenSettingsButton)) {
             XIVDeckPlugin.Instance.DrawConfigUI();
         }
         

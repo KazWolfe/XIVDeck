@@ -5,6 +5,7 @@ using Dalamud.Logging;
 using Dalamud.Memory;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
@@ -55,7 +56,7 @@ public class GearsetStrategy : IActionStrategy {
         var gearset =  GetGearsetBySlot(actionSlot);
 
         if (gearset == null)
-            throw new ArgumentException($"No gearset exists in slot number {actionSlot}.");
+            throw new ArgumentException(string.Format(UIStrings.GearsetStrategy_GearsetNotFoundError, actionSlot));
 
         var command = $"/gearset change {gearset.Value.Slot + 1}";
             

@@ -9,6 +9,7 @@ using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
@@ -70,16 +71,16 @@ public class GeneralActionStrategy : IActionStrategy {
         var action = GetActionById(actionId);
             
         if (action == null) {
-            throw new ArgumentOutOfRangeException(nameof(actionId), $"No action with ID {actionId} exists.");
+            throw new ActionNotFoundException(HotbarSlotType.GeneralAction, actionId);
         }
             
         if (this.GetIllegalActionIDs().Contains(actionId)) {
             throw new ArgumentOutOfRangeException(nameof(actionId),
-                $"The action \"{action.Name}\" (ID {actionId}) is marked as illegal and cannot be used.");
+                string.Format(UIStrings.GeneralActionStrategy_ActionIllegalError, action.Name, actionId));
         }
             
         if (action.UnlockLink != 0 && !UIState.Instance()->IsUnlockLinkUnlocked(action.UnlockLink)) {
-            throw new ActionLockedException($"The action \"{action.Name}\" is not yet unlocked.");
+            throw new ActionLockedException(string.Format(UIStrings.GeneralActionStrategy_ActionLockedError, action.Name));
         }
             
         if (actionId == 12 && UIState.Instance()->IsUnlockLinkUnlocked(12)) {

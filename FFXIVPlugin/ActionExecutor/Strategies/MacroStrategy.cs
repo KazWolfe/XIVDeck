@@ -4,6 +4,7 @@ using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Client.UI.Shell;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
@@ -44,7 +45,7 @@ public class MacroStrategy : IActionStrategy {
 
         // Safety check to make sure we aren't triggering an empty macro
         if (RaptureMacroModule.Instance->GetLineCount(macro) == 0) {
-            throw new IllegalGameStateException("The specified macro is empty and cannot be used.");
+            throw new IllegalGameStateException(UIStrings.MacroStrategy_MacroEmptyError);
         }
 
         PluginLog.Debug($"Would execute macro number {macroNumber}");

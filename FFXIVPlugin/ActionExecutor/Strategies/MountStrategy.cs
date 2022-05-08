@@ -7,6 +7,7 @@ using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
@@ -38,11 +39,11 @@ public class MountStrategy : IActionStrategy {
         Mount? mount = GetMountById(actionId);
 
         if (mount == null) {
-            throw new ArgumentNullException(nameof(actionId), $"No mount with ID {actionId} exists.");
+            throw new ArgumentNullException(nameof(actionId), string.Format(UIStrings.MountStrategy_MountNotFoundError, actionId));
         }
             
         if (!_gameStateCache.IsMountUnlocked(actionId)) {
-            throw new ActionLockedException($"The mount \"{mount.Singular}\" isn't unlocked and therefore can't be used.");
+            throw new ActionLockedException(string.Format(UIStrings.MountStrategy_MountLockedError, mount.Singular));
         }
             
         String command = $"/mount \"{mount.Singular}\"";

@@ -1,6 +1,7 @@
 ﻿using System;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using XIVDeck.FFXIVPlugin.Game.Sheets;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
@@ -24,7 +25,7 @@ public class ExtraCommandStrategy : FixedCommandStrategy<ExtraCommand> {
             1 => "/grouppose",
             2 => "/idlingcamera",
             3 => "/alarm",
-            _ => throw new ArgumentException($"No command exists for Extra Command {action.Name}. REPORT THIS BUG!")
+            _ => throw new ArgumentException(string.Format(UIStrings.ExtraCommandStrategy_NoCommandError, action.Name))
         };
     }
 }

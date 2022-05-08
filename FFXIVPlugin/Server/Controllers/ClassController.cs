@@ -6,7 +6,9 @@ using EmbedIO.Routing;
 using EmbedIO.WebApi;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 using XIVDeck.FFXIVPlugin.Server.Types;
 using XIVDeck.FFXIVPlugin.Utils;
@@ -41,10 +43,10 @@ public class ClassController : WebApiController {
     [Route(HttpVerbs.Post, "/{id}/execute")]
     public void SwitchClass(int id) {
         if (id < 1) 
-            throw HttpException.BadRequest("Cannot switch to a class with ID less than 1.");
-        
+            throw HttpException.BadRequest(UIStrings.ClassController_ClassLessThan1Error);
+
         if (!Injections.ClientState.IsLoggedIn)
-            throw HttpException.BadRequest("A player is not logged in to the game.");
+            throw new PlayerNotLoggedInException();
 
         this._gameStateCache.Refresh();
         
@@ -65,10 +67,10 @@ public class ClassController : WebApiController {
         var classJob = sheet!.GetRow((uint) id);
 
         if (classJob == null) 
-            throw HttpException.NotFound($"A class with ID {id} does not exist!");
+            throw HttpException.NotFound(string.Format(UIStrings.ClassController_InvalidClassIdError, id));
         
-        throw HttpException.BadRequest($"Couldn't switch to {classJob.NameEnglish} because you " +
-                                 $"don't have a gearset for this class. Make one and try again.");
+        throw HttpException.BadRequest(
+            string.Format(UIStrings.ClassController_NoGearsetForClassError, classJob.NameEnglish));
     }
 }
 

@@ -6,6 +6,7 @@ using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
@@ -46,7 +47,7 @@ public class OrnamentStrategy : IActionStrategy {
         }
 
         if (!GameStateCache.IsOrnamentUnlocked(actionId)) {
-            throw new ActionLockedException($"The fashion accessory \"{ornament.Singular}\" isn't unlocked and therefore can't be used.");
+            throw new ActionLockedException(string.Format(UIStrings.OrnamentStrategy_OrnamentLockedError, ornament.Singular));
         }
             
         var command = $"/fashion \"{ornament.Singular}\"";

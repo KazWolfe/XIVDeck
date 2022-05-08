@@ -6,6 +6,7 @@ using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
@@ -50,11 +51,11 @@ public class EmoteStrategy : IActionStrategy {
         var textCommand = emote.TextCommand.Value;
 
         if (textCommand == null) {
-            throw new KeyNotFoundException($"The emote \"{emote.Name}\" does not have an associated text command.");
+            throw new KeyNotFoundException(string.Format(UIStrings.EmoteStrategy_EmoteDoesntHaveCommandError, emote.Name));
         }
 
         if (!GameStateCache.IsEmoteUnlocked(emote.RowId)) {
-            throw new ActionLockedException($"The emote \"{emote.Name}\" isn't unlocked and therefore can't be used.");
+            throw new ActionLockedException(string.Format(UIStrings.EmoteStrategy_EmoteLockedError, emote.Name));
         }
 
         PluginLog.Debug($"Would execute command: {textCommand.Command}");

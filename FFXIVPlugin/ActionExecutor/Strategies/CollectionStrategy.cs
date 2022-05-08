@@ -5,6 +5,7 @@ using Lumina.Excel;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Game.Sheets;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
@@ -53,7 +54,7 @@ public class CollectionStrategy : IActionStrategy {
         var mcguffin = GetMcGuffinById(actionId);
 
         if (mcguffin == null) {
-            throw new ArgumentOutOfRangeException(nameof(actionId), $"No Collection with ID {actionId} exists.");
+            throw new ArgumentOutOfRangeException(nameof(actionId), string.Format(UIStrings.CollectionStrategy_CollectionNotFoundError, actionId));
         }
             
         TickScheduler.Schedule(delegate {

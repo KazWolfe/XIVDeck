@@ -87,6 +87,19 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
     </ItemGroup>
+
+    <!-- Localization -->
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\Localization\UIStrings.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>UIStrings.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <Compile Update="Resources\Localization\UIStrings.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>UIStrings.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
     
     <!-- Build steps -->
     <Target Name="ILRepack" AfterTargets="Build">
