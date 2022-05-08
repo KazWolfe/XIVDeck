@@ -10,8 +10,8 @@
     "slot": "Slot",
     "standard-pl": "Standard Hotbars",
     "cross-pl": "Cross Hotbars",
-    "standard": "Hotbar {id}",
-    "cross": "Cross Hotbar {id}",
+    "standard": "Hotbar {{id}}",
+    "cross": "Cross Hotbar {{id}}",
     "default": "Select hotbar..."
   },
   "class": {
