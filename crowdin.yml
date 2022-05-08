@@ -3,3 +3,6 @@ files:
     ignore:
       - /FFXIVPlugin/Resources/Localization/UIStrings.*.resx
     translation: /%original_path%/%file_name%.%two_letters_code%.%file_extension%
+  - source: /SDPlugin/assets/locales/en/*.json
+    translation: /SDPlugin/assets/locales/%two_letters_code%/%original_file_name%
+    type: i18next

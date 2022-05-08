@@ -11,7 +11,8 @@
     "@rweich/streamdeck-ts": "^4.0.0",
     "websocket-as-promised": "^2.0.1",
     "uuid": "^8.3.2",
-    "jquery": "^3.6.0"
+    "jquery": "^3.6.0",
+    "react-i18next": "^11.16.9"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^10.2.4",
@@ -22,6 +23,7 @@
     "webpack": "^5.70.0",
     "webpack-cli": "^4.9.2",
     "@types/uuid": "^8.3.4",
-    "@types/jquery": "^3.5.14"
+    "@types/jquery": "^3.5.14",
+    "@alienfast/i18next-loader": "^1.1.4"
   }
 }

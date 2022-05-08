@@ -1,17 +1,19 @@
-﻿export class PIUtils {
+﻿import i18n from "../i18n/i18n";
+
+export class PIUtils {
     static generateConnectionErrorDom(): HTMLElement {
         let element: HTMLElement = document.createElement("details")
         element.className = "message caution"
 
         element.innerHTML = `
-            <summary><span style="color: orangered">The XIVDeck Game Plugin wasn't detected!</span> Click for more info...</summary>
-                <p>Please check to ensure that:</p>
+            <summary><span style="color: orangered">${i18n.t("common:connError.headline")}</span> ${i18n.t("common:connError.clickMore")}</summary>
+                <p>${i18n.t("common:connError.checkFor")}</p>
                 <ul>
-                    <li>Final Fantasy XIV is running,</li>
-                    <li>The XIVDeck Game Plugin is properly installed and configured,</li>
-                    <li>The connection settings below are correct.</li>
+                    <li>${i18n.t("common:connError.checkGameRunning")}</li>
+                    <li>${i18n.t("common:connError.checkPluginInstalled")}</li>
+                    <li>${i18n.t("common:connError.checkSettingsCorrect")}</li>
                 </ul>
-            <p>After verifying all of the above, refresh this settings pane to attempt to connect to the game again.</p>
+            <p>${i18n.t("common:connError.resolveSteps")}</p>
         `
 
         return element;
@@ -33,13 +35,13 @@
         return item;
     }
     
-    static createDefaultSelection(type: string = "item"): HTMLOptionElement {
+    static createDefaultSelection(innerText: string = "item"): HTMLOptionElement {
         let el = document.createElement("option");
 
         el.value = "default";
         el.disabled = true;
         el.selected = true;
-        el.innerText = `Select ${type}...`;
+        el.innerText = innerText;
 
         return el;
     }
@@ -60,11 +62,11 @@
         return true;
     }
     
-    static generateRadioSelection(title: string, id: string, ...choices: string[]): HTMLElement {
+    static generateRadioSelection(title: string, id: string, ...choices: RadioSelection[]): HTMLElement {
         let radioInner = document.createElement("div");
         radioInner.classList.add("sdpi-item-value");
         
-        choices.forEach((name, index) => {
+        choices.forEach((rs, index) => {
             let choiceSpan = document.createElement("span");
             choiceSpan.classList.add('sdpi-item-child');
             
@@ -72,12 +74,12 @@
             choiceInput.id = `r_${id}_choice${index}`;
             choiceInput.type = "radio";
             choiceInput.name = id;
-            choiceInput.value = name;
+            choiceInput.value = rs.value;
             
             let choiceLabel = document.createElement("label");
             choiceLabel.setAttribute("for", `r_${id}_choice${index}`);
             choiceLabel.classList.add("sdpi-item-label");
-            choiceLabel.innerHTML = `<span></span> ${name}`
+            choiceLabel.innerHTML = `<span></span> ${rs.name}`
 
             choiceSpan.append(choiceInput);
             choiceSpan.append(choiceLabel);
@@ -91,4 +93,18 @@
         
         return labeledElement;
     }
+    
+    static localizeDomTree() {
+        document.querySelectorAll("*").forEach((node) => {
+            let i18nKey = node.getAttribute("data-i18n");
+            if (!i18nKey) return;
+            
+            node.innerHTML = i18n.t(i18nKey);
+        })
+    }
+}
+
+export interface RadioSelection {
+    value: string,
+    name: string
 }

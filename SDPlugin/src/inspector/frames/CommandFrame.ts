@@ -1,6 +1,7 @@
 ﻿import {BaseFrame} from "../BaseFrame";
 import {CommandButtonSettings} from "../../button/buttons/CommandButton";
 import {PIUtils} from "../../util/PIUtils";
+import i18n from "../../i18n/i18n";
 
 export class CommandFrame extends BaseFrame<CommandButtonSettings> {
     commandField: HTMLTextAreaElement;
@@ -20,7 +21,7 @@ export class CommandFrame extends BaseFrame<CommandButtonSettings> {
     }
 
     renderHTML(): void {
-        this.domParent.append(PIUtils.createPILabeledElement("Command", this.commandField));
+        this.domParent.append(PIUtils.createPILabeledElement(i18n.t("frames:command.command-label"), this.commandField));
         this.commandField.oninput = this._onChange.bind(this);
     }
     

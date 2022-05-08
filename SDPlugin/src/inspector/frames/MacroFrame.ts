@@ -1,6 +1,7 @@
 ﻿import {BaseFrame} from "../BaseFrame";
 import {MacroButtonSettings} from "../../button/buttons/MacroButton";
 import {PIUtils} from "../../util/PIUtils";
+import i18n from "../../i18n/i18n";
 
 export class MacroFrame extends BaseFrame<MacroButtonSettings> {
     // settings
@@ -18,7 +19,10 @@ export class MacroFrame extends BaseFrame<MacroButtonSettings> {
         this.macroNumberField.min = "0";
         this.macroNumberField.max = "99";
         
-        this.macroRadioField = PIUtils.generateRadioSelection("Macro Type", "macroType", "Individual", "Shared");
+        this.macroRadioField = PIUtils.generateRadioSelection(i18n.t("frames:macro.type"), "macroType", ...[
+                {value: "indiv", name: i18n.t("frames:macro.individual")},
+                {value: "shared", name: i18n.t("frames:macro.shared")}
+        ]);
     }
     
     private get isSharedMacro(): boolean {
@@ -38,7 +42,7 @@ export class MacroFrame extends BaseFrame<MacroButtonSettings> {
 
     renderHTML(): void {
         this.domParent.append(this.macroRadioField);
-        this.domParent.append(PIUtils.createPILabeledElement("Macro Number", this.macroNumberField));
+        this.domParent.append(PIUtils.createPILabeledElement(i18n.t("frames:macro.number"), this.macroNumberField));
         this._renderRadio()
         
         this.macroNumberField.value = this.humanMacroNumber.toString();
@@ -51,9 +55,9 @@ export class MacroFrame extends BaseFrame<MacroButtonSettings> {
         let choice: HTMLInputElement | null;
 
         if (this.isSharedMacro) {
-            choice = document.querySelector(`input[name="macroType"][value="Shared"]`);
+            choice = document.querySelector(`input[name="macroType"][value="shared"]`);
         } else {
-            choice = document.querySelector(`input[name="macroType"][value="Individual"]`);
+            choice = document.querySelector(`input[name="macroType"][value="indiv"]`);
         }
         
         if (choice === null) {
@@ -78,7 +82,7 @@ export class MacroFrame extends BaseFrame<MacroButtonSettings> {
             this.macroNumberField.setAttribute("style", "");
         }
 
-        let isShared = (typeSelector.value === "Shared")
+        let isShared = (typeSelector.value === "shared")
         
         this.macroId = parseInt(this.macroNumberField.value) + (isShared ? 100 : 0)
         
