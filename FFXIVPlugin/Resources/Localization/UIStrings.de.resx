@@ -155,7 +155,7 @@ Bereich: {1}-{2}</value>
     <value>Aktueller Port: {0}</value>
   </data>
   <data name="SetupNag_PortChangeHelp" xml:space="preserve">
-    <value>Falls Sie den Port ändern müssen, auf dem der Server gehostet wird, können Sie dies in den XIVDeck Einstellungen tun.</value>
+    <value>Falls der Port auf dem der Server gehostet wird, geändert werden muss, kann dies in den XIVDeck Einstellungen getan werden.</value>
   </data>
   <data name="SetupNag_DismissHelp" xml:space="preserve">
     <value>Um diese Nachricht zu verwerfen, löse das obige Problem oder deinstalliere das XIVDeck Plugin.</value>
