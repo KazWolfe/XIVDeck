@@ -1,231 +1,221 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-    <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-        <xsd:element name="root" msdata:IsDataSet="true">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:element name="root" msdata:IsDataSet="true">
             
         </xsd:element>
-    </xsd:schema>
-    <resheader name="resmimetype">
-        <value>text/microsoft-resx</value>
-    </resheader>
-    <resheader name="version">
-        <value>1.3</value>
-    </resheader>
-    <resheader name="reader">
-        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-    </resheader>
-    <resheader name="writer">
-        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-    </resheader>
-    <data name="XIVDeck" xml:space="preserve">
-        <value>XIVDeck</value>
-        <comment>Product name. Do not change.</comment>
-    </data>
-    <data name="StreamDeck" xml:space="preserve">
-        <value>Stream Deck</value>
-        <comment>Product name. Do not change.</comment>
-    </data>
-    <data name="XIVDeck_Title" xml:space="preserve">
-        <value>XIVDeck Spiele-Plugin</value>
-    </data>
-    <data name="Exceptions_PlayerNotLoggedIn" xml:space="preserve">
-        <value>Ein Spieler ist nicht im Spiel eingeloggt.</value>
-    </data>
-    <data name="Exceptions_ActionLocked" xml:space="preserve">
-        <value>The {0} ID {1} is has not been unlocked and cannot be used.</value>
-    </data>
-    <data name="Exceptions_ActionNotFound" xml:space="preserve">
-        <value>Keine {0} mit der ID {1} wurde gefunden</value>
-    </data>
-    <data name="CommandController_MissingCommandError" xml:space="preserve">
-        <value>Ein auszuführender Befehl muss angegeben werden.</value>
-    </data>
-    <data name="CommandController_NotCommandError" xml:space="preserve">
-        <value>Befehle müssen mit einem Schrägstrich anfangen.</value>
-    </data>
-    <data name="ActionController_UnknownActionTypeError" xml:space="preserve">
-        <value>Es wurde keine registrierte Aktion vom Typ {0} gefunden.</value>
-    </data>
-    <data name="ClassController_ClassLessThan1Error" xml:space="preserve">
-        <value>Kann nicht zu einer Klasse mit ID kleiner 1 wechseln.</value>
-    </data>
-    <data name="ClassController_InvalidClassIdError" xml:space="preserve">
-        <value>Eine Klasse mit ID {0} existiert nicht!</value>
-    </data>
-    <data name="ClassController_NoGearsetForClassError" xml:space="preserve">
-        <value>Konnte nicht zu {0} wechseln, da du kein Ausrüstungsset für diese Klasse hast. Erstelle eins und versuche es erneut.</value>
-    </data>
-    <data name="HotbarController_InvalidHotbarIdError" xml:space="preserve">
-        <value>Hotbar-ID muss zwischen 0 und 17 liegen</value>
-    </data>
-    <data name="HotbarController_NormalHotbarInvalidSlotError" xml:space="preserve">
-        <value>When Hotbar ID &lt; 10, Slot ID must be between 0 and 11</value>
-    </data>
-    <data name="HotbarController_CrossHotbarInvalidSlotError" xml:space="preserve">
-        <value>Wenn Hotbar-ID &gt;= 10, muss Slot-ID zwischen 0 und 15 liegen</value>
-    </data>
-    <data name="HotbarController_InvalidHotbarOrSlotError" xml:space="preserve">
-        <value>Ein ungültiges Kommandomenü oder Feld wurde ausgelöst.</value>
-    </data>
-    <data name="AuthModule_BadAPIKeyError" xml:space="preserve">
-        <value>API-Schlüssel nicht vorhanden oder ungültig.</value>
-    </data>
-    <data name="WSOpcodeWiring_UnknownOpcodeError" xml:space="preserve">
-        <value>No message exists with opcode {0}</value>
-    </data>
-    <data name="EmoteStrategy_EmoteDoesntHaveCommandError" xml:space="preserve">
-        <value>Das Emote "{0}" hat keinen zugehörigen Text-Befehl.</value>
-    </data>
-    <data name="EmoteStrategy_EmoteLockedError" xml:space="preserve">
-        <value>Das Emote "{0}" ist nicht freigeschaltet und kann daher nicht verwendet werden.</value>
-    </data>
-    <data name="ExtraCommandStrategy_NoCommandError" xml:space="preserve">
-        <value>Kein Befehl für Extra Befehl {0} vorhanden. BERICHTE DIESEN FEHLER!</value>
-        <comment>This error message is shown when the command to use an "Extra Command" is not found. Because management of extra commands is done manually, additional instructions have been added for the user to report a bug to the developer.
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="XIVDeck" xml:space="preserve">
+    <value>XIVDeck</value>
+    <comment>Product name. Do not change.</comment>
+  </data>
+  <data name="StreamDeck" xml:space="preserve">
+    <value>Stream Deck</value>
+    <comment>Product name. Do not change.</comment>
+  </data>
+  <data name="XIVDeck_Title" xml:space="preserve">
+    <value>XIVDeck Spiele-Plugin</value>
+  </data>
+  <data name="Exceptions_PlayerNotLoggedIn" xml:space="preserve">
+    <value>Ein Spieler ist nicht im Spiel eingeloggt.</value>
+  </data>
+  
+  <data name="Exceptions_ActionNotFound" xml:space="preserve">
+    <value>Keine {0} mit der ID {1} wurde gefunden</value>
+  </data>
+  <data name="CommandController_MissingCommandError" xml:space="preserve">
+    <value>Ein auszuführender Befehl muss angegeben werden.</value>
+  </data>
+  <data name="CommandController_NotCommandError" xml:space="preserve">
+    <value>Befehle müssen mit einem Schrägstrich anfangen.</value>
+  </data>
+  <data name="ActionController_UnknownActionTypeError" xml:space="preserve">
+    <value>Es wurde keine registrierte Aktion vom Typ {0} gefunden.</value>
+  </data>
+  <data name="ClassController_ClassLessThan1Error" xml:space="preserve">
+    <value>Kann nicht zu einer Klasse mit ID kleiner 1 wechseln.</value>
+  </data>
+  <data name="ClassController_InvalidClassIdError" xml:space="preserve">
+    <value>Eine Klasse mit ID {0} existiert nicht!</value>
+  </data>
+  <data name="ClassController_NoGearsetForClassError" xml:space="preserve">
+    <value>Konnte nicht zu {0} wechseln, da du kein Ausrüstungsset für diese Klasse hast. Erstelle eins und versuche es erneut.</value>
+  </data>
+  <data name="HotbarController_InvalidHotbarIdError" xml:space="preserve">
+    <value>Hotbar-ID muss zwischen 0 und 17 liegen</value>
+  </data>
+  <data name="HotbarController_NormalHotbarInvalidSlotError" xml:space="preserve">
+    <value>Wenn Hotbar-ID &lt; 10, muss Slot-ID zwischen 0 und 11 liegen</value>
+  </data>
+  <data name="HotbarController_CrossHotbarInvalidSlotError" xml:space="preserve">
+    <value>Wenn Hotbar-ID &gt;= 10, muss Slot-ID zwischen 0 und 15 liegen</value>
+  </data>
+  <data name="HotbarController_InvalidHotbarOrSlotError" xml:space="preserve">
+    <value>Ein ungültiges Kommandomenü oder Feld wurde ausgelöst.</value>
+  </data>
+  <data name="AuthModule_BadAPIKeyError" xml:space="preserve">
+    <value>API-Schlüssel nicht vorhanden oder ungültig.</value>
+  </data>
+  
+  <data name="EmoteStrategy_EmoteDoesntHaveCommandError" xml:space="preserve">
+    <value>Das Emote "{0}" hat keinen zugehörigen Text-Befehl.</value>
+  </data>
+  <data name="EmoteStrategy_EmoteLockedError" xml:space="preserve">
+    <value>Das Emote "{0}" ist nicht freigeschaltet und kann daher nicht verwendet werden.</value>
+  </data>
+  <data name="ExtraCommandStrategy_NoCommandError" xml:space="preserve">
+    <value>Kein Befehl für Extra Befehl {0} vorhanden. BERICHTE DIESEN FEHLER!</value>
+    <comment>This error message is shown when the command to use an "Extra Command" is not found. Because management of extra commands is done manually, additional instructions have been added for the user to report a bug to the developer.
         </comment>
-    </data>
-    <data name="FixedCommandStrategy_ActionNotFoundError" xml:space="preserve">
-        <value>Eine Aktion des Typs {0} mit der ID {1} existiert nicht.</value>
-    </data>
-    <data name="FixedCommandStrategy_IllegalActionError" xml:space="preserve">
-        <value>Die Aktion mit der ID {0} ist als ungültig markiert und kann nicht benutzt werden.</value>
-        <comment>Shown when the plugin blocks a user from calling an action marked as illegal (unsafe).</comment>
-    </data>
-    <data name="FixedCommandStrategy_SheetNotFoundError" xml:space="preserve">
-        <value>A sheet of type {0} does not exist.</value>
-    </data>
-    <data name="SettingsWindow_Title" xml:space="preserve">
-        <value>XIVDeck Spiel-Plugin Einstellungen</value>
-    </data>
-    <data name="SettingsWindow_SafeModeDisabledWarning" xml:space="preserve">
-        <value>WARNUNG: SICHERER MODUS DEAKTIVIERT! Du kannst möglicherweise ungültige Befehle von deinem Stream Deck an das Spiel senden.</value>
-        <comment>"Illegal commands" in this case mean commands that normally cannot be sent to the game and may cause damage or harm if proper care is not taken.</comment>
-    </data>
-    <data name="SettingsWindow_EnablePenumbraIPC" xml:space="preserve">
-        <value>Penumbra Icons verwenden</value>
-        <comment>Setting to enable integration with another app named Penumbra.</comment>
-    </data>
-    <data name="SettingsWindow_EnablePenumbraIPC_Help" xml:space="preserve">
-        <value>Wenn aktiviert, wird versucht, Icons von Penumbra auf dem Stream Deck anzuzeigen. Beachten Sie, dass Penumbra installiert sein muss, damit diese Einstellung irgendeine Wirkung hat.
+  </data>
+  <data name="FixedCommandStrategy_ActionNotFoundError" xml:space="preserve">
+    <value>Eine Aktion des Typs {0} mit der ID {1} existiert nicht.</value>
+  </data>
+  <data name="FixedCommandStrategy_IllegalActionError" xml:space="preserve">
+    <value>Die Aktion mit der ID {0} ist als ungültig markiert und kann nicht benutzt werden.</value>
+    <comment>Shown when the plugin blocks a user from calling an action marked as illegal (unsafe).</comment>
+  </data>
+  
+  <data name="SettingsWindow_Title" xml:space="preserve">
+    <value>XIVDeck Spiel-Plugin Einstellungen</value>
+  </data>
+  <data name="SettingsWindow_SafeModeDisabledWarning" xml:space="preserve">
+    <value>WARNUNG: SICHERER MODUS DEAKTIVIERT! Du kannst möglicherweise ungültige Befehle von deinem Stream Deck an das Spiel senden.</value>
+    <comment>"Illegal commands" in this case mean commands that normally cannot be sent to the game and may cause damage or harm if proper care is not taken.</comment>
+  </data>
+  <data name="SettingsWindow_EnablePenumbraIPC" xml:space="preserve">
+    <value>Penumbra Icons verwenden</value>
+    <comment>Setting to enable integration with another app named Penumbra.</comment>
+  </data>
+  <data name="SettingsWindow_EnablePenumbraIPC_Help" xml:space="preserve">
+    <value>Wenn aktiviert, wird versucht, Icons von Penumbra auf dem Stream Deck anzuzeigen. Beachten Sie, dass Penumbra installiert sein muss, damit diese Einstellung irgendeine Wirkung hat.
 
 Wenn deaktiviert, werden stattdessen originale Spielsymbole verwendet.
 
 Standard: Aus</value>
-    </data>
-    <data name="SettingsWindow_ExperimentalSettings" xml:space="preserve">
-        <value>Experimentelle Einstellungen</value>
-        <comment>Header for configuration window section.</comment>
-    </data>
-    <data name="SettingsWindow_Experiment_MIcon" xml:space="preserve">
-        <value>/micon Icons verwenden</value>
-        <comment>/micon is a game-provided command. It can be left as-is.</comment>
-    </data>
-    <data name="SettingsWindow_GitHubLink" xml:space="preserve">
-        <value>XIVDeck GitHub</value>
-    </data>
-    <data name="SettingsWindow_ApplyButton" xml:space="preserve">
-        <value>Speichern</value>
-        <comment>Used as a "save and apply" button for a settings dialog box. Should be a short string (under 20 characters)</comment>
-    </data>
-    <data name="SettingsWindow_APIPort" xml:space="preserve">
-        <value>API-Port</value>
-    </data>
-    <data name="SettingsWindow_ListenIP" xml:space="preserve">
-        <value>Listen IP: {0}</value>
-    </data>
-    <data name="SettingsWindow_APIPort_Help" xml:space="preserve">
-        <value>Standardport: {0}
+  </data>
+  <data name="SettingsWindow_ExperimentalSettings" xml:space="preserve">
+    <value>Experimentelle Einstellungen</value>
+    <comment>Header for configuration window section.</comment>
+  </data>
+  <data name="SettingsWindow_Experiment_MIcon" xml:space="preserve">
+    <value>/micon Icons verwenden</value>
+    <comment>/micon is a game-provided command. It can be left as-is.</comment>
+  </data>
+  <data name="SettingsWindow_GitHubLink" xml:space="preserve">
+    <value>XIVDeck GitHub</value>
+  </data>
+  <data name="SettingsWindow_ApplyButton" xml:space="preserve">
+    <value>Übernehmen</value>
+    <comment>Used as a "save and apply" button for a settings dialog box. Should be a short string (under 20 characters)</comment>
+  </data>
+  <data name="SettingsWindow_APIPort" xml:space="preserve">
+    <value>API-Port</value>
+  </data>
+  
+  <data name="SettingsWindow_APIPort_Help" xml:space="preserve">
+    <value>Standardport: {0}
 
 Bereich: {1}-{2}</value>
-    </data>
-    <data name="ForcedUpdateNag_Headline" xml:space="preserve">
-        <value>Das XIVDeck Stream Deck Plugin ist veraltet und wurde deaktiviert.</value>
-    </data>
-    <data name="Nag_OpenGithubDownloadButton" xml:space="preserve">
-        <value>XIVDeck Downloadseite öffnen</value>
-    </data>
-    <data name="Nag_OpenSettingsButton" xml:space="preserve">
-        <value>XIVDeck Einstellungen öffnen</value>
-    </data>
-    <data name="ForcedUpdateNag_ResolutionHelp" xml:space="preserve">
-        <value>Bitte lade die neueste Version des Stream Deck Plugins vom XIVDeck GitHub herunter und installiere diese, um XIVDeck weiterzunutzen.</value>
-    </data>
-    <data name="SetupNag_Headline" xml:space="preserve">
-        <value>Ein Stream Deck hat sich nie mit dem Spiel verbunden.</value>
-    </data>
-    <data name="SetupNag_ResolutionHelp" xml:space="preserve">
-        <value>Falls du dies noch nicht getan hast, stelle bitte sicher, dass das Plugin XIVDeck Stream Deck von GitHub heruntergeladen und installiert ist.</value>
-    </data>
-    <data name="SetupNag_AlreadyInstalledHelp" xml:space="preserve">
-        <value>Falls das XIVDeck Stream Deck Plugin bereits installiert ist, bitte stelle sicher, dass der Port in der Konfiguration korrekt eingestellt ist und dass mindestens eine Schaltfläche angelegt ist.</value>
-    </data>
-    <data name="SetupNag_CurrentPort" xml:space="preserve">
-        <value>Aktueller Port: {0}</value>
-    </data>
-    <data name="SetupNag_PortChangeHelp" xml:space="preserve">
-        <value>Falls Sie den Port ändern müssen, auf dem der Server gehostet wird, können Sie dies in den XIVDeck Einstellungen tun.</value>
-    </data>
-    <data name="SetupNag_DismissHelp" xml:space="preserve">
-        <value>Um diese Nachricht zu verwerfen, löse das obige Problem oder deinstalliere das XIVDeck Plugin.</value>
-    </data>
-    <data name="CollectionStrategy_CollectionNotFoundError" xml:space="preserve">
-        <value>Es gibt keine Sammlung mit der ID {0}.</value>
-    </data>
-    <data name="GearsetStrategy_GearsetNotFoundError" xml:space="preserve">
-        <value>Kein Ausrüstungsset im Slot Nummer {0} vorhanden.</value>
-    </data>
-    <data name="GeneralActionStrategy_ActionLockedError" xml:space="preserve">
-        <value>Die Aktion "{0}" ist noch nicht freigeschaltet.</value>
-    </data>
-    <data name="GeneralActionStrategy_ActionIllegalError" xml:space="preserve">
-        <value>Die Aktion "{0}" (ID {1}) ist als ungültig markiert und kann nicht verwendet werden.</value>
-        <comment>Shown when the plugin blocks a user from calling an action marked as illegal (unsafe).</comment>
-    </data>
-    <data name="InstrumentStrategy_PerformanceLockedError" xml:space="preserve">
-        <value>Performance mode hasn't been unlocked yet.</value>
-        <comment>Shown when a user attempts to use a musical instrument without having Performance actions unlocked.</comment>
-    </data>
-    <data name="InstrumentStrategy_CurrentlyPerformingError" xml:space="preserve">
-        <value>Cannot switch instruments while in Performance mode.</value>
-        <comment>Shown when a user attempts to switch musical instruments while actively in a Performance.</comment>
-    </data>
-    <data name="InstrumentStrategy_InstrumentNotFoundError" xml:space="preserve">
-        <value>Es gibt kein Instrument mit der ID {0}.</value>
-        <comment>Shown when a user attempts to use an invalid or unknown musical instrument.</comment>
-    </data>
-    <data name="MacroStrategy_MacroEmptyError" xml:space="preserve">
-        <value>Das angegebene Makro ist leer und kann nicht benutzt werden.</value>
-    </data>
-    <data name="MainCommandStrategy_ActionInvalidError" xml:space="preserve">
-        <value>Main command action ID {0} is not valid.</value>
-    </data>
-    <data name="MinionStrategy_MinionNotFoundError" xml:space="preserve">
-        <value>No minion with ID {0} exists.</value>
-    </data>
-    <data name="MinionStrategy_MinionLockedError" xml:space="preserve">
-        <value>The minion "{0}" isn't unlocked and therefore can't be used.</value>
-    </data>
-    <data name="MountStrategy_MountNotFoundError" xml:space="preserve">
-        <value>No mount with ID {0} exists.</value>
-    </data>
-    <data name="MountStrategy_MountLockedError" xml:space="preserve">
-        <value>The mount "{0}" isn't unlocked and therefore can't be used.</value>
-    </data>
-    <data name="OrnamentStrategy_OrnamentLockedError" xml:space="preserve">
-        <value>The fashion accessory "{0}" isn't unlocked and therefore can't be used.</value>
-    </data>
-    <data name="ErrorHandler_ErrorPrefix" xml:space="preserve">
-        <value>{0} - ERROR</value>
-    </data>
-    <data name="TickScheduler_ExceptionHandler" xml:space="preserve">
-        <value>There was an issue running a task: {0}: {1}</value>
-        <comment>"Task" may be substituted for "job" in this case. This string will display when a background job fails to execute.</comment>
-    </data>
-    <data name="GameClass_NotFoundError" xml:space="preserve">
-        <value>Eine Klasse mit ID {0} existiert nicht.</value>
-    </data>
-    <data name="GameClass_UncategorizedError" xml:space="preserve">
-        <value>Unrecognized job category for class ID {0}. REPORT THIS BUG!</value>
-        <comment>Shown when plugin data is invalid and requires an update from the developer.</comment>
-    </data>
+  </data>
+  <data name="ForcedUpdateNag_Headline" xml:space="preserve">
+    <value>Das XIVDeck Stream Deck Plugin ist veraltet und wurde deaktiviert.</value>
+  </data>
+  <data name="Nag_OpenGithubDownloadButton" xml:space="preserve">
+    <value>XIVDeck Downloadseite öffnen</value>
+  </data>
+  <data name="Nag_OpenSettingsButton" xml:space="preserve">
+    <value>XIVDeck Einstellungen öffnen</value>
+  </data>
+  <data name="ForcedUpdateNag_ResolutionHelp" xml:space="preserve">
+    <value>Bitte lade die neueste Version des Stream Deck Plugins vom XIVDeck GitHub herunter und installiere diese, um XIVDeck weiterzunutzen.</value>
+  </data>
+  <data name="SetupNag_Headline" xml:space="preserve">
+    <value>Ein Stream Deck hat sich nie mit dem Spiel verbunden.</value>
+  </data>
+  <data name="SetupNag_ResolutionHelp" xml:space="preserve">
+    <value>Falls du dies noch nicht getan hast, stelle bitte sicher, dass das Plugin XIVDeck Stream Deck von GitHub heruntergeladen und installiert ist.</value>
+  </data>
+  <data name="SetupNag_AlreadyInstalledHelp" xml:space="preserve">
+    <value>Falls das XIVDeck Stream Deck Plugin bereits installiert ist, bitte stelle sicher, dass der Port in der Konfiguration korrekt eingestellt ist und dass mindestens eine Schaltfläche angelegt ist.</value>
+  </data>
+  <data name="SetupNag_CurrentPort" xml:space="preserve">
+    <value>Aktueller Port: {0}</value>
+  </data>
+  <data name="SetupNag_PortChangeHelp" xml:space="preserve">
+    <value>Falls Sie den Port ändern müssen, auf dem der Server gehostet wird, können Sie dies in den XIVDeck Einstellungen tun.</value>
+  </data>
+  <data name="SetupNag_DismissHelp" xml:space="preserve">
+    <value>Um diese Nachricht zu verwerfen, löse das obige Problem oder deinstalliere das XIVDeck Plugin.</value>
+  </data>
+  <data name="CollectionStrategy_CollectionNotFoundError" xml:space="preserve">
+    <value>Es gibt keine Kuriosität mit der ID {0}.</value>
+  </data>
+  <data name="GearsetStrategy_GearsetNotFoundError" xml:space="preserve">
+    <value>Kein Ausrüstungsset in Slot Nummer {0} vorhanden.</value>
+  </data>
+  <data name="GeneralActionStrategy_ActionLockedError" xml:space="preserve">
+    <value>Die Aktion "{0}" ist noch nicht freigeschaltet.</value>
+  </data>
+  <data name="GeneralActionStrategy_ActionIllegalError" xml:space="preserve">
+    <value>Die Aktion "{0}" (ID {1}) ist als ungültig markiert und kann nicht verwendet werden.</value>
+    <comment>Shown when the plugin blocks a user from calling an action marked as illegal (unsafe).</comment>
+  </data>
+  <data name="InstrumentStrategy_PerformanceLockedError" xml:space="preserve">
+    <value>Kompositionsmodus wurde noch nicht freigeschaltet.</value>
+    <comment>Shown when a user attempts to use a musical instrument without having Performance actions unlocked.</comment>
+  </data>
+  <data name="InstrumentStrategy_CurrentlyPerformingError" xml:space="preserve">
+    <value>Instrumente können nicht im Kompositionsmodus geändert werden.</value>
+    <comment>Shown when a user attempts to switch musical instruments while actively in a Performance.</comment>
+  </data>
+  <data name="InstrumentStrategy_InstrumentNotFoundError" xml:space="preserve">
+    <value>Es gibt kein Instrument mit der ID {0}.</value>
+    <comment>Shown when a user attempts to use an invalid or unknown musical instrument.</comment>
+  </data>
+  <data name="MacroStrategy_MacroEmptyError" xml:space="preserve">
+    <value>Das angegebene Makro ist leer und kann nicht benutzt werden.</value>
+  </data>
+  
+  <data name="MinionStrategy_MinionNotFoundError" xml:space="preserve">
+    <value>Es gibt keinen Begleiter mit der ID {0}.</value>
+  </data>
+  <data name="MinionStrategy_MinionLockedError" xml:space="preserve">
+    <value>Der Begleiter "{0}" ist nicht freigeschaltet und kann daher nicht verwendet werden.</value>
+  </data>
+  <data name="MountStrategy_MountNotFoundError" xml:space="preserve">
+    <value>Es gibt kein Reittier mit der ID {0}.</value>
+  </data>
+  <data name="MountStrategy_MountLockedError" xml:space="preserve">
+    <value>Das Reittier "{0}" ist nicht freigeschaltet und kann daher nicht verwendet werden.</value>
+  </data>
+  <data name="OrnamentStrategy_OrnamentLockedError" xml:space="preserve">
+    <value>Das Mode Zubehör "{0}" ist nicht freigeschaltet und kann daher nicht verwendet werden.</value>
+  </data>
+  <data name="ErrorHandler_ErrorPrefix" xml:space="preserve">
+    <value>{0} - FEHLER</value>
+  </data>
+  <data name="TickScheduler_ExceptionHandler" xml:space="preserve">
+    <value>Es gab ein Problem bei der Ausführung: {0}: {1}</value>
+    <comment>"Task" may be substituted for "job" in this case. This string will display when a background job fails to execute.</comment>
+  </data>
+  <data name="GameClass_NotFoundError" xml:space="preserve">
+    <value>Eine Klasse mit ID {0} existiert nicht.</value>
+  </data>
+  <data name="GameClass_UncategorizedError" xml:space="preserve">
+    <value>Nicht erkannte Job-Kategorie für Klassen-ID {0}. BERICHTE DIESEN FEHLER!</value>
+    <comment>Shown when plugin data is invalid and requires an update from the developer.</comment>
+  </data>
 </root>
