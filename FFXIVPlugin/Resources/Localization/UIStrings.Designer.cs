@@ -97,7 +97,7 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Couldn&apos;t switch to {0} because you don&apos;t have a gearset for this class. Make one and try again..
+        ///   Looks up a localized string similar to Couldn&apos;t switch to {0} because you don&apos;t have a gearset for this class. Create one and try again..
         /// </summary>
         internal static string ClassController_NoGearsetForClassError {
             get {
@@ -160,7 +160,7 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The {0} ID {1} is has not been unlocked and cannot be used..
+        ///   Looks up a localized string similar to The {0} ID {1} has not been unlocked and cannot be used..
         /// </summary>
         internal static string Exceptions_ActionLocked {
             get {
@@ -169,7 +169,7 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No {0} with ID {1} was found.
+        ///   Looks up a localized string similar to No {0} with ID {1} was found..
         /// </summary>
         internal static string Exceptions_ActionNotFound {
             get {
@@ -232,7 +232,7 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please download and install the latest version of the Stream Deck plugin from the XIVDeck GitHub to continue using XIVDeck..
+        ///   Looks up a localized string similar to Please download and install the latest version of the Stream Deck Plugin from the XIVDeck GitHub to continue using XIVDeck..
         /// </summary>
         internal static string ForcedUpdateNag_ResolutionHelp {
             get {
