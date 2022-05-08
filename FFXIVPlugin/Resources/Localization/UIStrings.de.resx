@@ -31,7 +31,11 @@
   <data name="Exceptions_PlayerNotLoggedIn" xml:space="preserve">
     <value>Ein Spieler ist nicht im Spiel eingeloggt.</value>
   </data>
-  
+  <data name="Exceptions_ActionLocked" xml:space="preserve">
+    <value>{0} ID {1} ist nicht freigeschaltet und kann nicht verwendet werden.</value>
+    <comment>Exceptions_ActionLocked
+Semi-internal.</comment>
+  </data>
   <data name="Exceptions_ActionNotFound" xml:space="preserve">
     <value>Keine {0} mit der ID {1} wurde gefunden</value>
   </data>
@@ -68,7 +72,11 @@
   <data name="AuthModule_BadAPIKeyError" xml:space="preserve">
     <value>API-Schlüssel nicht vorhanden oder ungültig.</value>
   </data>
-  
+  <data name="WSOpcodeWiring_UnknownOpcodeError" xml:space="preserve">
+    <value>Es existiert keine Nachricht mit opcode {0}</value>
+    <comment>WSOpcodeWiring_UnknownOpcodeError
+Internal message. Shown in logs when a message of an unrecognized type (unknown opcode) is received.</comment>
+  </data>
   <data name="EmoteStrategy_EmoteDoesntHaveCommandError" xml:space="preserve">
     <value>Das Emote "{0}" hat keinen zugehörigen Text-Befehl.</value>
   </data>
@@ -87,7 +95,11 @@
     <value>Die Aktion mit der ID {0} ist als ungültig markiert und kann nicht benutzt werden.</value>
     <comment>Shown when the plugin blocks a user from calling an action marked as illegal (unsafe).</comment>
   </data>
-  
+  <data name="FixedCommandStrategy_SheetNotFoundError" xml:space="preserve">
+    <value>Eine Tabelle vom Typ {0} existiert nicht.</value>
+    <comment>FixedCommandStrategy_SheetNotFoundError
+Internal error shown when a spreadsheet/table for a type of item cannot be loaded.</comment>
+  </data>
   <data name="SettingsWindow_Title" xml:space="preserve">
     <value>XIVDeck Spiel-Plugin Einstellungen</value>
   </data>
@@ -124,7 +136,9 @@ Standard: Aus</value>
   <data name="SettingsWindow_APIPort" xml:space="preserve">
     <value>API-Port</value>
   </data>
-  
+  <data name="SettingsWindow_ListenIP" xml:space="preserve">
+    <value>Listen IP: {0}</value>
+  </data>
   <data name="SettingsWindow_APIPort_Help" xml:space="preserve">
     <value>Standardport: {0}
 
@@ -188,7 +202,9 @@ Bereich: {1}-{2}</value>
   <data name="MacroStrategy_MacroEmptyError" xml:space="preserve">
     <value>Das angegebene Makro ist leer und kann nicht benutzt werden.</value>
   </data>
-  
+  <data name="MainCommandStrategy_ActionInvalidError" xml:space="preserve">
+    <value>Haupt-Befehlsaktion ID {0} ist ungültig.</value>
+  </data>
   <data name="MinionStrategy_MinionNotFoundError" xml:space="preserve">
     <value>Es gibt keinen Begleiter mit der ID {0}.</value>
   </data>
