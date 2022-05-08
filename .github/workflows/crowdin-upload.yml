@@ -1,0 +1,26 @@
+﻿name: Upload to Crowdin
+
+on:
+  push:
+    branches: [ localization ]
+    
+jobs:
+  crowdin-upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Get Branch Name
+        shell: bash
+        run: echo "::set-output name=branch::${GITHUB_REF#refs/heads/}"
+        id: branch
+      - name: Crowdin Action
+        uses: crowdin/github-action@1.0.4
+        with:
+          upload_sources: true
+          upload_translations: true
+          download_translations: false
+          crowdin_branch_name: ${{ steps.branch.outputs.branch }}
+        env:
+          CROWDIN_PROJECT_ID: ${{secrets.CROWDIN_PROJECT_ID}}
+          CROWDIN_PERSONAL_TOKEN: ${{secrets.CROWDIN_PERSONAL_TOKEN}}

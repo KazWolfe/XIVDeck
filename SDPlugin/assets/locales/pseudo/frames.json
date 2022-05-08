@@ -1,0 +1,35 @@
+{
+  "global": {
+    "port-label": "ẊÎṼÐéçķ Þôôŕţ"
+  },
+  "command": {
+    "command-label": "Çôɱɱàñð"
+  },
+  "hotbar": {
+    "hotbar": "Ĥôţƀàŕ",
+    "slot": "Šļôţ",
+    "standard-pl": "Šţàñðàŕð ĤĤôţƀàŕš",
+    "cross-pl": "Çŕôšš Ĥôţƀƀàŕš",
+    "standard": "Ĥôţƀàŕ {id}",
+    "cross": "Çŕôšš Ĥôţƀƀàŕ {id}",
+    "default": "Šéļéçţ ĥôţţƀàŕ···"
+  },
+  "class": {
+    "default": "Šéļéçţ çļààšš···",
+    "class": "Çļàšš",
+    "unknown": "Ûñķñôŵñ"
+  },
+  "action": {
+    "type": "Ţýþé",
+    "action": "Àçţîôñ",
+    "default-type": "Šéļéçţ àçţţîôñ ţýþé····",
+    "default-action": "Šéļéçţ àçţţîôñ···",
+    "unknown": "Ûñķñôŵñ"
+  },
+  "macro": {
+    "type": "Ṁàçŕô Ţýþéé",
+    "number": "Ṁàçŕô Ñûɱƀƀéŕ",
+    "individual": "Îñðîṽîðûàļļ",
+    "shared": "Šĥàŕéð"
+  }
+}

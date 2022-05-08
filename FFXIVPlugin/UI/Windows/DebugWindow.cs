@@ -1,8 +1,10 @@
-﻿using System.Numerics;
+﻿using System.Globalization;
+using System.Numerics;
 using System.Reflection;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
 using ImGuiNET;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
@@ -70,6 +72,11 @@ public class DebugWindow : Window  {
         ImGui.SameLine();
         if (ImGui.Button("(Re)Start Server")) {
             XIVDeckPlugin.Instance.InitializeWebServer();
+        }
+        
+        ImGui.Spacing();
+        if (ImGui.Button("Pseudo-localize")) {
+            UIStrings.Culture = new CultureInfo("qps-ploc");
         }
     }
 }
