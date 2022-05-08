@@ -313,7 +313,7 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to When hotbarID &lt; 10, Slot ID must be between 0 and 11.
+        ///   Looks up a localized string similar to When Hotbar ID &lt; 10, Slot ID must be between 0 and 11.
         /// </summary>
         internal static string HotbarController_NormalHotbarInvalidSlotError {
             get {
@@ -322,7 +322,7 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot switch instruments while actively in Perform mode..
+        ///   Looks up a localized string similar to Cannot switch instruments while in Performance mode..
         /// </summary>
         internal static string InstrumentStrategy_CurrentlyPerformingError {
             get {
@@ -340,7 +340,7 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Performance mode hasn&apos;t yet been unlocked..
+        ///   Looks up a localized string similar to Performance mode hasn&apos;t been unlocked yet..
         /// </summary>
         internal static string InstrumentStrategy_PerformanceLockedError {
             get {
@@ -585,6 +585,15 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         internal static string SetupNag_ResolutionHelp {
             get {
                 return ResourceManager.GetString("SetupNag_ResolutionHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stream Deck.
+        /// </summary>
+        internal static string StreamDeck {
+            get {
+                return ResourceManager.GetString("StreamDeck", resourceCulture);
             }
         }
         
