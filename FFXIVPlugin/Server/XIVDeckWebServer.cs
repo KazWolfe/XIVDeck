@@ -12,7 +12,7 @@ public class XIVDeckWebServer : IDisposable {
     public XIVDeckWebServer(int port) {
         this._host = new WebServer(o => o
             .WithUrlPrefixes(GenerateUrlPrefixes(port))
-            .WithMode(HttpListenerMode.EmbedIO)
+            .WithMode(HttpListenerMode.Microsoft)
         );
         
         this._host.WithModule(new XIVDeckWSServer("/ws"));
