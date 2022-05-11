@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Dalamud.Logging;
 using EmbedIO;
 using XIVDeck.FFXIVPlugin.Game;
@@ -8,7 +9,8 @@ namespace XIVDeck.FFXIVPlugin.Server;
 
 public class XIVDeckWebServer : IDisposable {
     private readonly IWebServer _host;
-    
+    private readonly CancellationTokenSource _cts = new();
+
     public XIVDeckWebServer(int port) {
         this._host = new WebServer(o => o
             .WithUrlPrefixes(GenerateUrlPrefixes(port))
@@ -29,12 +31,11 @@ public class XIVDeckWebServer : IDisposable {
     public bool IsRunning => (this._host.State != WebServerState.Stopped);
 
     public void StartServer() {
-        this._host.Start();
+        this._host.Start(this._cts.Token);
     }
 
     public void Dispose() {
-        this._host.Dispose();
-
+        this._cts.Cancel();
         GC.SuppressFinalize(this);
     }
 
