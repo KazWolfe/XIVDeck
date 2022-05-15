@@ -229,4 +229,10 @@ Range: {1}-{2}</value>
         <value>Unrecognized job category for class ID {0}. REPORT THIS BUG!</value>
         <comment>Shown when plugin data is invalid and requires an update from the developer.</comment>
     </data>
+    <data name="WSInitOpcode_ThanksForInstall" xml:space="preserve">
+        <value>Thank you for installing the Stream Deck plugin. XIVDeck is now ready to go!</value>
+    </data>
+    <data name="ClassController_FallbackClassUsed" xml:space="preserve">
+        <value>No gearset was found for {0}, so your gearset for {1} was used instead.</value>
+    </data>
 </root>

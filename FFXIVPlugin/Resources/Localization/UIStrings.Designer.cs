@@ -88,6 +88,15 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No gearset was found for {0}, so your gearset for {1} was used instead..
+        /// </summary>
+        internal static string ClassController_FallbackClassUsed {
+            get {
+                return ResourceManager.GetString("ClassController_FallbackClassUsed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A class with ID {0} does not exist!.
         /// </summary>
         internal static string ClassController_InvalidClassIdError {
@@ -603,6 +612,15 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         internal static string TickScheduler_ExceptionHandler {
             get {
                 return ResourceManager.GetString("TickScheduler_ExceptionHandler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thank you for installing the Stream Deck plugin. XIVDeck is now ready to go!.
+        /// </summary>
+        internal static string WSInitOpcode_ThanksForInstall {
+            get {
+                return ResourceManager.GetString("WSInitOpcode_ThanksForInstall", resourceCulture);
             }
         }
         

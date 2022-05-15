@@ -33,8 +33,10 @@ public class SettingsWindow : Window {
         this._websocketPort = this._plugin.Configuration.WebSocketPort;
         this._safeMode = this._plugin.Configuration.SafeMode;
         
-        // experimental flags
+        // setting flags
         this._usePenumbraIPC = this._plugin.Configuration.UsePenumbraIPC;
+
+        // experimental flags
         this._useMIconIcons = this._plugin.Configuration.UseMIconIcons;
     }
 
