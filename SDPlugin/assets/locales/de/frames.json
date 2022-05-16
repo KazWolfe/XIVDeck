@@ -1,0 +1,35 @@
+{
+  "global": {
+    "port-label": "XIVDeck Port"
+  },
+  "command": {
+    "command-label": "Befehl"
+  },
+  "hotbar": {
+    "hotbar": "Kommandomenü",
+    "slot": "Feld",
+    "standard-pl": "Standard-Kommandomenü",
+    "cross-pl": "Kreuz-Kommandomenü",
+    "standard": "Kommandomenü {{id}}",
+    "cross": "Kreuz-Kommandomenü {{id}}",
+    "default": "Kommandomenü auswählen..."
+  },
+  "class": {
+    "default": "Klasse auswählen...",
+    "class": "Klasse",
+    "unknown": "Unbekannt"
+  },
+  "action": {
+    "type": "Typ",
+    "action": "Aktion",
+    "default-type": "Aktionstyp auswählen...",
+    "default-action": "Aktion auswählen...",
+    "unknown": "Unbekannt"
+  },
+  "macro": {
+    "type": "Macro Typ",
+    "number": "Macro Nummer",
+    "individual": "Individuell",
+    "shared": "Geteilt"
+  }
+}
