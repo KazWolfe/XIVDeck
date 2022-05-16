@@ -60,17 +60,7 @@ public class ActionController : WebApiController {
         if (!Enum.TryParse<HotbarSlotType>(type, out var slotType)) {
             throw HttpException.NotFound(string.Format(UIStrings.ActionController_UnknownActionTypeError, type));
         }
-
-        try {
-            ActionDispatcher.Execute(slotType, id);
-        } catch (PlayerNotLoggedInException ex) {
-            throw HttpException.BadRequest(ex.Message, ex);
-        } catch (ActionLockedException ex) {
-            throw HttpException.Forbidden(ex.Message, ex);
-        } catch (ActionNotFoundException ex) {
-            throw HttpException.NotFound(ex.Message, ex);
-        } catch (IllegalGameStateException ex) {
-            throw HttpException.BadRequest(ex.Message, ex);
-        }
+        
+        ActionDispatcher.Execute(slotType, id);
     }
 }

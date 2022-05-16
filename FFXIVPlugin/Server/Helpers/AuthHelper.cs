@@ -53,7 +53,7 @@ public class AuthModule : WebModuleBase {
         PluginLog.Debug($"Got HTTP request {context.Request.HttpMethod} {context.Request.Url.PathAndQuery}");
 
         // websocket is allowed to skip auth
-        if (context.RequestedPath is "/ws" or "/xivdeck") {
+        if (context.RequestedPath is "/ws" or "/xivdeck" or "/diagnostics") {
             return Task.CompletedTask;
         }
         
