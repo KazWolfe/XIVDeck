@@ -2,6 +2,12 @@
 
 # XIVDeck
 
+[![Download count](https://img.shields.io/endpoint?url=https://vz32sgcoal.execute-api.us-east-1.amazonaws.com/XIVDeck.FFXIVPlugin)](https://github.com/KazWolfe/XIVDeck)
+[![Crowdin](https://badges.crowdin.net/xivdeck/localized.svg)](https://crowdin.com/project/xivdeck)
+[![Latest Release](https://img.shields.io/github/v/release/KazWolfe/XIVDeck)](https://github.com/KazWolfe/XIVDeck/releases/latest)
+[![Testing Release](https://img.shields.io/github/v/release/KazWolfe/XIVDeck?color=orange&include_prereleases&label=testing)](https://github.com/KazWolfe/XIVDeck/releases)
+
+
 XIVDeck is a project that attempts to bridge the gap between [Final Fantasy XIV][ffxiv] 
 and the [Elgato Stream Deck][streamdeck]. XIVDeck uses the Dalamud plugin library to 
 create an interactive and pleasant human interface experience.
@@ -59,11 +65,10 @@ versions are also available (and may at times be the only live version), but thi
 ### Building the Plugin
 
 If for some reason you'd rather be on the bleeding edge, you may also manually build the plugins.
-Note that support is *not* provided for self-built version of the plugin.
+Note that support is *not* provided for self-built versions.
 
 The XIVDeck Game Plugin is more or less self-contained and only needs to go through your IDE's
-normal build processes. Currently, the only version that's guaranteed to build (and work) is
-the Debug build. Place the output files (or symlink them) to 
+normal build processes. Place the output files (or symlink them) to 
 `%APPDATA%\XIVLauncher\devPlugins\XIVDeck` to get started.
 
 The XIVDeck Stream Deck Plugin can be installed by copying or symlinking the 
