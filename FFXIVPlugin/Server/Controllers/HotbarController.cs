@@ -1,5 +1,4 @@
 ﻿using System;
-using Dalamud.Logging;
 using EmbedIO;
 using EmbedIO.Routing;
 using EmbedIO.WebApi;
@@ -58,6 +57,7 @@ public class HotbarController : WebApiController {
         // non-game thread (as would be the case for API calls). Why this works normally for Spells and other
         // actions will forever be a mystery. 
         TickScheduler.Schedule(delegate { 
+            XIVDeckPlugin.Instance.SigHelper.PulseHotbarSlot(hotbarId, slotId);
             Framework.Instance()->UIModule->GetRaptureHotbarModule()->ExecuteSlotById((uint) hotbarId, (uint) slotId);
         });
     }
