@@ -73,7 +73,7 @@ public class IconManager : IDisposable {
             ClientLanguage.German => "de/",
             ClientLanguage.French => "fr/",
             _ => throw new ArgumentOutOfRangeException(nameof(iconLanguage),
-                "Unknown Language: " + Injections.DataManager.Language)
+                @"Unknown Language: " + Injections.DataManager.Language)
         };
 
         return this.GetIcon(language, iconId, hq, highres);

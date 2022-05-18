@@ -1,5 +1,4 @@
-﻿using System;
-using System.Dynamic;
+﻿using System.Dynamic;
 using EmbedIO;
 using EmbedIO.Routing;
 using EmbedIO.WebApi;

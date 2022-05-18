@@ -1,6 +1,4 @@
-﻿using XIVDeck.FFXIVPlugin.Resources.Localization;
-
-namespace XIVDeck.FFXIVPlugin; 
+﻿namespace XIVDeck.FFXIVPlugin; 
 
 public static class Constants {
     public const string MinimumSDPluginVersion = "0.1.0";

@@ -3,7 +3,7 @@
         <Product>XIVDeck Game Plugin</Product>
         <Authors>Kaz Wolfe</Authors>
         <Company>Blacksite Technologies</Company>
-        <Version>0.1.12</Version>
+        <Version>0.2.0</Version>
 
         <AssemblyName>XIVDeck.FFXIVPlugin</AssemblyName>
 
