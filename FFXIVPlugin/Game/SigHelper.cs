@@ -13,6 +13,7 @@ using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game.Structs;
 using XIVDeck.FFXIVPlugin.Server;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
+using XIVDeck.FFXIVPlugin.Utils;
 
 // ReSharper disable InconsistentNaming - matching expected documentation things
 // ReSharper disable UnusedAutoPropertyAccessor.Local - handled by siggingway and reflection
@@ -91,9 +92,10 @@ public unsafe class SigHelper : IDisposable {
     }
 
     public void PulseHotbarSlot(int hotbarId, int slotId) {
-        // Handle special case of the main action bar. Note that this is fragile - the mount hotbar is 18, but can
-        // (theoretically?) be in either cross or main territory.
-        var mainBarName = (hotbarId >= 10) ? "_ActionCross" : "_ActionBar";
+        var isCrossHotbar = GameUtils.IsCrossHotbar(hotbarId);
+        
+        // Handle the main hotbar, which is a bit interesting as it can behave oddly at times.
+        var mainBarName = isCrossHotbar ? "_ActionCross" : "_ActionBar";
         var mainBarPtr = Injections.GameGui.GetAddonByName(mainBarName, 1);
 
         if (mainBarPtr != IntPtr.Zero) {
@@ -106,8 +108,8 @@ public unsafe class SigHelper : IDisposable {
             PluginLog.Debug($"Couldn't find main hotbar addon {mainBarName}!");
         }
 
-        // also handle non-main hotbar
-        if (hotbarId is > 0 and < 10) {
+        // Aaand handle normal hotbars, if targeted.
+        if (!isCrossHotbar) {
             var actionBarName = $"_ActionBar{hotbarId:00}";
             var actionBarPtr = Injections.GameGui.GetAddonByName(actionBarName, 1);
 

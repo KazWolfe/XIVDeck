@@ -9,6 +9,7 @@ using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 using XIVDeck.FFXIVPlugin.Server.Types;
+using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.Server.Controllers;
 
@@ -63,13 +64,14 @@ public class HotbarController : WebApiController {
     }
 
     private void SafetyCheckHotbar(int hotbarId, int slotId) {
-        switch (hotbarId) {
-            // Safety checks
-            case < 0 or > 17:
-                throw new ArgumentException(UIStrings.HotbarController_InvalidHotbarIdError);
-            case < 10 when slotId is < 0 or > 11: // normal hotbars
+        // ToDo: Set this to be 19 (or do something) once ClientStructs supports pet/extra hotbars.
+        if (hotbarId is < 0 or > 17)
+            throw new ArgumentException(UIStrings.HotbarController_InvalidHotbarIdError);
+
+        switch (GameUtils.IsCrossHotbar(hotbarId)) {
+            case false when slotId is < 0 or > 11:
                 throw new ArgumentException(UIStrings.HotbarController_NormalHotbarInvalidSlotError);
-            case >= 10 when slotId is < 0 or > 15: // cross hotbars
+            case true when slotId is < 0 or > 15:
                 throw new ArgumentException(UIStrings.HotbarController_CrossHotbarInvalidSlotError);
         }
     }
