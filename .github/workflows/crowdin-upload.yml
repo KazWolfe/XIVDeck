@@ -2,7 +2,7 @@
 
 on:
   push:
-    branches: [ localization ]
+    branches: [ main ]
     
 jobs:
   crowdin-upload:
