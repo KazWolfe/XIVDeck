@@ -21,7 +21,7 @@ public class HotbarWatcher : IDisposable {
                 GetRaptureHotbarModule();
 
         var hotbarUpdated = false;
-            
+
         for (var hotbarId = 0; hotbarId < 17; hotbarId++) {
             var hotbar = hotbarModule->HotBar[hotbarId];
                 

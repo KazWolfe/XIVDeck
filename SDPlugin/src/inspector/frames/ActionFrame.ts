@@ -5,6 +5,7 @@ import piInstance from "../../inspector";
 import {PIUtils} from "../../util/PIUtils";
 import {StringUtils} from "../../util/StringUtils";
 import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
+import i18n from "../../i18n/i18n";
 
 const NAME_SUBSTITUTIONS: Record<string, string> = {
     "FieldMarker": "Waymark",
@@ -19,7 +20,7 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
     
     selectedType: string = "default";
     selectedAction: number = -1;
-    selectedActionName: string = "unknown";
+    selectedActionName: string = i18n.t("frames:action.unknown");
 
     constructor() {
         super();
@@ -32,7 +33,7 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
         this.actionSelector.id = "actionSelector";
         this.actionSelector.onchange = this._onItemChange.bind(this);
         
-        this.typeSelector.add(PIUtils.createDefaultSelection("action type"));
+        this.typeSelector.add(PIUtils.createDefaultSelection(i18n.t("frames:action.default-type")));
         
         piInstance.xivPluginLink.on("_ready", this.loadGameData.bind(this));
     }
@@ -46,8 +47,8 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
     }
 
     renderHTML(): void {
-        this.domParent.append(PIUtils.createPILabeledElement("Type", this.typeSelector));
-        this.domParent.append(PIUtils.createPILabeledElement("Action", this.actionSelector));
+        this.domParent.append(PIUtils.createPILabeledElement(i18n.t("frames:action.type"), this.typeSelector));
+        this.domParent.append(PIUtils.createPILabeledElement(i18n.t("frames:action.action"), this.actionSelector));
     }
 
     async loadGameData(): Promise<void> {
@@ -64,7 +65,8 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
             // their settings are lost. Hacky as hell, but...
             if (!onlyItem) {
                 let genericType = PIUtils.createDefaultSelection("");
-                genericType.text = StringUtils.expandCaps(NAME_SUBSTITUTIONS[this.selectedType] || this.selectedType);
+                let typeKey = `actiontypes:${this.selectedType}`
+                genericType.text = i18n.t(typeKey);
                 this.typeSelector.add(genericType);
             }
             
@@ -101,14 +103,15 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
     
     private _renderTypes() {
         this.typeSelector.options.length = 0;
-        this.typeSelector.add(PIUtils.createDefaultSelection("action type"));
+        this.typeSelector.add(PIUtils.createDefaultSelection(i18n.t("frames:action.default-type")));
         
         console.log(this.actionData, typeof(this.actionData))
         
         this.actionData.forEach((_, k) => {
             let option = document.createElement("option");
+            let typeKey = `actiontypes:${k}`
             option.value = k;
-            option.innerText = StringUtils.expandCaps(NAME_SUBSTITUTIONS[k] || k);
+            option.innerText = i18n.t(typeKey);
             this.typeSelector.add(option);
         })
     }
@@ -127,7 +130,7 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
         let items = this.actionData.get(this.selectedType) || [];
         console.debug("Loaded current selectable items for this PI instance", items)
 
-        this.actionSelector.add(PIUtils.createDefaultSelection("action"));
+        this.actionSelector.add(PIUtils.createDefaultSelection(i18n.t("frames:action.default-action")));
 
         items.forEach((ac) => {
             let parent: HTMLSelectElement | HTMLOptGroupElement = this.actionSelector;
@@ -145,7 +148,7 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
                 
             let option = document.createElement("option");
             option.value = ac.id.toString();
-            option.title = StringUtils.toTitleCase(ac.name || "unknown");
+            option.title = StringUtils.toTitleCase(ac.name || i18n.t("frames:action.unknown"));
             option.innerText = `[#${ac.id}] ${option.title}`;
             
             parent.append(option);
@@ -169,7 +172,7 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
         }
         
         this.selectedAction = parseInt(newSelection);
-        this.selectedActionName = this.actionSelector.selectedOptions[0].title || "unknown";
+        this.selectedActionName = this.actionSelector.selectedOptions[0].title || i18n.t("frames:action.unknown");
         
         this.setSettings({
             actionId: this.selectedAction,

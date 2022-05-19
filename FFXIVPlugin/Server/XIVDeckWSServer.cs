@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dalamud.Logging;
 using EmbedIO.WebSockets;
@@ -46,6 +47,8 @@ public class XIVDeckWSServer : WebSocketModule {
 
         await instance.Process(context);
     }
+
+    internal IReadOnlyList<IWebSocketContext> Connections => this.ActiveContexts;
 
     public new void Dispose() {
         Instance = null;

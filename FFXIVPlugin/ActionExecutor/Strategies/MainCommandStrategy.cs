@@ -6,6 +6,7 @@ using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
@@ -39,7 +40,7 @@ public class MainCommandStrategy : IActionStrategy {
 
     public unsafe void Execute(uint actionId, dynamic? _) {
         if (this._mainCommandCache.All(command => actionId != command.RowId))
-            throw new InvalidOperationException($"Main command action ID {actionId} is not valid.");
+            throw new InvalidOperationException(string.Format(UIStrings.MainCommandStrategy_ActionInvalidError, actionId));
             
         TickScheduler.Schedule(delegate {
             Framework.Instance()->GetUiModule()->ExecuteMainCommand(actionId);

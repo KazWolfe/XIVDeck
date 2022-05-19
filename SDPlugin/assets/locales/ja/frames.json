@@ -1,0 +1,35 @@
+{
+  "global": {
+    "port-label": "XIVDeck ポート"
+  },
+  "command": {
+    "command-label": "コマンド"
+  },
+  "hotbar": {
+    "hotbar": "ホットバー",
+    "slot": "スロット",
+    "standard-pl": "標準ホットバー",
+    "cross-pl": "クロスホットバー",
+    "standard": "ホットバー {{id}}",
+    "cross": "クロスホットバー {{id}}",
+    "default": "ホットバーを選択..."
+  },
+  "class": {
+    "default": "クラスを選択...",
+    "class": "クラス",
+    "unknown": "不明"
+  },
+  "action": {
+    "type": "タイプ",
+    "action": "アクション",
+    "default-type": "アクションタイプを選択...",
+    "default-action": "アクションを選択...",
+    "unknown": "不明"
+  },
+  "macro": {
+    "type": "マクロタイプ",
+    "number": "マクロ No.",
+    "individual": "個別",
+    "shared": "共有"
+  }
+}

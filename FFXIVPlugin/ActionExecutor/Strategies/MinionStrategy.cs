@@ -7,6 +7,7 @@ using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
@@ -42,11 +43,11 @@ public class MinionStrategy : IActionStrategy {
         var minion = GetMinionById(actionId);
             
         if (minion == null) {
-            throw new ArgumentNullException(nameof(actionId), $"No minion with ID {actionId} exists.");
+            throw new ArgumentNullException(nameof(actionId), string.Format(UIStrings.MinionStrategy_MinionNotFoundError, actionId));
         }
 
         if (!GameStateCache.IsMinionUnlocked(actionId)) {
-            throw new ActionLockedException($"The minion \"{minion.Singular}\" isn't unlocked and therefore can't be used.");
+            throw new ActionLockedException(string.Format(UIStrings.MinionStrategy_MinionLockedError, minion.Singular));
         }
             
         var command = $"/minion \"{minion.Singular}\"";

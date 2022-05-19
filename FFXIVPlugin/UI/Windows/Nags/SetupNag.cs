@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using Dalamud.Interface.Colors;
 using ImGuiNET;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.UI.Windows.Nags; 
@@ -24,32 +25,30 @@ public class SetupNag : NagWindow {
 
     protected override void _internalDraw() {
         ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
-        ImGui.Text("A Stream Deck has never connected to the game.");
+        ImGui.Text(UIStrings.SetupNag_Headline);
         ImGui.PopStyleColor();
         
         ImGui.Separator();
         
-        ImGui.Text("If you haven't done so already, please make sure you've downloaded and installed the " +
-                   "companion XIVDeck Stream Deck Plugin from GitHub.");
+        ImGui.Text(UIStrings.SetupNag_ResolutionHelp);
         
-        if (ImGui.Button("Open XIVDeck Download Page")) {
+        if (ImGui.Button(UIStrings.Nag_OpenGithubDownloadButton)) {
             PluginUI.OpenXIVDeckGitHub($"/releases/tag/v{VersionUtils.GetCurrentMajMinBuild()}");
         }
             
         // spacer, but bigger
         ImGui.Dummy(new Vector2(0, 15));
         
-        ImGui.Text("If the XIVDeck Stream Deck Plugin is already installed, please make sure the port is set " +
-                   "correctly in the configuration and that you've created at least one button.");
+        ImGui.Text(UIStrings.SetupNag_AlreadyInstalledHelp);
         
-        ImGui.Text($"Current port: {XIVDeckPlugin.Instance.Configuration.WebSocketPort}");
+        ImGui.Text(string.Format(UIStrings.SetupNag_CurrentPort, XIVDeckPlugin.Instance.Configuration.WebSocketPort));
         
-        ImGui.Text("If you need to change the port the server is hosted on, you may do so from XIVDeck's settings.");
-        if (ImGui.Button("Open XIVDeck Settings")) {
+        ImGui.Text(UIStrings.SetupNag_PortChangeHelp);
+        if (ImGui.Button(UIStrings.Nag_OpenSettingsButton)) {
             XIVDeckPlugin.Instance.DrawConfigUI();
         }
             
         ImGui.Spacing();
-        ImGui.TextColored(ImGuiColors.DalamudGrey, "To dismiss this message, resolve the above problem or uninstall the XIVDeck plugin.");
+        ImGui.TextColored(ImGuiColors.DalamudGrey, UIStrings.SetupNag_DismissHelp);
     }
 }

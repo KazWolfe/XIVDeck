@@ -1,6 +1,7 @@
 ﻿import {BaseFrame} from "../BaseFrame";
 import {HotbarButtonSettings} from "../../button/buttons/HotbarButton";
 import {PIUtils} from "../../util/PIUtils";
+import i18n from "../../i18n/i18n";
 
 export class HotbarFrame extends BaseFrame<HotbarButtonSettings> {
     // html elements
@@ -38,8 +39,8 @@ export class HotbarFrame extends BaseFrame<HotbarButtonSettings> {
     }
 
     renderHTML(): void {
-        this.domParent.append(PIUtils.createPILabeledElement("Hotbar", this.hotbarSelector));
-        this.domParent.append(PIUtils.createPILabeledElement("Slot", this.slotField));
+        this.domParent.append(PIUtils.createPILabeledElement(i18n.t("frames:hotbar.hotbar"), this.hotbarSelector));
+        this.domParent.append(PIUtils.createPILabeledElement(i18n.t("frames:hotbar.slot"), this.slotField));
         
         this._renderHotbarSelector();
         this.hotbarSelector.value = (this.hotbarId >= 0) ? this.hotbarId.toString() : "default";
@@ -51,10 +52,10 @@ export class HotbarFrame extends BaseFrame<HotbarButtonSettings> {
     
     private _renderHotbarSelector() {
         let standardGroup = document.createElement("optgroup");
-        standardGroup.label = "Standard Hotbars";
+        standardGroup.label = i18n.t("frames:hotbar.standard-pl")
         
         let crossGroup = document.createElement("optgroup");
-        crossGroup.label = "Cross Hotbars";
+        crossGroup.label = i18n.t("frames:hotbar.cross-pl")
         
         for (let i = 0; i <= 17; i++) {
             let isCrossHotbar = (i >= 10);
@@ -62,7 +63,11 @@ export class HotbarFrame extends BaseFrame<HotbarButtonSettings> {
             
             let entry = document.createElement("option");
             entry.value = i.toString();
-            entry.innerText = `${isCrossHotbar ? "Cross ": ""} Hotbar ${humanIndex}`
+            if (isCrossHotbar) {
+                entry.innerText = i18n.t("frames:hotbar.cross", {"id": humanIndex})
+            } else {
+                entry.innerText = i18n.t("frames:hotbar.standard", {"id": humanIndex})
+            }
             
             if (isCrossHotbar) {
                 crossGroup.append(entry);
@@ -72,7 +77,7 @@ export class HotbarFrame extends BaseFrame<HotbarButtonSettings> {
         }
         
         console.log(standardGroup, crossGroup);
-        this.hotbarSelector.add(PIUtils.createDefaultSelection("hotbar"));
+        this.hotbarSelector.add(PIUtils.createDefaultSelection(i18n.t("frames:hotbar.default")));
         this.hotbarSelector.add(standardGroup);
         this.hotbarSelector.add(crossGroup);
     }

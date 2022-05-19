@@ -1,5 +1,6 @@
 ﻿using System;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 
 namespace XIVDeck.FFXIVPlugin.Exceptions; 
 
@@ -11,11 +12,11 @@ public class IllegalGameStateException : InvalidOperationException {
 
 public class PlayerNotLoggedInException : IllegalGameStateException {
     public PlayerNotLoggedInException() :
-        base("A player is not logged in to the game.") { } 
+        base(UIStrings.Exceptions_PlayerNotLoggedIn) { } 
 }
 public class ActionLockedException : IllegalGameStateException {
     public ActionLockedException(HotbarSlotType type, uint actionId) :
-        base($"The {type} ID {actionId} is has not been unlocked and cannot be used.") { }
+        base(string.Format(UIStrings.Exceptions_ActionLocked, type, actionId)) { }
 
     public ActionLockedException(string message) : 
         base(message) { }
@@ -23,5 +24,5 @@ public class ActionLockedException : IllegalGameStateException {
 
 public class ActionNotFoundException : ArgumentException {
     public ActionNotFoundException(HotbarSlotType actionType, uint actionId) : 
-        base($"No {actionType} with ID {actionId} was found") { }
+        base(string.Format(UIStrings.Exceptions_ActionNotFound, actionType, actionId)) { }
 }

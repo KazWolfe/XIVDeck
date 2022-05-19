@@ -6,7 +6,9 @@ using EmbedIO.Routing;
 using EmbedIO.WebApi;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 using XIVDeck.FFXIVPlugin.Server.Types;
 using XIVDeck.FFXIVPlugin.Utils;
@@ -21,7 +23,7 @@ public class ClassController : WebApiController {
     public List<SerializableGameClass> GetClasses() {
         return SerializableGameClass.GetCache();
     }
-    
+
     [Route(HttpVerbs.Get, "/available")]
     public List<SerializableGameClass> GetAvailableClasses() {
         this._gameStateCache.Refresh();
@@ -40,35 +42,59 @@ public class ClassController : WebApiController {
 
     [Route(HttpVerbs.Post, "/{id}/execute")]
     public void SwitchClass(int id) {
-        if (id < 1) 
-            throw HttpException.BadRequest("Cannot switch to a class with ID less than 1.");
-        
-        if (!Injections.ClientState.IsLoggedIn)
-            throw HttpException.BadRequest("A player is not logged in to the game.");
+        if (id < 1)
+            throw HttpException.BadRequest(UIStrings.ClassController_ClassLessThan1Error);
 
-        this._gameStateCache.Refresh();
-        
-        foreach (var gearset in this._gameStateCache.Gearsets!) {
-            if (gearset.ClassJob != id) continue;
-            
-            TickScheduler.Schedule(delegate {
-                var command = $"/gs change {gearset.Slot}";
-                PluginLog.Debug($"Would send command: {command}");
-                ChatUtils.SendSanitizedChatMessage(command);
-            });
-            
-            return;
-        }
-        
-        // pretty error handling
+        if (!Injections.ClientState.IsLoggedIn)
+            throw new PlayerNotLoggedInException();
+
         var sheet = Injections.DataManager.Excel.GetSheet<ClassJob>();
         var classJob = sheet!.GetRow((uint) id);
 
-        if (classJob == null) 
-            throw HttpException.NotFound($"A class with ID {id} does not exist!");
-        
-        throw HttpException.BadRequest($"Couldn't switch to {classJob.NameEnglish} because you " +
-                                 $"don't have a gearset for this class. Make one and try again.");
+        if (classJob == null)
+            throw HttpException.NotFound(string.Format(UIStrings.ClassController_InvalidClassIdError, id));
+
+        this._gameStateCache.Refresh();
+
+        while (true) {
+            foreach (var gearset in this._gameStateCache.Gearsets!) {
+                if (gearset.ClassJob != id) continue;
+
+                TickScheduler.Schedule(delegate {
+                    var command = $"/gs change {gearset.Slot}";
+                    PluginLog.Debug($"Would send command: {command}");
+                    ChatUtils.SendSanitizedChatMessage(command);
+                });
+
+                // notify the user on fallback
+                if (id != classJob.RowId) {
+                    var fallbackClassJob = sheet!.GetRow((uint) id)!;
+
+                    PluginLog.Information($"Used fallback {fallbackClassJob.Abbreviation} for requested {classJob.Abbreviation}");
+                    var message = $"[{UIStrings.XIVDeck}] " + string.Format(
+                        UIStrings.ClassController_FallbackClassUsed, 
+                        UIStrings.Culture.TextInfo.ToTitleCase(classJob.Name), 
+                        UIStrings.Culture.TextInfo.ToTitleCase(fallbackClassJob.Name));
+
+                    Injections.Chat.Print(message);
+                    Injections.Toasts.ShowError(message);
+                }
+
+                return;
+            }
+
+            // fallback logic
+            var parentId = classJob.ClassJobParent.Row;
+            if (parentId == id || parentId == 0) {
+                PluginLog.Debug($"Couldn't find a fallback class for {classJob.Abbreviation}");
+                break;
+            }
+
+            id = (int) parentId;
+        }
+
+        throw HttpException.BadRequest(
+            string.Format(UIStrings.ClassController_NoGearsetForClassError, 
+                UIStrings.Culture.TextInfo.ToTitleCase(classJob.Name)));
     }
 }
-

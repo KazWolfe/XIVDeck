@@ -4,11 +4,12 @@ import piInstance from "../../inspector";
 import {StringUtils} from "../../util/StringUtils";
 import {PIUtils} from "../../util/PIUtils";
 import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
+import i18n from "../../i18n/i18n";
 
 export class ClassFrame extends BaseFrame<ClassButtonSettings> {
     classSelector: HTMLSelectElement;
     selected: number = -1; // prevent against race to load in visible settings
-    selectedName: string = "unknown";
+    selectedName: string = i18n.t("frames:class.unknown");
     
     constructor() {
         super();
@@ -27,7 +28,7 @@ export class ClassFrame extends BaseFrame<ClassButtonSettings> {
     }
 
     renderHTML(): void {
-        let sdItem = PIUtils.createPILabeledElement("Class", this.classSelector);
+        let sdItem = PIUtils.createPILabeledElement(i18n.t("frames:class.class"), this.classSelector);
         
         this.classSelector.options.length = 0;
         this.classSelector.add(PIUtils.createDefaultSelection("class"));
@@ -59,7 +60,7 @@ export class ClassFrame extends BaseFrame<ClassButtonSettings> {
         });
 
         this.classSelector.options.length = 0;
-        this.classSelector.add(PIUtils.createDefaultSelection("class"));
+        this.classSelector.add(PIUtils.createDefaultSelection(i18n.t("frames:class.default")));
         console.log(this, groupCache);
         groupCache.forEach((v) => {
             this.classSelector.add(v);

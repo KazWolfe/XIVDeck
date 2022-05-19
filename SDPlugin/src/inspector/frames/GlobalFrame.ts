@@ -2,6 +2,7 @@
 import {GlobalSettings} from "../../util/GlobalSettings";
 import {PIUtils} from "../../util/PIUtils";
 import piInstance from "../../inspector";
+import i18n from "../../i18n/i18n";
 
 export class GlobalFrame extends BaseFrame<GlobalSettings> {
     domParent: HTMLElement;
@@ -21,7 +22,7 @@ export class GlobalFrame extends BaseFrame<GlobalSettings> {
     }
     
     renderHTML(): void {
-        this.domParent.append(PIUtils.createPILabeledElement("XIVDeck Port", this.portField));
+        this.domParent.append(PIUtils.createPILabeledElement(i18n.t("frames:global.port-label"), this.portField));
         
         this.portField.onchange = this._onPortChange.bind(this);
     }

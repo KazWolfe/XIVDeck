@@ -1,0 +1,20 @@
+{
+  "headers": {
+    "action": "Configuration de l'Action",
+    "plugin": "Configuration du Plugin"
+  },
+  "versionInfo": {
+    "build": "Version de build :",
+    "runtime": "Version du Runtime :",
+    "game": "Version du Plugin en Jeu :"
+  },
+  "connError": {
+    "headline": "Le Plugin en Jeu de XIVDeck n'a pas été détecté !",
+    "clickMore": "Cliquez ici pour plus d'informations...",
+    "checkFor": "Veuillez vérifier que :",
+    "checkGameRunning": "Final Fantasy XIV est en cours d'exécution",
+    "checkPluginInstalled": "Le plugin de jeu de XIVDeck est correctement installé et configuré,",
+    "checkSettingsCorrect": "Les paramètres de connexion ci-dessous sont corrects.",
+    "resolveSteps": "Après avoir vérifié tout ce qui précède, rafraîchissez ce volet de paramètres pour réessayer la connexion au jeu."
+  }
+}

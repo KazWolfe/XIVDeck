@@ -7,10 +7,13 @@ using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.System.Memory;
 using FFXIVClientStructs.FFXIV.Client.System.String;
+using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game.Structs;
 using XIVDeck.FFXIVPlugin.Server;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
+using XIVDeck.FFXIVPlugin.Utils;
 
 // ReSharper disable InconsistentNaming - matching expected documentation things
 // ReSharper disable UnusedAutoPropertyAccessor.Local - handled by siggingway and reflection
@@ -88,6 +91,36 @@ public unsafe class SigHelper : IDisposable {
         Marshal.FreeHGlobal(ptr);
     }
 
+    public void PulseHotbarSlot(int hotbarId, int slotId) {
+        var isCrossHotbar = GameUtils.IsCrossHotbar(hotbarId);
+        
+        // Handle the main hotbar, which is a bit interesting as it can behave oddly at times.
+        var mainBarName = isCrossHotbar ? "_ActionCross" : "_ActionBar";
+        var mainBarPtr = Injections.GameGui.GetAddonByName(mainBarName, 1);
+
+        if (mainBarPtr != IntPtr.Zero) {
+            var activeHotbarId = *(byte*) (mainBarPtr + 0x23C); // offset to RaptureHotbarId
+
+            if (activeHotbarId == hotbarId) {
+                this.SafePulseBar((AddonActionBarBase*) mainBarPtr, slotId);
+            }
+        } else {
+            PluginLog.Debug($"Couldn't find main hotbar addon {mainBarName}!");
+        }
+
+        // Aaand handle normal hotbars, if targeted.
+        if (!isCrossHotbar) {
+            var actionBarName = $"_ActionBar{hotbarId:00}";
+            var actionBarPtr = Injections.GameGui.GetAddonByName(actionBarName, 1);
+
+            if (actionBarPtr != IntPtr.Zero) {
+                this.SafePulseBar((AddonActionBarBase*) actionBarPtr, slotId);
+            } else {
+                PluginLog.Debug($"Couldn't find hotbar addon {actionBarName}");
+            }
+        }
+    }
+
     public string GetSanitizedString(string input) {
         var uString = Utf8String.FromString(input);
 
@@ -109,9 +142,9 @@ public unsafe class SigHelper : IDisposable {
 
         switch (messageBytes.Length) {
             case 0:
-                throw new ArgumentException("Message cannot be empty", nameof(message));
+                throw new ArgumentException(@"Message cannot be empty", nameof(message));
             case > 500:
-                throw new ArgumentException("Message exceeds 500char limit", nameof(message));
+                throw new ArgumentException(@"Message exceeds 500char limit", nameof(message));
         }
 
         var payloadMem = Marshal.AllocHGlobal(400);
@@ -146,5 +179,17 @@ public unsafe class SigHelper : IDisposable {
         XIVDeckWSServer.Instance?.BroadcastMessage(new WSStateUpdateMessage("Macro"));
 
         return tmp;
+    }
+
+    private void SafePulseBar(AddonActionBarBase* actionBar, int slotId) {
+        if (slotId is < 0 or > 15) {
+            return;
+        }
+
+        if (!actionBar->AtkUnitBase.IsVisible) {
+            return;
+        }
+
+        actionBar->PulseActionBarSlot(slotId);
     }
 }

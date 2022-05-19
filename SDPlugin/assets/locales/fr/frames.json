@@ -1,0 +1,35 @@
+{
+  "global": {
+    "port-label": "Port de XIVDeck"
+  },
+  "command": {
+    "command-label": "Commande"
+  },
+  "hotbar": {
+    "hotbar": "Barre de raccourcis",
+    "slot": "Emplacement",
+    "standard-pl": "Barres de raccourcis standards",
+    "cross-pl": "Croix de raccourcis",
+    "standard": "Barre de raccourcis {{id}}",
+    "cross": "Croix de raccourcis {{id}}",
+    "default": "Sélectionnez la barre de raccourci..."
+  },
+  "class": {
+    "default": "Sélectionner la classe...",
+    "class": "Classe",
+    "unknown": "Inconnu"
+  },
+  "action": {
+    "type": "Type",
+    "action": "Action",
+    "default-type": "Sélectionnez le type d'action...",
+    "default-action": "Sélectionnez l'action...",
+    "unknown": "Inconnu"
+  },
+  "macro": {
+    "type": "Type de Macro",
+    "number": "Numéro de Macro",
+    "individual": "Personnage",
+    "shared": "Communes"
+  }
+}

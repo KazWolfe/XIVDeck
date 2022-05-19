@@ -10,18 +10,18 @@
   </div>
 
   <!-- Local settings for this action itself -->
-  <div class="sdpi-heading">Action Configuration</div>
+  <div class="sdpi-heading" id="actionConfig" data-i18n="common:headers.action">ACTION_CONFIG</div>
   <div id="dynamicPI"></div>
 
   <!-- Global settings -->
-  <div class="sdpi-heading">Plugin Configuration</div>
+  <div class="sdpi-heading" id="pluginConfig" data-i18n="common:headers.plugin">PLUGIN_CONFIG</div>
   <div id="globalPI"></div>
   
   <div class="version-info">
     <small>
-      <span>Build Version: <code>{{ PLUGIN_VERSION }}</code></span> &bull; 
-      <span>Runtime Version: <code id="runtime-version">???</code></span> <br>
-      <span>Game Plugin Version: <code id="xivdeck-game-version">???</code></span> &bull; 
+      <span><span data-i18n="common:versionInfo.build">BUILD_VER:</span> <code>{{ PLUGIN_VERSION }}</code></span> &bull; 
+      <span><span data-i18n="common:versionInfo.runtime">RUNTIME_VER:</span> <code id="runtime-version">???</code></span> <br>
+      <span><span data-i18n="common:versionInfo.game">GAMEPL_VER:</span> <code id="xivdeck-game-version">???</code></span> &bull; 
       <span>ID: <code>{{ PLUGIN_NS }}</code></span>
     </small>
   </div>

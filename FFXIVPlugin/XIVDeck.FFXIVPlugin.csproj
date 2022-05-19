@@ -3,7 +3,7 @@
         <Product>XIVDeck Game Plugin</Product>
         <Authors>Kaz Wolfe</Authors>
         <Company>Blacksite Technologies</Company>
-        <Version>0.1.14</Version>
+        <Version>0.2.0</Version>
 
         <AssemblyName>XIVDeck.FFXIVPlugin</AssemblyName>
 
@@ -86,6 +86,19 @@
         <Link>images\icon.png</Link>
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+    </ItemGroup>
+
+    <!-- Localization -->
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\Localization\UIStrings.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>UIStrings.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <Compile Update="Resources\Localization\UIStrings.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>UIStrings.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
     
     <!-- Build steps -->

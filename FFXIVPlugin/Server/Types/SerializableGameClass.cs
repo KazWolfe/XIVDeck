@@ -5,6 +5,7 @@ using Lumina.Excel;
 using Lumina.Excel.GeneratedSheets;
 using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 
 namespace XIVDeck.FFXIVPlugin.Server.Types; 
 
@@ -42,7 +43,7 @@ public class SerializableGameClass {
         var classJob = ClassSheet.GetRow((uint) id);
 
         if (classJob == null) {
-            throw new ArgumentOutOfRangeException(nameof(id), $"A class with ID {id} does not exist.");
+            throw new ArgumentOutOfRangeException(nameof(id), string.Format(UIStrings.GameClass_NotFoundError, id));
         }
 
         this.Name = classJob.Name.ToString();
@@ -55,7 +56,7 @@ public class SerializableGameClass {
             10 => "Disciple of the Hand",
             20 => "Disciple of the Land",
                 
-            _ => throw new IndexOutOfRangeException($"Unrecognized job category for class ID {this.Id}. REPORT THIS BUG!")
+            _ => throw new IndexOutOfRangeException(string.Format(UIStrings.GameClass_UncategorizedError, this.Id))
         };
 
         this.SortOrder = classJob.UIPriority;

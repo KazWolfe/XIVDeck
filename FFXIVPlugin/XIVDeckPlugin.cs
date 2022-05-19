@@ -1,10 +1,12 @@
-﻿using Dalamud.Interface.Windowing;
+﻿using System.Globalization;
+using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using FFXIVClientStructs;
 using XIVDeck.FFXIVPlugin.ActionExecutor;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.IPC;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server;
 using XIVDeck.FFXIVPlugin.Server.Types;
 using XIVDeck.FFXIVPlugin.UI;
@@ -17,7 +19,7 @@ namespace XIVDeck.FFXIVPlugin;
 public sealed class XIVDeckPlugin : IDalamudPlugin {
     public static XIVDeckPlugin Instance = null!;
         
-    public string Name => Constants.PluginName;
+    public string Name => UIStrings.XIVDeck_Title;
         
     public DalamudPluginInterface PluginInterface { get; init; }
     public PluginConfig Configuration { get; init; }
@@ -65,6 +67,9 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         this.PluginInterface.UiBuilder.Draw += this.WindowSystem.Draw;
         this.PluginInterface.UiBuilder.OpenConfigUi += this.DrawConfigUI;
 
+        this.PluginInterface.LanguageChanged += this.UpdateLang;
+        this.UpdateLang(this.PluginInterface.UiLanguage);
+
         Injections.ClientState.Login += DalamudHooks.OnGameLogin;
         this.InitializeNag();
     }
@@ -80,6 +85,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         this._ipcManager.Dispose();
 
         Injections.ClientState.Login -= DalamudHooks.OnGameLogin;
+        this.PluginInterface.LanguageChanged -= this.UpdateLang;
     }
 
     internal void DrawConfigUI() {
@@ -94,6 +100,10 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         if (!this.Configuration.HasLinkedStreamDeckPlugin) {
             SetupNag.Show();
         }
+    }
+
+    private void UpdateLang(string langCode) {
+        UIStrings.Culture = new CultureInfo(langCode);
     }
 
     internal void InitializeWebServer() {

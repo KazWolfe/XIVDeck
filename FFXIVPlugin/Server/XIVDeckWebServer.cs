@@ -2,7 +2,9 @@
 using System.Threading;
 using Dalamud.Logging;
 using EmbedIO;
+using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 
 namespace XIVDeck.FFXIVPlugin.Server;
@@ -45,17 +47,32 @@ public class XIVDeckWebServer : IDisposable {
 
     private void ConfigureErrorHandlers() {
         this._host.OnUnhandledException = (ctx, ex) => {
+            // Handle known exception types first, as these can be thrown by various subsystems
+            switch (ex) {
+                case ActionLockedException:
+                    throw HttpException.Forbidden(ex.Message, ex);
+                
+                case PlayerNotLoggedInException:
+                case IllegalGameStateException:
+                    throw HttpException.BadRequest(ex.Message, ex);
+                
+                case ActionNotFoundException:
+                    throw HttpException.NotFound(ex.Message, ex);
+            }
+
+            // And then fallback to unknown exceptions
             PluginLog.Error(ex, $"Unhandled exception while processing request: {ctx.Request.HttpMethod} {ctx.Request.Url.PathAndQuery}");
-            ErrorNotifier.ShowError($"[XIVDeck - ERROR] {ex.Message}");
+            ErrorNotifier.ShowError($"[{string.Format(UIStrings.ErrorHandler_ErrorPrefix, UIStrings.XIVDeck)}] {ex.Message}");
             return ExceptionHandler.Default(ctx, ex);
         };
 
         this._host.OnHttpException = (ctx, ex) => {
-            PluginLog.Warning((Exception) ex, $"Got HTTP {ex.StatusCode} while processing request: {ctx.Request.HttpMethod} {ctx.Request.Url.PathAndQuery}");
+            var inner = (Exception?) ex.DataObject ?? (Exception) ex;
+            PluginLog.Warning(inner, $"Got HTTP {ex.StatusCode} while processing request: {ctx.Request.HttpMethod} {ctx.Request.Url.PathAndQuery}");
 
             // Only show messages to users if it's a POST request (button action)
             if (ctx.Request.HttpVerb == HttpVerbs.Post) {
-                ErrorNotifier.ShowError($"[XIVDeck] {ex.Message}", true);
+                ErrorNotifier.ShowError($"[{UIStrings.XIVDeck}] {ex.Message}", true);
             }
             
             return HttpExceptionHandler.Default(ctx, ex);

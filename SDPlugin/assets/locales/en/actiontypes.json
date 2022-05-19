@@ -1,0 +1,14 @@
+{ 
+  "Collection": "Collection",
+  "Emote": "Emote",
+  "ExtraCommand": "Extra Command",
+  "GearSet": "Gear Set",
+  "GeneralAction": "General Action",
+  "PerformanceInstrument": "Performance Instrument",
+  "MainCommand":  "Main Command",
+  "Marker": "Marker",
+  "Minion": "Minion",
+  "Mount": "Mount",
+  "FashionAccessory": "Fashion Accessory",
+  "FieldMarker": "Waymark"
+}

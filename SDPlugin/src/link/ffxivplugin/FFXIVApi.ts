@@ -9,7 +9,7 @@ export class FFXIVApi {
         return FFXIVPluginLink.instance.baseUrl;
     }
     
-    private static async _requestWrapper(url: string, method: HTTPVerb = "GET", body: unknown = null) : Promise<Response | any> {
+    private static async _requestWrapper(url: string, method: HTTPVerb = "GET", queryParams?: Record<string, string>, body?: unknown) : Promise<Response | any> {
         if (this.getBaseUrl() == null || !FFXIVPluginLink.instance.isReady() || FFXIVPluginLink.instance.apiKey == "") {
             throw new Error("XIV API not initialized yet! Requests should not be getting made...")
         }
@@ -18,11 +18,17 @@ export class FFXIVApi {
             "Authorization": `Bearer ${FFXIVPluginLink.instance.apiKey}`
         }
         
+        let urlObject = new URL(url);
+        
+        if (queryParams != null) {
+            urlObject.search = new URLSearchParams(queryParams).toString();
+        }
+        
         let response: Response
         if (method == "GET" || method == "HEAD" ) {
-            response = await fetch(url, {method: method, headers: headers})
+            response = await fetch(urlObject.toString(), {method: method, headers: headers})
         } else {
-            response = await fetch(url, {method: method, body: JSON.stringify(body), headers: headers})
+            response = await fetch(urlObject.toString(), {method: method, body: JSON.stringify(body), headers: headers, })
         }
         
         if (!response.ok) {
@@ -38,7 +44,7 @@ export class FFXIVApi {
     }
 
     public static async getIcon(iconId: number, hq: boolean = false): Promise<string> {
-        let response = await this._requestWrapper(this.getBaseUrl() + `/icon/${iconId}?hq=${hq}`);
+        let response = await this._requestWrapper(this.getBaseUrl() + `/icon/${iconId}`, "GET", {"hq": `${hq}`});
         let blob = await response.blob();
         
         return new Promise( callback =>{
@@ -49,7 +55,7 @@ export class FFXIVApi {
     }
     
     public static async runTextCommand(command: string) : Promise<void> {
-        await FFXIVApi._requestWrapper(this.getBaseUrl() + `/command`, "POST", {
+        await FFXIVApi._requestWrapper(this.getBaseUrl() + `/command`, "POST", undefined, {
             "command": command
         });
     }

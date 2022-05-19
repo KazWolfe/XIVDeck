@@ -1,0 +1,20 @@
+{
+  "headers": {
+    "action": "アクション設定",
+    "plugin": "プラグイン設定"
+  },
+  "versionInfo": {
+    "build": "ビルドバージョン:",
+    "runtime": "ランタイムバージョン:",
+    "game": "ゲームプラグインバージョン:"
+  },
+  "connError": {
+    "headline": "XIVDeck Game Pluginは検出されませんでした。",
+    "clickMore": "クリックして詳細を見る",
+    "checkFor": "以下を確認してください:",
+    "checkGameRunning": "ファイナルファンタジーXIVは実行中です",
+    "checkPluginInstalled": "XIVDeck Game Pluginは正常にインストール、および設定されています。",
+    "checkSettingsCorrect": "下記の接続設定は正常です。",
+    "resolveSteps": "上記のすべてを確認した後、この設定ペインを更新して、再度ゲームへの接続を試みます。"
+  }
+}

@@ -3,6 +3,7 @@ using System.Security.Principal;
 using System.Threading.Tasks;
 using Dalamud.Logging;
 using EmbedIO;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.Server.Helpers; 
@@ -52,14 +53,14 @@ public class AuthModule : WebModuleBase {
         PluginLog.Debug($"Got HTTP request {context.Request.HttpMethod} {context.Request.Url.PathAndQuery}");
 
         // websocket is allowed to skip auth
-        if (context.RequestedPath is "/ws" or "/xivdeck") {
+        if (context.RequestedPath is "/ws" or "/xivdeck" or "/diagnostics") {
             return Task.CompletedTask;
         }
         
         var authHeader = context.Request.Headers[HttpHeaderNames.Authorization];
 
         if (!AuthHelper.Instance.VerifyAuth(authHeader)) 
-            throw HttpException.Unauthorized("API key missing or invalid.");
+            throw HttpException.Unauthorized(UIStrings.AuthModule_BadAPIKeyError);
         
         ((IHttpContextImpl) context).User = new GenericPrincipal(new GenericIdentity(""), new[] {"api"});
         

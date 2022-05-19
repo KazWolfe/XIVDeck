@@ -7,6 +7,8 @@ import {GlobalFrame} from "./inspector/frames/GlobalFrame";
 import {FFXIVInitReply} from "./link/ffxivplugin/GameTypes";
 import {PIUtils} from "./util/PIUtils";
 
+import i18n from "./i18n/i18n";
+
 class XIVDeckInspector {
     sdPluginLink: SDInspector = new Streamdeck().propertyinspector();
     xivPluginLink: FFXIVPluginLink = new FFXIVPluginLink(this.sdPluginLink);
@@ -14,20 +16,21 @@ class XIVDeckInspector {
     // state for this inspector
     uuid: string = "";
     dispatcher: PIDispatcher = new PIDispatcher();
-    globalInspector: GlobalFrame = new GlobalFrame();
+    globalInspector!: GlobalFrame;
     
     constructor() {
         console.log(this);
-        
-        this.sdPluginLink.on('didReceiveGlobalSettings', (ev: DidReceiveGlobalSettingsEvent) => this.handleDidReceiveGlobalSettings(ev));
-        this.sdPluginLink.on('didReceiveSettings', (ev: DidReceiveSettingsEvent) => this.handleDidReceiveSettings(ev))
 
         this.sdPluginLink.on('websocketOpen', (event => {
-            this.dispatcher.initialize();
-            
             this.uuid = event.uuid;
             this.sdPluginLink.getGlobalSettings(event.uuid);
             // this.sdPluginLink.getSettings(event.uuid);
+
+            // localization work
+            let aInfo = this.sdPluginLink.info.application as Record<string, string>;
+            i18n.changeLanguage(aInfo.language);
+            console.debug(`Language set to ${aInfo.language}`)
+            PIUtils.localizeDomTree();
 
             // load version into DOM (hacky)
             let pInfo = this.sdPluginLink.info.plugin as Record<string, string>;
@@ -35,6 +38,11 @@ class XIVDeckInspector {
             if (rtVersion) {
                 rtVersion.innerText = pInfo.version;
             }
+            
+            this.globalInspector = new GlobalFrame();
+            this.sdPluginLink.on('didReceiveGlobalSettings', (ev: DidReceiveGlobalSettingsEvent) => this.handleDidReceiveGlobalSettings(ev));
+            this.sdPluginLink.on('didReceiveSettings', (ev: DidReceiveSettingsEvent) => this.handleDidReceiveSettings(ev));
+            this.dispatcher.initialize();
         }));
     }
 

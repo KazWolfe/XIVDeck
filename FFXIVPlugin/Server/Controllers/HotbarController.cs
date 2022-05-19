@@ -1,13 +1,15 @@
 ﻿using System;
-using Dalamud.Logging;
 using EmbedIO;
 using EmbedIO.Routing;
 using EmbedIO.WebApi;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 using XIVDeck.FFXIVPlugin.Server.Types;
+using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.Server.Controllers;
 
@@ -40,41 +42,37 @@ public class HotbarController : WebApiController {
     
     [Route(HttpVerbs.Post, "/{hotbarId}/{slotId}/execute")]
     public unsafe void TriggerHotbarSlot(int hotbarId, int slotId) {
-        PluginLog.Debug("timing: TriggerHotbarSlot started");
-
         try {
             this.SafetyCheckHotbar(hotbarId, slotId);
         } catch (ArgumentException ex) { 
-            throw HttpException.BadRequest("An invalid hotbar or slot was triggered.", ex);
+            throw HttpException.BadRequest(UIStrings.HotbarController_InvalidHotbarOrSlotError, ex);
         }
         
         // this really should not be here as it's mixing the controller with business logic, but it can't really be
         // put anywhere else either.
         if (!Injections.ClientState.IsLoggedIn)
-            throw HttpException.BadRequest("A player is not logged in to the game.");
+            throw new PlayerNotLoggedInException();
 
         // Trigger the hotbar event on the next Framework tick, and also in the Framework (game main) thread.
         // For whatever reason, the game *really* doesn't like when a user casts a Weaponskill or Ability from a
         // non-game thread (as would be the case for API calls). Why this works normally for Spells and other
         // actions will forever be a mystery. 
-        PluginLog.Debug("timing: pre-TickScheduler");
         TickScheduler.Schedule(delegate { 
-            PluginLog.Debug("timing: TickScheduler start");
+            XIVDeckPlugin.Instance.SigHelper.PulseHotbarSlot(hotbarId, slotId);
             Framework.Instance()->UIModule->GetRaptureHotbarModule()->ExecuteSlotById((uint) hotbarId, (uint) slotId);
-            PluginLog.Debug("timing: TickScheduler end");
         });
-        PluginLog.Debug("timing: TriggerHotbarSlot ended");
     }
 
     private void SafetyCheckHotbar(int hotbarId, int slotId) {
-        switch (hotbarId) {
-            // Safety checks
-            case < 0 or > 17:
-                throw new ArgumentException("Hotbar ID must be between 0 and 17");
-            case < 10 when slotId is < 0 or > 11: // normal hotbars
-                throw new ArgumentException("When hotbarID < 10, Slot ID must be between 0 and 11");
-            case >= 10 when slotId is < 0 or > 15: // cross hotbars
-                throw new ArgumentException("When Hotbar ID >= 10, Slot ID must be between 0 and 15");
+        // ToDo: Set this to be 19 (or do something) once ClientStructs supports pet/extra hotbars.
+        if (hotbarId is < 0 or > 17)
+            throw new ArgumentException(UIStrings.HotbarController_InvalidHotbarIdError);
+
+        switch (GameUtils.IsCrossHotbar(hotbarId)) {
+            case false when slotId is < 0 or > 11:
+                throw new ArgumentException(UIStrings.HotbarController_NormalHotbarInvalidSlotError);
+            case true when slotId is < 0 or > 15:
+                throw new ArgumentException(UIStrings.HotbarController_CrossHotbarInvalidSlotError);
         }
     }
 }

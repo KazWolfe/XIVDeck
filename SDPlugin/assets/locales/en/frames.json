@@ -1,0 +1,35 @@
+{
+  "global": {
+    "port-label": "XIVDeck Port"
+  },
+  "command": {
+    "command-label": "Command"
+  },
+  "hotbar": {
+    "hotbar": "Hotbar",
+    "slot": "Slot",
+    "standard-pl": "Standard Hotbars",
+    "cross-pl": "Cross Hotbars",
+    "standard": "Hotbar {{id}}",
+    "cross": "Cross Hotbar {{id}}",
+    "default": "Select hotbar..."
+  },
+  "class": {
+    "default": "Select class...",
+    "class": "Class",
+    "unknown": "Unknown"
+  },
+  "action": {
+    "type": "Type",
+    "action": "Action",
+    "default-type": "Select action type...",
+    "default-action": "Select action...",
+    "unknown": "Unknown"
+  },
+  "macro": {
+    "type": "Macro Type",
+    "number": "Macro Number",
+    "individual": "Individual",
+    "shared": "Shared"
+  }
+}

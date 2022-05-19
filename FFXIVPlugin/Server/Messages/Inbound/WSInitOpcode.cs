@@ -7,6 +7,7 @@ using EmbedIO.WebSockets;
 using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 using XIVDeck.FFXIVPlugin.UI;
@@ -68,8 +69,7 @@ public class WSInitOpcode : BaseInboundMessage {
 
         // check for first-run
         if (!XIVDeckPlugin.Instance.Configuration.HasLinkedStreamDeckPlugin) {
-            Injections.Chat.Print("[XIVDeck] Thank you for installing the Stream Deck plugin. XIVDeck is " +
-                                  "now ready to go!");
+            Injections.Chat.Print($"[{UIStrings.XIVDeck}] " + UIStrings.WSInitOpcode_ThanksForInstall);
 
             XIVDeckPlugin.Instance.Configuration.HasLinkedStreamDeckPlugin = true;
             XIVDeckPlugin.Instance.Configuration.Save();
