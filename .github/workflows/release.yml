@@ -28,15 +28,11 @@ jobs:
         run: |
           $fileHashInfo = Get-FileHash .\FFXIVPlugin\bin\Release\XIVDeck.FFXIVPlugin\latest.zip;
           Write-Output "Hash of XIVDeck.FFXIVPlugin: $($fileHashInfo.Hash)";
-      - name: Upload Arifact to Release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: .\FFXIVPlugin\bin\Release\XIVDeck.FFXIVPlugin\latest.zip
-          asset_name: XIVDeck.FFXIVPlugin.zip
-          asset_content_type: application/zip
+          name: XIVDeck.FFXIVPlugin
+          path: .\FFXIVPlugin\bin\Release\XIVDeck.FFXIVPlugin\latest.zip
 
   build-sdplugin:
     name: Build XIVDeck Stream Deck Plugin
@@ -60,7 +56,12 @@ jobs:
         run: (cd dist && zip -r dev.wolf.xivdeck.streamDeckPlugin dev.wolf.xivdeck.sdPlugin)
       - name: Report Build Hash
         run: echo "[Build Audit] $(sha256sum dist/dev.wolf.xivdeck.streamDeckPlugin)"
-      - name: Upload Arifact to Release
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: XIVDeck.SDPlugin
+          path: ./SDPlugin/dist/dev.wolf.xivdeck.streamDeckPlugin
+      - name: Add Artifact to Release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
