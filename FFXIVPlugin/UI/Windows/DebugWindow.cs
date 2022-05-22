@@ -28,6 +28,9 @@ public class DebugWindow : Window  {
     }
 
     private readonly XIVDeckPlugin _plugin = XIVDeckPlugin.Instance;
+    
+    // flags
+    private bool _listenOnAllInterfaces;
 
     private DebugWindow() : base(WindowKey, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse) {
         this.Size = new Vector2(300, 250);
@@ -35,7 +38,11 @@ public class DebugWindow : Window  {
         
         this.IsOpen = true;
     }
-    
+
+    public override void OnOpen() {
+        this._listenOnAllInterfaces = XIVDeckPlugin.Instance.Configuration.ListenOnAllInterfaces;
+    }
+
     public override void OnClose() {
         this._plugin.WindowSystem.RemoveWindow(this);
     }
@@ -77,6 +84,10 @@ public class DebugWindow : Window  {
         ImGui.Spacing();
         if (ImGui.Button("Pseudo-localize")) {
             UIStrings.Culture = new CultureInfo("qps-ploc");
+        }
+
+        if (ImGui.Checkbox(UIStrings.SettingsWindow_ListenOnNetwork, ref this._listenOnAllInterfaces)) {
+            XIVDeckPlugin.Instance.Configuration.ListenOnAllInterfaces = this._listenOnAllInterfaces;
         }
     }
 }

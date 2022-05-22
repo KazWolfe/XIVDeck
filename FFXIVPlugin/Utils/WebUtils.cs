@@ -7,7 +7,7 @@ using XIVDeck.FFXIVPlugin.Server.Messages;
 namespace XIVDeck.FFXIVPlugin.Utils; 
 
 public static class WebUtils {
-    public static async Task SendMessage(IWebSocketContext context, BaseOutboundMessage message) {
+    public static async Task SendMessage(this IWebSocketContext context, BaseOutboundMessage message) {
         var serializedData = JsonConvert.SerializeObject(message);
         var encoded = Encoding.UTF8.GetBytes(serializedData);
         

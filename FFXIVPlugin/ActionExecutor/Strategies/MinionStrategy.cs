@@ -54,7 +54,7 @@ public class MinionStrategy : IActionStrategy {
             
         PluginLog.Debug($"Would execute command: {command}");
         TickScheduler.Schedule(delegate {
-            ChatUtils.SendSanitizedChatMessage(command);
+            GameUtils.SendSanitizedChatMessage(command);
         });
     }
 

@@ -235,4 +235,10 @@ Range: {1}-{2}</value>
     <data name="ClassController_FallbackClassUsed" xml:space="preserve">
         <value>No gearset was found for {0}, so your gearset for {1} was used instead.</value>
     </data>
+    <data name="SettingsWindow_XIVDeckPortOpen" xml:space="preserve">
+        <value>XIVDeck is accessible from computers on your network!</value>
+    </data>
+    <data name="SettingsWindow_ListenOnNetwork" xml:space="preserve">
+        <value>Listen on All Interfaces</value>
+    </data>
 </root>

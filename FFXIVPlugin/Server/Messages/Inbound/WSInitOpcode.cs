@@ -47,8 +47,8 @@ public class WSInitOpcode : BaseInboundMessage {
         }
 
         var xivPluginVersion = Assembly.GetExecutingAssembly().GetName().Version!;
-        var reply = new WSInitReplyMessage(xivPluginVersion.GetMajMinBuild(), AuthHelper.Instance.Secret);
-        await WebUtils.SendMessage(context, reply);
+        var reply = new WSInitReplyMessage(xivPluginVersion.GetMajMinBuild(), AuthHelper.Instance.Secret);  
+        await context.SendMessage(reply);
         PluginLog.Information($"XIVDeck Stream Deck Plugin ({this.Mode}) version {this.Version} has connected!");
 
         // version check

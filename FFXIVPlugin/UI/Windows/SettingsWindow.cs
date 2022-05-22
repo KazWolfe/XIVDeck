@@ -19,6 +19,7 @@ public class SettingsWindow : Window {
     private bool _safeMode = true;
     private bool _usePenumbraIPC;
     private bool _useMIconIcons;
+    private bool _listenOnAllInterfaces;
 
     public SettingsWindow(bool forceMainWindow = true) :
         base(WindowKey, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse, forceMainWindow) {
@@ -32,6 +33,8 @@ public class SettingsWindow : Window {
     public override void OnOpen() {
         this._websocketPort = this._plugin.Configuration.WebSocketPort;
         this._safeMode = this._plugin.Configuration.SafeMode;
+
+        this._listenOnAllInterfaces = this._plugin.Configuration.ListenOnAllInterfaces;
         
         // setting flags
         this._usePenumbraIPC = this._plugin.Configuration.UsePenumbraIPC;
@@ -69,8 +72,16 @@ public class SettingsWindow : Window {
         ImGui.PopItemWidth();
         ImGuiComponents.HelpMarker(string.Format(UIStrings.SettingsWindow_APIPort_Help, 37984, 1024, 59999));
 
-        ImGui.TextWrapped(string.Format(UIStrings.SettingsWindow_ListenIP, "127.0.0.1"));
-        
+        if (this._plugin.Configuration.ListenOnAllInterfaces) {
+            ImGui.Checkbox(UIStrings.SettingsWindow_ListenOnNetwork, ref this._listenOnAllInterfaces);
+            ImGui.PushTextWrapPos();
+            ImGui.TextWrapped(string.Format(UIStrings.SettingsWindow_ListenIP, "0.0.0.0"));
+            ImGui.TextColored(ImGuiColors.DalamudYellow, UIStrings.SettingsWindow_XIVDeckPortOpen);
+            ImGui.PopTextWrapPos();
+        } else {
+            ImGui.TextWrapped(string.Format(UIStrings.SettingsWindow_ListenIP, "127.0.0.1"));
+        }
+
         ImGui.Spacing();
         ImGui.Checkbox(UIStrings.SettingsWindow_EnablePenumbraIPC, ref this._usePenumbraIPC);
         ImGuiComponents.HelpMarker(UIStrings.SettingsWindow_EnablePenumbraIPC_Help);
@@ -117,6 +128,8 @@ public class SettingsWindow : Window {
 
         this._plugin.Configuration.UsePenumbraIPC = this._usePenumbraIPC;
         this._plugin.Configuration.UseMIconIcons = this._useMIconIcons;
+
+        this._plugin.Configuration.ListenOnAllInterfaces = this._listenOnAllInterfaces;
         
         this._plugin.Configuration.Save();
 

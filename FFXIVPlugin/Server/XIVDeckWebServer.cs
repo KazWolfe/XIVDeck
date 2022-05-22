@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using Dalamud.Logging;
 using EmbedIO;
@@ -42,7 +43,17 @@ public class XIVDeckWebServer : IDisposable {
     }
 
     private static string[] GenerateUrlPrefixes(int port) {
-        return new[] { $"http://localhost:{port}", $"http://127.0.0.1:{port}", $"http://[::1]:{port}" };
+        var prefixes = new List<string> { $"http://localhost:{port}", $"http://127.0.0.1:{port}" };
+        
+        if (System.Net.Sockets.Socket.OSSupportsIPv6) 
+            prefixes.Add($"http://[::1]:{port}");
+
+        if (XIVDeckPlugin.Instance.Configuration.ListenOnAllInterfaces) {
+            PluginLog.Warning("XIVDeck is configured to listen on all interfaces!!");
+            prefixes.Add($"http://*:{port}");
+        }
+
+        return prefixes.ToArray();
     }
 
     private void ConfigureErrorHandlers() {

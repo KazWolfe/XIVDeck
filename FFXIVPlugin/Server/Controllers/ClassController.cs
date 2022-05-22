@@ -11,7 +11,6 @@ using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 using XIVDeck.FFXIVPlugin.Server.Types;
-using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.Server.Controllers;
 
@@ -63,12 +62,12 @@ public class ClassController : WebApiController {
                 TickScheduler.Schedule(delegate {
                     var command = $"/gs change {gearset.Slot}";
                     PluginLog.Debug($"Would send command: {command}");
-                    ChatUtils.SendSanitizedChatMessage(command);
+                    GameUtils.SendSanitizedChatMessage(command);
                 });
 
                 // notify the user on fallback
                 if (id != classJob.RowId) {
-                    var fallbackClassJob = sheet!.GetRow((uint) id)!;
+                    var fallbackClassJob = sheet.GetRow((uint) id)!;
 
                     PluginLog.Information($"Used fallback {fallbackClassJob.Abbreviation} for requested {classJob.Abbreviation}");
                     var message = $"[{UIStrings.XIVDeck}] " + string.Format(

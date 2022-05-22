@@ -35,6 +35,7 @@
     <PropertyGroup>
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <PublishTrimmed>true</PublishTrimmed>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -44,10 +45,10 @@
     <ItemGroup>
         <!-- Image conversion to extract PNGs from Lumina -->
         <PackageReference Include="SixLabors.ImageSharp" Version="2.0.0" />
-        
+
         <!-- Webserver and socketing -->
         <PackageReference Include="EmbedIO" Version="3.4.3" />
-
+        
         <!-- Dalamud things -->
         <PackageReference Include="DalamudPackager" Version="2.1.7" GeneratePathProperty="false" />
         <PackageReference Include="ILRepack" Version="2.1.0-beta1" GeneratePathProperty="true" />
@@ -82,32 +83,39 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\SDPlugin\assets\images\icon@2x.png">
-        <Link>images\icon.png</Link>
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
+        <Content Include="..\SDPlugin\assets\images\icon@2x.png">
+            <Link>images\icon.png</Link>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
     <!-- Localization -->
     <ItemGroup>
-      <EmbeddedResource Update="Resources\Localization\UIStrings.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>UIStrings.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <Compile Update="Resources\Localization\UIStrings.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>UIStrings.resx</DependentUpon>
-      </Compile>
+        <!-- Do not include pseudo-localization files in the release build -->
+        <EmbeddedResource Remove="Resources\Localization\UIStrings.qps-ploc.resx" Condition="'$(Configuration)' == 'Release'" />
+        <None Include="Resources\Localization\UIStrings.qps-ploc.resx" Condition="'$(Configuration)' == 'Release'" />
+
+        <EmbeddedResource Update="Resources\Localization\UIStrings.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>UIStrings.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <Compile Update="Resources\Localization\UIStrings.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>UIStrings.resx</DependentUpon>
+        </Compile>
     </ItemGroup>
-    
+    <ItemGroup>
+      <Folder Include="lib" />
+    </ItemGroup>
+
     <!-- Build steps -->
     <Target Name="ILRepack" AfterTargets="Build">
         <ItemGroup>
             <InputAssemblies Include="$(TargetPath)" />
             <InputAssemblies Include="$(TargetDir)*.dll" Exclude="$(TargetPath)" />
         </ItemGroup>
-        <Exec Command="$(PkgILRepack)\tools\ILRepack.exe /lib:$(DalamudLibPath) /lib:$(TargetDir) /out:$(TargetDir)$(TargetFileName) @(InputAssemblies, ' ')" />    
+        <Exec Command="$(PkgILRepack)\tools\ILRepack.exe /lib:$(DalamudLibPath) /lib:$(TargetDir) /out:$(TargetDir)$(TargetFileName) @(InputAssemblies, ' ')" />
     </Target>
 
     <Target Name="CleanOutDir" AfterTargets="ILRepack">

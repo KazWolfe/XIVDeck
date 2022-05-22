@@ -526,6 +526,15 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Listen on All Interfaces.
+        /// </summary>
+        internal static string SettingsWindow_ListenOnNetwork {
+            get {
+                return ResourceManager.GetString("SettingsWindow_ListenOnNetwork", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DANGER: SAFE MODE DISABLED! You may be able to send illegal commands from your Stream Deck to the game..
         /// </summary>
         internal static string SettingsWindow_SafeModeDisabledWarning {
@@ -540,6 +549,15 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         internal static string SettingsWindow_Title {
             get {
                 return ResourceManager.GetString("SettingsWindow_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XIVDeck is accessible from computers on your network!.
+        /// </summary>
+        internal static string SettingsWindow_XIVDeckPortOpen {
+            get {
+                return ResourceManager.GetString("SettingsWindow_XIVDeckPortOpen", resourceCulture);
             }
         }
         

@@ -53,7 +53,7 @@ public class OrnamentStrategy : IActionStrategy {
         var command = $"/fashion \"{ornament.Singular}\"";
         PluginLog.Debug($"Would execute command: {command}");
         TickScheduler.Schedule(delegate {
-            ChatUtils.SendSanitizedChatMessage(command);
+            GameUtils.SendSanitizedChatMessage(command);
         });
     }
 
