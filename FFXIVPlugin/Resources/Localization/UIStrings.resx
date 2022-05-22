@@ -28,9 +28,11 @@
     </data>
     <data name="XIVDeck_Title" xml:space="preserve">
         <value>XIVDeck Game Plugin</value>
+        <comment>The proper title of the Dalamud plugin.</comment>
     </data>
     <data name="Exceptions_PlayerNotLoggedIn" xml:space="preserve">
         <value>A player is not logged in to the game.</value>
+        <comment>Shown when a user attempts to trigger a Stream Deck button without being logged in to the game.</comment>
     </data>
     <data name="Exceptions_ActionLocked" xml:space="preserve">
         <value>The {0} ID {1} has not been unlocked and cannot be used.</value>
@@ -123,6 +125,7 @@ Default: Off</value>
     </data>
     <data name="SettingsWindow_GitHubLink" xml:space="preserve">
         <value>XIVDeck GitHub</value>
+        <comment>Shown on a button to link to XIVDeck's GitHub page and source code.</comment>
     </data>
     <data name="SettingsWindow_ApplyButton" xml:space="preserve">
         <value>Apply Settings</value>
