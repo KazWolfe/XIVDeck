@@ -553,6 +553,17 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to When this option is enabled, the Stream Deck will respect any /micon commands in macros. When disabled, the Stream Deck will only show the Macro Icon from the provided drop-down.
+        ///
+        ///Default: Off.
+        /// </summary>
+        internal static string SettingsWindow_UseMIcon_Help {
+            get {
+                return ResourceManager.GetString("SettingsWindow_UseMIcon_Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to XIVDeck is accessible from computers on your network!.
         /// </summary>
         internal static string SettingsWindow_XIVDeckPortOpen {

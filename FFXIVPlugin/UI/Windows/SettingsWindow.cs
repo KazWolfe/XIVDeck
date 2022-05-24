@@ -22,10 +22,16 @@ public class SettingsWindow : Window {
     private bool _listenOnAllInterfaces;
 
     public SettingsWindow(bool forceMainWindow = true) :
-        base(WindowKey, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse, forceMainWindow) {
+        base(WindowKey, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoCollapse, forceMainWindow) {
+
+        var minSize = new Vector2(350, 250);
         
-        this.Size = new Vector2(300, 250);
+        this.Size = minSize;
         this.SizeCondition = ImGuiCond.FirstUseEver;
+        this.SizeConstraints = new WindowSizeConstraints {
+            MinimumSize = minSize,
+            MaximumSize = new Vector2(450, 400)
+        };
         
         this.IsOpen = true;
     }
@@ -48,8 +54,12 @@ public class SettingsWindow : Window {
     }
 
     public override void Draw() {
-        var windowSize = ImGui.GetWindowContentRegionMax();
+        var windowSize = ImGui.GetContentRegionAvail();
         this.WindowName = UIStrings.SettingsWindow_Title + WindowKey;
+
+        var pbs = ImGuiHelpers.GetButtonSize("placeholder");
+        
+        ImGui.BeginChild("SettingsPane", windowSize with {Y = windowSize.Y - pbs.Y - 6});
 
         if (!this._safeMode) {
             ImGui.PushTextWrapPos();
@@ -86,17 +96,17 @@ public class SettingsWindow : Window {
         ImGui.Checkbox(UIStrings.SettingsWindow_EnablePenumbraIPC, ref this._usePenumbraIPC);
         ImGuiComponents.HelpMarker(UIStrings.SettingsWindow_EnablePenumbraIPC_Help);
         
-        ImGui.Dummy(new Vector2(0, 20));
+        ImGui.Dummy(new Vector2(0, 10));
 
         ImGui.TextColored(ImGuiColors.DalamudYellow, UIStrings.SettingsWindow_ExperimentalSettings);
         ImGui.Indent();
         ImGui.Checkbox(UIStrings.SettingsWindow_Experiment_MIcon, ref this._useMIconIcons);
+        ImGuiComponents.HelpMarker(UIStrings.SettingsWindow_UseMIcon_Help);
         ImGui.Unindent();
+        
+        ImGui.EndChild();
 
         /* FOOTER */
-        var placeholderButtonSize = ImGuiHelpers.GetButtonSize("placeholder");
-
-        ImGui.SetCursorPosY(windowSize.Y - placeholderButtonSize.Y - 2);
         ImGui.Separator();
 
         if (ImGui.Button(UIStrings.SettingsWindow_GitHubLink)) PluginUI.OpenXIVDeckGitHub();
@@ -111,7 +121,7 @@ public class SettingsWindow : Window {
         var applyText = UIStrings.SettingsWindow_ApplyButton;
         var applyButtonSize = ImGuiHelpers.GetButtonSize(applyText);
 
-        ImGui.SameLine(windowSize.X - applyButtonSize.X - 20);
+        ImGui.SameLine(windowSize.X - applyButtonSize.X - 5);
         if (ImGui.Button(applyText)) {
             this.SaveSettings();
         }

@@ -7,7 +7,6 @@ using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
-using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
@@ -60,7 +59,7 @@ public class EmoteStrategy : IActionStrategy {
 
         PluginLog.Debug($"Would execute command: {textCommand.Command}");
         TickScheduler.Schedule(delegate {
-            ChatUtils.SendSanitizedChatMessage(textCommand.Command);
+            GameUtils.SendSanitizedChatMessage(textCommand.Command);
         });
     }
 

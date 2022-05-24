@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using System.Threading;
 using Dalamud.Logging;
 using EmbedIO;
@@ -45,7 +46,7 @@ public class XIVDeckWebServer : IDisposable {
     private static string[] GenerateUrlPrefixes(int port) {
         var prefixes = new List<string> { $"http://localhost:{port}", $"http://127.0.0.1:{port}" };
         
-        if (System.Net.Sockets.Socket.OSSupportsIPv6) 
+        if (Socket.OSSupportsIPv6) 
             prefixes.Add($"http://[::1]:{port}");
 
         if (XIVDeckPlugin.Instance.Configuration.ListenOnAllInterfaces) {
@@ -72,14 +73,17 @@ public class XIVDeckWebServer : IDisposable {
             }
 
             // And then fallback to unknown exceptions
-            PluginLog.Error(ex, $"Unhandled exception while processing request: {ctx.Request.HttpMethod} {ctx.Request.Url.PathAndQuery}");
+            PluginLog.Error(ex, $"Unhandled exception while processing request: " +
+                                $"{ctx.Request.HttpMethod} {ctx.Request.Url.PathAndQuery}");
             ErrorNotifier.ShowError($"[{string.Format(UIStrings.ErrorHandler_ErrorPrefix, UIStrings.XIVDeck)}] {ex.Message}");
             return ExceptionHandler.Default(ctx, ex);
         };
 
         this._host.OnHttpException = (ctx, ex) => {
-            var inner = (Exception?) ex.DataObject ?? (Exception) ex;
-            PluginLog.Warning(inner, $"Got HTTP {ex.StatusCode} while processing request: {ctx.Request.HttpMethod} {ctx.Request.Url.PathAndQuery}");
+            var inner = ex.DataObject as Exception ?? (HttpException) ex;
+
+            PluginLog.Warning(inner, $"Got HTTP {ex.StatusCode} while processing request: " +
+                                     $"{ctx.Request.HttpMethod} {ctx.Request.Url.PathAndQuery}");
 
             // Only show messages to users if it's a POST request (button action)
             if (ctx.Request.HttpVerb == HttpVerbs.Post) {

@@ -244,4 +244,9 @@ Range: {1}-{2}</value>
     <data name="SettingsWindow_ListenOnNetwork" xml:space="preserve">
         <value>Listen on All Interfaces</value>
     </data>
+    <data name="SettingsWindow_UseMIcon_Help" xml:space="preserve">
+        <value>When this option is enabled, the Stream Deck will respect any /micon commands in macros. When disabled, the Stream Deck will only show the Macro Icon from the provided drop-down.
+
+Default: Off</value>
+    </data>
 </root>

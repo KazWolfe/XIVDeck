@@ -7,7 +7,6 @@ using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 using XIVDeck.FFXIVPlugin.Server.Types;
-using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.Server.Controllers;
 
@@ -27,7 +26,7 @@ public class CommandController : WebApiController {
             throw HttpException.BadRequest(UIStrings.CommandController_NotCommandError);
             
         TickScheduler.Schedule(delegate {
-            ChatUtils.SendSanitizedChatMessage(command.Command, command.SafeMode);
+            GameUtils.SendSanitizedChatMessage(command.Command, command.SafeMode);
         });
     }
 }

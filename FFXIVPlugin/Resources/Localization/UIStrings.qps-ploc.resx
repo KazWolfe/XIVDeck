@@ -18,214 +18,214 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="XIVDeck" xml:space="preserve">
-        <value>ẊÎṼÐéçķ</value>
+        <value>« XÎVÐéçk »</value>
         <comment>Product name. Do not change.</comment>
     </data>
     <data name="StreamDeck" xml:space="preserve">
-        <value>Šţŕéàɱ Ðéççķ</value>
+        <value>« Stréàm Ðéççk »</value>
         <comment>Product name. Do not change.</comment>
     </data>
     <data name="XIVDeck_Title" xml:space="preserve">
-        <value>ẊÎṼÐéçķ Ĝààɱé Þļûĝîñ</value>
+        <value>« XÎVÐéçk Gààmé Þlûgîñ »</value>
     </data>
     <data name="Exceptions_PlayerNotLoggedIn" xml:space="preserve">
-        <value>À þļàýéŕ îîš ñôţ ļôĝĝĝéð îñ ţô ţţĥé ĝàɱé·</value>
+        <value>« À þlàýér îîs ñôt lôgggéð îñ tô tthé gàmé· »</value>
     </data>
     <data name="Exceptions_ActionLocked" xml:space="preserve">
-        <value>Ţĥé {0} ÎÐ {1}  ĥàš ñôţ ƀƀééñ ûñļôçķķéð àñð çàñññôţ ƀé ûšééð·</value>
+        <value>« Ţhé {0} ÎÐ {1}  hàs ñôt bbééñ ûñlôçkkéð àñð çàñññôt bé ûsééð· »</value>
     </data>
     <data name="Exceptions_ActionNotFound" xml:space="preserve">
-        <value>Ñô {0} ŵîţĥ  ÎÐ {1} ŵàš ƒƒôûñð·</value>
+        <value>« Ñô {0} wîth  ÎÐ {1} wàs ffôûñð· »</value>
     </data>
     <data name="CommandController_MissingCommandError" xml:space="preserve">
-        <value>À çôɱɱàñð  ţô ŕûñ ɱûššţ ƀé šþéçîîƒîéð·</value>
+        <value>« À çômmàñð  tô rûñ mûsst bé sþéçîîfîéð· »</value>
     </data>
     <data name="CommandController_NotCommandError" xml:space="preserve">
-        <value>Çôɱɱàñðš ɱɱûšţ šţàŕţ  ŵîţĥ à šļààšĥ·</value>
+        <value>« Çômmàñðs mmûst stàrt  wîth à slààsh· »</value>
     </data>
     <data name="ActionController_UnknownActionTypeError" xml:space="preserve">
-        <value>Ñô ŕéĝîšţééŕéð àçţîôññ ôƒ ţýþé {0}  ŵàš ƒôûñðð·</value>
+        <value>« Ñô régîstééréð àçtîôññ ôf týþé {0}  wàs fôûñðð· »</value>
     </data>
     <data name="ClassController_ClassLessThan1Error" xml:space="preserve">
-        <value>Çàññôţ šŵîîţçĥ ţô à ççļàšš ŵîţĥ  ÎÐ ļéšš ţĥĥàñ ①·</value>
+        <value>« Çàññôt swîîtçh tô à ççlàss wîth  ÎÐ léss thhàñ ①· »</value>
     </data>
     <data name="ClassController_InvalidClassIdError" xml:space="preserve">
-        <value>À çļàšš ŵîîţĥ ÎÐ {0} ðôôéš ñôţ éẋîîšţ¡</value>
+        <value>« À çlàss wîîth ÎÐ {0} ðôôés ñôt éxîîst¡ »</value>
     </data>
     <data name="ClassController_NoGearsetForClassError" xml:space="preserve">
-        <value>Çôûļðñ'ţ ššŵîţçĥ ţô {0}  ƀéçàûšé ýýôû ðôñ'ţ ĥĥàṽé à ĝéàŕŕšéţ ƒôŕ ţĥĥîš çļàšš·  Çŕéàţé ôñéé àñð ţŕý ààĝàîñ·</value>
+        <value>« Çôûlðñ't sswîtçh tô {0}  béçàûsé ýýôû ðôñ't hhàvé à géàrrsét fôr thhîs çlàss·  Çréàté ôñéé àñð trý ààgàîñ· »</value>
     </data>
     <data name="HotbarController_InvalidHotbarIdError" xml:space="preserve">
-        <value>Ĥôţƀàŕ ÎÐ  ɱûšţ ƀé ƀééţŵééñ ⓞ àññð ①⑦</value>
+        <value>« Hôtbàr ÎÐ  mûst bé béétwééñ ⓞ àññð ①⑦ »</value>
     </data>
     <data name="HotbarController_NormalHotbarInvalidSlotError" xml:space="preserve">
-        <value>Ŵĥéñ Ĥôţƀààŕ ÎÐ &lt; ①ⓞ،، Šļôţ ÎÐ ɱɱûšţ ƀé ƀéţţŵééñ ⓞ àñðð ①①</value>
+        <value>« Whéñ Hôtbààr ÎÐ &lt; ①ⓞ,, Slôt ÎÐ mmûst bé béttwééñ ⓞ àñðð ①① »</value>
     </data>
     <data name="HotbarController_CrossHotbarInvalidSlotError" xml:space="preserve">
-        <value>Ŵĥéñ Ĥôţƀààŕ ÎÐ &gt;= ①ⓞⓞ، Šļôţ ÎÐ  ɱûšţ ƀé ƀééţŵééñ ⓞ àññð ①⑤</value>
+        <value>« Whéñ Hôtbààr ÎÐ &gt;= ①ⓞⓞ, Slôt ÎÐ  mûst bé béétwééñ ⓞ àññð ①⑤ »</value>
     </data>
     <data name="HotbarController_InvalidHotbarOrSlotError" xml:space="preserve">
-        <value>Àñ îñṽàļîðð ĥôţƀàŕ ôŕŕ šļôţ ŵàš  ţŕîĝĝéŕéð··</value>
+        <value>« Àñ îñvàlîðð hôtbàr ôrr slôt wàs  trîggéréð·· »</value>
     </data>
     <data name="AuthModule_BadAPIKeyError" xml:space="preserve">
-        <value>ÀÞÎ ķéý ɱîîššîñĝ ôŕ îîñṽàļîð·</value>
+        <value>« ÀÞÎ kéý mîîssîñg ôr îîñvàlîð· »</value>
     </data>
     <data name="WSOpcodeWiring_UnknownOpcodeError" xml:space="preserve">
-        <value>Ñô ɱéššàĝéé éẋîšţš ŵîîţĥ ôþçôðé  {0}</value>
+        <value>« Ñô méssàgéé éxîsts wîîth ôþçôðé  {0} »</value>
     </data>
     <data name="EmoteStrategy_EmoteDoesntHaveCommandError" xml:space="preserve">
-        <value>Ţĥé éɱôţé  "{0}" ðôéš ññôţ ĥàṽé àññ àššôçîàţééð ţéẋţ çôɱɱɱàñð·</value>
+        <value>« Ţhé émôté  "{0}" ðôés ññôt hàvé àññ àssôçîàtééð téxt çômmmàñð· »</value>
     </data>
     <data name="EmoteStrategy_EmoteLockedError" xml:space="preserve">
-        <value>Ţĥé éɱôţé  "{0}" îšñ'ţ  ûñļôçķéð ààñð ţĥéŕéƒôôŕé çàñ'ţ ƀƀé ûšéð·</value>
+        <value>« Ţhé émôté  "{0}" îsñ't  ûñlôçkéð ààñð théréfôôré çàñ't bbé ûséð· »</value>
     </data>
     <data name="ExtraCommandStrategy_NoCommandError" xml:space="preserve">
-        <value>Ñô çôɱɱàñðð éẋîšţš ƒôôŕ Éẋţŕà Çôôɱɱàñð {0}· ŔŔÉÞÔŔŢ ŢĤÎŠŠ ƁÛĜ¡</value>
+        <value>« Ñô çômmàñðð éxîsts fôôr Éxtrà Çôômmàñð {0}· RRÉÞÔRŢ ŢHÎSS ƁÛG¡ »</value>
         <comment>This error message is shown when the command to use an "Extra Command" is not found. Because management of extra commands is done manually, additional instructions have been added for the user to report a bug to the developer.
         </comment>
     </data>
     <data name="FixedCommandStrategy_ActionNotFoundError" xml:space="preserve">
-        <value>Àñ àçţîôñ  ôƒ ţýþé {0}  ŵîţĥ ÎÐ {1}  ðôéš ñôţ ééẋîšţ·</value>
+        <value>« Àñ àçtîôñ  ôf týþé {0}  wîth ÎÐ {1}  ðôés ñôt ééxîst· »</value>
     </data>
     <data name="FixedCommandStrategy_IllegalActionError" xml:space="preserve">
-        <value>Ţĥé àçţîôññ ŵîţĥ ÎÐ {0}  îš ɱàŕķéðð àš îļļéĝààļ àñð çàñññôţ ƀé ûšéðð·</value>
+        <value>« Ţhé àçtîôññ wîth ÎÐ {0}  îs màrkéðð às îllégààl àñð çàñññôt bé ûséðð· »</value>
         <comment>Shown when the plugin blocks a user from calling an action marked as illegal (unsafe).</comment>
     </data>
     <data name="FixedCommandStrategy_SheetNotFoundError" xml:space="preserve">
-        <value>À šĥééţ ôƒƒ ţýþé {0} ðôôéš ñôţ éẋîîšţ·</value>
+        <value>« À shéét ôff týþé {0} ðôôés ñôt éxîîst· »</value>
     </data>
     <data name="SettingsWindow_Title" xml:space="preserve">
-        <value>ẊÎṼÐéçķ Ĝààɱé Þļûĝîñ  Šéţţîñĝš</value>
+        <value>« XÎVÐéçk Gààmé Þlûgîñ  Séttîñgs »</value>
     </data>
     <data name="SettingsWindow_SafeModeDisabledWarning" xml:space="preserve">
-        <value>ÐÀÑĜÉŔ∶ ŠÀÀƑÉ ṀÔÐÉ ÐÎÎŠÀƁĻÉÐ¡ Ýôôû ɱàý ƀé ààƀļé ţô šéññð îļļéĝàļ  çôɱɱàñðš ƒƒŕôɱ ýôûŕ ŠŠţŕéàɱ Ðéçķķ ţô ţĥé ĝààɱé·</value>
+        <value>« ÐÀÑGÉR: SÀÀƑÉ ṀÔÐÉ ÐÎÎSÀƁLÉÐ¡ Ýôôû màý bé ààblé tô séññð îllégàl  çômmàñðs ffrôm ýôûr SStréàm Ðéçkk tô thé gààmé· »</value>
         <comment>"Illegal commands" in this case mean commands that normally cannot be sent to the game and may cause damage or harm if proper care is not taken.</comment>
     </data>
     <data name="SettingsWindow_EnablePenumbraIPC" xml:space="preserve">
-        <value>Ûšé Þéñûɱƀƀŕà Îçôñš</value>
+        <value>« Ûsé Þéñûmbbrà Îçôñs »</value>
         <comment>Setting to enable integration with another app named Penumbra.</comment>
     </data>
     <data name="SettingsWindow_EnablePenumbraIPC_Help" xml:space="preserve">
-        <value>Ŵĥéñ éñàƀļļéð، ţĥîš ƒƒéàţûŕé ŵîļļļ àţţéɱþţ  ţô ðîšþļàýý îçôñš ƒŕôôɱ Þéñûɱƀŕàà ôñ ţĥé Šţţŕéàɱ Ðéçķ·· Ñôţé ţĥàţţ Þéñûɱƀŕà  ɱûšţ ƀé îññšţàļļéð ƒôôŕ ţĥîš šéţţţîñĝ ţô ĥààṽé àñý éƒƒƒéçţ·
+        <value>« Whéñ éñàblléð, thîs fféàtûré wîlll àttémþt  tô ðîsþlàýý îçôñs frôôm Þéñûmbràà ôñ thé Sttréàm Ðéçk·· Ñôté thàtt Þéñûmbrà  mûst bé îññstàlléð fôôr thîs sétttîñg tô hààvé àñý éffféçt·
 
-Îƒ ððîšàƀļéð، ôôŕîĝîñàļ ĝààɱé îçôñš ŵŵîļļ ƀé ûšééð îñšţéàð··
+Îf ððîsàbléð, ôôrîgîñàl gààmé îçôñs wwîll bé ûsééð îñstéàð··
 
-Ðéƒàûļţ∶∶ Ôƒƒ</value>
+Ðéfàûlt:: Ôff »</value>
     </data>
     <data name="SettingsWindow_ExperimentalSettings" xml:space="preserve">
-        <value>Éẋþéŕîɱéñţţàļ Šéţţîñĝĝš</value>
+        <value>« Éxþérîméñttàl Séttîñggs »</value>
         <comment>Header for configuration window section.</comment>
     </data>
     <data name="SettingsWindow_Experiment_MIcon" xml:space="preserve">
-        <value>Ûšé /ɱîçôññ Îçôñš</value>
+        <value>« Ûsé /mîçôññ Îçôñs »</value>
         <comment>/micon is a game-provided command. It can be left as-is.</comment>
     </data>
     <data name="SettingsWindow_GitHubLink" xml:space="preserve">
-        <value>ẊÎṼÐéçķ ĜîîţĤûƀ</value>
+        <value>« XÎVÐéçk GîîtHûb »</value>
     </data>
     <data name="SettingsWindow_ApplyButton" xml:space="preserve">
-        <value>Àþþļý Šéţţţîñĝš</value>
+        <value>« Àþþlý Sétttîñgs »</value>
         <comment>Used as a "save and apply" button for a settings dialog box. Should be a short string (under 20 characters)</comment>
     </data>
     <data name="SettingsWindow_APIPort" xml:space="preserve">
-        <value>ÀÞÎ Þôŕţ</value>
+        <value>« ÀÞÎ Þôrt »</value>
     </data>
     <data name="SettingsWindow_ListenIP" xml:space="preserve">
-        <value>Ļîšţéñ ÎÞ∶∶ {0}</value>
+        <value>« Lîstééñ ÎÞ: {0} »</value>
     </data>
     <data name="SettingsWindow_APIPort_Help" xml:space="preserve">
-        <value>Ðéƒàûļţ þôôŕţ∶ {0}
+        <value>« Ðéfàûlt þôôrt: {0}
 
-Ŕàññĝé∶ {1}‐{2}</value>
+Ràññgé: {1}‐{2} »</value>
     </data>
     <data name="ForcedUpdateNag_Headline" xml:space="preserve">
-        <value>Ţĥé ẊÎṼÐéççķ Šţŕéàɱ ÐÐéçķ Þļûĝîññ îš çŕîţîççàļļý ôûţ ôôƒ ðàţé àñðð ĥàš ƀééñ  ðîšàƀļéð·</value>
+        <value>« Ţhé XÎVÐéççk Stréàm ÐÐéçk Þlûgîññ îs çrîtîççàllý ôût ôôf ðàté àñðð hàs bééñ  ðîsàbléð· »</value>
     </data>
     <data name="Nag_OpenGithubDownloadButton" xml:space="preserve">
-        <value>Ôþéñ ẊÎṼÐééçķ Ðôŵñļôààð Þàĝé</value>
+        <value>« Ôþéñ XÎVÐééçk Ðôwñlôààð Þàgé »</value>
     </data>
     <data name="Nag_OpenSettingsButton" xml:space="preserve">
-        <value>Ôþéñ ẊÎṼÐééçķ Šéţţîñĝĝš</value>
+        <value>« Ôþéñ XÎVÐééçk Séttîñggs »</value>
     </data>
     <data name="ForcedUpdateNag_ResolutionHelp" xml:space="preserve">
-        <value>Þļéàšé ðôŵŵñļôàð àñð  îñšţàļļ ţĥĥé ļàţéšţ ṽṽéŕšîôñ ôƒ  ţĥé Šţŕéàɱɱ Ðéçķ Þļûĝĝîñ ƒŕôɱ ţĥĥé ẊÎṼÐéçķ  ĜîţĤûƀ ţô  çôñţîñûé ûûšîñĝ ẊÎṼÐééçķ·</value>
+        <value>« Þléàsé ðôwwñlôàð àñð  îñstàll thhé làtést vvérsîôñ ôf  thé Stréàmm Ðéçk Þlûggîñ frôm thhé XÎVÐéçk  GîtHûb tô  çôñtîñûé ûûsîñg XÎVÐééçk· »</value>
     </data>
     <data name="SetupNag_Headline" xml:space="preserve">
-        <value>À Šţŕéàɱ ÐÐéçķ ĥàš ñééṽéŕ çôññéççţéð ţô ţĥéé ĝàɱé·</value>
+        <value>« À Stréàm ÐÐéçk hàs ñéévér çôññéççtéð tô théé gàmé· »</value>
     </data>
     <data name="SetupNag_ResolutionHelp" xml:space="preserve">
-        <value>Îƒ ýôû ĥàṽṽéñ'ţ ðôñé  šô àļŕéàðýý، þļéàšé ɱɱàķé šûŕé ýýôû'ṽé ðôŵññļôàðéð àñðð îñšţàļļéðð ţĥé çôɱþààñîôñ ẊÎṼÐééçķ Šţŕéàɱ  Ðéçķ Þļûĝîîñ ƒŕôɱ ĜîţţĤûƀ·</value>
+        <value>« Îf ýôû hàvvéñ't ðôñé  sô àlréàðýý, þléàsé mmàké sûré ýýôû'vé ðôwññlôàðéð àñðð îñstàlléðð thé çômþààñîôñ XÎVÐééçk Stréàm  Ðéçk Þlûgîîñ frôm GîttHûb· »</value>
     </data>
     <data name="SetupNag_AlreadyInstalledHelp" xml:space="preserve">
-        <value>Îƒ ţĥé ẊÎṼṼÐéçķ Šţŕéààɱ Ðéçķ Þļûûĝîñ îš àļŕŕéàðý îñšţààļļéð، þļéààšé ɱàķé šûûŕé ţĥé þôŕŕţ îš šéţ ççôŕŕéçţļý îîñ ţĥé çôñƒƒîĝûŕàţîôñ  àñð ţĥàţ ýýôû'ṽé çŕéààţéð àţ ļéààšţ ôñé ƀûţţţôñ·</value>
+        <value>« Îf thé XÎVVÐéçk Stréààm Ðéçk Þlûûgîñ îs àlrréàðý îñstààlléð, þléààsé màké sûûré thé þôrrt îs sét ççôrréçtlý îîñ thé çôñffîgûràtîôñ  àñð thàt ýýôû'vé çréààtéð àt léààst ôñé bûtttôñ· »</value>
     </data>
     <data name="SetupNag_CurrentPort" xml:space="preserve">
-        <value>Çûŕŕéñţ þôôŕţ∶ {0}</value>
+        <value>« Çûrréñt þôôrt: {0} »</value>
     </data>
     <data name="SetupNag_PortChangeHelp" xml:space="preserve">
-        <value>Îƒ ýôû ñéééð ţô çĥàñĝĝé ţĥé þôŕţţ ţĥé šéŕṽééŕ îš ĥôšţééð ôñ، ýôû  ɱàý ðô šô  ƒŕôɱ ẊÎṼÐééçķ'š šéţţîîñĝš·</value>
+        <value>« Îf ýôû ñéééð tô çhàñggé thé þôrtt thé sérvéér îs hôstééð ôñ, ýôû  màý ðô sô  frôm XÎVÐééçk's séttîîñgs· »</value>
     </data>
     <data name="SetupNag_DismissHelp" xml:space="preserve">
-        <value>Ţô ðîšɱîššš ţĥîš ɱéšššàĝé، ŕéšôļļṽé ţĥé àƀôôṽé þŕôƀļéɱɱ ôŕ ûñîñšţţàļļ ţĥé ẊÎÎṼÐéçķ þļûĝĝîñ·</value>
+        <value>« Ţô ðîsmîsss thîs mésssàgé, résôllvé thé àbôôvé þrôblémm ôr ûñîñsttàll thé XÎÎVÐéçk þlûggîñ· »</value>
     </data>
     <data name="CollectionStrategy_CollectionNotFoundError" xml:space="preserve">
-        <value>Ñô Çôļļéçţţîôñ ŵîţĥ ÎÎÐ {0} éẋîšţšš·</value>
+        <value>« Ñô Çôlléçttîôñ wîth ÎÎÐ {0} éxîstss· »</value>
     </data>
     <data name="GearsetStrategy_GearsetNotFoundError" xml:space="preserve">
-        <value>Ñô ĝéàŕšéţţ éẋîšţš îññ šļôţ ñûɱƀƀéŕ {0}·</value>
+        <value>« Ñô géàrsétt éxîsts îññ slôt ñûmbbér {0}· »</value>
     </data>
     <data name="GeneralActionStrategy_ActionLockedError" xml:space="preserve">
-        <value>Ţĥé àçţîôññ "{0}" îš ñôôţ ýéţ ûñļôôçķéð·</value>
+        <value>« Ţhé àçtîôññ "{0}" îs ñôôt ýét ûñlôôçkéð· »</value>
     </data>
     <data name="GeneralActionStrategy_ActionIllegalError" xml:space="preserve">
-        <value>Ţĥé àçţîôññ "{0}" (ÎÐ {1})  îš ɱàŕķééð àš îļļéĝĝàļ àñð çàñññôţ ƀé ûšééð·</value>
+        <value>« Ţhé àçtîôññ "{0}" (ÎÐ {1})  îs màrkééð às îlléggàl àñð çàñññôt bé ûsééð· »</value>
         <comment>Shown when the plugin blocks a user from calling an action marked as illegal (unsafe).</comment>
     </data>
     <data name="InstrumentStrategy_PerformanceLockedError" xml:space="preserve">
-        <value>Þéŕƒôŕɱàñççé ɱôðé ĥàššñ'ţ ƀééñ ûûñļôçķéð ýééţ·</value>
+        <value>« Þérfôrmàñççé môðé hàssñ't bééñ ûûñlôçkéð ýéét· »</value>
         <comment>Shown when a user attempts to use a musical instrument without having Performance actions unlocked.</comment>
     </data>
     <data name="InstrumentStrategy_CurrentlyPerformingError" xml:space="preserve">
-        <value>Çàññôţ šŵîîţçĥ îñšţŕûûɱéñţš ŵĥîļļé îñ Þéŕƒôôŕɱàñçé ɱôððé·</value>
+        <value>« Çàññôt swîîtçh îñstrûûméñts whîllé îñ Þérfôôrmàñçé môððé· »</value>
         <comment>Shown when a user attempts to switch musical instruments while actively in a Performance.</comment>
     </data>
     <data name="InstrumentStrategy_InstrumentNotFoundError" xml:space="preserve">
-        <value>Ñô îñšţŕûɱɱéñţ ŵîţĥ ÎÎÐ {0} éẋîšţšš·</value>
+        <value>« Ñô îñstrûmméñt wîth ÎÎÐ {0} éxîstss· »</value>
         <comment>Shown when a user attempts to use an invalid or unknown musical instrument.</comment>
     </data>
     <data name="MacroStrategy_MacroEmptyError" xml:space="preserve">
-        <value>Ţĥé šþéçîƒƒîéð ɱàçŕô  îš éɱþţý ààñð çàññôţ  ƀé ûšéð·</value>
+        <value>« Ţhé sþéçîffîéð màçrô  îs émþtý ààñð çàññôt  bé ûséð· »</value>
     </data>
     <data name="MainCommandStrategy_ActionInvalidError" xml:space="preserve">
-        <value>Ṁàîñ çôɱɱààñð àçţîôñ  ÎÐ {0} îš ñôôţ ṽàļîð·</value>
+        <value>« Ṁàîñ çômmààñð àçtîôñ  ÎÐ {0} îs ñôôt vàlîð· »</value>
     </data>
     <data name="MinionStrategy_MinionNotFoundError" xml:space="preserve">
-        <value>Ñô ɱîñîôñ  ŵîţĥ ÎÐ {0}  éẋîšţš·</value>
+        <value>« Ñô mîñîôñ  wîth ÎÐ {0}  éxîsts· »</value>
     </data>
     <data name="MinionStrategy_MinionLockedError" xml:space="preserve">
-        <value>Ţĥé ɱîñîôññ "{0}" îšñ'ţţ ûñļôçķéð  àñð ţĥéŕéƒƒôŕé çàñ'ţ  ƀé ûšéð·</value>
+        <value>« Ţhé mîñîôññ "{0}" îsñ'tt ûñlôçkéð  àñð théréffôré çàñ't  bé ûséð· »</value>
     </data>
     <data name="MountStrategy_MountNotFoundError" xml:space="preserve">
-        <value>Ñô ɱôûñţ ŵŵîţĥ ÎÐ {0} ééẋîšţš·</value>
+        <value>« Ñô môûñt wwîth ÎÐ {0} ééxîsts· »</value>
     </data>
     <data name="MountStrategy_MountLockedError" xml:space="preserve">
-        <value>Ţĥé ɱôûñţ  "{0}" îšñ'ţ  ûñļôçķéð ààñð ţĥéŕéƒôôŕé çàñ'ţ ƀƀé ûšéð·</value>
+        <value>« Ţhé môûñt  "{0}" îsñ't  ûñlôçkéð ààñð théréfôôré çàñ't bbé ûséð· »</value>
     </data>
     <data name="OrnamentStrategy_OrnamentLockedError" xml:space="preserve">
-        <value>Ţĥé ƒàšĥîôôñ àççéššôŕŕý "{0}" îšñ'ţţ ûñļôçķéðð àñð ţĥéŕééƒôŕé çàñ'ţţ ƀé ûšéð·</value>
+        <value>« Ţhé fàshîôôñ àççéssôrrý "{0}" îsñ'tt ûñlôçkéðð àñð thérééfôré çàñ'tt bé ûséð· »</value>
     </data>
     <data name="ErrorHandler_ErrorPrefix" xml:space="preserve">
-        <value>{0} ‐ ÉŔŔÔŔ</value>
+        <value>« {0} ‐ ÉRRÔR »</value>
     </data>
     <data name="TickScheduler_ExceptionHandler" xml:space="preserve">
-        <value>Ţĥéŕé ŵàš  àñ îššûé ŕŕûññîñĝ à ţţàšķ∶ {0}∶ {1}</value>
+        <value>« Ţhéré wàs  àñ îssûé rrûññîñg à ttàsk: {0}: {1} »</value>
         <comment>"Task" may be substituted for "job" in this case. This string will display when a background job fails to execute.</comment>
     </data>
     <data name="GameClass_NotFoundError" xml:space="preserve">
-        <value>À çļàšš ŵîîţĥ ÎÐ {0} ðôôéš ñôţ éẋîîšţ·</value>
+        <value>« À çlàss wîîth ÎÐ {0} ðôôés ñôt éxîîst· »</value>
     </data>
     <data name="GameClass_UncategorizedError" xml:space="preserve">
-        <value>Ûñŕéçôĝñîžžéð ĵôƀ çàţţéĝôŕý ƒôŕ  çļàšš ÎÐ {0}·· ŔÉÞÔŔŢ ŢŢĤÎŠ ƁÛĜ¡</value>
+        <value>« Ûñréçôgñîžžéð ĵôb çàttégôrý fôr  çlàss ÎÐ {0}·· RÉÞÔRŢ ŢŢHÎS ƁÛG¡ »</value>
         <comment>Shown when plugin data is invalid and requires an update from the developer.</comment>
     </data>
 </root>
