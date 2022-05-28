@@ -27,19 +27,17 @@
   </data>
   <data name="XIVDeck_Title" xml:space="preserve">
     <value>Plugin de jeu XIVDeck</value>
+    <comment>The proper title of the Dalamud plugin.</comment>
   </data>
   <data name="Exceptions_PlayerNotLoggedIn" xml:space="preserve">
     <value>Aucun joueur n'est connecté au jeu.</value>
+    <comment>Shown when a user attempts to trigger a Stream Deck button without being logged in to the game.</comment>
   </data>
   <data name="Exceptions_ActionLocked" xml:space="preserve">
     <value>L'action de type {0} avec l'ID {1} n'a pas été débloquée et ne peut pas être utilisée.</value>
-    <comment>Exceptions_ActionLocked
-Semi-internal. Generally can be translated as `An action of type {0} with ID {1} has not been unlocked and cannot be used.` This string, in English, would be `An Emote with ID 123 has not been...`</comment>
   </data>
   <data name="Exceptions_ActionNotFound" xml:space="preserve">
     <value>L'action de type {0} avec l'ID {1} n'existe pas.</value>
-    <comment>Exceptions_ActionNotFound
-Semi-internal. Generally can be translated as `An action of type {0} with ID {1} cannot be found.` This string, in English, would be `An Emote with ID 123 cannot be found.`</comment>
   </data>
   <data name="CommandController_MissingCommandError" xml:space="preserve">
     <value>La commande à exécuter doit être spécifiée.</value>
@@ -126,6 +124,7 @@ Par défaut : Désactivé</value>
   </data>
   <data name="SettingsWindow_GitHubLink" xml:space="preserve">
     <value>GitHub de XIVDeck</value>
+    <comment>Shown on a button to link to XIVDeck's GitHub page and source code.</comment>
   </data>
   <data name="SettingsWindow_ApplyButton" xml:space="preserve">
     <value>Appliquer</value>
@@ -156,8 +155,6 @@ Plage : {1}-{2}</value>
   </data>
   <data name="SetupNag_Headline" xml:space="preserve">
     <value>Un Stream Deck n'a encore jamais été connecté au jeu jusqu'à maintenant.</value>
-    <comment>SetupNag_Headline
-Displayed when the user has never had a successful connection to any Stream Deck. Shows upon first install, or immediately after changing the server port without updating the Stream Deck Plugin side. Essentially, "there has never been a successful connection to the server's currently-defined port."</comment>
   </data>
   <data name="SetupNag_ResolutionHelp" xml:space="preserve">
     <value>Si vous ne l'avez pas déjà fait, assurez-vous d'avoir téléchargé et installé le plugin XIVDeck Stream Deck depuis GitHub.</value>
@@ -233,5 +230,24 @@ Displayed when the user has never had a successful connection to any Stream Deck
   <data name="GameClass_UncategorizedError" xml:space="preserve">
     <value>Catégorie de job non reconnue pour l'ID de classe {0}. SIGNALEZ CE BUG !</value>
     <comment>Shown when plugin data is invalid and requires an update from the developer.</comment>
+  </data>
+  <data name="WSInitOpcode_ThanksForInstall" xml:space="preserve">
+    <value>Merci d'avoir installé le plugin Stream Deck. XIVDeck est maintenant prêt à être utilisé !</value>
+  </data>
+  <data name="ClassController_FallbackClassUsed" xml:space="preserve">
+    <value>Aucune tenue n'a été trouvée pour {0}, donc votre tenue pour {1} a été utilisée à la place.</value>
+    <comment>ClassController_FallbackClassUsed
+Shown when XIVDeck uses a fallback class. Both placeholders will be (translated) class names, e.g. Paladin, Sage, Ninja.</comment>
+  </data>
+  <data name="SettingsWindow_XIVDeckPortOpen" xml:space="preserve">
+    <value>XIVDeck est accessible depuis les ordinateurs de votre réseau !</value>
+  </data>
+  <data name="SettingsWindow_ListenOnNetwork" xml:space="preserve">
+    <value>Écouter sur toutes les interfaces</value>
+  </data>
+  <data name="SettingsWindow_UseMIcon_Help" xml:space="preserve">
+    <value>Lorsque cette option est activée, le Stream Deck respectera toutes les commandes /micon dans les macros. Lorsqu'elle est désactivée, le Stream Deck n'affichera que l'icône de la macro en provenance du menu déroulant.
+
+Par défaut : Désactivé</value>
   </data>
 </root>

@@ -27,19 +27,17 @@
   </data>
   <data name="XIVDeck_Title" xml:space="preserve">
     <value>XIVDeck Spiele-Plugin</value>
+    <comment>The proper title of the Dalamud plugin.</comment>
   </data>
   <data name="Exceptions_PlayerNotLoggedIn" xml:space="preserve">
     <value>Ein Spieler ist nicht im Spiel eingeloggt.</value>
+    <comment>Shown when a user attempts to trigger a Stream Deck button without being logged in to the game.</comment>
   </data>
   <data name="Exceptions_ActionLocked" xml:space="preserve">
     <value>{0} ID {1} ist nicht freigeschaltet und kann nicht verwendet werden.</value>
-    <comment>Exceptions_ActionLocked
-Semi-internal. Generally can be translated as `An action of type {0} with ID {1} has not been unlocked and cannot be used.` This string, in English, would be `An Emote with ID 123 has not been...`</comment>
   </data>
   <data name="Exceptions_ActionNotFound" xml:space="preserve">
     <value>Kein {0} mit der ID {1} gefunden.</value>
-    <comment>Exceptions_ActionNotFound
-Semi-internal. Generally can be translated as `An action of type {0} with ID {1} cannot be found.` This string, in English, would be `An Emote with ID 123 cannot be found.`</comment>
   </data>
   <data name="CommandController_MissingCommandError" xml:space="preserve">
     <value>Ein auszuführender Befehl muss angegeben werden.</value>
@@ -126,6 +124,7 @@ Standard: Aus</value>
   </data>
   <data name="SettingsWindow_GitHubLink" xml:space="preserve">
     <value>XIVDeck GitHub</value>
+    <comment>Shown on a button to link to XIVDeck's GitHub page and source code.</comment>
   </data>
   <data name="SettingsWindow_ApplyButton" xml:space="preserve">
     <value>Übernehmen</value>
@@ -156,8 +155,6 @@ Bereich: {1}-{2}</value>
   </data>
   <data name="SetupNag_Headline" xml:space="preserve">
     <value>Ein Stream Deck hat sich nie mit dem Spiel verbunden.</value>
-    <comment>SetupNag_Headline
-Displayed when the user has never had a successful connection to any Stream Deck. Shows upon first install, or immediately after changing the server port without updating the Stream Deck Plugin side. Essentially, "there has never been a successful connection to the server's currently-defined port."</comment>
   </data>
   <data name="SetupNag_ResolutionHelp" xml:space="preserve">
     <value>Falls dies noch nicht getan wurde, stelle bitte sicher, dass das XIVDeck Stream Deck Plugin von GitHub heruntergeladen und installiert ist.</value>
@@ -235,4 +232,9 @@ Displayed when the user has never had a successful connection to any Stream Deck
     <value>Nicht erkannte Job-Kategorie für Klassen-ID {0}. BERICHTE DIESEN FEHLER!</value>
     <comment>Shown when plugin data is invalid and requires an update from the developer.</comment>
   </data>
+  
+  
+  
+  
+  
 </root>
