@@ -45,14 +45,14 @@ public class MinionStrategy : IActionStrategy {
             throw new ArgumentNullException(nameof(actionId), string.Format(UIStrings.MinionStrategy_MinionNotFoundError, actionId));
         }
 
-        if (!GameStateCache.IsMinionUnlocked(actionId)) {
+        if (!minion.IsUnlocked()) {
             throw new ActionLockedException(string.Format(UIStrings.MinionStrategy_MinionLockedError, minion.Singular));
         }
             
         var command = $"/minion \"{minion.Singular}\"";
             
         PluginLog.Debug($"Would execute command: {command}");
-        TickScheduler.Schedule(delegate {
+        Injections.Framework.RunOnFrameworkThread(delegate {
             GameUtils.SendSanitizedChatMessage(command);
         });
     }

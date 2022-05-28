@@ -42,7 +42,7 @@ public class MainCommandStrategy : IActionStrategy {
         if (this._mainCommandCache.All(command => actionId != command.RowId))
             throw new InvalidOperationException(string.Format(UIStrings.MainCommandStrategy_ActionInvalidError, actionId));
             
-        TickScheduler.Schedule(delegate {
+        Injections.Framework.RunOnFrameworkThread(delegate {
             Framework.Instance()->GetUiModule()->ExecuteMainCommand(actionId);
         });
     }

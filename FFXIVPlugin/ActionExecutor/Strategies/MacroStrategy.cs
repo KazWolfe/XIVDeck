@@ -2,8 +2,8 @@
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Client.UI.Shell;
+using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
-using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
@@ -49,9 +49,7 @@ public class MacroStrategy : IActionStrategy {
         }
 
         PluginLog.Debug($"Would execute macro number {macroNumber}");
-        TickScheduler.Schedule(delegate {
-            RaptureShellModule.Instance->ExecuteMacro(macro);
-        });
+        Injections.Framework.RunOnFrameworkThread(delegate { RaptureShellModule.Instance->ExecuteMacro(macro); });
     }
 
     public unsafe int GetIconId(uint item) {
@@ -67,7 +65,7 @@ public class MacroStrategy : IActionStrategy {
         var macroPage = item / 100;
         var macroId = item % 100;
 
-        return TickScheduler.RunOnNextFrame(() => {
+        return Injections.Framework.RunOnTick(() => {
             // It's terrifying that the easiest way to get macro icon information is to just create a virtual
             // hotbar slot, but it's also the easiest and most effective.
             var slot = new HotBarSlot();

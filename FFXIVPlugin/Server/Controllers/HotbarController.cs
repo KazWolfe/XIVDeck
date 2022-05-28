@@ -56,8 +56,8 @@ public class HotbarController : WebApiController {
         // For whatever reason, the game *really* doesn't like when a user casts a Weaponskill or Ability from a
         // non-game thread (as would be the case for API calls). Why this works normally for Spells and other
         // actions will forever be a mystery. 
-        TickScheduler.Schedule(delegate { 
-            XIVDeckPlugin.Instance.SigHelper.PulseHotbarSlot(hotbarId, slotId);
+        Injections.Framework.RunOnFrameworkThread(delegate { 
+            GameUtils.PulseHotbarSlot(hotbarId, slotId);
             Framework.Instance()->UIModule->GetRaptureHotbarModule()->ExecuteSlotById((uint) hotbarId, (uint) slotId);
         });
     }

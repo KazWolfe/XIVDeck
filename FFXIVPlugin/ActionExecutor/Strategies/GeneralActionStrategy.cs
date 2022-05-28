@@ -89,9 +89,7 @@ public class GeneralActionStrategy : IActionStrategy {
         var command = $"/generalaction \"{action.Name}\"";
             
         PluginLog.Debug($"Would execute command: {command}");
-        TickScheduler.Schedule(delegate {
-            GameUtils.SendSanitizedChatMessage(command);
-        });
+        Injections.Framework.RunOnFrameworkThread(delegate { GameUtils.SendSanitizedChatMessage(command); });
     }
 
     public unsafe int GetIconId(uint actionId) { 

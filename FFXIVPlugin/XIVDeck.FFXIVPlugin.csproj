@@ -105,9 +105,6 @@
             <DependentUpon>UIStrings.resx</DependentUpon>
         </Compile>
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="lib" />
-    </ItemGroup>
 
     <!-- Build steps -->
     <Target Name="ILRepack" AfterTargets="Build">

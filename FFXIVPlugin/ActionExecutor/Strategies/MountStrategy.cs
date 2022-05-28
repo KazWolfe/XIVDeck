@@ -35,20 +35,20 @@ public class MountStrategy : IActionStrategy {
     }
 
     public void Execute(uint actionId, dynamic? _) {
-        Mount? mount = GetMountById(actionId);
+        var mount = GetMountById(actionId);
 
         if (mount == null) {
             throw new ArgumentNullException(nameof(actionId), string.Format(UIStrings.MountStrategy_MountNotFoundError, actionId));
         }
             
-        if (!_gameStateCache.IsMountUnlocked(actionId)) {
+        if (!mount.IsUnlocked()) {
             throw new ActionLockedException(string.Format(UIStrings.MountStrategy_MountLockedError, mount.Singular));
         }
             
-        String command = $"/mount \"{mount.Singular}\"";
+        var command = $"/mount \"{mount.Singular}\"";
             
         PluginLog.Debug($"Would execute command: {command}");
-        TickScheduler.Schedule(delegate {
+        Injections.Framework.RunOnFrameworkThread(delegate {
             GameUtils.SendSanitizedChatMessage(command);
         });
     }

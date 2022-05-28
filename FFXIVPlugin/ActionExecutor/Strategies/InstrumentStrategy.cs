@@ -63,8 +63,8 @@ public class InstrumentStrategy : IActionStrategy {
             throw new ArgumentOutOfRangeException(nameof(actionId), string.Format(UIStrings.InstrumentStrategy_InstrumentNotFoundError, actionId));
         }
             
-        TickScheduler.Schedule(delegate {
-            XIVDeckPlugin.Instance.SigHelper.ExecuteHotbarAction(HotbarSlotType.PerformanceInstrument, actionId);
+        Injections.Framework.RunOnFrameworkThread(delegate {
+            GameUtils.ExecuteHotbarAction(HotbarSlotType.PerformanceInstrument, actionId);
         });
     }
 

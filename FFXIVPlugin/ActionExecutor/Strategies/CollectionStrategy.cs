@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel;
 using XIVDeck.FFXIVPlugin.Base;
@@ -39,15 +40,9 @@ public class CollectionStrategy : IActionStrategy {
     public List<ExecutableAction> GetAllowedItems() {
         GameStateCache.Refresh();
 
-        var results = new List<ExecutableAction>();
-
-        foreach (var mcguffin in Sheet) {
-            if (GameStateCache.IsMcGuffinUnlocked(mcguffin.RowId)) {
-                results.Add(GetExecutableAction(mcguffin));
-            }
-        }
-
-        return results;
+        return Sheet.Where(m => m.IsUnlocked())
+            .Select(GetExecutableAction)
+            .ToList();
     }
 
     public void Execute(uint actionId, dynamic? _) {
@@ -57,8 +52,8 @@ public class CollectionStrategy : IActionStrategy {
             throw new ArgumentOutOfRangeException(nameof(actionId), string.Format(UIStrings.CollectionStrategy_CollectionNotFoundError, actionId));
         }
             
-        TickScheduler.Schedule(delegate {
-            XIVDeckPlugin.Instance.SigHelper.ExecuteHotbarAction(HotbarSlotType.Collection, actionId);
+        Injections.Framework.RunOnFrameworkThread(delegate {
+            GameUtils.ExecuteHotbarAction(HotbarSlotType.Collection, actionId);
         });
     }
 

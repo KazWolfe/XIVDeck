@@ -53,12 +53,12 @@ public class EmoteStrategy : IActionStrategy {
             throw new KeyNotFoundException(string.Format(UIStrings.EmoteStrategy_EmoteDoesntHaveCommandError, emote.Name));
         }
 
-        if (!GameStateCache.IsEmoteUnlocked(emote.RowId)) {
+        if (!emote.IsUnlocked()) {
             throw new ActionLockedException(string.Format(UIStrings.EmoteStrategy_EmoteLockedError, emote.Name));
         }
 
         PluginLog.Debug($"Would execute command: {textCommand.Command}");
-        TickScheduler.Schedule(delegate {
+        Injections.Framework.RunOnFrameworkThread(delegate {
             GameUtils.SendSanitizedChatMessage(textCommand.Command);
         });
     }

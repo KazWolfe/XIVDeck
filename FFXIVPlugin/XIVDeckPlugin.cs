@@ -17,22 +17,22 @@ namespace XIVDeck.FFXIVPlugin;
 
 // ReSharper disable once ClassNeverInstantiated.Global - instantiation handled by Dalamud
 public sealed class XIVDeckPlugin : IDalamudPlugin {
-    public static XIVDeckPlugin Instance = null!;
+    internal static XIVDeckPlugin Instance = null!;
         
     public string Name => UIStrings.XIVDeck_Title;
         
     public DalamudPluginInterface PluginInterface { get; init; }
     public PluginConfig Configuration { get; init; }
-    public IconManager IconManager { get; set; }
-    public WindowSystem WindowSystem;
-    public SigHelper SigHelper { get; }
-        
-    public GameStateCache GameStateCache { get; }
+    
+    internal IconManager IconManager { get; }
+    internal WindowSystem WindowSystem { get; }
+    internal SigHelper SigHelper { get; }
+    internal GameStateCache GameStateCache { get; }
 
     private readonly HotbarWatcher _hotbarWatcher;
     private XIVDeckWebServer _xivDeckWebServer = null!;
     private readonly ChatLinkWiring _chatLinkWiring;
-    private IPCManager _ipcManager;
+    private readonly IPCManager _ipcManager;
 
     public XIVDeckPlugin(DalamudPluginInterface pluginInterface) {
         // Injections management

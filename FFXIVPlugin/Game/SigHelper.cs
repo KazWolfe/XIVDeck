@@ -7,9 +7,6 @@ using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.System.Memory;
 using FFXIVClientStructs.FFXIV.Client.System.String;
-using FFXIVClientStructs.FFXIV.Client.UI;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game.Structs;
 using XIVDeck.FFXIVPlugin.Server;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
@@ -19,7 +16,7 @@ using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 
 namespace XIVDeck.FFXIVPlugin.Game;
 
-public unsafe class SigHelper : IDisposable {
+internal unsafe class SigHelper : IDisposable {
     private static class Signatures {
         // todo: this is *way* too broad. this game is very write-happy when it comes to gearset updates.
         internal const string SaveGearset = "48 89 5C 24 ?? 48 89 74 24 ?? 57 48 83 EC 30 48 8B F2 48 8B F9 33 D2";
@@ -49,7 +46,6 @@ public unsafe class SigHelper : IDisposable {
 
     /***** hooks *****/
     private delegate IntPtr RaptureGearsetModule_WriteFile(IntPtr a1, IntPtr a2);
-
     private delegate IntPtr MacroUpdate(IntPtr a1, IntPtr macroPage, IntPtr macroNumber);
 
     [Signature(Signatures.SaveGearset, DetourName = nameof(DetourGearsetSave))]
@@ -74,53 +70,7 @@ public unsafe class SigHelper : IDisposable {
         GC.SuppressFinalize(this);
     }
 
-    public void ExecuteHotbarAction(HotbarSlotType commandType, uint commandId, bool safemode = true) {
-        var hotbarModulePtr = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule();
-
-        var slot = new HotBarSlot {
-            CommandType = commandType,
-            CommandId = commandId
-        };
-
-        var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(slot));
-        Marshal.StructureToPtr(slot, ptr, false);
-
-        hotbarModulePtr->ExecuteSlot((HotBarSlot*) ptr);
-
-        Marshal.FreeHGlobal(ptr);
-    }
-
-    public void PulseHotbarSlot(int hotbarId, int slotId) {
-        var isCrossHotbar = GameUtils.IsCrossHotbar(hotbarId);
-        
-        // Handle the main hotbar, which is a bit interesting as it can behave oddly at times.
-        var mainBarName = isCrossHotbar ? "_ActionCross" : "_ActionBar";
-        var mainBarPtr = Injections.GameGui.GetAddonByName(mainBarName, 1);
-
-        if (mainBarPtr != IntPtr.Zero) {
-            var activeHotbarId = *(byte*) (mainBarPtr + 0x23C); // offset to RaptureHotbarId
-
-            if (activeHotbarId == hotbarId) {
-                this.SafePulseBar((AddonActionBarBase*) mainBarPtr, slotId);
-            }
-        } else {
-            PluginLog.Debug($"Couldn't find main hotbar addon {mainBarName}!");
-        }
-
-        // Aaand handle normal hotbars, if targeted.
-        if (!isCrossHotbar) {
-            var actionBarName = $"_ActionBar{hotbarId:00}";
-            var actionBarPtr = Injections.GameGui.GetAddonByName(actionBarName, 1);
-
-            if (actionBarPtr != IntPtr.Zero) {
-                this.SafePulseBar((AddonActionBarBase*) actionBarPtr, slotId);
-            } else {
-                PluginLog.Debug($"Couldn't find hotbar addon {actionBarName}");
-            }
-        }
-    }
-
-    public string GetSanitizedString(string input) {
+    internal string GetSanitizedString(string input) {
         var uString = Utf8String.FromString(input);
 
         this._sanitizeChatString(uString, 0x27F, IntPtr.Zero);
@@ -132,7 +82,7 @@ public unsafe class SigHelper : IDisposable {
         return output;
     }
 
-    public void SendChatMessage(string message) {
+    internal void SendChatMessage(string message) {
         if (this._processChatBoxEntry == null) {
             throw new InvalidOperationException("Signature for ProcessChatBoxEntry/SendMessage not found!");
         }
@@ -154,7 +104,7 @@ public unsafe class SigHelper : IDisposable {
         Marshal.FreeHGlobal(payloadMem);
     }
 
-    public bool IsQuestCompleted(uint questId) {
+    internal bool IsQuestCompleted(uint questId) {
         if (this._isQuestCompleted == null) {
             throw new InvalidOperationException("Signature for IsQuestCompleted not found!");
         }
@@ -178,17 +128,5 @@ public unsafe class SigHelper : IDisposable {
         XIVDeckWSServer.Instance?.BroadcastMessage(new WSStateUpdateMessage("Macro"));
 
         return tmp;
-    }
-
-    private void SafePulseBar(AddonActionBarBase* actionBar, int slotId) {
-        if (slotId is < 0 or > 15) {
-            return;
-        }
-
-        if (!actionBar->AtkUnitBase.IsVisible) {
-            return;
-        }
-
-        actionBar->PulseActionBarSlot(slotId);
     }
 }

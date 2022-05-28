@@ -45,13 +45,13 @@ public class OrnamentStrategy : IActionStrategy {
             throw new ActionNotFoundException(HotbarSlotType.FashionAccessory, actionId);
         }
 
-        if (!GameStateCache.IsOrnamentUnlocked(actionId)) {
+        if (!ornament.IsUnlocked()) {
             throw new ActionLockedException(string.Format(UIStrings.OrnamentStrategy_OrnamentLockedError, ornament.Singular));
         }
             
         var command = $"/fashion \"{ornament.Singular}\"";
         PluginLog.Debug($"Would execute command: {command}");
-        TickScheduler.Schedule(delegate {
+        Injections.Framework.RunOnFrameworkThread(delegate {
             GameUtils.SendSanitizedChatMessage(command);
         });
     }

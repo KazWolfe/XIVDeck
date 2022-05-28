@@ -25,7 +25,7 @@ public class CommandController : WebApiController {
         if (!command.Command.StartsWith("/") && command.SafeMode)
             throw HttpException.BadRequest(UIStrings.CommandController_NotCommandError);
             
-        TickScheduler.Schedule(delegate {
+        Injections.Framework.RunOnFrameworkThread(delegate {
             GameUtils.SendSanitizedChatMessage(command.Command, command.SafeMode);
         });
     }

@@ -4,6 +4,7 @@ using System.Linq;
 using Dalamud.Logging;
 using Dalamud.Memory;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 
@@ -60,9 +61,7 @@ public class GearsetStrategy : IActionStrategy {
         var command = $"/gearset change {gearset.Value.Slot + 1}";
             
         PluginLog.Debug($"Would execute command: {command}");
-        TickScheduler.Schedule(delegate {
-            GameUtils.SendSanitizedChatMessage(command);
-        });
+        Injections.Framework.RunOnFrameworkThread(delegate { GameUtils.SendSanitizedChatMessage(command); });
     }
 
     public int GetIconId(uint slot) {

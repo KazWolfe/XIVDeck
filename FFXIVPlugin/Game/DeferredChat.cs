@@ -1,14 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using Dalamud.Game.Text.SeStringHandling;
 using XIVDeck.FFXIVPlugin.Base;
 
 namespace XIVDeck.FFXIVPlugin.Game; 
 
-public static class DeferredChat {
+internal static class DeferredChat {
     private static readonly List<SeString> DeferredMessages = new();
-    private static TickScheduler? _deferredTask;
+    private static CancellationTokenSource? _cts;
 
-    public static void SendOrDeferMessage(SeString message) {
+    internal static void SendOrDeferMessage(SeString message) {
         if (!Injections.ClientState.IsLoggedIn) {
             DeferredMessages.Add(message);
             return;
@@ -16,22 +18,18 @@ public static class DeferredChat {
         
         Injections.Chat.Print(message);
     }
-    public static void SendDeferredMessages(long millis = 0) {
-        // cancel a pre-existing deferred task if one exists - it seems reasonable that only one deferred send can
-        // exist at once.
-        _deferredTask?.Dispose();
+    internal static void SendDeferredMessages(long millis = 0) {
+        // Create a new CTS that can be used to cancel the next deferred message send 
+        _cts = new CancellationTokenSource();
         
-        _deferredTask = TickScheduler.Schedule(() => {
-            foreach (var message in DeferredMessages) {
-                Injections.Chat.Print(message);
-            }
-            
+        Injections.Framework.RunOnTick(() => {
+            DeferredMessages.ForEach(Injections.Chat.Print);
             DeferredMessages.Clear();
-        }, delay: millis);
+        }, delay: TimeSpan.FromMilliseconds(millis), cancellationToken: _cts.Token);
     }
 
-    public static void Cancel() {
+    internal static void Cancel() {
         DeferredMessages.Clear();
-        _deferredTask?.Dispose();
+        _cts?.Cancel();
     } 
 }

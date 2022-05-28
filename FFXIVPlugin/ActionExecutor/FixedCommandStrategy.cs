@@ -86,8 +86,7 @@ public abstract class FixedCommandStrategy<T> : IActionStrategy where T : ExcelR
         }
 
         PluginLog.Debug($"Would execute command: {command}");
-
-        TickScheduler.Schedule(delegate { GameUtils.SendSanitizedChatMessage(command); });
+        Injections.Framework.RunOnFrameworkThread(delegate { GameUtils.SendSanitizedChatMessage(command); });
     }
 
     public int GetIconId(uint actionId) {

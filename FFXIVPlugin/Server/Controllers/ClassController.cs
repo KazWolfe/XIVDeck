@@ -59,7 +59,7 @@ public class ClassController : WebApiController {
             foreach (var gearset in this._gameStateCache.Gearsets!) {
                 if (gearset.ClassJob != id) continue;
 
-                TickScheduler.Schedule(delegate {
+                Injections.Framework.RunOnFrameworkThread(delegate {
                     var command = $"/gs change {gearset.Slot}";
                     PluginLog.Debug($"Would send command: {command}");
                     GameUtils.SendSanitizedChatMessage(command);
