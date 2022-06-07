@@ -1,23 +1,27 @@
-﻿using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+﻿using System;
+using Dalamud.Logging;
+using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel.GeneratedSheets;
+using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Game;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
 [ActionStrategy(HotbarSlotType.FieldMarker)]
 public class WaymarkStrategy : FixedCommandStrategy<FieldMarker> {
-    protected override string GetNameForAction(FieldMarker action) {
-        return action.Name.ToString();
-    }
+    protected override string GetNameForAction(FieldMarker action) => action.Name.ToString();
 
-    protected override HotbarSlotType GetHotbarSlotType() {
-        return HotbarSlotType.FieldMarker;
-    }
+    protected override HotbarSlotType GetHotbarSlotType() => HotbarSlotType.FieldMarker;
 
-    protected override int GetIconForAction(FieldMarker action) {
-        return action.UiIcon;
-    }
+    protected override int GetIconForAction(FieldMarker action) => action.UiIcon;
 
-    protected override string GetCommandToCallAction(FieldMarker action) {
-        return $"/waymark \"{action.Name}\"";
+    protected override string GetCommandToCallAction(FieldMarker action) => throw new NotSupportedException();
+    
+    protected override void ExecuteInner(FieldMarker action) {
+        PluginLog.Debug($"Executing {action} ({action.Name}) directly via hotbar");
+        
+        Injections.Framework.RunOnFrameworkThread(delegate {
+            GameUtils.ExecuteHotbarAction(HotbarSlotType.FieldMarker, action.RowId);
+        });
     }
 }

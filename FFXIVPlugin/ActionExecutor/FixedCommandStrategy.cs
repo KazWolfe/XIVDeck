@@ -18,9 +18,7 @@ public abstract class FixedCommandStrategy<T> : IActionStrategy where T : ExcelR
     protected abstract int GetIconForAction(T action);
     protected abstract string? GetCommandToCallAction(T action);
 
-    protected virtual IEnumerable<uint> GetIllegalActionIDs() {
-        return Array.Empty<uint>();
-    }
+    protected virtual IEnumerable<uint> GetIllegalActionIDs() => Array.Empty<uint>();
 
     private static T? GetActionById(uint id) {
         // should never be null, T is inherently handled by Lumina
@@ -34,7 +32,7 @@ public abstract class FixedCommandStrategy<T> : IActionStrategy where T : ExcelR
             return this._actionCache;
         }
 
-        ExcelSheet<T> sheet = Injections.DataManager.Excel.GetSheet<T>()!;
+        var sheet = Injections.DataManager.Excel.GetSheet<T>()!;
 
         if (sheet == null) {
             throw new NullReferenceException(string.Format(UIStrings.FixedCommandStrategy_SheetNotFoundError, typeof(T).Name));
@@ -48,7 +46,7 @@ public abstract class FixedCommandStrategy<T> : IActionStrategy where T : ExcelR
             var actionName = this.GetNameForAction(row);
             if (string.IsNullOrEmpty(actionName)) continue;
 
-            this._actionCache.Add(new ExecutableAction() {
+            this._actionCache.Add(new ExecutableAction {
                 ActionId = (int) row.RowId,
                 ActionName = actionName,
                 IconId = this.GetIconForAction(row),
@@ -77,11 +75,18 @@ public abstract class FixedCommandStrategy<T> : IActionStrategy where T : ExcelR
                 string.Format(UIStrings.FixedCommandStrategy_ActionNotFoundError, typeof(T), actionId));
         }
 
+        // shenanigans, but allows us to ignore the entire text command processing chain if necessary
+        this.ExecuteInner(action);
+    }
+
+    protected virtual void ExecuteInner(T action) {
+        // The default implementation for ExecuteInner will use GCTCA to grab a command and then run it. This is
+        // probably a bit of an OOP code smell, but I'm far too lazy to redo this properly.
+        
         var command = this.GetCommandToCallAction(action);
 
         if (command == null) {
-            PluginLog.Warning(
-                "An ExecutableAction returned without a command. This shouldn't happen, but isn't fatal either.");
+            PluginLog.Warning("An ExecutableAction returned without a command. This *usually* shouldn't happen.");
             return;
         }
 
