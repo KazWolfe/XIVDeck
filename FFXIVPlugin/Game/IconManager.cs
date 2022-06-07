@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dalamud;
 using Dalamud.Logging;
-using Dalamud.Plugin;
 using Dalamud.Utility;
 using ImGuiScene;
 using Lumina.Data.Files;
@@ -17,52 +16,9 @@ using XIVDeck.FFXIVPlugin.IPC.Subscribers;
 namespace XIVDeck.FFXIVPlugin.Game; 
 
 // borrowed from https://github.com/Caraxi/RemindMe/blob/master/IconManager.cs
-public class IconManager : IDisposable {
+public class IconManager {
     private const string IconFileFormat = "ui/icon/{0:D3}000/{1}{2:D6}{3}.tex";
     
-    private readonly DalamudPluginInterface _pluginInterface;
-    private bool _disposed;
-    private readonly Dictionary<(int, bool), TextureWrap?> _iconTextures = new();
-
-    public IconManager(DalamudPluginInterface pluginInterface) {
-        this._pluginInterface = pluginInterface;
-    }
-
-    public void Dispose() {
-        this._disposed = true;
-        var c = 0;
-        PluginLog.Debug("Disposing icon textures");
-        foreach (var texture in this._iconTextures.Values.Where(texture => texture != null)) {
-            c++;
-            texture?.Dispose();
-        }
-
-        PluginLog.Debug($"Disposed {c} icon textures.");
-        this._iconTextures.Clear();
-
-        GC.SuppressFinalize(this);
-    }
-
-    private void LoadIconTexture(int iconId, bool hq = false) {
-        Task.Run(() => {
-            try {
-                var iconTex = this.GetIcon(iconId, hq) ?? this.GetIcon(0, hq)!;
-
-                var tex = this._pluginInterface.UiBuilder.LoadImageRaw(iconTex.GetRgbaImageData(),
-                    iconTex.Header.Width, iconTex.Header.Height, 4);
-
-                if (tex.ImGuiHandle != IntPtr.Zero) {
-                    this._iconTextures[(iconId, hq)] = tex;
-                } else {
-                    tex.Dispose();
-                }
-            } catch (Exception ex) {
-                PluginLog.Error($"Failed loading texture for icon {iconId} - {ex.Message}");
-                throw;
-            }
-        });
-    }
-
     private TexFile? GetIcon(int iconId, bool hq = false, bool highres = false) =>
         this.GetIcon(Injections.DataManager.Language, iconId, hq, highres);
 
@@ -97,7 +53,7 @@ public class IconManager : IDisposable {
         
         var texPath = GetIconPath(lang, iconId, hq, true);
 
-        if (texPath.Substring(1, 2) == ":/") {
+        if (texPath.Substring(1, 2) == ":\\") {
             PluginLog.Verbose($"Using on-disk asset {texPath}");
             texFile = Injections.DataManager.GameData.GetFileFromDisk<TexFile>(texPath);
         } else {
@@ -122,15 +78,6 @@ public class IconManager : IDisposable {
                 return texFile;
         }
     }
-
-    public TextureWrap? GetIconTexture(int iconId, bool hq = false) {
-        if (this._disposed) return null;
-        if (this._iconTextures.ContainsKey((iconId, hq))) return this._iconTextures[(iconId, hq)];
-        this._iconTextures.Add((iconId, hq), null);
-        this.LoadIconTexture(iconId, hq);
-        return this._iconTextures[(iconId, hq)];
-    }
-
 
     private static Image GetImage(TexFile tex) {
         return Image.LoadPixelData<Bgra32>(tex.ImageData, tex.Header.Width, tex.Header.Height);

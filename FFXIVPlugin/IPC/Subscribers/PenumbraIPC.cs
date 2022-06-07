@@ -1,23 +1,28 @@
 ﻿using System;
+using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Logging;
 using Dalamud.Plugin.Ipc;
 using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 
 namespace XIVDeck.FFXIVPlugin.IPC.Subscribers;
 
 [PluginIpc]
-public class PenumbraIPC : IPluginIpcClient {
+internal class PenumbraIPC : IPluginIpcClient {
+    private const int PenumbraIPCCompatVersion = 4;
+    
     // note: this is *extremely fragile* and honestly bad, but this will be instantiated by the system at a higher
     // level. if we want to consume the IPC, this should be a safe-ish way to do it, assuming null checks are used.
-    public static PenumbraIPC? Instance;
+    internal static PenumbraIPC? Instance;
     
     public bool Enabled { get; private set; }
     private ICallGateSubscriber<int>? _penumbraApiVersionSubscriber;
     private ICallGateSubscriber<string, string>? _penumbraResolveDefaultSubscriber;
 
-    private readonly ICallGateSubscriber<bool> _penumbraRegisteredSubscriber;
+    private readonly ICallGateSubscriber<object?> _penumbraRegisteredSubscriber;
 
-    public PenumbraIPC() {
+    internal PenumbraIPC() {
         Instance = this;
 
         try {
@@ -26,7 +31,7 @@ public class PenumbraIPC : IPluginIpcClient {
             PluginLog.Warning(ex, "Failed to initialize Penumbra IPC");
         }
 
-        this._penumbraRegisteredSubscriber = Injections.PluginInterface.GetIpcSubscriber<bool>("Penumbra.Initialized");
+        this._penumbraRegisteredSubscriber = Injections.PluginInterface.GetIpcSubscriber<object?>("Penumbra.Initialized");
         this._penumbraRegisteredSubscriber.Subscribe(this._initializeIpc);
     }
 
@@ -55,13 +60,17 @@ public class PenumbraIPC : IPluginIpcClient {
        
        this._penumbraApiVersionSubscriber = versionEndpoint;
 
-       if (version == 3) {
+       if (version == PenumbraIPCCompatVersion) {
            this._penumbraResolveDefaultSubscriber = Injections.PluginInterface.GetIpcSubscriber<string, string>("Penumbra.ResolveDefaultPath");
            
            this.Enabled = true;
            PluginLog.Information("Enabled Penumbra IPC connection!");
        } else {
            PluginLog.Warning($"Penumbra IPC detected, but version {version} is incompatible!");
+           DeferredChat.SendOrDeferMessage(new SeStringBuilder()
+               .AddUiForeground($"[{UIStrings.XIVDeck}] ", 514)
+               .AddText(UIStrings.PenumbraIPC_VersionMismatch)
+               .Build());
        }
    }
    

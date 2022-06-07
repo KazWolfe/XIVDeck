@@ -29,7 +29,7 @@ public class IPCManager : IDisposable {
             var attr = type.GetCustomAttribute<PluginIpcAttribute>();
             if (attr == null) continue;
             
-            var handler = (IPluginIpcClient) Activator.CreateInstance(type)!;
+            var handler = (IPluginIpcClient) Activator.CreateInstance(type, nonPublic: true)!;
 
             PluginLog.Debug($"Registered IPC: {handler.GetType()}");
             this._registeredIpcs.Add(handler);

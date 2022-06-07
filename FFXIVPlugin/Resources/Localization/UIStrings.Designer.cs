@@ -439,6 +439,15 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Penumbra integration has been disabled due to version incompatibilities. Please report this issue!.
+        /// </summary>
+        internal static string PenumbraIPC_VersionMismatch {
+            get {
+                return ResourceManager.GetString("PenumbraIPC_VersionMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to API Port.
         /// </summary>
         internal static string SettingsWindow_APIPort {

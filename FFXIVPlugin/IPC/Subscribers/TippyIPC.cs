@@ -8,9 +8,7 @@ using XIVDeck.FFXIVPlugin.Base;
 namespace XIVDeck.FFXIVPlugin.IPC.Subscribers; 
 
 [PluginIpc]
-public class TippyIPC : IPluginIpcClient {
-    public static TippyIPC? Instance;
-    
+internal class TippyIPC : IPluginIpcClient {
     public bool Enabled { get; private set; }
     
     private ICallGateSubscriber<int>? _tippyApiVersionSubscriber;
@@ -18,9 +16,7 @@ public class TippyIPC : IPluginIpcClient {
 
     private ICallGateSubscriber<bool> _tippyRegisteredSubscriber;
 
-    public TippyIPC() {
-        Instance = this;
-        
+    internal TippyIPC() {
         try {
             this._initializeIpc();
         } catch (Exception ex) {

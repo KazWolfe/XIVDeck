@@ -249,4 +249,7 @@ Range: {1}-{2}</value>
 
 Default: Off</value>
     </data>
+    <data name="PenumbraIPC_VersionMismatch" xml:space="preserve">
+        <value>The Penumbra integration has been disabled due to version incompatibilities. Please report this issue!</value>
+    </data>
 </root>

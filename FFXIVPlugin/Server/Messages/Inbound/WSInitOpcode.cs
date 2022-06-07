@@ -54,14 +54,12 @@ public class WSInitOpcode : BaseInboundMessage {
         // version check
         if (sdPluginVersion.IsOlderThan(xivPluginVersion) && (this.Mode is null or PluginMode.Plugin)) {
             var updateMessage = new SeStringBuilder()
-                .AddUiForeground(514)
-                .AddText($"[XIVDeck] Your version of the XIVDeck Stream Deck Plugin is out of date. Please " +
-                                 "consider installing ")
+                .AddUiForeground($"[{UIStrings.XIVDeck}] ", 514)
+                .AddText($"Your version of the XIVDeck Stream Deck Plugin is out of date. Please consider installing ")
                 .Add(ChatLinkWiring.GetPayload(LinkCode.GetGithubReleaseLink))
                 .AddUiForeground($"\xE0BB version {xivPluginVersion.GetMajMinBuild()}", 32)
                 .Add(RawPayload.LinkTerminator)
                 .AddText(" from GitHub!")
-                .AddUiForegroundOff()
                 .Build();
             
             DeferredChat.SendOrDeferMessage(updateMessage);
