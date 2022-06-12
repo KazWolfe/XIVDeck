@@ -12,6 +12,16 @@ XIVDeck is a project that attempts to bridge the gap between [Final Fantasy XIV]
 and the [Elgato Stream Deck][streamdeck]. XIVDeck uses the Dalamud plugin library to 
 create an interactive and pleasant human interface experience.
 
+> ⚠️ **Hic Svnt Leones!**
+> 
+> This plugin, alongside all of Dalamud, is against the Terms of Service for Final Fantasy XIV.
+> While this plugin has gone to great lengths to ensure that it is as safe as possible and adheres
+> to the spirit of the game, there is still a small risk. Please ensure you're only using official
+> builds and releases of all relevant tools.
+> 
+> By using this plugin (and Dalamud itself), you understand that you are risking receiving a
+> ban for client modifications. For more information, please see [Dalamud's FAQ][dalamudfaq-tos].
+
 ## Plugin Components
 
 This plugin has two primary components:
@@ -80,3 +90,4 @@ the plugin to be detected.
 [streamdeck]: https://www.elgato.com/en/stream-deck
 [releases]: https://github.com/KazWolfe/XIVDeck/releases
 [dalamudfaq-test]: https://goatcorp.github.io/faq/dalamud_troubleshooting.html#q-how-do-i-enable-plugin-test-builds
+[dalamudfaq-tos]: https://goatcorp.github.io/faq/xl_troubleshooting#q-are-xivlauncher-dalamud-and-dalamud-plugins-safe-to-use
