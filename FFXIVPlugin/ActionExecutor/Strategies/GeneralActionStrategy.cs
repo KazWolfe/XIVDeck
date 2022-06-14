@@ -38,6 +38,8 @@ public class GeneralActionStrategy : IActionStrategy {
             
         var illegalActions = new List<uint> {
             13, // Advanced Materia Melding - automatically injected on use of Materia Melding
+            29, // Sort Pet Hotbar (Normal) - contextual
+            30, // Sort Pet Hotbar (Cross)  - contextual
         };
 
         foreach (var action in ActionSheet) {

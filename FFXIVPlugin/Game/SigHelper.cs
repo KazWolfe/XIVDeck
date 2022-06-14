@@ -116,7 +116,11 @@ internal unsafe class SigHelper : IDisposable {
         PluginLog.Debug("Gearset update!");
         var tmp = this.RGM_WriteFileHook!.Original(a1, a2);
 
-        XIVDeckWSServer.Instance?.BroadcastMessage(new WSStateUpdateMessage("GearSet"));
+        try {
+            XIVDeckWSServer.Instance?.BroadcastMessage(new WSStateUpdateMessage("GearSet"));
+        } catch (Exception ex) {
+            PluginLog.Error(ex, "Gearset update notification on hook failed");
+        }
 
         return tmp;
     }
@@ -125,7 +129,11 @@ internal unsafe class SigHelper : IDisposable {
         PluginLog.Debug("Macro update!");
         var tmp = this.MacroUpdateHook!.Original(a1, macroPage, macroSlot);
 
-        XIVDeckWSServer.Instance?.BroadcastMessage(new WSStateUpdateMessage("Macro"));
+        try {
+            XIVDeckWSServer.Instance?.BroadcastMessage(new WSStateUpdateMessage("Macro"));
+        } catch (Exception ex) {
+            PluginLog.Error(ex, "Macro update notification on hook failed");
+        }
 
         return tmp;
     }
