@@ -1,253 +1,254 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:element name="root" msdata:IsDataSet="true">
+    <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+        <xsd:element name="root" msdata:IsDataSet="true">
             
         </xsd:element>
-  </xsd:schema>
-  <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>1.3</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <data name="XIVDeck" xml:space="preserve">
-    <value>XIVDeck</value>
-    <comment>Product name. Do not change.</comment>
-  </data>
-  <data name="StreamDeck" xml:space="preserve">
-    <value>Stream Deck</value>
-    <comment>Product name. Do not change.</comment>
-  </data>
-  <data name="XIVDeck_Title" xml:space="preserve">
-    <value>XIVDeck Game Plugin</value>
-    <comment>The proper title of the Dalamud plugin.</comment>
-  </data>
-  <data name="Exceptions_PlayerNotLoggedIn" xml:space="preserve">
-    <value>プレイヤーはゲームにログインしていません。</value>
-    <comment>Shown when a user attempts to trigger a Stream Deck button without being logged in to the game.</comment>
-  </data>
-  <data name="Exceptions_ActionLocked" xml:space="preserve">
-    <value>{0} ID {1} は解放されていないため使用できません。</value>
-  </data>
-  <data name="Exceptions_ActionNotFound" xml:space="preserve">
-    <value>ID {0} の {1} が見つかりませんでした。</value>
-  </data>
-  <data name="CommandController_MissingCommandError" xml:space="preserve">
-    <value>実行するコマンドを指定してください。</value>
-  </data>
-  <data name="CommandController_NotCommandError" xml:space="preserve">
-    <value>コマンドはスラッシュで始める必要があります。</value>
-  </data>
-  <data name="ActionController_UnknownActionTypeError" xml:space="preserve">
-    <value>タイプ {0} の登録アクションが見つかりませんでした。</value>
-  </data>
-  <data name="ClassController_ClassLessThan1Error" xml:space="preserve">
-    <value>ID が 1 未満のクラスに切り替えることはできません。</value>
-  </data>
-  <data name="ClassController_InvalidClassIdError" xml:space="preserve">
-    <value>ID {0} のクラスは存在しません！</value>
-  </data>
-  <data name="ClassController_NoGearsetForClassError" xml:space="preserve">
-    <value>このクラスのギアセットがないため、 {0} に切り替えることができませんでした。ギアセットを作成してから再度お試し下さい。</value>
-  </data>
-  <data name="HotbarController_InvalidHotbarIdError" xml:space="preserve">
-    <value>ホットバーIDは0〜17の間でなければなりません</value>
-  </data>
-  <data name="HotbarController_NormalHotbarInvalidSlotError" xml:space="preserve">
-    <value>ホットバー IDが10未満の場合、スロット ID は 0 から 11 の間でなければなりません</value>
-  </data>
-  <data name="HotbarController_CrossHotbarInvalidSlotError" xml:space="preserve">
-    <value>ホットバー IDが10 以上の場合、スロット ID は 0 から 15 の間でなければなりません</value>
-  </data>
-  <data name="HotbarController_InvalidHotbarOrSlotError" xml:space="preserve">
-    <value>無効なホットバーまたはスロットがトリガーされました。</value>
-  </data>
-  <data name="AuthModule_BadAPIKeyError" xml:space="preserve">
-    <value>API キーが存在しないか無効です。</value>
-  </data>
-  <data name="WSOpcodeWiring_UnknownOpcodeError" xml:space="preserve">
-    <value>Opcode {0} のメッセージが存在しません。</value>
-  </data>
-  <data name="EmoteStrategy_EmoteDoesntHaveCommandError" xml:space="preserve">
-    <value>エモート "{0}" に関連付けられたテキストコマンドがありません</value>
-  </data>
-  <data name="EmoteStrategy_EmoteLockedError" xml:space="preserve">
-    <value>エモート "{0}" は解放されていないため、使用できません。</value>
-  </data>
-  <data name="ExtraCommandStrategy_NoCommandError" xml:space="preserve">
-    <value>エクストラコマンド {0} にはコマンドが存在しません。このバグを報告してください！</value>
-    <comment>This error message is shown when the command to use an "Extra Command" is not found. Because management of extra commands is done manually, additional instructions have been added for the user to report a bug to the developer.
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="XIVDeck" xml:space="preserve">
+        <value>XIVDeck</value>
+        <comment>Product name. Do not change.</comment>
+    </data>
+    <data name="StreamDeck" xml:space="preserve">
+        <value>Stream Deck</value>
+        <comment>Product name. Do not change.</comment>
+    </data>
+    <data name="XIVDeck_Title" xml:space="preserve">
+        <value>XIVDeck Game Plugin</value>
+        <comment>The proper title of the Dalamud plugin.</comment>
+    </data>
+    <data name="Exceptions_PlayerNotLoggedIn" xml:space="preserve">
+        <value>プレイヤーはゲームにログインしていません。</value>
+        <comment>Shown when a user attempts to trigger a Stream Deck button without being logged in to the game.</comment>
+    </data>
+    <data name="Exceptions_ActionLocked" xml:space="preserve">
+        <value>{0} ID {1} は解放されていないため使用できません。</value>
+    </data>
+    <data name="Exceptions_ActionNotFound" xml:space="preserve">
+        <value>ID {0} の {1} が見つかりませんでした。</value>
+    </data>
+    <data name="CommandController_MissingCommandError" xml:space="preserve">
+        <value>実行するコマンドを指定してください。</value>
+    </data>
+    <data name="CommandController_NotCommandError" xml:space="preserve">
+        <value>コマンドはスラッシュで始める必要があります。</value>
+    </data>
+    <data name="ActionController_UnknownActionTypeError" xml:space="preserve">
+        <value>タイプ {0} の登録アクションが見つかりませんでした。</value>
+    </data>
+    <data name="ClassController_ClassLessThan1Error" xml:space="preserve">
+        <value>ID が 1 未満のクラスに切り替えることはできません。</value>
+    </data>
+    <data name="ClassController_InvalidClassIdError" xml:space="preserve">
+        <value>ID {0} のクラスは存在しません！</value>
+    </data>
+    <data name="ClassController_NoGearsetForClassError" xml:space="preserve">
+        <value>このクラスのギアセットがないため、 {0} に切り替えることができませんでした。ギアセットを作成してから再度お試し下さい。</value>
+    </data>
+    <data name="HotbarController_InvalidHotbarIdError" xml:space="preserve">
+        <value>ホットバーIDは0〜17の間でなければなりません</value>
+    </data>
+    <data name="HotbarController_NormalHotbarInvalidSlotError" xml:space="preserve">
+        <value>ホットバー IDが10未満の場合、スロット ID は 0 から 11 の間でなければなりません</value>
+    </data>
+    <data name="HotbarController_CrossHotbarInvalidSlotError" xml:space="preserve">
+        <value>ホットバー IDが10 以上の場合、スロット ID は 0 から 15 の間でなければなりません</value>
+    </data>
+    <data name="HotbarController_InvalidHotbarOrSlotError" xml:space="preserve">
+        <value>無効なホットバーまたはスロットがトリガーされました。</value>
+    </data>
+    <data name="AuthModule_BadAPIKeyError" xml:space="preserve">
+        <value>API キーが存在しないか無効です。</value>
+    </data>
+    <data name="WSOpcodeWiring_UnknownOpcodeError" xml:space="preserve">
+        <value>Opcode {0} のメッセージが存在しません。</value>
+    </data>
+    <data name="EmoteStrategy_EmoteDoesntHaveCommandError" xml:space="preserve">
+        <value>エモート "{0}" に関連付けられたテキストコマンドがありません</value>
+    </data>
+    <data name="EmoteStrategy_EmoteLockedError" xml:space="preserve">
+        <value>エモート "{0}" は解放されていないため、使用できません。</value>
+    </data>
+    <data name="ExtraCommandStrategy_NoCommandError" xml:space="preserve">
+        <value>エクストラコマンド {0} にはコマンドが存在しません。このバグを報告してください！</value>
+        <comment>This error message is shown when the command to use an "Extra Command" is not found. Because management of extra commands is done manually, additional instructions have been added for the user to report a bug to the developer.
         </comment>
-  </data>
-  <data name="FixedCommandStrategy_ActionNotFoundError" xml:space="preserve">
-    <value>ID {0} を持つタイプ {1} のアクションは存在しません。</value>
-  </data>
-  <data name="FixedCommandStrategy_IllegalActionError" xml:space="preserve">
-    <value>ID {0} のアクションは不正としてマークされているため、使用することはできません</value>
-    <comment>Shown when the plugin blocks a user from calling an action marked as illegal (unsafe).</comment>
-  </data>
-  <data name="FixedCommandStrategy_SheetNotFoundError" xml:space="preserve">
-    <value>タイプ {0} のシートは存在しません。</value>
-  </data>
-  <data name="SettingsWindow_Title" xml:space="preserve">
-    <value>XIVDeck Game Plugin の設定</value>
-  </data>
-  <data name="SettingsWindow_SafeModeDisabledWarning" xml:space="preserve">
-    <value>危険: セーフモードが無効になりました! Stream Deck からゲームに不正なコマンドを送信できる可能性があります。</value>
-    <comment>"Illegal commands" in this case mean commands that normally cannot be sent to the game and may cause damage or harm if proper care is not taken.</comment>
-  </data>
-  <data name="SettingsWindow_EnablePenumbraIPC" xml:space="preserve">
-    <value>Penumbra のアイコンを使用する</value>
-    <comment>Setting to enable integration with another app named Penumbra.</comment>
-  </data>
-  <data name="SettingsWindow_EnablePenumbraIPC_Help" xml:space="preserve">
-    <value>この機能を有効にすると、 Stream Deck にPenumbraのアイコンを表示しようとします。 この設定を有効にするには、Penumbraをインストールする必要があります。
+    </data>
+    <data name="FixedCommandStrategy_ActionNotFoundError" xml:space="preserve">
+        <value>ID {0} を持つタイプ {1} のアクションは存在しません。</value>
+    </data>
+    <data name="FixedCommandStrategy_IllegalActionError" xml:space="preserve">
+        <value>ID {0} のアクションは不正としてマークされているため、使用することはできません</value>
+        <comment>Shown when the plugin blocks a user from calling an action marked as illegal (unsafe).</comment>
+    </data>
+    <data name="FixedCommandStrategy_SheetNotFoundError" xml:space="preserve">
+        <value>タイプ {0} のシートは存在しません。</value>
+    </data>
+    <data name="SettingsWindow_Title" xml:space="preserve">
+        <value>XIVDeck Game Plugin の設定</value>
+    </data>
+    <data name="SettingsWindow_SafeModeDisabledWarning" xml:space="preserve">
+        <value>危険: セーフモードが無効になりました! Stream Deck からゲームに不正なコマンドを送信できる可能性があります。</value>
+        <comment>"Illegal commands" in this case mean commands that normally cannot be sent to the game and may cause damage or harm if proper care is not taken.</comment>
+    </data>
+    <data name="SettingsWindow_EnablePenumbraIPC" xml:space="preserve">
+        <value>Penumbra のアイコンを使用する</value>
+        <comment>Setting to enable integration with another app named Penumbra.</comment>
+    </data>
+    <data name="SettingsWindow_EnablePenumbraIPC_Help" xml:space="preserve">
+        <value>この機能を有効にすると、 Stream Deck にPenumbraのアイコンを表示しようとします。 この設定を有効にするには、Penumbraをインストールする必要があります。
 
 無効にすると、代わりにオリジナルのゲームアイコンが使用されます。
 
 デフォルト: 無効</value>
-  </data>
-  <data name="SettingsWindow_ExperimentalSettings" xml:space="preserve">
-    <value>実験的な設定</value>
-    <comment>Header for configuration window section.</comment>
-  </data>
-  <data name="SettingsWindow_Experiment_MIcon" xml:space="preserve">
-    <value>/micon のアイコンを使用</value>
-    <comment>/micon is a game-provided command. It can be left as-is.</comment>
-  </data>
-  <data name="SettingsWindow_GitHubLink" xml:space="preserve">
-    <value>XIVDeck GitHub</value>
-    <comment>Shown on a button to link to XIVDeck's GitHub page and source code.</comment>
-  </data>
-  <data name="SettingsWindow_ApplyButton" xml:space="preserve">
-    <value>設定を適用する</value>
-    <comment>Used as a "save and apply" button for a settings dialog box. Should be a short string (under 20 characters)</comment>
-  </data>
-  <data name="SettingsWindow_APIPort" xml:space="preserve">
-    <value>APIポート</value>
-  </data>
-  <data name="SettingsWindow_ListenIP" xml:space="preserve">
-    <value>接続先IP: {0}</value>
-  </data>
-  <data name="SettingsWindow_APIPort_Help" xml:space="preserve">
-    <value>デフォルトのポート: {0}
+    </data>
+    <data name="SettingsWindow_ExperimentalSettings" xml:space="preserve">
+        <value>実験的な設定</value>
+        <comment>Header for configuration window section.</comment>
+    </data>
+    <data name="SettingsWindow_Experiment_MIcon" xml:space="preserve">
+        <value>/micon のアイコンを使用</value>
+        <comment>/micon is a game-provided command. It can be left as-is.</comment>
+    </data>
+    <data name="SettingsWindow_GitHubLink" xml:space="preserve">
+        <value>XIVDeck GitHub</value>
+        <comment>Shown on a button to link to XIVDeck's GitHub page and source code.</comment>
+    </data>
+    <data name="SettingsWindow_ApplyButton" xml:space="preserve">
+        <value>設定を適用する</value>
+        <comment>Used as a "save and apply" button for a settings dialog box. Should be a short string (under 20 characters)</comment>
+    </data>
+    <data name="SettingsWindow_APIPort" xml:space="preserve">
+        <value>APIポート</value>
+    </data>
+    <data name="SettingsWindow_ListenIP" xml:space="preserve">
+        <value>接続先IP: {0}</value>
+    </data>
+    <data name="SettingsWindow_APIPort_Help" xml:space="preserve">
+        <value>デフォルトのポート: {0}
 
 範囲: {1}-{2}</value>
-  </data>
-  <data name="ForcedUpdateNag_Headline" xml:space="preserve">
-    <value>XIVDeck Stream Deck プラグインは致命的に古いため、無効になっています。</value>
-  </data>
-  <data name="Nag_OpenGithubDownloadButton" xml:space="preserve">
-    <value>XIVDeckのダウンロードページを開く</value>
-  </data>
-  <data name="Nag_OpenSettingsButton" xml:space="preserve">
-    <value>XIVDeck 設定を開く</value>
-  </data>
-  <data name="ForcedUpdateNag_ResolutionHelp" xml:space="preserve">
-    <value>引き続き XIVDeck を使用するには、 XIVDeck GitHubから最新版の Stream Deck プラグインをダウンロードし、インストールしてください。</value>
-  </data>
-  <data name="SetupNag_Headline" xml:space="preserve">
-    <value>Stream Deck がゲームに接続されていません。</value>
-  </data>
-  <data name="SetupNag_ResolutionHelp" xml:space="preserve">
-    <value>まだインストールしていない場合は、GitHubから付属の XIVDeck Stream Deck プラグインをダウンロードしてインストールしてください。</value>
-  </data>
-  <data name="SetupNag_AlreadyInstalledHelp" xml:space="preserve">
-    <value>XIVDeck Stream Deck プラグインが既にインストールされている場合、設定からポートが正しく設定されていることを確認してください。また、少なくとも1つのボタンを作成してください。</value>
-  </data>
-  <data name="SetupNag_CurrentPort" xml:space="preserve">
-    <value>現在のポート: {0}</value>
-  </data>
-  <data name="SetupNag_PortChangeHelp" xml:space="preserve">
-    <value>サーバーがホストしているポートを変更する必要がある場合は、 XIVDeck の設定から変更できます。</value>
-  </data>
-  <data name="SetupNag_DismissHelp" xml:space="preserve">
-    <value>このメッセージを消すには、上記の問題を解決するか、 XIVDeck プラグインをアンインストールしてください。</value>
-  </data>
-  <data name="CollectionStrategy_CollectionNotFoundError" xml:space="preserve">
-    <value>ID {0} のコレクションは存在しません。</value>
-  </data>
-  <data name="GearsetStrategy_GearsetNotFoundError" xml:space="preserve">
-    <value>スロット番号 {0} にギアセットが存在しません。</value>
-  </data>
-  <data name="GeneralActionStrategy_ActionLockedError" xml:space="preserve">
-    <value>アクション "{0}" はまだ解放されていません。</value>
-  </data>
-  <data name="GeneralActionStrategy_ActionIllegalError" xml:space="preserve">
-    <value>アクション "{0}" (ID {1}) は不正としてマークされているため、使用することはできません。</value>
-    <comment>Shown when the plugin blocks a user from calling an action marked as illegal (unsafe).</comment>
-  </data>
-  <data name="InstrumentStrategy_PerformanceLockedError" xml:space="preserve">
-    <value>演奏モードはまだ解放されていません。</value>
-    <comment>Shown when a user attempts to use a musical instrument without having Performance actions unlocked.</comment>
-  </data>
-  <data name="InstrumentStrategy_CurrentlyPerformingError" xml:space="preserve">
-    <value>演奏モード中は楽器を切り替えることができません。</value>
-    <comment>Shown when a user attempts to switch musical instruments while actively in a Performance.</comment>
-  </data>
-  <data name="InstrumentStrategy_InstrumentNotFoundError" xml:space="preserve">
-    <value>ID {0} の楽器は存在しません。</value>
-    <comment>Shown when a user attempts to use an invalid or unknown musical instrument.</comment>
-  </data>
-  <data name="MacroStrategy_MacroEmptyError" xml:space="preserve">
-    <value>指定されたマクロは空なので使用できません</value>
-  </data>
-  <data name="MainCommandStrategy_ActionInvalidError" xml:space="preserve">
-    <value>メインコマンドアクションID {0} は無効です。</value>
-  </data>
-  <data name="MinionStrategy_MinionNotFoundError" xml:space="preserve">
-    <value>ID {0} のミニオンは存在しません。</value>
-  </data>
-  <data name="MinionStrategy_MinionLockedError" xml:space="preserve">
-    <value>ミニオン "{0}" は解放されていないため、使用できません。</value>
-  </data>
-  <data name="MountStrategy_MountNotFoundError" xml:space="preserve">
-    <value>ID {0} のマウントは存在しません。</value>
-  </data>
-  <data name="MountStrategy_MountLockedError" xml:space="preserve">
-    <value>マウント "{0}" は解放されていないため、使用できません。</value>
-  </data>
-  <data name="OrnamentStrategy_OrnamentLockedError" xml:space="preserve">
-    <value>ファッションアクセサリー "{0}" は解放されていないため、使用できません。</value>
-  </data>
-  <data name="ErrorHandler_ErrorPrefix" xml:space="preserve">
-    <value>{0} - エラー</value>
-  </data>
-  <data name="TickScheduler_ExceptionHandler" xml:space="preserve">
-    <value>タスクの実行中に問題が発生しました: {0}: {1}</value>
-    <comment>"Task" may be substituted for "job" in this case. This string will display when a background job fails to execute.</comment>
-  </data>
-  <data name="GameClass_NotFoundError" xml:space="preserve">
-    <value>ID {0} のクラスは存在しません。</value>
-  </data>
-  <data name="GameClass_UncategorizedError" xml:space="preserve">
-    <value>クラスID {0} のジョブカテゴリが認識できません。このバグを報告してください！</value>
-    <comment>Shown when plugin data is invalid and requires an update from the developer.</comment>
-  </data>
-  <data name="WSInitOpcode_ThanksForInstall" xml:space="preserve">
-    <value>Stream Deck プラグインをインストールしていただきありがとうございます。XIVDeck を利用する準備ができました！</value>
-  </data>
-  <data name="ClassController_FallbackClassUsed" xml:space="preserve">
-    <value>{0} のギアセットが見つかりませんでした。代わりに {1} のギアセットが使用されました。</value>
-    <comment>ClassController_FallbackClassUsed
-Shown when XIVDeck uses a fallback class. Both placeholders will be (translated) class names, e.g. Paladin, Sage, Ninja.</comment>
-  </data>
-  <data name="SettingsWindow_XIVDeckPortOpen" xml:space="preserve">
-    <value>XIVDeck はネットワーク上のコンピュータからアクセスできます！</value>
-  </data>
-  <data name="SettingsWindow_ListenOnNetwork" xml:space="preserve">
-    <value>すべてのインタフェースで待ち受ける</value>
-  </data>
-  <data name="SettingsWindow_UseMIcon_Help" xml:space="preserve">
-    <value>このオプションが有効な場合、Stream Deck はマクロ内の /micon コマンドをによるアイコンを優先します。 無効にすると、 Stream Deck は指定されたドロップダウンから選択されたマクロアイコンでのみ表示します。
+    </data>
+    <data name="ForcedUpdateNag_Headline" xml:space="preserve">
+        <value>XIVDeck Stream Deck プラグインは致命的に古いため、無効になっています。</value>
+    </data>
+    <data name="Nag_OpenGithubDownloadButton" xml:space="preserve">
+        <value>XIVDeckのダウンロードページを開く</value>
+    </data>
+    <data name="Nag_OpenSettingsButton" xml:space="preserve">
+        <value>XIVDeck 設定を開く</value>
+    </data>
+    <data name="ForcedUpdateNag_ResolutionHelp" xml:space="preserve">
+        <value>引き続き XIVDeck を使用するには、 XIVDeck GitHubから最新版の Stream Deck プラグインをダウンロードし、インストールしてください。</value>
+    </data>
+    <data name="SetupNag_Headline" xml:space="preserve">
+        <value>Stream Deck がゲームに接続されていません。</value>
+    </data>
+    <data name="SetupNag_ResolutionHelp" xml:space="preserve">
+        <value>まだインストールしていない場合は、GitHubから付属の XIVDeck Stream Deck プラグインをダウンロードしてインストールしてください。</value>
+    </data>
+    <data name="SetupNag_AlreadyInstalledHelp" xml:space="preserve">
+        <value>XIVDeck Stream Deck プラグインが既にインストールされている場合、設定からポートが正しく設定されていることを確認してください。また、少なくとも1つのボタンを作成してください。</value>
+    </data>
+    <data name="SetupNag_CurrentPort" xml:space="preserve">
+        <value>現在のポート: {0}</value>
+    </data>
+    <data name="SetupNag_PortChangeHelp" xml:space="preserve">
+        <value>サーバーがホストしているポートを変更する必要がある場合は、 XIVDeck の設定から変更できます。</value>
+    </data>
+    <data name="SetupNag_DismissHelp" xml:space="preserve">
+        <value>このメッセージを消すには、上記の問題を解決するか、 XIVDeck プラグインをアンインストールしてください。</value>
+    </data>
+    <data name="CollectionStrategy_CollectionNotFoundError" xml:space="preserve">
+        <value>ID {0} のコレクションは存在しません。</value>
+    </data>
+    <data name="GearsetStrategy_GearsetNotFoundError" xml:space="preserve">
+        <value>スロット番号 {0} にギアセットが存在しません。</value>
+    </data>
+    <data name="GeneralActionStrategy_ActionLockedError" xml:space="preserve">
+        <value>アクション "{0}" はまだ解放されていません。</value>
+    </data>
+    <data name="GeneralActionStrategy_ActionIllegalError" xml:space="preserve">
+        <value>アクション "{0}" (ID {1}) は不正としてマークされているため、使用することはできません。</value>
+        <comment>Shown when the plugin blocks a user from calling an action marked as illegal (unsafe).</comment>
+    </data>
+    <data name="InstrumentStrategy_PerformanceLockedError" xml:space="preserve">
+        <value>演奏モードはまだ解放されていません。</value>
+        <comment>Shown when a user attempts to use a musical instrument without having Performance actions unlocked.</comment>
+    </data>
+    <data name="InstrumentStrategy_CurrentlyPerformingError" xml:space="preserve">
+        <value>演奏モード中は楽器を切り替えることができません。</value>
+        <comment>Shown when a user attempts to switch musical instruments while actively in a Performance.</comment>
+    </data>
+    <data name="InstrumentStrategy_InstrumentNotFoundError" xml:space="preserve">
+        <value>ID {0} の楽器は存在しません。</value>
+        <comment>Shown when a user attempts to use an invalid or unknown musical instrument.</comment>
+    </data>
+    <data name="MacroStrategy_MacroEmptyError" xml:space="preserve">
+        <value>指定されたマクロは空なので使用できません</value>
+    </data>
+    <data name="MainCommandStrategy_ActionInvalidError" xml:space="preserve">
+        <value>メインコマンドアクションID {0} は無効です。</value>
+    </data>
+    <data name="MinionStrategy_MinionNotFoundError" xml:space="preserve">
+        <value>ID {0} のミニオンは存在しません。</value>
+    </data>
+    <data name="MinionStrategy_MinionLockedError" xml:space="preserve">
+        <value>ミニオン "{0}" は解放されていないため、使用できません。</value>
+    </data>
+    <data name="MountStrategy_MountNotFoundError" xml:space="preserve">
+        <value>ID {0} のマウントは存在しません。</value>
+    </data>
+    <data name="MountStrategy_MountLockedError" xml:space="preserve">
+        <value>マウント "{0}" は解放されていないため、使用できません。</value>
+    </data>
+    <data name="OrnamentStrategy_OrnamentLockedError" xml:space="preserve">
+        <value>ファッションアクセサリー "{0}" は解放されていないため、使用できません。</value>
+    </data>
+    <data name="ErrorHandler_ErrorPrefix" xml:space="preserve">
+        <value>{0} - エラー</value>
+    </data>
+    <data name="TickScheduler_ExceptionHandler" xml:space="preserve">
+        <value>タスクの実行中に問題が発生しました: {0}: {1}</value>
+        <comment>"Task" may be substituted for "job" in this case. This string will display when a background job fails to execute.</comment>
+    </data>
+    <data name="GameClass_NotFoundError" xml:space="preserve">
+        <value>ID {0} のクラスは存在しません。</value>
+    </data>
+    <data name="GameClass_UncategorizedError" xml:space="preserve">
+        <value>クラスID {0} のジョブカテゴリが認識できません。このバグを報告してください！</value>
+        <comment>Shown when plugin data is invalid and requires an update from the developer.</comment>
+    </data>
+    <data name="WSInitOpcode_ThanksForInstall" xml:space="preserve">
+        <value>Stream Deck プラグインをインストールしていただきありがとうございます。XIVDeck を利用する準備ができました！</value>
+    </data>
+    <data name="ClassController_FallbackClassUsed" xml:space="preserve">
+        <value>{0} のギアセットが見つかりませんでした。代わりに {1} のギアセットが使用されました。</value>
+    </data>
+    <data name="SettingsWindow_XIVDeckPortOpen" xml:space="preserve">
+        <value>XIVDeck はネットワーク上のコンピュータからアクセスできます！</value>
+    </data>
+    <data name="SettingsWindow_ListenOnNetwork" xml:space="preserve">
+        <value>すべてのインタフェースで待ち受ける</value>
+    </data>
+    <data name="SettingsWindow_UseMIcon_Help" xml:space="preserve">
+        <value>このオプションが有効な場合、Stream Deck はマクロ内の /micon コマンドをによるアイコンを優先します。 無効にすると、 Stream Deck は指定されたドロップダウンから選択されたマクロアイコンでのみ表示します。
 
 デフォルト: OFF</value>
-  </data>
+    </data>
+    <data name="PenumbraIPC_VersionMismatch" xml:space="preserve">
+        <value>バージョンの互換性がないため、Penumbra統合が無効になっています。この問題を報告してください！</value>
+    </data>
 </root>
