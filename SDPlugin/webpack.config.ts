@@ -80,7 +80,6 @@ const config = (environment: unknown, options: { mode: string; env: unknown }): 
           loader: "@alienfast/i18next-loader",
           options: {
             basenameAsNamespace: true,
-            debug: true,
           }
         },
       ],
