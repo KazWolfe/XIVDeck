@@ -107,6 +107,7 @@ export class ButtonDispatcher {
             .catch((e) => {
                 button!.showAlert();
                 console.error("Error trying to execute button:", e, event);
+                plugin.sdPluginLink.logMessage(`Got error while trying to execute button: ${e}`)
             });
     }
 }
