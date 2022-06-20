@@ -48,7 +48,7 @@ internal class PenumbraIPC : IPluginIpcClient {
     public int Version => this._penumbraApiVersionSubscriber?.InvokeFunc() ?? 0;
 
    private void _initializeIpc() {
-       if (!XIVDeckPlugin.Instance.PluginInterface.PluginNames.Contains("Penumbra")) {
+       if (!Injections.PluginInterface.PluginNames.Contains("Penumbra")) {
            PluginLog.Debug("Penumbra was not found, will not create IPC at this time");
            return;
        }

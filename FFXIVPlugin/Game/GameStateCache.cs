@@ -72,6 +72,9 @@ internal unsafe class GameStateCache {
 
     internal bool IsEmoteUnlocked(uint emoteId) {
         if (this._isEmoteUnlocked == null) return false;
+            
+        // works around showing emotes when nobody is logged in, as we check unlockLink 0 
+        if (!Injections.ClientState.IsLoggedIn) return false;
 
         var emote = Injections.DataManager.Excel.GetSheet<Emote>()!.GetRow(emoteId);
         if (emote == null || emote.Order == 0) return false;
@@ -108,11 +111,12 @@ internal unsafe class GameStateCache {
             return false;
         }
             
-        return (this._isMcGuffinUnlocked(this._playerStatus.Value, (byte) mcguffinId)) > 0;
+        return this._isMcGuffinUnlocked(this._playerStatus.Value, (byte) mcguffinId) > 0;
     }
     
-    private GameStateCache() {
+    internal GameStateCache() {
         SignatureHelper.Initialise(this);
+        this.Refresh();
     }
 
     internal void Refresh() {
@@ -135,11 +139,10 @@ internal unsafe class GameStateCache {
             this.UnlockedOrnaments = Injections.DataManager.GetExcelSheet<Ornament>()!
                 .Where(x => this.IsOrnamentUnlocked(x.RowId)).ToList();
         }
-
-        var gsModule = RaptureGearsetModule.Instance();
+        
         var gearsets = new List<Gearset>();
         for (var i = 0; i < 100; i++) {
-            var gs = gsModule->Gearset[i];
+            var gs = RaptureGearsetModule.Instance()->Gearset[i];
 
             if (gs == null || !gs->Flags.HasFlag(RaptureGearsetModule.GearsetFlag.Exists))
                 continue;
@@ -155,6 +158,4 @@ internal unsafe class GameStateCache {
 
         this.Gearsets = gearsets;
     }
-
-    internal static GameStateCache Load() => new();
 }

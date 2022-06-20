@@ -1,7 +1,6 @@
 ﻿using System.Globalization;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
-using FFXIVClientStructs;
 using XIVDeck.FFXIVPlugin.ActionExecutor;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game;
@@ -21,14 +20,13 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         
     public string Name => UIStrings.XIVDeck_Title;
         
-    public DalamudPluginInterface PluginInterface { get; init; }
-    public PluginConfig Configuration { get; init; }
-    
+    internal PluginConfig Configuration { get; }
     internal IconManager IconManager { get; }
     internal WindowSystem WindowSystem { get; }
     internal SigHelper SigHelper { get; }
     internal GameStateCache GameStateCache { get; }
 
+    private DalamudPluginInterface PluginInterface { get; }
     private readonly HotbarWatcher _hotbarWatcher;
     private XIVDeckWebServer _xivDeckWebServer = null!;
     private readonly ChatLinkWiring _chatLinkWiring;
@@ -36,24 +34,24 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
 
     public XIVDeckPlugin(DalamudPluginInterface pluginInterface) {
         pluginInterface.Create<Injections>();
+        
         Instance = this;
         this.PluginInterface = pluginInterface;
 
         this.Configuration = this.PluginInterface.GetPluginConfig() as PluginConfig ?? new PluginConfig();
-        this.Configuration.Initialize(this.PluginInterface);
         
         // Various managers for advanced hooking into the game
         this.IconManager = new IconManager();
         this.SigHelper = new SigHelper();
             
         // Load in and initialize a lot of various game state and plugin interface things.
-        this.GameStateCache = GameStateCache.Load();
-        SerializableGameClass.GetCache();
+        this.GameStateCache = new GameStateCache();
+        SerializableGameClass.LoadCache();
         ActionDispatcher.GetStrategies();
         this._ipcManager = new IPCManager();
         
         // More plugin interfaces
-        this._chatLinkWiring = new ChatLinkWiring(this.PluginInterface);
+        this._chatLinkWiring = new ChatLinkWiring();
         this._hotbarWatcher = new HotbarWatcher();
         this.WindowSystem = new WindowSystem(this.Name);
         

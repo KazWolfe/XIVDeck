@@ -5,7 +5,6 @@ using System.Reflection;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Logging;
-using Dalamud.Plugin;
 using XIVDeck.FFXIVPlugin.Base;
 
 namespace XIVDeck.FFXIVPlugin.UI;
@@ -47,7 +46,7 @@ public class ChatLinkWiring : IDisposable {
         return Payloads[linkCode];
     }
 
-    public ChatLinkWiring(DalamudPluginInterface pluginInterface) {
+    public ChatLinkWiring() {
         var assembly = Assembly.GetExecutingAssembly();
 
         foreach (var type in assembly.GetTypes()) {
@@ -62,12 +61,12 @@ public class ChatLinkWiring : IDisposable {
 
             var handler = (IChatLinkHandler) Activator.CreateInstance(type)!;
             
-            // Mitigates a bug where registering a chat link can sometimes throw an exception that it's already
+            // Mitigates an issue where registering a chat link can sometimes throw an exception that it's already
             // been registered. Thanks for the tip, Kami!
-            pluginInterface.RemoveChatLinkHandler((uint) opcode);
+            Injections.PluginInterface.RemoveChatLinkHandler((uint) opcode);
                 
             PluginLog.Debug($"Registered chat link handler for opcode {attr.Opcode}: {handler.GetType()}");
-            Payloads[opcode] = pluginInterface.AddChatLinkHandler((uint) opcode, handler.Handle);
+            Payloads[opcode] = Injections.PluginInterface.AddChatLinkHandler((uint) opcode, handler.Handle);
         }
     }
 

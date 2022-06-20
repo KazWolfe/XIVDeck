@@ -40,7 +40,7 @@ internal class TippyIPC : IPluginIpcClient {
     public int Version => this._tippyApiVersionSubscriber?.InvokeFunc() ?? 0;
 
     private void _initializeIpc() {
-        if (!XIVDeckPlugin.Instance.PluginInterface.PluginNames.Contains("Tippy")) {
+        if (!Injections.PluginInterface.PluginNames.Contains("Tippy")) {
             PluginLog.Debug("Tippy was not found, will not create IPC at this time");
             return;
         }

@@ -40,14 +40,7 @@ public class PluginConfig : IPluginConfiguration {
     /// </summary>
     public bool ListenOnAllInterfaces { get; set; } = false;
 
-    [NonSerialized]
-    private DalamudPluginInterface? _pluginInterface;
-
-    public void Initialize(DalamudPluginInterface @interface) {
-        this._pluginInterface = @interface;
-    }
-
     public void Save() {
-        this._pluginInterface!.SavePluginConfig(this);
+        Injections.PluginInterface.SavePluginConfig(this);
     }
 }

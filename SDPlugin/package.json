@@ -1,6 +1,6 @@
 {
   "name": "@kazwolfe/xivdeck-sdplugin",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "private": true,
   "scripts": {
     "build-release": "webpack --mode production",

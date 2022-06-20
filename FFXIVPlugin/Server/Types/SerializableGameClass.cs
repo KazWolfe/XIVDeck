@@ -13,15 +13,20 @@ namespace XIVDeck.FFXIVPlugin.Server.Types;
 public class SerializableGameClass {
     private static readonly List<SerializableGameClass> Cache = new();
 
-    public static List<SerializableGameClass> GetCache() {
-        if (Cache.Count != 0) return Cache;
-
+    internal static void LoadCache() {
+        Cache.Clear();
+        
         foreach (var gameClass in Injections.DataManager.GetExcelSheet<ClassJob>()!) {
             Cache.Add(new SerializableGameClass((int) gameClass.RowId));
         }
 
         PluginLog.Debug($"Populated GameClassCache with {Cache.Count} entries.");
+    }
 
+    public static List<SerializableGameClass> GetCache() {
+        if (Cache.Count == 0) 
+            LoadCache();
+        
         return Cache;
     }
 
