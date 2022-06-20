@@ -35,12 +35,8 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
     private readonly IPCManager _ipcManager;
 
     public XIVDeckPlugin(DalamudPluginInterface pluginInterface) {
-        // Injections management
         pluginInterface.Create<Injections>();
-        Resolver.Initialize(Injections.SigScanner.SearchBase);
-
         Instance = this;
-            
         this.PluginInterface = pluginInterface;
 
         this.Configuration = this.PluginInterface.GetPluginConfig() as PluginConfig ?? new PluginConfig();
