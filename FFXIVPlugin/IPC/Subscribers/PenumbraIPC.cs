@@ -10,7 +10,7 @@ namespace XIVDeck.FFXIVPlugin.IPC.Subscribers;
 
 [PluginIpc]
 internal class PenumbraIPC : IPluginIpcClient {
-    private const int PenumbraIPCCompatVersion = 4;
+    private const int PenumbraIPCCompatVersion = 5;
     
     // note: this is *extremely fragile* and honestly bad, but this will be instantiated by the system at a higher
     // level. if we want to consume the IPC, this should be a safe-ish way to do it, assuming null checks are used.

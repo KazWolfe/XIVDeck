@@ -13,7 +13,7 @@ public class IPCManager : IDisposable {
     // and set up listeners on statics. So, we use the IPCManager to actually handle the heavy lifting of instantiation
     // and disposal. Actual IPC classes can be referred to using their static (nullable) Instance, which should be 
     // initialized within here. Note though, that proper nullability checks *must* be applied (though the IDE should 
-    // complain if it isn't anyways.
+    // complain if it isn't anyways).
     //
     // This is absolutely an anti-pattern and a massive code smell, but it works. If you can think of a better way to
     // achieve this sort of behavior without having to manually manage X objects, please let me know!
