@@ -7,9 +7,9 @@
   },
   "hotbar": {
     "hotbar": "Kommandomenü",
-    "slot": "Feld",
-    "standard-pl": "Standard-Kommandomenü",
-    "cross-pl": "Kreuz-Kommandomenü",
+    "slot": "Slot",
+    "standard-pl": "Standard-Kommandomenüs",
+    "cross-pl": "Kreuz-Kommandomenüs",
     "standard": "Kommandomenü {{id}}",
     "cross": "Kreuz-Kommandomenü {{id}}",
     "default": "Kommandomenü auswählen..."
@@ -27,8 +27,8 @@
     "unknown": "Unbekannt"
   },
   "macro": {
-    "type": "Macro Typ",
-    "number": "Macro Nummer",
+    "type": "Makrotyp",
+    "number": "Makronummer",
     "individual": "Individuell",
     "shared": "Geteilt"
   }

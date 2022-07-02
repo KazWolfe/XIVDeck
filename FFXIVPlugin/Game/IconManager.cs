@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Dalamud;
 using Dalamud.Logging;
-using Dalamud.Utility;
-using ImGuiScene;
 using Lumina.Data.Files;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;

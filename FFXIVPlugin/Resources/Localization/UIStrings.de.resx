@@ -235,9 +235,18 @@ Bereich: {1}-{2}</value>
     <data name="WSInitOpcode_ThanksForInstall" xml:space="preserve">
         <value>Vielen Dank für die Installation des Stream Deck Plugins. XIVDeck ist nun bereit!</value>
     </data>
-    
-    
-    
-    
-    
+    <data name="ClassController_FallbackClassUsed" xml:space="preserve">
+        <value>Es wurde kein Ausrüstungsset für {0} gefunden, stattdessen wurde {1} verwendet.</value>
+    </data>
+    <data name="SettingsWindow_XIVDeckPortOpen" xml:space="preserve">
+        <value>XIVDeck ist von Computern in deinem Netzwerk aus zugänglich!</value>
+    </data>
+    <data name="SettingsWindow_ListenOnNetwork" xml:space="preserve">
+        <value>Auf allen Netzwerkschnittstellen lauschen</value>
+    </data>
+    <data name="SettingsWindow_UseMIcon_Help" xml:space="preserve">
+        <value>Wenn diese Option aktiviert ist, wird das Stream Deck /micon-Befehle in Makros respektieren. Wenn deaktiviert, wird das Stream Deck nur das Makro-Icon vom bereitgestelltem Drop-down-Menü verwenden.
+
+Standard: Aus</value>
+    </data>
 </root>
