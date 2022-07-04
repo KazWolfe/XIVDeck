@@ -2,6 +2,7 @@
   "name": "@kazwolfe/xivdeck-sdplugin",
   "version": "0.2.7",
   "private": true,
+  "license": "MPL",
   "scripts": {
     "build-release": "webpack --mode production",
     "build": "webpack --mode development",

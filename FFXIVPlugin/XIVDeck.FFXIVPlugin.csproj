@@ -12,6 +12,7 @@
         <IsPackable>false</IsPackable>
         <NeutralLanguage>en</NeutralLanguage>
         <Nullable>enable</Nullable>
+        <PackageLicenseExpression>AGPL-1.0</PackageLicenseExpression>
     </PropertyGroup>
 
     <PropertyGroup Label="Target">
