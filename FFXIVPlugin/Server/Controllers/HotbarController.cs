@@ -26,7 +26,7 @@ public class HotbarController : WebApiController {
         }
 
         var hotbarItem = hotbarModule->HotBar[hotbarId]->Slot[slotId];
-        var iconId = hotbarItem->Icon;
+        var iconId = plugin.SigHelper.CalcIconForSlot(hotbarItem);
 
         return new SerializableHotbarSlot {
             HotbarId = hotbarId,
