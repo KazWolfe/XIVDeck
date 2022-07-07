@@ -75,7 +75,7 @@ public class XIVDeckWebServer : IDisposable {
             // And then fallback to unknown exceptions
             PluginLog.Error(ex, $"Unhandled exception while processing request: " +
                                 $"{ctx.Request.HttpMethod} {ctx.Request.Url.PathAndQuery}");
-            ErrorNotifier.ShowError($"[{string.Format(UIStrings.ErrorHandler_ErrorPrefix, UIStrings.XIVDeck)}] {ex.Message}");
+            ErrorNotifier.ShowError(ex.Message, debounce: true);
             return ExceptionHandler.Default(ctx, ex);
         };
 
@@ -87,7 +87,7 @@ public class XIVDeckWebServer : IDisposable {
 
             // Only show messages to users if it's a POST request (button action)
             if (ctx.Request.HttpVerb == HttpVerbs.Post) {
-                ErrorNotifier.ShowError($"[{UIStrings.XIVDeck}] {ex.Message}", true);
+                ErrorNotifier.ShowError(ex.Message ?? inner.Message, true);
             }
             
             return HttpExceptionHandler.Default(ctx, ex);

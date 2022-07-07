@@ -70,13 +70,10 @@ public class ClassController : WebApiController {
                     var fallbackClassJob = sheet.GetRow((uint) id)!;
 
                     PluginLog.Information($"Used fallback {fallbackClassJob.Abbreviation} for requested {classJob.Abbreviation}");
-                    var message = $"[{UIStrings.XIVDeck}] " + string.Format(
+                    ErrorNotifier.ShowError(string.Format(
                         UIStrings.ClassController_FallbackClassUsed, 
                         UIStrings.Culture.TextInfo.ToTitleCase(classJob.Name), 
-                        UIStrings.Culture.TextInfo.ToTitleCase(fallbackClassJob.Name));
-
-                    Injections.Chat.Print(message);
-                    Injections.Toasts.ShowError(message);
+                        UIStrings.Culture.TextInfo.ToTitleCase(fallbackClassJob.Name)), true);
                 }
 
                 return;

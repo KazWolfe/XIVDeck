@@ -54,8 +54,8 @@ public class WSInitOpcode : BaseInboundMessage {
         // version check
         if (sdPluginVersion.IsOlderThan(xivPluginVersion) && (this.Mode is null or PluginMode.Plugin)) {
             var updateMessage = new SeStringBuilder()
-                .AddUiForeground($"[{UIStrings.XIVDeck}] ", 514)
-                .AddText($"Your version of the XIVDeck Stream Deck Plugin is out of date. Please consider installing ")
+                .Append(ErrorNotifier.BuildPrefixedString(""))
+                .AddText("Your version of the XIVDeck Stream Deck Plugin is out of date. Please consider installing ")
                 .Add(ChatLinkWiring.GetPayload(LinkCode.GetGithubReleaseLink))
                 .AddUiForeground($"\xE0BB version {xivPluginVersion.GetMajMinBuild()}", 32)
                 .Add(RawPayload.LinkTerminator)
@@ -67,7 +67,7 @@ public class WSInitOpcode : BaseInboundMessage {
 
         // check for first-run
         if (!XIVDeckPlugin.Instance.Configuration.HasLinkedStreamDeckPlugin) {
-            Injections.Chat.Print($"[{UIStrings.XIVDeck}] " + UIStrings.WSInitOpcode_ThanksForInstall);
+            Injections.Chat.Print(ErrorNotifier.BuildPrefixedString(UIStrings.WSInitOpcode_ThanksForInstall));
 
             XIVDeckPlugin.Instance.Configuration.HasLinkedStreamDeckPlugin = true;
             XIVDeckPlugin.Instance.Configuration.Save();
