@@ -32,16 +32,11 @@ internal unsafe class SigHelper : IDisposable {
         internal const string SanitizeChatString = "E8 ?? ?? ?? ?? EB 0A 48 8D 4C 24 ?? E8 ?? ?? ?? ?? 48 8D 8D";
 
         internal const string IsQuestCompleted = "E8 ?? ?? ?? ?? 41 88 84 2C";
-
-        internal const string RefreshHotbarSlotInfo = "E8 ?? ?? ?? ?? 0F B6 54 24 ?? 8B 44 24 30";
     }
 
     /***** functions *****/
     [Signature(Signatures.SanitizeChatString, Fallibility = Fallibility.Fallible)]
     private readonly delegate* unmanaged<Utf8String*, int, IntPtr, void> _sanitizeChatString = null!;
-
-    [Signature(Signatures.RefreshHotbarSlotInfo, Fallibility = Fallibility.Fallible)]
-    private readonly delegate* unmanaged<out byte, out uint, out ushort, IntPtr, IntPtr, uint> _getSlotInfo = null!;
 
     // UIModule, message, unused, byte
     [Signature(Signatures.SendChatMessage, Fallibility = Fallibility.Fallible)]
@@ -119,27 +114,23 @@ internal unsafe class SigHelper : IDisposable {
     }
 
     internal void CalcBForSlot(HotBarSlot* slot, out HotbarSlotType actionType, out uint actionId) {
-        if (this._getSlotInfo == null) {
-            actionType = slot->IconTypeB;
-            actionId = slot->IconB;
-        }
-        
         var hotbarModule = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule();
 
-        this._getSlotInfo(out var rSlotActionType, out actionId, out _, (IntPtr) hotbarModule, (IntPtr) slot);
-        actionType = (HotbarSlotType) rSlotActionType;
+        var acType = HotbarSlotType.Empty;
+        uint acId = 0;
+        ushort acCA = 0;
+        
+        RaptureHotbarModule.GetSlotAppearance(&acType, &acId, &acCA, hotbarModule, slot);
+
+        actionType = acType;
+        actionId = acId;
     }
 
     internal int CalcIconForSlot(HotBarSlot* slot) {
-        if (this._getSlotInfo == null) {
-            // Fall back and return the slot icon as-is if this signature nulls out.
-            return slot->Icon;
-        }
-        
         if (slot->CommandType == HotbarSlotType.Empty) {
             return 0;
         }
-        
+
         this.CalcBForSlot(slot, out var slotActionType, out var slotActionId);
         return slot->GetIconIdForSlot(slotActionType, slotActionId);
     }
