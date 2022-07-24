@@ -8,6 +8,7 @@ using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
+using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
@@ -42,7 +43,7 @@ public class MountStrategy : IActionStrategy {
         }
             
         if (!mount.IsUnlocked()) {
-            throw new ActionLockedException(string.Format(UIStrings.MountStrategy_MountLockedError, mount.Singular));
+            throw new ActionLockedException(string.Format(UIStrings.MountStrategy_MountLockedError, mount.Singular.ToTitleCase()));
         }
             
         var command = $"/mount \"{mount.Singular}\"";
