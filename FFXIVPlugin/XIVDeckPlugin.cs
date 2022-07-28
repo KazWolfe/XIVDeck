@@ -16,8 +16,7 @@ namespace XIVDeck.FFXIVPlugin;
 
 // ReSharper disable once ClassNeverInstantiated.Global - instantiation handled by Dalamud
 public sealed class XIVDeckPlugin : IDalamudPlugin {
-    internal static XIVDeckPlugin Instance = null!;
-        
+    internal static XIVDeckPlugin Instance { get; private set; } = null!;
     public string Name => UIStrings.XIVDeck_Title;
         
     internal PluginConfig Configuration { get; }
@@ -80,6 +79,10 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
 
         Injections.ClientState.Login -= DalamudHooks.OnGameLogin;
         this.PluginInterface.LanguageChanged -= this.UpdateLang;
+
+        // setting to null here is okay as this will only be called on plugin teardown.
+        // Nothing should *ever* run past this point.
+        Instance = null!;
     }
 
     internal void DrawConfigUI() {

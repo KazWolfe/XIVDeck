@@ -248,7 +248,4 @@
 
 デフォルト: OFF</value>
     </data>
-    <data name="PenumbraIPC_VersionMismatch" xml:space="preserve">
-        <value>バージョンの互換性がないため、Penumbra統合が無効になっています。この問題を報告してください！</value>
-    </data>
 </root>

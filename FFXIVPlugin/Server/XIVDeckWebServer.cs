@@ -6,7 +6,6 @@ using Dalamud.Logging;
 using EmbedIO;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
-using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 
 namespace XIVDeck.FFXIVPlugin.Server;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using Dalamud;
 using Dalamud.Logging;
 using Lumina.Data.Files;
 using SixLabors.ImageSharp;
@@ -13,22 +12,6 @@ namespace XIVDeck.FFXIVPlugin.Game;
 // borrowed from https://github.com/Caraxi/RemindMe/blob/master/IconManager.cs
 public class IconManager {
     private const string IconFileFormat = "ui/icon/{0:D3}000/{1}{2:D6}{3}.tex";
-    
-    private TexFile? GetIcon(int iconId, bool hq = false, bool highres = false) =>
-        this.GetIcon(Injections.DataManager.Language, iconId, hq, highres);
-
-    private TexFile? GetIcon(ClientLanguage iconLanguage, int iconId, bool hq = false, bool highres = false) {
-        string language = iconLanguage switch {
-            ClientLanguage.Japanese => "ja/",
-            ClientLanguage.English => "en/",
-            ClientLanguage.German => "de/",
-            ClientLanguage.French => "fr/",
-            _ => throw new ArgumentOutOfRangeException(nameof(iconLanguage),
-                @"Unknown Language: " + Injections.DataManager.Language)
-        };
-
-        return this.GetIcon(language, iconId, hq, highres);
-    }
 
     public static string GetIconPath(string lang, int iconId, bool hq = false, bool highres = false, bool forceOriginal = false) {
         var path = string.Format(IconFileFormat, 
