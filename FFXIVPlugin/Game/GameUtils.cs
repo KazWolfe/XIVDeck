@@ -5,6 +5,7 @@ using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.Game; 
 
@@ -47,6 +48,14 @@ public static class GameUtils {
         hotbarModulePtr->ExecuteSlot((HotBarSlot*) ptr);
 
         Marshal.FreeHGlobal(ptr);
+    }
+
+    public static void ResetAFKTimer() {
+        if (!InputUtil.TryFindGameWindow(out var windowHandle)) return;
+        
+        // Virtual key for Right Winkey. Can't be used by FFXIV normally, and in tests did not seem to cause any
+        // unusual interference.
+        InputUtil.SendKeycode(windowHandle, 0x5C);
     }
     
     public static unsafe void PulseHotbarSlot(int hotbarId, int slotId) {

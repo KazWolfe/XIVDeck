@@ -46,13 +46,14 @@ public class ClassController : WebApiController {
 
         if (!Injections.ClientState.IsLoggedIn)
             throw new PlayerNotLoggedInException();
-
+        
         var sheet = Injections.DataManager.Excel.GetSheet<ClassJob>();
         var classJob = sheet!.GetRow((uint) id);
 
         if (classJob == null)
             throw HttpException.NotFound(string.Format(UIStrings.ClassController_InvalidClassIdError, id));
 
+        GameUtils.ResetAFKTimer();
         this._gameStateCache.Refresh();
 
         while (true) {

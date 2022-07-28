@@ -51,7 +51,9 @@ public class HotbarController : WebApiController {
         // put anywhere else either.
         if (!Injections.ClientState.IsLoggedIn)
             throw new PlayerNotLoggedInException();
-
+        
+        GameUtils.ResetAFKTimer();
+        
         // Trigger the hotbar event on the next Framework tick, and also in the Framework (game main) thread.
         // For whatever reason, the game *really* doesn't like when a user casts a Weaponskill or Ability from a
         // non-game thread (as would be the case for API calls). Why this works normally for Spells and other

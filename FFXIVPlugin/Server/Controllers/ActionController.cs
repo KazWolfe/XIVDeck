@@ -7,6 +7,7 @@ using EmbedIO.WebApi;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using XIVDeck.FFXIVPlugin.ActionExecutor;
 using XIVDeck.FFXIVPlugin.Exceptions;
+using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 
@@ -60,7 +61,8 @@ public class ActionController : WebApiController {
         if (!Enum.TryParse<HotbarSlotType>(type, out var slotType)) {
             throw HttpException.NotFound(string.Format(UIStrings.ActionController_UnknownActionTypeError, type));
         }
-        
+
+        GameUtils.ResetAFKTimer();
         ActionDispatcher.Execute(slotType, id);
     }
 }

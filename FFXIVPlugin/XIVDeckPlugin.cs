@@ -42,7 +42,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         // Various managers for advanced hooking into the game
         this.IconManager = new IconManager();
         this.SigHelper = new SigHelper();
-            
+
         // Load in and initialize a lot of various game state and plugin interface things.
         this.GameStateCache = new GameStateCache();
         SerializableGameClass.LoadCache();

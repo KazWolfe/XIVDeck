@@ -25,6 +25,8 @@ public class CommandController : WebApiController {
         if (!command.Command.StartsWith("/") && command.SafeMode)
             throw HttpException.BadRequest(UIStrings.CommandController_NotCommandError);
             
+        GameUtils.ResetAFKTimer();
+        
         Injections.Framework.RunOnFrameworkThread(delegate {
             GameUtils.SendSanitizedChatMessage(command.Command, command.SafeMode);
         });
