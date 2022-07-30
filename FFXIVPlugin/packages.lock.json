@@ -17,12 +17,6 @@
           "Unosquare.Swan.Lite": "3.0.0"
         }
       },
-      "ILRepack": {
-        "type": "Direct",
-        "requested": "[2.1.0-beta1, )",
-        "resolved": "2.1.0-beta1",
-        "contentHash": "CUmDepugxfNKVMAsd1PzS8NSoyDfELsufDzwJ1+7D08bMAQbtHEQ9UVdjWjR3GBE0iPc0GvOhSJi0+xfFXwiRA=="
-      },
       "SixLabors.ImageSharp": {
         "type": "Direct",
         "requested": "[2.0.0, )",
@@ -51,10 +45,18 @@
           "Microsoft.NETCore.Platforms": "5.0.0"
         }
       },
+      "System.ValueTuple": {
+        "type": "Transitive",
+        "resolved": "4.5.0",
+        "contentHash": "okurQJO6NRE/apDIP23ajJ0hpiNmJ+f0BwOlB/cSqTLQlw5upkf+5+96+iG2Jw40G1fCVCyPz/FhIABUjMR+RQ=="
+      },
       "Unosquare.Swan.Lite": {
         "type": "Transitive",
         "resolved": "3.0.0",
-        "contentHash": "noPwJJl1Q9uparXy1ogtkmyAPGNfSGb0BLT1292nFH1jdMKje6o2kvvrQUvF9Xklj+IoiAI0UzF6Aqxlvo10lw=="
+        "contentHash": "noPwJJl1Q9uparXy1ogtkmyAPGNfSGb0BLT1292nFH1jdMKje6o2kvvrQUvF9Xklj+IoiAI0UzF6Aqxlvo10lw==",
+        "dependencies": {
+          "System.ValueTuple": "4.5.0"
+        }
       }
     }
   }

@@ -3,7 +3,7 @@
         <Product>XIVDeck Game Plugin</Product>
         <Authors>Kaz Wolfe</Authors>
         <Company>Blacksite Technologies</Company>
-        <Version>0.2.7</Version>
+        <Version>0.2.9</Version>
 
         <AssemblyName>XIVDeck.FFXIVPlugin</AssemblyName>
 
@@ -57,7 +57,6 @@
         
         <!-- Dalamud things -->
         <PackageReference Include="DalamudPackager" Version="2.1.7" GeneratePathProperty="false" />
-        <PackageReference Include="ILRepack" Version="2.1.0-beta1" GeneratePathProperty="true" />
         <Reference Include="FFXIVClientStructs">
             <HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
             <Private>false</Private>
@@ -112,33 +111,11 @@
         </Compile>
     </ItemGroup>
 
-    <!-- Build steps -->
-    <Target Name="ILRepack" AfterTargets="Build">
-        <ItemGroup>
-            <InputAssemblies Include="$(TargetPath)" />
-            <InputAssemblies Include="$(TargetDir)*.dll" Exclude="$(TargetPath)" />
-        </ItemGroup>
-        <Exec Command="$(PkgILRepack)\tools\ILRepack.exe /lib:$(DalamudLibPath) /lib:$(TargetDir) /out:$(TargetDir)$(TargetFileName) @(InputAssemblies, ' ')" />
-    </Target>
-
-    <Target Name="CleanOutDir" AfterTargets="ILRepack">
-        <ItemGroup>
-            <DeleteAssemblies Include="$(TargetDir)*.dll" Exclude="$(TargetPath)" />
-        </ItemGroup>
-        <Message Text="Deleting @(DeleteAssemblies)" Importance="high" />
-        <Delete Files="@(DeleteAssemblies)" />
-    </Target>
-
-    <Target Name="PackagePluginRelease" AfterTargets="CleanOutDir" Condition="'$(Configuration)' == 'Release'">
+    <Target Name="PackagePluginRelease" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
         <DalamudPackager ProjectDir="$(ProjectDir)" OutputPath="$(OutputPath)" AssemblyName="$(AssemblyName)" MakeZip="true" VersionComponents="3" />
     </Target>
 
-    <Target Name="PackagePluginDebug" AfterTargets="CleanOutDir" Condition="'$(Configuration)' == 'Debug'">
-        <DalamudPackager ProjectDir="$(ProjectDir)" OutputPath="$(TargetDir)" AssemblyName="$(AssemblyName)" MakeZip="false" VersionComponents="3" />
-        <ItemGroup>
-            <FinalAssemblies Include="$(TargetDir)\**\*.*" Exclude="$(TargetDir)\$(AssemblyName)\**\*.*" />
-        </ItemGroup>
-        <Copy SourceFiles="@(FinalAssemblies)" DestinationFolder="$(TargetDir)\$(AssemblyName)\%(RecursiveDir)" />
-        <Delete Files="@(FinalAssemblies)" />
+    <Target Name="PackagePluginDebug" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
+        <DalamudPackager ProjectDir="$(ProjectDir)" OutputPath="$(OutputPath)" AssemblyName="$(AssemblyName)" MakeZip="false" VersionComponents="3" />
     </Target>
 </Project>
