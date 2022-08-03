@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/0.4.0-alpha">
+    <PropertyGroup Label="Globals">
+        <ProjectGuid>299f16fd-c8ac-4774-95e5-7311d085595e</ProjectGuid>
+    </PropertyGroup>
+    <PropertyGroup>
+        <!-- No C# code exists for this project, so we don't really have anything to build... -->
+        <NoBuild>true</NoBuild>
+        
+        <JavaScriptTestRoot>test\</JavaScriptTestRoot>
+        <JavaScriptTestFramework>Jest</JavaScriptTestFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <Script Include="**" Exclude="*.esproj;**\node_modules\**" />
+    </ItemGroup>
+</Project>

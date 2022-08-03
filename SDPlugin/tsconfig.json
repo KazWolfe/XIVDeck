@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    /* Visit https://aka.ms/tsconfig.json to read more about this file */
     "target": "esnext",
     "module": "commonjs",
     "declaration": false,
