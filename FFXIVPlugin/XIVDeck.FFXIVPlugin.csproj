@@ -17,7 +17,7 @@
 
     <PropertyGroup Label="Target">
         <PlatformTarget>x64</PlatformTarget>
-        <TargetFramework>net5.0-windows</TargetFramework>
+        <TargetFramework>net6.0-windows</TargetFramework>
         <LangVersion>10</LangVersion>
         <Platforms>x64</Platforms>
         <Configurations>Debug;Release</Configurations>
@@ -30,14 +30,11 @@
         <DebugType>full</DebugType>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     </PropertyGroup>
     <PropertyGroup Label="Feature">
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    </PropertyGroup>
-    <PropertyGroup>
-        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-        <PublishTrimmed>true</PublishTrimmed>
     </PropertyGroup>
     
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
@@ -50,7 +47,7 @@
 
     <ItemGroup>
         <!-- Image conversion to extract PNGs from Lumina -->
-        <PackageReference Include="SixLabors.ImageSharp" Version="2.0.0" />
+        <PackageReference Include="SixLabors.ImageSharp" Version="2.1.3" />
 
         <!-- Webserver and socketing -->
         <PackageReference Include="EmbedIO" Version="3.4.3" />

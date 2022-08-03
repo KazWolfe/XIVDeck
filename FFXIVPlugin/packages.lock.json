@@ -1,7 +1,7 @@
 {
   "version": 1,
   "dependencies": {
-    "net5.0-windows7.0": {
+    "net6.0-windows7.0": {
       "DalamudPackager": {
         "type": "Direct",
         "requested": "[2.1.7, )",
@@ -19,9 +19,9 @@
       },
       "SixLabors.ImageSharp": {
         "type": "Direct",
-        "requested": "[2.0.0, )",
-        "resolved": "2.0.0",
-        "contentHash": "hZmADrZvn1q9tjPNuuvvl8F8vkz+LFEhnfBkuvwq6Bjgyj3BcOBk6ct4qfssrs25vWIITeH1HkIVdcCYWacpLw==",
+        "requested": "[2.1.3, )",
+        "resolved": "2.1.3",
+        "contentHash": "8yonNRWX3vUE9k29ta0Hbfa0AEc0hbDjSH/nZ3vOTJEXmY6hLnGsjDKoz96Z+AgOsrdkAu6PdL/Ebaf70aitzw==",
         "dependencies": {
           "System.Runtime.CompilerServices.Unsafe": "5.0.0",
           "System.Text.Encoding.CodePages": "5.0.0"
