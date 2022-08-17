@@ -15,18 +15,13 @@ namespace XIVDeck.FFXIVPlugin.Game;
 // ... and then promptly adapted and destroyed. I am sorry, goat.
 internal unsafe class GameStateCache {
     private static class Signatures {
-        internal const string PlayerStatus = "48 8D 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 84 C0 75 0F FF C3";
-
-        internal const string IsEmoteUnlocked = "E8 ?? ?? ?? ?? 84 C0 74 A4";
-            
         internal const string MinionBitmask = "48 8D 0D ?? ?? ?? ?? 0F B6 04 08 84 D0 75 10 B8 ?? ?? ?? ?? 48 8B 5C 24";
-
+        internal const string PlayerState = "48 8D 0D ?? ?? ?? ?? E9 ?? ?? ?? ?? CC 40 53";
+    
         internal const string IsMountUnlocked = "E8 ?? ?? ?? ?? 84 C0 74 5C 8B CB";
-        internal const string MountBitmask = "48 8D 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 84 C0 74 5C 8B CB E8";
-
         internal const string IsOrnamentUnlocked = "E8 ?? ?? ?? ?? BA ?? ?? ?? ?? 41 0F B6 CE";
-        internal const string OrnamentBitmask = "48 8D 0D ?? ?? ?? ?? 48 8B D8 E8 ?? ?? ?? ?? BA ?? ?? ?? ?? 41 0F B6 CE";
-            
+        internal const string IsEmoteUnlocked = "E8 ?? ?? ?? ?? 84 C0 74 A4";
+        
         // This sig is (interestingly) hand-found in order to allow Square to change McGuffin counts without
         // breaking my code. Simple explanation is that ?? is current count of McGuffins.
         internal const string IsMcGuffinUnlocked = "8D 42 FF 3C ?? 77 44 4C 8B 89";
@@ -52,17 +47,11 @@ internal unsafe class GameStateCache {
     private readonly delegate* unmanaged<IntPtr, uint, byte> _isMcGuffinUnlocked = null;
         
     // Fields //
-    [Signature(Signatures.PlayerStatus, ScanType = ScanType.StaticAddress)]
-    private readonly IntPtr? _playerStatus = null;
+    [Signature(Signatures.PlayerState, ScanType = ScanType.StaticAddress)]
+    private readonly IntPtr? _playerState = null;
         
     [Signature(Signatures.MinionBitmask, ScanType = ScanType.StaticAddress)]
     private readonly IntPtr? _minionBitmask = null;
-        
-    [Signature(Signatures.MountBitmask, ScanType = ScanType.StaticAddress)]
-    private readonly IntPtr? _mountBitmask = null;
-        
-    [Signature(Signatures.OrnamentBitmask, ScanType = ScanType.StaticAddress)]
-    private readonly IntPtr? _ornamentBitmask = null;
 
     internal IReadOnlyList<Emote>? UnlockedEmotes { get; private set; }
     internal IReadOnlyList<Mount>? UnlockedMounts { get; private set; }
@@ -83,11 +72,11 @@ internal unsafe class GameStateCache {
     }
     
     internal bool IsMountUnlocked(uint mountId) {
-        if (this._mountBitmask == null || this._mountBitmask.Value == IntPtr.Zero) {
+        if (this._playerState == null || this._playerState.Value == IntPtr.Zero) {
             return false;
         }
 
-        return this._isMountUnlocked(this._mountBitmask.Value, mountId) > 0;
+        return this._isMountUnlocked(this._playerState.Value, mountId) > 0;
     }
     
     internal bool IsMinionUnlocked(uint minionId) {
@@ -99,19 +88,19 @@ internal unsafe class GameStateCache {
     }
     
     internal bool IsOrnamentUnlocked(uint ornamentId) {
-        if (this._ornamentBitmask == null || this._ornamentBitmask.Value == IntPtr.Zero) {
+        if (this._playerState == null || this._playerState.Value == IntPtr.Zero) {
             return false;
         }
 
-        return this._isOrnamentUnlocked(this._ornamentBitmask.Value, ornamentId) > 0;
+        return this._isOrnamentUnlocked(this._playerState.Value, ornamentId) > 0;
     }
     
     internal bool IsMcGuffinUnlocked(uint mcguffinId) {
-        if (this._playerStatus == null || this._playerStatus.Value == IntPtr.Zero) {
+        if (this._playerState == null || this._playerState.Value == IntPtr.Zero) {
             return false;
         }
             
-        return this._isMcGuffinUnlocked(this._playerStatus.Value, (byte) mcguffinId) > 0;
+        return this._isMcGuffinUnlocked(this._playerState.Value, (byte) mcguffinId) > 0;
     }
     
     internal GameStateCache() {

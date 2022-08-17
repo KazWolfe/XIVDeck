@@ -116,9 +116,10 @@ internal unsafe class SigHelper : IDisposable {
     internal void CalcBForSlot(HotBarSlot* slot, out HotbarSlotType actionType, out uint actionId) {
         var hotbarModule = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule();
 
-        var acType = HotbarSlotType.Empty;
-        uint acId = 0;
-        ushort acCA = 0;
+        // Take in default values, just in case GetSlotAppearance fails for some reason
+        var acType = slot->IconTypeB;
+        var acId = slot->IconB;
+        ushort acCA = slot->UNK_0xCA;
         
         RaptureHotbarModule.GetSlotAppearance(&acType, &acId, &acCA, hotbarModule, slot);
 
