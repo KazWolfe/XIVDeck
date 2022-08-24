@@ -4,6 +4,8 @@ using System.Text;
 using Dalamud.Hooking;
 using Dalamud.Logging;
 using Dalamud.Utility.Signatures;
+using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.System.Memory;
 using FFXIVClientStructs.FFXIV.Client.System.String;
@@ -30,8 +32,6 @@ internal unsafe class SigHelper : IDisposable {
 
         internal const string SendChatMessage = "48 89 5C 24 ?? 57 48 83 EC 20 48 8B FA 48 8B D9 45 84 C9";
         internal const string SanitizeChatString = "E8 ?? ?? ?? ?? EB 0A 48 8D 4C 24 ?? E8 ?? ?? ?? ?? 48 8D 8D";
-
-        internal const string IsQuestCompleted = "E8 ?? ?? ?? ?? 41 88 84 2C";
     }
 
     /***** functions *****/
@@ -41,9 +41,6 @@ internal unsafe class SigHelper : IDisposable {
     // UIModule, message, unused, byte
     [Signature(Signatures.SendChatMessage, Fallibility = Fallibility.Fallible)]
     private readonly delegate* unmanaged<IntPtr, IntPtr, IntPtr, byte, void> _processChatBoxEntry = null!;
-
-    [Signature(Signatures.IsQuestCompleted, Fallibility = Fallibility.Fallible)]
-    private readonly delegate* unmanaged<uint, byte> _isQuestCompleted = null;
 
     /***** hooks *****/
     private delegate IntPtr RaptureGearsetModule_WriteFile(IntPtr a1, IntPtr a2);
@@ -106,11 +103,7 @@ internal unsafe class SigHelper : IDisposable {
     }
 
     internal bool IsQuestCompleted(uint questId) {
-        if (this._isQuestCompleted == null) {
-            throw new InvalidOperationException("Signature for IsQuestCompleted not found!");
-        }
-
-        return this._isQuestCompleted((ushort) (questId & 0xFFFF)) != 0;
+        return QuestManager.IsQuestComplete(questId);
     }
 
     internal void CalcBForSlot(HotBarSlot* slot, out HotbarSlotType actionType, out uint actionId) {

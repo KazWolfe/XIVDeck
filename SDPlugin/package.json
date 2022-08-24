@@ -1,6 +1,6 @@
 {
   "name": "@kazwolfe/xivdeck-sdplugin",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "private": true,
   "license": "MPL",
   "scripts": {

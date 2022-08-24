@@ -8,7 +8,6 @@ description: |-
   
   Please report all problems to KazWolfe#2896 in the Dalamud Support server or by opening an Issue on GitHub.
 repo_url: https://github.com/KazWolfe/XIVDeck/
-dalamud_api_level: 7
 tags:
   - stream deck
   - ui

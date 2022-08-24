@@ -54,6 +54,13 @@ internal class PenumbraIPC : IPluginIpcClient {
        this._penumbraApiVersionSubscriber = Injections.PluginInterface.GetIpcSubscriber<int>("Penumbra.ApiVersion");
        this._penumbraResolveDefaultSubscriber = Injections.PluginInterface.GetIpcSubscriber<string, string>("Penumbra.ResolveDefaultPath");
 
+       try {
+           PluginLog.Debug($"Connected to Penumbra IPC, version {this.Version}.");
+       } catch (IpcNotReadyError ex) {
+           PluginLog.Information(ex, "Penumbra was found but its IPC was not ready, will not enable IPC at this time");
+           return;
+       }
+
        this.Enabled = true;
    }
    
