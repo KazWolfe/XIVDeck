@@ -18,7 +18,7 @@ public class WSOpcodeAttribute : Attribute {
 }
 
 public static class WSOpcodeWiring {
-    private static Dictionary<string, Type> Opcodes = new();
+    private static readonly Dictionary<string, Type> Opcodes = new();
 
     public static void Autowire() {
         var assembly = Assembly.GetExecutingAssembly();
