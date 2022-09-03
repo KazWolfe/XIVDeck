@@ -14,8 +14,17 @@ namespace XIVDeck.FFXIVPlugin.Game;
 // borrowed from https://github.com/goaaats/Dalamud.FindAnything/blob/master/Dalamud.FindAnything/GameStateCache.cs
 // ... and then promptly adapted and destroyed. I am sorry, goat.
 internal unsafe class GameStateCache {
-    internal static bool IsUnlockLinkUnlockedOrQuestCompleted(uint unlockLinkOrQuestId) {
+    private static bool IsUnlockLinkUnlockedOrQuestCompleted(uint unlockLinkOrQuestId) {
         return UIState.Instance()->IsUnlockLinkUnlockedOrQuestCompleted(unlockLinkOrQuestId, 1);
+    }
+    
+    internal static bool IsEmoteUnlocked(Emote? emote) {
+        // Work around showing emotes if nobody is logged in.
+        if (!Injections.ClientState.IsLoggedIn) return false;
+        
+        if (emote == null || emote.Order == 0) return false;
+
+        return emote.UnlockLink == 0 || IsUnlockLinkUnlockedOrQuestCompleted(emote.UnlockLink);
     }
 
     internal static bool IsMountUnlocked(uint mountId) {
@@ -53,16 +62,16 @@ internal unsafe class GameStateCache {
 
     internal void Refresh() {
         this.UnlockedEmotes = Injections.DataManager.GetExcelSheet<Emote>()!
-            .Where(x => x.UnlockLink == 0 || IsUnlockLinkUnlockedOrQuestCompleted(x.UnlockLink)).ToList();
+            .Where(x => x.IsUnlocked()).ToList();
 
         this.UnlockedMounts = Injections.DataManager.GetExcelSheet<Mount>()!
-            .Where(x => IsMountUnlocked(x.RowId)).ToList();
+            .Where(x => x.IsUnlocked()).ToList();
 
         this.UnlockedMinions = Injections.DataManager.GetExcelSheet<Companion>()!
-            .Where(x => IsMinionUnlocked(x.RowId)).ToList();
+            .Where(x => x.IsUnlocked()).ToList();
 
         this.UnlockedOrnaments = Injections.DataManager.GetExcelSheet<Ornament>()!
-            .Where(x => IsOrnamentUnlocked(x.RowId)).ToList();
+            .Where(x => x.IsUnlocked()).ToList();
 
         var gearsets = new List<Gearset>();
         for (var i = 0; i < 100; i++) {
