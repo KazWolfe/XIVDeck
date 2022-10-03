@@ -17,15 +17,17 @@ internal class TippyIPC : IPluginIpcClient {
     private ICallGateSubscriber<bool> _tippyRegisteredSubscriber;
 
     internal TippyIPC() {
+        this._tippyRegisteredSubscriber = Injections.PluginInterface.GetIpcSubscriber<bool>("Tippy.IsInitialized");
+        this._tippyRegisteredSubscriber.Subscribe(this._initializeIpc);
+        
+        // n.b. we have a *very minor* race condition here where if Tippy initializes *after* the above subscribe but
+        // before the initialize call below, we could do a double-init. 
+        
         try {
             this._initializeIpc();
         } catch (Exception ex) {
             PluginLog.Warning(ex, "Failed to initialize Tippy IPC");
         }
-
-        // doesn't exist, but just in case.
-        this._tippyRegisteredSubscriber = Injections.PluginInterface.GetIpcSubscriber<bool>("Tippy.Initialized");
-        this._tippyRegisteredSubscriber.Subscribe(this._initializeIpc);
     }
 
     public void Dispose() {
