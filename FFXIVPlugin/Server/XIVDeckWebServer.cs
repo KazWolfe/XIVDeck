@@ -19,7 +19,8 @@ public class XIVDeckWebServer : IDisposable {
             .WithUrlPrefixes(GenerateUrlPrefixes(port))
             .WithMode(HttpListenerMode.Microsoft)
         );
-        
+
+        this._host.WithCors(origins: "file://");
         this._host.WithModule(new XIVDeckWSServer("/ws"));
         this._host.WithModule(new AuthModule("/"));
 
