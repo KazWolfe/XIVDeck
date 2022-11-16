@@ -33,6 +33,11 @@ communicate with the game.
 using the Elgato Stream Deck SDK. It exposes a number of actions that will allow the game to
 deeply interact with the Stream Deck.
 
+For those not using hardware other than the Elgato Stream Deck, community-made plugins are
+available:
+
+* [Loupedeck/Razer Stream Controller Plugin](https://github.com/bendobos/LoupeXIVDeck) by bendobos
+
 ## Using the Plugin
 
 The XIVDeck Game Plugin has very few configuration parameters; only really requiring a port
