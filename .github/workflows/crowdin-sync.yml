@@ -8,11 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-      - name: Get Branch Name
-        shell: bash
-        run: echo "::set-output name=branch::${GITHUB_REF#refs/heads/}"
-        id: branch
+        uses: actions/checkout@v3
       - name: Update localization
         uses: crowdin/github-action@1.1.0
         with:
@@ -31,9 +27,9 @@ jobs:
           pull_request_title: '[Crowdin] Synchronize Localization Changes'
           pull_request_body: 'Update localization with latest translations from crowdin'
             
-          crowdin_branch_name: ${{ steps.branch.outputs.branch }}
-          localization_branch_name: 'crowdin-${{ steps.branch.outputs.branch }}'
-          pull_request_base_branch_name: ${{ steps.branch.outputs.branch }}
+          crowdin_branch_name: ${{ github.ref_name }}
+          localization_branch_name: 'crowdin-${{ github.ref_name }}'
+          pull_request_base_branch_name: ${{ github.ref_name }}
           
           config: 'crowdin.yml'
           
