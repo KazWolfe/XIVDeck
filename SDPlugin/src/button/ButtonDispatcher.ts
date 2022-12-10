@@ -10,6 +10,7 @@ import AbstractStateEvent from "@rweich/streamdeck-events/dist/Events/Received/P
 import {ClassButton} from "./buttons/ClassButton";
 import {StateMessage} from "../link/ffxivplugin/GameTypes";
 import {FFXIVPluginLink} from "../link/ffxivplugin/FFXIVPluginLink";
+import {VolumeButton} from "./buttons/VolumeButton";
 
 export class ButtonDispatcher {
     private _contextCache: Map<string, BaseButton> = new Map<string, BaseButton>();
@@ -36,6 +37,9 @@ export class ButtonDispatcher {
                 break;
             case "dev.wolf.xivdeck.sdplugin.actions.switchclass":
                 button = new ClassButton(event);
+                break;
+            case "dev.wolf.xivdeck.sdplugin.actions.volume":
+                button = new VolumeButton(event);
                 break;
             default:
                 throw new Error(`Undefined action type: ${event.action}`)
@@ -76,6 +80,22 @@ export class ButtonDispatcher {
         }
     }
     
+    public dispatch(event: any) {
+        let button = this._contextCache.get(event.context);
+
+        if (!button) {
+            plugin.sdPluginLink.showAlert(event.context);
+            throw Error("Somehow got a button that wasn't in cache!");
+        }
+
+        button.dispatch(event)
+            .catch((e) => {
+                button!.showAlert();
+                console.error("Error trying to execute button:", e, event);
+                plugin.sdPluginLink.logMessage(`Got error while trying to execute button: ${e}`)
+            });
+    }
+    
     handleWillAppear(event: WillAppearEvent): void {
         // bust the icon cache for test/debug purposes
         // plugin.sdPluginLink.setImage("", event.context);
@@ -93,21 +113,5 @@ export class ButtonDispatcher {
     handleWillDisappear(event: WillDisappearEvent) {
         // delete the context cache entry as it's no longer necessary
         this._destructButton(event.context);
-    }
-    
-    handleKeyDown(event: KeyDownEvent) {
-        let button = this._contextCache.get(event.context);
-        
-        if (!button) {
-            plugin.sdPluginLink.showAlert(event.context);
-            throw Error("Somehow got a button that wasn't in cache!");
-        }
-        
-        button.execute(event)
-            .catch((e) => {
-                button!.showAlert();
-                console.error("Error trying to execute button:", e, event);
-                plugin.sdPluginLink.logMessage(`Got error while trying to execute button: ${e}`)
-            });
     }
 }

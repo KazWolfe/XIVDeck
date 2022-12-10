@@ -9,6 +9,7 @@ using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.System.Memory;
 using FFXIVClientStructs.FFXIV.Client.System.String;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using FFXIVClientStructs.FFXIV.Common.Configuration;
 using XIVDeck.FFXIVPlugin.Game.Structs;
 using XIVDeck.FFXIVPlugin.Server;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
@@ -31,6 +32,8 @@ internal unsafe class SigHelper : IDisposable {
 
         internal const string SendChatMessage = "48 89 5C 24 ?? 57 48 83 EC 20 48 8B FA 48 8B D9 45 84 C9";
         internal const string SanitizeChatString = "E8 ?? ?? ?? ?? EB 0A 48 8D 4C 24 ?? E8 ?? ?? ?? ?? 48 8D 8D";
+        
+        internal const string SetConfigValueUInt = "E8 ?? ?? ?? ?? 0F B6 5E 73";
     }
 
     /***** functions *****/
@@ -40,6 +43,9 @@ internal unsafe class SigHelper : IDisposable {
     // UIModule, message, unused, byte
     [Signature(Signatures.SendChatMessage, Fallibility = Fallibility.Fallible)]
     private readonly delegate* unmanaged<IntPtr, IntPtr, IntPtr, byte, void> _processChatBoxEntry = null!;
+
+    [Signature(Signatures.SetConfigValueUInt, Fallibility = Fallibility.Fallible)]
+    private readonly delegate* unmanaged<ConfigEntry*, uint, byte> _setConfigValueUint = null!;
 
     /***** hooks *****/
     private delegate IntPtr RaptureGearsetModule_WriteFile(IntPtr a1, IntPtr a2);
@@ -126,6 +132,14 @@ internal unsafe class SigHelper : IDisposable {
 
         this.CalcBForSlot(slot, out var slotActionType, out var slotActionId);
         return slot->GetIconIdForSlot(slotActionType, slotActionId);
+    }
+
+    internal bool SetConfigValueUInt(ConfigEntry* entry, uint value = 1) {
+        if (this._setConfigValueUint == null) {
+            return false;
+        }
+
+        return this._setConfigValueUint(entry, value) == 1;
     }
 
     private IntPtr DetourGearsetSave(IntPtr a1, IntPtr a2) {

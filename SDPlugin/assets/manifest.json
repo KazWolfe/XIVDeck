@@ -64,6 +64,28 @@
       ],
       "Tooltip": "Switch to a specific class/job",
       "UUID": "dev.wolf.xivdeck.sdplugin.actions.SwitchClass"
+    },
+    {
+      "Icon": "assets/images/sidebar/gearset",
+      "Name": "Change Volume",
+      "States": [
+        {
+          "Image": "assets/images/defaults/gearset",
+          "TitleAlignment": "bottom",
+          "FontSize": "16"
+        }
+      ],
+      "Controllers": [ "Keypad", "Encoder" ],
+      "Encoder": {
+        "StackColor": "#e0dd3d",
+        "layout": "$B1",
+        "TriggerDescription": {
+          "Rotate": "Set Volume",
+          "Touch": "Mute Channel"
+        }
+      },
+      "Tooltip": "Change volume",
+      "UUID": "dev.wolf.xivdeck.sdplugin.actions.Volume"
     }
   ],
   "PluginUUID": "dev.wolf.xivdeck",

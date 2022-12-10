@@ -10,10 +10,12 @@
   },
   "dependencies": {
     "@rweich/streamdeck-ts": "^4.0.3",
+    "@rweich/streamdeck-events": "file:lib/streamdeck-events",
     "websocket-as-promised": "^2.0.1",
     "uuid": "^8.3.2",
     "jquery": "^3.6.0",
-    "react-i18next": "^11.18.3"
+    "react-i18next": "^11.18.3",
+    "@sinclair/typebox": "0.24.48"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^11.0.0",
@@ -26,5 +28,13 @@
     "@types/uuid": "^8.3.4",
     "@types/jquery": "^3.5.14",
     "@alienfast/i18next-loader": "^1.1.4"
+  },
+  "overrides": {
+    "@rweich/streamdeck-ts": {
+      "@rweich/streamdeck-events": "file:lib/streamdeck-events"
+    }
+  },
+  "engines": {
+    "npm": ">=8.3.0"
   }
 }

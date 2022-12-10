@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using XIVDeck.FFXIVPlugin.ActionExecutor;
@@ -27,6 +28,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
 
     private DalamudPluginInterface PluginInterface { get; }
     private readonly HotbarWatcher _hotbarWatcher;
+    private readonly VolumeManager _volumeManager;
     private XIVDeckWebServer _xivDeckWebServer = null!;
     private readonly ChatLinkWiring _chatLinkWiring;
     private readonly IPCManager _ipcManager;
@@ -52,6 +54,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         // More plugin interfaces
         this._chatLinkWiring = new ChatLinkWiring();
         this._hotbarWatcher = new HotbarWatcher();
+        this._volumeManager = new VolumeManager();
         this.WindowSystem = new WindowSystem(this.Name);
         
         // Start the websocket server itself.
@@ -72,7 +75,8 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         DeferredChat.Cancel();
 
         this._hotbarWatcher.Dispose();
-        this._xivDeckWebServer.Dispose();
+        this._volumeManager.Dispose();
+        this._xivDeckWebServer.Dispose(); 
         this._chatLinkWiring.Dispose();
         this.SigHelper.Dispose();
         this._ipcManager.Dispose();

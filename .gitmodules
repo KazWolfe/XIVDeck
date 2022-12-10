@@ -1,0 +1,3 @@
+[submodule "SDPlugin/lib/streamdeck-events"]
+	path = SDPlugin/lib/streamdeck-events
+	url = git@github.com:KazWolfe/streamdeck-events.git

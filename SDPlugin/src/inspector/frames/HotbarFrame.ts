@@ -5,7 +5,7 @@ import i18n from "../../i18n/i18n";
 
 export class HotbarFrame extends BaseFrame<HotbarButtonSettings> {
     // html elements
-    hotbarSelector: HTMLSelectElement;
+    channelSelector: HTMLSelectElement;
     slotField: HTMLInputElement;
     
     // state
@@ -15,8 +15,8 @@ export class HotbarFrame extends BaseFrame<HotbarButtonSettings> {
     constructor() {
         super();
         
-        this.hotbarSelector = document.createElement("select");
-        this.hotbarSelector.id = "hotbarSelector"
+        this.channelSelector = document.createElement("select");
+        this.channelSelector.id = "hotbarSelector"
         
         this.slotField = document.createElement("input")
         this.slotField.type = "number";
@@ -30,7 +30,7 @@ export class HotbarFrame extends BaseFrame<HotbarButtonSettings> {
         this.hotbarId = settings.hotbarId !== undefined ? settings.hotbarId : this.hotbarId;
         this.slotId = settings.slotId !== undefined ? settings.slotId : this.slotId;
         
-        this.hotbarSelector.value = (this.hotbarId >= 0) ? this.hotbarId.toString() : "default";
+        this.channelSelector.value = (this.hotbarId >= 0) ? this.hotbarId.toString() : "default";
         this._setSlotFieldParams();
         
         if (this.hotbarId >= 0) {
@@ -39,14 +39,14 @@ export class HotbarFrame extends BaseFrame<HotbarButtonSettings> {
     }
 
     renderHTML(): void {
-        this.domParent.append(PIUtils.createPILabeledElement(i18n.t("frames:hotbar.hotbar"), this.hotbarSelector));
+        this.domParent.append(PIUtils.createPILabeledElement(i18n.t("frames:hotbar.hotbar"), this.channelSelector));
         this.domParent.append(PIUtils.createPILabeledElement(i18n.t("frames:hotbar.slot"), this.slotField));
         
         this._renderHotbarSelector();
-        this.hotbarSelector.value = (this.hotbarId >= 0) ? this.hotbarId.toString() : "default";
+        this.channelSelector.value = (this.hotbarId >= 0) ? this.hotbarId.toString() : "default";
         
         // add event listener hooks
-        this.hotbarSelector.onchange = this._onUpdate.bind(this);
+        this.channelSelector.onchange = this._onUpdate.bind(this);
         this.slotField.oninput = this._onUpdate.bind(this);
     }
     
@@ -77,9 +77,9 @@ export class HotbarFrame extends BaseFrame<HotbarButtonSettings> {
         }
         
         console.log(standardGroup, crossGroup);
-        this.hotbarSelector.add(PIUtils.createDefaultSelection(i18n.t("frames:hotbar.default")));
-        this.hotbarSelector.add(standardGroup);
-        this.hotbarSelector.add(crossGroup);
+        this.channelSelector.add(PIUtils.createDefaultSelection(i18n.t("frames:hotbar.default")));
+        this.channelSelector.add(standardGroup);
+        this.channelSelector.add(crossGroup);
     }
     
     private _setSlotFieldParams() {
@@ -107,7 +107,7 @@ export class HotbarFrame extends BaseFrame<HotbarButtonSettings> {
     }
     
     private _onUpdate(ev: Event) {
-        let selectedHotbar = this.hotbarSelector.value;
+        let selectedHotbar = this.channelSelector.value;
         let selectedSlot = this.slotField.value;
 
         if (selectedHotbar === "default") {

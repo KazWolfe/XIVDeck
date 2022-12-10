@@ -6,6 +6,9 @@ import {
     ApplicationDidTerminateEvent, KeyDownEvent,
     WillAppearEvent, WillDisappearEvent
 } from "@rweich/streamdeck-events/dist/Events/Received/Plugin"
+import { 
+    DialPressEvent, DialRotateEvent, TouchTapEvent
+} from "@rweich/streamdeck-events/dist/Events/Received/Plugin/Dial";
 import {DefaultGlobalSettings, GlobalSettings} from "./util/GlobalSettings";
 import {ButtonDispatcher} from "./button/ButtonDispatcher";
 
@@ -14,7 +17,7 @@ class XIVDeckPlugin {
     xivPluginLink: FFXIVPluginLink = new FFXIVPluginLink(this.sdPluginLink);
     
     private dispatcher: ButtonDispatcher = new ButtonDispatcher();
-    
+
     constructor() {
         this.sdPluginLink.on('didReceiveGlobalSettings', (ev: DidReceiveGlobalSettingsEvent) => this.handleDidReceiveGlobalSettings(ev));
         
@@ -24,7 +27,10 @@ class XIVDeckPlugin {
         // per-button dispatches
         this.sdPluginLink.on('willAppear', (ev: WillAppearEvent) => this.dispatcher.handleWillAppear(ev));
         this.sdPluginLink.on('willDisappear', (ev: WillDisappearEvent) => this.dispatcher.handleWillDisappear(ev));
-        this.sdPluginLink.on('keyDown', (ev: KeyDownEvent) => this.dispatcher.handleKeyDown(ev));
+        this.sdPluginLink.on('keyDown', (ev: KeyDownEvent) => this.dispatcher.dispatch(ev));
+        this.sdPluginLink.on('dialRotate', (ev: DialRotateEvent) => this.dispatcher.dispatch(ev));
+        this.sdPluginLink.on('dialPress', (ev: DialPressEvent) => this.dispatcher.dispatch(ev));
+        this.sdPluginLink.on('touchTap', (ev: TouchTapEvent) => this.dispatcher.dispatch(ev) )
         this.sdPluginLink.on('didReceiveSettings', (ev: DidReceiveSettingsEvent) => this.dispatcher.handleReceivedSettings(ev));
     }
 

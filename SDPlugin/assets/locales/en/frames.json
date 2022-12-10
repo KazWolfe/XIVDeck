@@ -31,5 +31,10 @@
     "number": "Macro Number",
     "individual": "Individual",
     "shared": "Shared"
+  },
+  "volume": {
+    "default-type": "Select channel...",
+    "channel": "Channel",
+    "step": "Step Size"
   }
 }
