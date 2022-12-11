@@ -9,6 +9,7 @@ using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
@@ -64,7 +65,7 @@ public class InstrumentStrategy : IActionStrategy {
         }
             
         Injections.Framework.RunOnFrameworkThread(delegate {
-            GameUtils.ExecuteHotbarAction(HotbarSlotType.PerformanceInstrument, actionId);
+            HotbarManager.ExecuteHotbarAction(HotbarSlotType.PerformanceInstrument, actionId);
         });
     }
 

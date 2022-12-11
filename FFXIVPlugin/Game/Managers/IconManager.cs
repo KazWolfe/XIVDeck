@@ -7,7 +7,7 @@ using SixLabors.ImageSharp.PixelFormats;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.IPC.Subscribers;
 
-namespace XIVDeck.FFXIVPlugin.Game; 
+namespace XIVDeck.FFXIVPlugin.Game.Managers; 
 
 // borrowed from https://github.com/Caraxi/RemindMe/blob/master/IconManager.cs
 public class IconManager {

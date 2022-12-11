@@ -6,6 +6,7 @@ using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 using XIVDeck.FFXIVPlugin.Server.Types;
@@ -59,7 +60,7 @@ public class HotbarController : WebApiController {
         // non-game thread (as would be the case for API calls). Why this works normally for Spells and other
         // actions will forever be a mystery. 
         Injections.Framework.RunOnFrameworkThread(delegate { 
-            GameUtils.PulseHotbarSlot(hotbarId, slotId);
+            HotbarManager.PulseHotbarSlot(hotbarId, slotId);
             Framework.Instance()->UIModule->GetRaptureHotbarModule()->ExecuteSlotById((uint) hotbarId, (uint) slotId);
         });
     }
@@ -69,7 +70,7 @@ public class HotbarController : WebApiController {
         if (hotbarId is < 0 or > 17)
             throw new ArgumentException(UIStrings.HotbarController_InvalidHotbarIdError);
 
-        switch (GameUtils.IsCrossHotbar(hotbarId)) {
+        switch (HotbarManager.IsCrossHotbar(hotbarId)) {
             case false when slotId is < 0 or > 11:
                 throw new ArgumentException(UIStrings.HotbarController_NormalHotbarInvalidSlotError);
             case true when slotId is < 0 or > 15:

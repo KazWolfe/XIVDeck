@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Game.Data;
+using XIVDeck.FFXIVPlugin.Game.Managers;
 
 namespace XIVDeck.FFXIVPlugin.Server.Types; 
 
