@@ -66,22 +66,21 @@
       "UUID": "dev.wolf.xivdeck.sdplugin.actions.SwitchClass"
     },
     {
-      "Icon": "assets/images/sidebar/gearset",
+      "Icon": "assets/images/sidebar/volume",
       "Name": "Change Volume",
       "States": [
         {
-          "Image": "assets/images/defaults/gearset",
+          "Image": "assets/images/sidebar/volume",
           "TitleAlignment": "bottom",
           "FontSize": "16"
         }
       ],
       "Controllers": [ "Keypad", "Encoder" ],
       "Encoder": {
-        "StackColor": "#e0dd3d",
         "layout": "$B1",
         "TriggerDescription": {
           "Rotate": "Set Volume",
-          "Touch": "Mute Channel"
+          "Push": "Mute Channel"
         }
       },
       "Tooltip": "Change volume",

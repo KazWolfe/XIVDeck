@@ -6,7 +6,6 @@ import {CommandButton} from "./buttons/CommandButton";
 import {MacroButton} from "./buttons/MacroButton";
 import plugin from "../plugin";
 import {DidReceiveSettingsEvent} from "@rweich/streamdeck-events/dist/Events/Received";
-import AbstractStateEvent from "@rweich/streamdeck-events/dist/Events/Received/Plugin/AbstractStateEvent";
 import {ClassButton} from "./buttons/ClassButton";
 import {StateMessage} from "../link/ffxivplugin/GameTypes";
 import {FFXIVPluginLink} from "../link/ffxivplugin/FFXIVPluginLink";
@@ -19,7 +18,7 @@ export class ButtonDispatcher {
         FFXIVPluginLink.instance.on("stateUpdate", this._globalStateUpdate.bind(this));
     }
     
-    private _constructButton(event: AbstractStateEvent): BaseButton {
+    private _constructButton(event: WillAppearEvent): BaseButton {
         let button: BaseButton;
 
         switch (event.action) {
@@ -104,10 +103,13 @@ export class ButtonDispatcher {
     }
     
     handleReceivedSettings(event: DidReceiveSettingsEvent) {
-        // the "simple" way of doing this is honestly to just delete it from cache and start fresh.
-        // this may trigger a render call, but that's honestly fine as we'd normally have to anyways.
-        this._destructButton(event.context);
-        this._constructButton(event);
+        let button = this._contextCache.get(event.context);
+
+        if (button == null) {
+            throw new Error(`No button with context ${event.context} was found in cache!`);
+        }
+
+        button.onReceivedSettings(event);
     }
     
     handleWillDisappear(event: WillDisappearEvent) {

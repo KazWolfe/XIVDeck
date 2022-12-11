@@ -1,28 +1,32 @@
 ﻿import {BaseButton} from "../BaseButton";
 import AbstractStateEvent from "@rweich/streamdeck-events/dist/Events/Received/Plugin/AbstractStateEvent";
-import {KeyDownEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
+import {KeyDownEvent, WillAppearEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
 import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
+import {DidReceiveSettingsEvent} from "@rweich/streamdeck-events/dist/Events/Received";
 
 export type CommandButtonSettings = {
     command: string
 }
 
 export class CommandButton extends BaseButton {
-    command: string;
+    settings?: CommandButtonSettings;
     
-    constructor(event: AbstractStateEvent) {
+    constructor(event: WillAppearEvent) {
         super(event.context);
         
-        let settings = event.settings as CommandButtonSettings;
-        this.command = settings.command;
+        this.onReceivedSettings(event);
+    }
+    
+    async onReceivedSettings(event: DidReceiveSettingsEvent | WillAppearEvent) {
+        this.settings = event.settings as CommandButtonSettings;
     }
 
     async execute(event: KeyDownEvent): Promise<void> {
-        if (this.command == null || this.command === "/") {
+        if (this.settings?.command == null || this.settings.command === "/") {
             throw new Error("No command specified for this button");
         }
         
-       await FFXIVApi.runTextCommand(this.command);
+       await FFXIVApi.runTextCommand(this.settings.command);
     }
     
     async render() {

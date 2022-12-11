@@ -1,7 +1,8 @@
 ﻿import {
     DialPressEvent, DialRotateEvent, TouchTapEvent
 } from "@rweich/streamdeck-events/dist/Events/Received/Plugin/Dial";
-import {KeyDownEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
+import {DidReceiveSettingsEvent} from "@rweich/streamdeck-events/dist/Events/Received";
+import {KeyDownEvent, WillAppearEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
 import {EventsSent} from "@rweich/streamdeck-events";
 import {LayoutFeedback} from "@rweich/streamdeck-events/dist/StreamdeckTypes/Received/Feedback/LayoutFeedback";
 
@@ -19,6 +20,7 @@ export abstract class BaseButton {
         this.context = context;
     }
     
+    abstract onReceivedSettings(event: DidReceiveSettingsEvent | WillAppearEvent): Promise<void>;
     abstract execute(event: any): Promise<void>;
     abstract render(): Promise<void>;
     
@@ -36,7 +38,9 @@ export abstract class BaseButton {
             return this.onDialRotate(event);
         } else if (event instanceof DialPressEvent) {
             return this.onDialPress(event);
-        } 
+        } else if (event instanceof KeyDownEvent) {
+            return this.onKeyDown(event);
+        }
         
         return this.execute(event);
     }

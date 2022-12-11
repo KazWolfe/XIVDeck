@@ -22,6 +22,7 @@ export class VolumeFrame extends BaseFrame<VolumeButtonSettings> {
         this.channelSelector = document.createElement("select");
         this.channelSelector.id = "channelSelector"
         this.channelSelector.onchange = this._onChannelChange.bind(this);
+        this.channelSelector.add(PIUtils.createDefaultSelection(i18n.t("frames:volume.default-type")));
         
         this.multiplierRange = PIUtils.generateRange(i18n.t("frames:volume.step"), "volMultiplier", 1, 5, 1);
         this.multiplierRangeInput = this.multiplierRange.getElementsByTagName("input")[0];
@@ -36,6 +37,14 @@ export class VolumeFrame extends BaseFrame<VolumeButtonSettings> {
         
         this.selectedMultiplier = settings.multiplier ?? 1;
         this.multiplierRangeInput.value = this.selectedMultiplier.toString();
+
+        // hack in to load the last known channel (if set)
+        if (this.selectedChannel != "default") {
+            let typeKey = `volumetypes:${this.selectedChannel}`
+            let genericType = PIUtils.createDefaultSelection(i18n.t(typeKey));
+            genericType.id = this.selectedChannel;
+            this.channelSelector.add(genericType);
+        }
     }
 
     renderHTML(): void {
