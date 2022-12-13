@@ -1,4 +1,4 @@
-﻿import {KeyDownEvent, WillAppearEvent, WillDisappearEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
+﻿import {WillAppearEvent, WillDisappearEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
 import {BaseButton} from "./BaseButton";
 import {ActionButton} from "./buttons/ActionButton";
 import {HotbarButton} from "./buttons/HotbarButton";
@@ -10,6 +10,7 @@ import {ClassButton} from "./buttons/ClassButton";
 import {StateMessage} from "../link/ffxivplugin/GameTypes";
 import {FFXIVPluginLink} from "../link/ffxivplugin/FFXIVPluginLink";
 import {VolumeButton} from "./buttons/VolumeButton";
+import {InteractiveEvent} from "../util/SDEvent";
 
 export class ButtonDispatcher {
     private _contextCache: Map<string, BaseButton> = new Map<string, BaseButton>();
@@ -79,7 +80,7 @@ export class ButtonDispatcher {
         }
     }
     
-    public dispatch(event: any) {
+    public dispatch(event: InteractiveEvent) {
         let button = this._contextCache.get(event.context);
 
         if (!button) {

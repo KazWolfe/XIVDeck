@@ -1,5 +1,4 @@
 ﻿import {BaseButton} from "../BaseButton";
-import AbstractStateEvent from "@rweich/streamdeck-events/dist/Events/Received/Plugin/AbstractStateEvent";
 import {KeyDownEvent, WillAppearEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
 import plugin from "../../plugin";
 import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
@@ -20,6 +19,8 @@ export class ClassButton extends BaseButton {
         
         this._xivEventListeners.add(plugin.xivPluginLink.on("_ready", this.render.bind(this)));
         
+        this._sdEventListeners.set("keyDown", this.onKeyDown.bind(this));
+        
         this.onReceivedSettings(event);
     }
     
@@ -28,7 +29,7 @@ export class ClassButton extends BaseButton {
         this.render();
     }
     
-    async execute(event: KeyDownEvent): Promise<void> {
+    async onKeyDown(event: KeyDownEvent): Promise<void> {
         if (this.settings?.classId == undefined) {
             throw new Error("No class specified for this button");
         }

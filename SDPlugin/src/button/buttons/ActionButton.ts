@@ -22,6 +22,8 @@ export class ActionButton extends BaseButton {
         this._xivEventListeners.add(plugin.xivPluginLink.on("_ready", this.render.bind(this)));
         this._xivEventListeners.add(plugin.xivPluginLink.on("stateUpdate", this.stateUpdate.bind(this)));
         
+        this._sdEventListeners.set("keyDown", this.onKeyDown.bind(this));
+        
         this.onReceivedSettings(event);
     }
     
@@ -30,7 +32,7 @@ export class ActionButton extends BaseButton {
         this.render();
     }
 
-    async execute(event: KeyDownEvent): Promise<void> {
+    async onKeyDown(event: KeyDownEvent): Promise<void> {
         if (this.settings?.actionType == undefined || this.settings?.actionId == undefined) {
             throw Error("Not action type/ID was defined for this button!");
         }

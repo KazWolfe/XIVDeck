@@ -1,7 +1,6 @@
 ﻿import {BaseButton} from "../BaseButton";
 import {KeyDownEvent, WillAppearEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
 import {
-    TouchTapEvent,
     DialRotateEvent,
     DialPressEvent
 } from "@rweich/streamdeck-events/dist/Events/Received/Plugin/Dial";
@@ -31,6 +30,11 @@ export class VolumeButton extends BaseButton {
         this._xivEventListeners.add(plugin.xivPluginLink.on("volumeUpdate", this.onVolumeUpdate.bind(this)));
         this._xivEventListeners.add(plugin.xivPluginLink.on("_wsClosed", this.renderInvalidState.bind(this)));
         
+        this._sdEventListeners.set("keyDown", this.onKeyDown.bind(this));
+        this._sdEventListeners.set("dialPress", this.onDialPress.bind(this));
+        this._sdEventListeners.set("dialRotate", this.onDialRotate.bind(this));
+        this._sdEventListeners.set("keyDown", this.onDialRotate.bind(this));
+        
         this.onReceivedSettings(event);
     }
     
@@ -39,11 +43,7 @@ export class VolumeButton extends BaseButton {
         await this.loadFromGame();
     }
 
-    async execute(event: KeyDownEvent | TouchTapEvent | DialRotateEvent | DialPressEvent): Promise<void> {
-        // no-op
-    }
-
-    override async onDialPress(event: DialPressEvent): Promise<void> {
+   async onDialPress(event: DialPressEvent): Promise<void> {
         // ignore dial release events
         if (!event.pressed) return;
         
@@ -54,7 +54,7 @@ export class VolumeButton extends BaseButton {
         }))
     }
     
-    override async onKeyDown(event: KeyDownEvent): Promise<void> {
+    async onKeyDown(event: KeyDownEvent): Promise<void> {
         this.preEventGuard();
 
         await FFXIVPluginLink.instance.send(new SetVolume(this.settings!.channel, {
@@ -62,7 +62,7 @@ export class VolumeButton extends BaseButton {
         }))
     }
 
-    override async onDialRotate(event: DialRotateEvent): Promise<void> {
+    async onDialRotate(event: DialRotateEvent): Promise<void> {
         this.preEventGuard();
 
         let newVolume = this.lastState!.volume + event.ticks * (this.settings?.multiplier ?? 1);

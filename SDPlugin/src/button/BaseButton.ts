@@ -1,12 +1,10 @@
-﻿import {
-    DialPressEvent, DialRotateEvent, TouchTapEvent
-} from "@rweich/streamdeck-events/dist/Events/Received/Plugin/Dial";
-import {DidReceiveSettingsEvent} from "@rweich/streamdeck-events/dist/Events/Received";
-import {KeyDownEvent, WillAppearEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
+﻿import {DidReceiveSettingsEvent} from "@rweich/streamdeck-events/dist/Events/Received";
+import {WillAppearEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
 import {EventsSent} from "@rweich/streamdeck-events";
 import {LayoutFeedback} from "@rweich/streamdeck-events/dist/StreamdeckTypes/Received/Feedback/LayoutFeedback";
 
 import plugin from "../plugin";
+import { InteractiveEvent } from "../util/SDEvent";
 
 type SetterTargets = 'hardware' | 'software' | 'both';
 
@@ -15,13 +13,15 @@ export abstract class BaseButton {
     
     // set of registered XIV events bound to this button
     protected _xivEventListeners: Set<Function | undefined> = new Set<Function | undefined>();
+    
+    // set of event listeners
+    protected _sdEventListeners: Map<InteractiveEvent['event'], Function> = new Map<InteractiveEvent['event'], Function>();
 
     protected constructor(context: string) {
         this.context = context;
     }
     
     abstract onReceivedSettings(event: DidReceiveSettingsEvent | WillAppearEvent): Promise<void>;
-    abstract execute(event: any): Promise<void>;
     abstract render(): Promise<void>;
     
     // cleanup tasks, if any, can be specified by overriding this particular method
@@ -29,36 +29,18 @@ export abstract class BaseButton {
         this._xivEventListeners.forEach((eventDeleter) => {
             if (eventDeleter) eventDeleter();
         });
+        
+        this._sdEventListeners.clear();
     }
     
-    public dispatch(event: any): Promise<void> {
-        if (event instanceof TouchTapEvent) {
-            return this.onTouchTap(event);
-        } else if (event instanceof DialRotateEvent) {
-            return this.onDialRotate(event);
-        } else if (event instanceof DialPressEvent) {
-            return this.onDialPress(event);
-        } else if (event instanceof KeyDownEvent) {
-            return this.onKeyDown(event);
+    public dispatch(event: InteractiveEvent): Promise<void> {
+        let eventHandler = this._sdEventListeners.get(event.event);
+        if (eventHandler) {
+            return eventHandler(event);
         }
         
-        return this.execute(event);
-    }
-    
-    public onTouchTap(event: TouchTapEvent): Promise<void> {
-        return this.execute(event);
-    }
-    
-    public onDialRotate(event: DialRotateEvent): Promise<void> {
-        return this.execute(event);
-    }
-    
-    public onDialPress(event: DialPressEvent): Promise<void> {
-        return this.execute(event);
-    }
-    
-    public onKeyDown(event: KeyDownEvent): Promise<void> {
-        return this.execute(event);
+        // no event handler exists for this, just suppress
+        return Promise.resolve();
     }
     
     /* wrappers for the exposed elgato api, except with built-in context sensitivity */
@@ -77,6 +59,10 @@ export abstract class BaseButton {
     
     public setTitle(title: string, options: { target?: SetterTargets; state?: number } = {}): void {
         plugin.sdPluginLink.setTitle(title, this.context, options);
+    }
+    
+    public setState(state: number) {
+        plugin.sdPluginLink.setState(state, this.context);
     }
     
     public setFeedback(payload: LayoutFeedback) {

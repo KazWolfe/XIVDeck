@@ -1,5 +1,4 @@
 ﻿import {BaseButton} from "../BaseButton";
-import AbstractStateEvent from "@rweich/streamdeck-events/dist/Events/Received/Plugin/AbstractStateEvent";
 import {KeyDownEvent, WillAppearEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
 import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
 import {DidReceiveSettingsEvent} from "@rweich/streamdeck-events/dist/Events/Received";
@@ -14,6 +13,8 @@ export class CommandButton extends BaseButton {
     constructor(event: WillAppearEvent) {
         super(event.context);
         
+        this._sdEventListeners.set("keyDown", this.onKeyDown.bind(this))
+        
         this.onReceivedSettings(event);
     }
     
@@ -21,7 +22,7 @@ export class CommandButton extends BaseButton {
         this.settings = event.settings as CommandButtonSettings;
     }
 
-    async execute(event: KeyDownEvent): Promise<void> {
+    async onKeyDown(event: KeyDownEvent): Promise<void> {
         if (this.settings?.command == null || this.settings.command === "/") {
             throw new Error("No command specified for this button");
         }

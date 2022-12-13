@@ -3,12 +3,10 @@ import { Streamdeck, Plugin as SDPlugin } from "@rweich/streamdeck-ts";
 import {DidReceiveGlobalSettingsEvent, DidReceiveSettingsEvent} from "@rweich/streamdeck-events/dist/Events/Received"
 import {
     ApplicationDidLaunchEvent,
-    ApplicationDidTerminateEvent, KeyDownEvent,
-    WillAppearEvent, WillDisappearEvent
-} from "@rweich/streamdeck-events/dist/Events/Received/Plugin"
-import { 
-    DialPressEvent, DialRotateEvent, TouchTapEvent
-} from "@rweich/streamdeck-events/dist/Events/Received/Plugin/Dial";
+    ApplicationDidTerminateEvent, KeyUpEvent, KeyDownEvent,
+    DialPressEvent, DialRotateEvent, TouchTapEvent,
+    WillAppearEvent, WillDisappearEvent, TitleParametersDidChangeEvent
+} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
 import {DefaultGlobalSettings, GlobalSettings} from "./util/GlobalSettings";
 import {ButtonDispatcher} from "./button/ButtonDispatcher";
 
@@ -24,14 +22,18 @@ class XIVDeckPlugin {
         this.sdPluginLink.on('applicationDidLaunch', (ev: ApplicationDidLaunchEvent) => this.handleApplicationDidLaunch(ev));
         this.sdPluginLink.on('applicationDidTerminate', (ev: ApplicationDidTerminateEvent) => this.handleApplicationDidTerminate(ev));
         
-        // per-button dispatches
+        // button lifecycle
         this.sdPluginLink.on('willAppear', (ev: WillAppearEvent) => this.dispatcher.handleWillAppear(ev));
         this.sdPluginLink.on('willDisappear', (ev: WillDisappearEvent) => this.dispatcher.handleWillDisappear(ev));
+        this.sdPluginLink.on('didReceiveSettings', (ev: DidReceiveSettingsEvent) => this.dispatcher.handleReceivedSettings(ev));
+        
+        // button interactivity events
         this.sdPluginLink.on('keyDown', (ev: KeyDownEvent) => this.dispatcher.dispatch(ev));
+        this.sdPluginLink.on('keyUp', (ev: KeyUpEvent) => this.dispatcher.dispatch(ev));
         this.sdPluginLink.on('dialRotate', (ev: DialRotateEvent) => this.dispatcher.dispatch(ev));
         this.sdPluginLink.on('dialPress', (ev: DialPressEvent) => this.dispatcher.dispatch(ev));
-        this.sdPluginLink.on('touchTap', (ev: TouchTapEvent) => this.dispatcher.dispatch(ev) )
-        this.sdPluginLink.on('didReceiveSettings', (ev: DidReceiveSettingsEvent) => this.dispatcher.handleReceivedSettings(ev));
+        this.sdPluginLink.on('touchTap', (ev: TouchTapEvent) => this.dispatcher.dispatch(ev));
+        this.sdPluginLink.on('titleParametersDidChange', (ev: TitleParametersDidChangeEvent) => this.dispatcher.dispatch(ev));
     }
 
     handleDidReceiveGlobalSettings(event: DidReceiveGlobalSettingsEvent) {
@@ -60,7 +62,5 @@ class XIVDeckPlugin {
 
 const plugin = new XIVDeckPlugin();
 
-// @ts-ignore
-window.sdPlugin = plugin;
-
+(<any> window).sdPlugin = plugin;
 export default plugin;

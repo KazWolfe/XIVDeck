@@ -1,5 +1,4 @@
 ﻿import {BaseButton} from "../BaseButton";
-import AbstractStateEvent from "@rweich/streamdeck-events/dist/Events/Received/Plugin/AbstractStateEvent";
 import {KeyDownEvent, WillAppearEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
 import plugin from "../../plugin";
 import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
@@ -21,6 +20,8 @@ export class HotbarButton extends BaseButton {
         this._xivEventListeners.add(plugin.xivPluginLink.on("_ready", this.render.bind(this)));
         this._xivEventListeners.add(plugin.xivPluginLink.on("stateUpdate", this.stateUpdate.bind(this)));
         
+        this._sdEventListeners.set("keyDown", this.onKeyDown.bind(this));
+        
         this.onReceivedSettings(event);
     }
     
@@ -29,7 +30,7 @@ export class HotbarButton extends BaseButton {
         this.render();
     }
 
-    async execute(event: KeyDownEvent): Promise<void> {
+    async onKeyDown(event: KeyDownEvent): Promise<void> {
         if (this.settings?.hotbarId == undefined || this.settings?.slotId == undefined) {
             throw new Error("No hotbarId/slotId defined for this button");
         }
