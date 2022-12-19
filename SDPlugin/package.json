@@ -9,8 +9,7 @@
     "watch": "webpack --mode development --watch --progress"
   },
   "dependencies": {
-    "@rweich/streamdeck-ts": "^4.0.3",
-    "@rweich/streamdeck-events": "file:lib/streamdeck-events",
+    "@rweich/streamdeck-ts": "file:lib/streamdeck-ts",
     "websocket-as-promised": "^2.0.1",
     "uuid": "^8.3.2",
     "jquery": "^3.6.0",
@@ -30,9 +29,7 @@
     "@alienfast/i18next-loader": "^1.1.4"
   },
   "overrides": {
-    "@rweich/streamdeck-ts": {
-      "@rweich/streamdeck-events": "file:lib/streamdeck-events"
-    }
+    "@rweich/streamdeck-ts": "file:lib/streamdeck-ts"
   },
   "engines": {
     "npm": ">=8.3.0"

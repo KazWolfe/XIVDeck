@@ -1,7 +1,10 @@
 ﻿import {DidReceiveSettingsEvent} from "@rweich/streamdeck-events/dist/Events/Received";
 import {WillAppearEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
-import {EventsSent} from "@rweich/streamdeck-events";
-import {LayoutFeedback} from "@rweich/streamdeck-events/dist/StreamdeckTypes/Received/Feedback/LayoutFeedback";
+import {
+    GenericLayoutFeedback,
+    LayoutFeedback, 
+    LayoutFeedbackKey
+} from "@rweich/streamdeck-events/dist/StreamdeckTypes/Received/Feedback/LayoutFeedback";
 
 import plugin from "../plugin";
 import { InteractiveEvent } from "../util/SDEvent";
@@ -65,9 +68,11 @@ export abstract class BaseButton {
         plugin.sdPluginLink.setState(state, this.context);
     }
     
-    public setFeedback(payload: LayoutFeedback) {
-        var sentEventFactory: EventsSent = (<any> plugin.sdPluginLink).sentEventFactory;
-        
-        (<any> plugin.sdPluginLink).sendToStreamdeck(sentEventFactory.setFeedback(payload, this.context));
+    public setFeedback(payload: LayoutFeedback | GenericLayoutFeedback) {
+        plugin.sdPluginLink.setFeedback(payload, this.context);
+    }
+    
+    public setFeedbackLayout(layout: LayoutFeedbackKey | string) {
+        plugin.sdPluginLink.setFeedbackLayout(layout, this.context);
     }
 }

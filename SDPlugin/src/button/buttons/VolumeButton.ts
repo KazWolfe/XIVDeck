@@ -25,41 +25,40 @@ export class VolumeButton extends BaseButton {
 
     constructor(event: WillAppearEvent) {
         super(event.context);
-        
+
         this._xivEventListeners.add(plugin.xivPluginLink.on("_ready", this.loadFromGame.bind(this)));
         this._xivEventListeners.add(plugin.xivPluginLink.on("volumeUpdate", this.onVolumeUpdate.bind(this)));
         this._xivEventListeners.add(plugin.xivPluginLink.on("_wsClosed", this.renderInvalidState.bind(this)));
-        
+
         this._sdEventListeners.set("keyDown", this.onKeyDown.bind(this));
         this._sdEventListeners.set("dialPress", this.onDialPress.bind(this));
         this._sdEventListeners.set("dialRotate", this.onDialRotate.bind(this));
-        this._sdEventListeners.set("keyDown", this.onDialRotate.bind(this));
-        
+
         this.onReceivedSettings(event);
     }
-    
+
     async onReceivedSettings(event: DidReceiveSettingsEvent | WillAppearEvent) {
         this.settings = event.settings as VolumeButtonSettings;
         await this.loadFromGame();
     }
 
-   async onDialPress(event: DialPressEvent): Promise<void> {
+    async onDialPress(event: DialPressEvent): Promise<void> {
         // ignore dial release events
         if (!event.pressed) return;
-        
+
         this.preEventGuard();
 
         await FFXIVPluginLink.instance.send(new SetVolume(this.settings!.channel, {
-            muted: !this.lastState!.muted,
-        }))
+            muted: !this.lastState!.muted
+        }));
     }
-    
+
     async onKeyDown(event: KeyDownEvent): Promise<void> {
         this.preEventGuard();
 
         await FFXIVPluginLink.instance.send(new SetVolume(this.settings!.channel, {
-            muted: !this.lastState!.muted,
-        }))
+            muted: !this.lastState!.muted
+        }));
     }
 
     async onDialRotate(event: DialRotateEvent): Promise<void> {
@@ -74,7 +73,7 @@ export class VolumeButton extends BaseButton {
 
     async onVolumeUpdate(message: VolumeMessage): Promise<void> {
         if (message.channel != this.settings?.channel) return;
-        
+
         this.lastState = message.data;
 
         await this.render();
@@ -85,17 +84,22 @@ export class VolumeButton extends BaseButton {
             this.renderInvalidState();
             return;
         }
-        
+
+        const muted = this.lastState?.muted;
+
         this.setFeedback({
             title: this.getChannelName(),
-            value: this.lastState?.muted ? "Muted" : this.lastState.volume,
+            value: muted ? "Muted" : this.lastState.volume,
+            icon: `images/states/volume/o_${muted ? 'muted' : 'unmuted'}.png`,
             indicator: {
                 value: this.lastState.volume,
-                bar_fill_c: this.lastState.muted ? "red" : null
+                bar_fill_c: muted ? "red" : null
             }
         });
+
+        this.setState(muted ? 1 : 0);
     }
-    
+
     private async loadFromGame() {
         if (!plugin.xivPluginLink.isReady() || this.settings?.channel == undefined) {
             this.renderInvalidState();
@@ -103,37 +107,40 @@ export class VolumeButton extends BaseButton {
         }
 
         this.lastState = await FFXIVApi.Volume.getChannel(this.settings.channel);
-        this.render();
+        await this.render();
     }
-    
+
     private renderInvalidState() {
         this.setFeedback({
             title: this.getChannelName(),
             value: "--",
+            icon: "images/common/o_nodata.png",
             indicator: {
                 value: 75,
                 opacity: 0.6,
-                bar_fill_c: null,
+                bar_fill_c: null
             }
         });
+
+        this.setState(0);
     }
-    
+
     private getChannelName() {
         if (this.settings?.channel == undefined) {
             return i18n.t("frames:volume.default-type");
         }
-        
-        let kn = `volumetypes:${this.settings.channel}`
+
+        let kn = `volumetypes:${this.settings.channel}`;
         return i18n.t(kn);
     }
-    
+
     private preEventGuard() {
         if (!this.lastState) {
             throw Error("Current volume state not loaded yet.");
         }
-        
+
         if (!this.settings?.channel) {
-            throw Error("Sound channel not yet set.")
+            throw Error("Sound channel not yet set.");
         }
     }
 }
