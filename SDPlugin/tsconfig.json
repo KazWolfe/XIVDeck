@@ -21,6 +21,7 @@
     "resolveJsonModule": true,
   },
   "exclude": [
-    "lib/streamdeck-events"
+    "lib/streamdeck-events",
+    "lib/streamdeck-ts"
   ]
 }
