@@ -19,12 +19,15 @@ export type VolumeButtonSettings = {
 
 export class VolumeButton extends BaseButton {
     useGameIcon: boolean = true;
+    isDial: boolean = false;
 
     settings?: VolumeButtonSettings;
     lastState?: VolumePayload;
 
     constructor(event: WillAppearEvent) {
         super(event.context);
+        
+        this.isDial = (event.controller == "Encoder");
 
         this._xivEventListeners.add(plugin.xivPluginLink.on("_ready", this.loadFromGame.bind(this)));
         this._xivEventListeners.add(plugin.xivPluginLink.on("volumeUpdate", this.onVolumeUpdate.bind(this)));
@@ -86,6 +89,11 @@ export class VolumeButton extends BaseButton {
         }
 
         const muted = this.lastState?.muted;
+        
+        if (!this.isDial) {
+            this.setState(muted ? 1 : 0);
+            return;
+        }
 
         this.setFeedback({
             title: this.getChannelName(),
@@ -96,8 +104,6 @@ export class VolumeButton extends BaseButton {
                 bar_fill_c: muted ? "red" : null
             }
         });
-
-        this.setState(muted ? 1 : 0);
     }
 
     private async loadFromGame() {
@@ -111,6 +117,11 @@ export class VolumeButton extends BaseButton {
     }
 
     private renderInvalidState() {
+        if (!this.isDial) {
+            this.setState(0);
+            return;
+        }
+        
         this.setFeedback({
             title: this.getChannelName(),
             value: "--",
@@ -121,8 +132,6 @@ export class VolumeButton extends BaseButton {
                 bar_fill_c: null
             }
         });
-
-        this.setState(0);
     }
 
     private getChannelName() {

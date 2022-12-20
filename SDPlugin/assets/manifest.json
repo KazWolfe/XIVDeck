@@ -71,7 +71,7 @@
       "States": [
         {
           "Image": "assets/images/states/volume/unmuted",
-          "TitleAlignment": "bottom",
+          "TitleAlignment": "top",
           "FontSize": "12"
         },
         {
