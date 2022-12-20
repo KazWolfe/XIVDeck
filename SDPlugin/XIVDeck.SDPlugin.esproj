@@ -12,7 +12,4 @@
     <ItemGroup>
         <Script Include="**" Exclude="*.esproj;**\node_modules\**" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="lib\streamdeck-events" />
-    </ItemGroup>
 </Project>
