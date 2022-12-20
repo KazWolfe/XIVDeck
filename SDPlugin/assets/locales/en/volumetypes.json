@@ -2,8 +2,8 @@
   "Master": "Master Volume",
   "BackgroundMusic": "Background Music",
   "SoundEffects": "Sound Effects",
-  "Voice": "Player Voices",
+  "Voice": "Voice",
   "System": "System Sounds",
-  "Ambient": "Ambient FX",
-  "Performance": "Bard Instruments"
+  "Ambient": "Ambient Sounds",
+  "Performance": "Performance"
 }
