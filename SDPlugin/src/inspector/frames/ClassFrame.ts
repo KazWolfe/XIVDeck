@@ -24,14 +24,16 @@ export class ClassFrame extends BaseFrame<ClassButtonSettings> {
         this.selected = settings.classId || this.selected;
         this.selectedName = settings.className || this.selectedName;
         
-        this._preloadDropdown();
+        if (this.selected >= 0) {
+            this._preloadDropdown();
+        }
     }
 
     renderHTML(): void {
         let sdItem = PIUtils.createPILabeledElement(i18n.t("frames:class.class"), this.classSelector);
         
         this.classSelector.options.length = 0;
-        this.classSelector.add(PIUtils.createDefaultSelection("class"));
+        this.classSelector.add(PIUtils.createDefaultSelection(i18n.t("frames:class.default")));
         this.classSelector.onchange = this._onClassUpdate.bind(this);
 
         this.domParent.append(sdItem);
