@@ -6,6 +6,7 @@ import {HotbarFrame} from "./frames/HotbarFrame";
 import {ActionFrame} from "./frames/ActionFrame";
 import {MacroFrame} from "./frames/MacroFrame";
 import {ClassFrame} from "./frames/ClassFrame";
+import { TeleportFrame } from "./frames/TeleportFrame";
 import {VolumeFrame} from "./frames/VolumeFrame";
 
 export class PIDispatcher {
@@ -34,6 +35,9 @@ export class PIDispatcher {
                 break;
             case "dev.wolf.xivdeck.sdplugin.actions.volume":
                 this.piFrame = new VolumeFrame();
+                break;
+            case "dev.wolf.xivdeck.sdplugin.actions.teleport":
+                this.piFrame = new TeleportFrame();
                 break;
             default:
                 throw new Error(`Undefined action type: ${actionType}`)

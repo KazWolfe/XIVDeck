@@ -10,6 +10,7 @@ import {DidReceiveSettingsEvent} from "@rweich/streamdeck-events/dist/Events/Rec
 import {ClassButton} from "./buttons/ClassButton";
 import {StateMessage} from "../link/ffxivplugin/GameTypes";
 import {FFXIVPluginLink} from "../link/ffxivplugin/FFXIVPluginLink";
+import { TeleportButton } from "./buttons/TeleportButton";
 import {VolumeButton} from "./buttons/VolumeButton";
 import {InteractiveEvent} from "../util/SDEvent";
 
@@ -41,6 +42,9 @@ export class ButtonDispatcher {
                 break;
             case "dev.wolf.xivdeck.sdplugin.actions.volume":
                 button = new VolumeButton(event);
+                break;
+            case "dev.wolf.xivdeck.sdplugin.actions.teleport":
+                button = new TeleportButton(event);
                 break;
             default:
                 throw new Error(`Undefined action type: ${event.action}`)

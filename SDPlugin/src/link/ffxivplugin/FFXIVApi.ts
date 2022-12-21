@@ -1,5 +1,5 @@
-﻿import { WebUtils } from "../../util/WebUtils";
-import { FFXIVAction, FFXIVClass, FFXIVHotbarSlot, VolumePayload } from "./GameTypes";
+import { WebUtils } from "../../util/WebUtils";
+import { Aetheryte, FFXIVAction, FFXIVClass, FFXIVHotbarSlot, VolumePayload } from "./GameTypes";
 import { FFXIVPluginLink } from "./FFXIVPluginLink";
 
 type HTTPVerb = "GET" | "HEAD" | "POST" | "PUT" | "PATCH" | "DELETE"
@@ -141,6 +141,20 @@ export class FFXIVApi {
 
         public static async getChannel(channel: string) {
             return await FFXIVApi._requestWrapper(FFXIVApi.Volume.base + `/${channel}`) as VolumePayload;
+        }
+    };
+    
+    public static Teleport = class {
+        private static get base(): string {
+            return FFXIVApi.getBaseUrl() + "/teleport";
+        }
+        
+        public static async getAetherytes(): Promise<Aetheryte[]> {
+            return await FFXIVApi._requestWrapper(FFXIVApi.Teleport.base) as Aetheryte[];
+        }
+
+        public static async triggerTeleport(aetheryteId: number, subId: number = 0): Promise<void> {
+            await FFXIVApi._requestWrapper(FFXIVApi.Teleport.base + `/${aetheryteId}/${subId}/execute`, "POST");
         }
     };
 }

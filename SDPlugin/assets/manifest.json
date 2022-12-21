@@ -92,6 +92,19 @@
       "DisableAutomaticStates": true,
       "Tooltip": "Set the volume for a specific audio channel in game.",
       "UUID": "dev.wolf.xivdeck.sdplugin.actions.Volume"
+    },
+    {
+      "Icon": "assets/images/sidebar/gearset",
+      "Name": "Teleport",
+      "States": [
+        {
+          "Image": "assets/images/defaults/gearset",
+          "TitleAlignment": "bottom",
+          "FontSize": "16"
+        }
+      ],
+      "Tooltip": "Teleport to an Aetheryte in-game",
+      "UUID": "dev.wolf.xivdeck.sdplugin.actions.Teleport"
     }
   ],
   "PluginUUID": "dev.wolf.xivdeck",

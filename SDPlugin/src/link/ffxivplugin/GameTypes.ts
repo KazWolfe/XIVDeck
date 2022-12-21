@@ -52,3 +52,14 @@ export type FFXIVHotbarSlot = {
     iconId: number;
     iconData: string;
 }
+
+export type Aetheryte = {
+    id: number;
+    subId: number;
+    
+    name: string;
+    region: string;
+    territory: string;
+    
+    isHousing: boolean;
+}
