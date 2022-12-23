@@ -50,7 +50,7 @@ export class HotbarButton extends BaseButton {
         }
 
         if (this.settings?.hotbarId == undefined || this.settings?.slotId == undefined) {
-            return
+            return;
         }
         
         let response = await FFXIVApi.Hotbar.getHotbarSlot(this.settings.hotbarId, this.settings.slotId);
