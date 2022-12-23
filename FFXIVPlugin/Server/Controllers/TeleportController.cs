@@ -45,6 +45,7 @@ public class TeleportController : WebApiController {
         var aetheryte = TeleportManager.GetAetheryte(id, subId);
         if (aetheryte != null) {
             TeleportManager.Teleport(aetheryte);
+            return;
         }
         
         var luminaAetheryte = Injections.DataManager.GetExcelSheet<Aetheryte>()!.GetRow(id);

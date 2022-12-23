@@ -1,4 +1,5 @@
-﻿import { BaseButton } from "../BaseButton";
+﻿import { Aetheryte } from "../../link/ffxivplugin/GameTypes";
+import { BaseButton } from "../BaseButton";
 import { KeyDownEvent, WillAppearEvent } from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
 import plugin from "../../plugin";
 import { FFXIVApi } from "../../link/ffxivplugin/FFXIVApi";
@@ -8,12 +9,7 @@ export type TeleportButtonSettings = {
     aetheryteId: number;
     subId: number;
 
-    cache: {
-        name: string,
-        region: string,
-        territory: string
-        isHousing: boolean
-    }
+    cache?: Aetheryte
 }
 
 export class TeleportButton extends BaseButton {
