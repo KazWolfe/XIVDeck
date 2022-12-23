@@ -58,7 +58,7 @@ export type Aetheryte = {
     subId: number;
     
     name: string;
-    region: string;
+    worldArea: string;
     territory: string;
     
     isHousing: boolean;

@@ -1,5 +1,4 @@
-﻿import { fail } from "assert";
-import { TeleportButtonSettings } from "../../button/buttons/TeleportButton";
+﻿import { TeleportButtonSettings } from "../../button/buttons/TeleportButton";
 import piInstance from "../../inspector";
 import { FFXIVApi } from "../../link/ffxivplugin/FFXIVApi";
 import { Aetheryte } from "../../link/ffxivplugin/GameTypes";
@@ -11,24 +10,24 @@ export class TeleportFrame extends BaseFrame<TeleportButtonSettings> {
     // settings
     settings?: TeleportButtonSettings;
 
-    // cache: Region -> Locale -> Aetheryte
+    // cache: WorldArea -> [Region -] Territory -> Aetheryte
     aetheryteCache: Map<string, Map<string, Aetheryte[]>> = new Map<string, Map<string, Aetheryte[]>>();
     aetheryteIdCache: Map<string, Aetheryte> = new Map<string, Aetheryte>();
 
     // temp state
-    selectedRegion?: string;
+    selectedWorldArea?: string;
     selectedAetheryte?: string;
 
     // dom
-    regionSelector: HTMLSelectElement;
+    worldAreaSelector: HTMLSelectElement;
     aetheryteSelector: HTMLSelectElement;
 
     constructor() {
         super();
 
-        this.regionSelector = document.createElement("select");
-        this.regionSelector.id = "regionSelector";
-        this.regionSelector.onchange = this._onRegionChange.bind(this);
+        this.worldAreaSelector = document.createElement("select");
+        this.worldAreaSelector.id = "regionSelector";
+        this.worldAreaSelector.onchange = this._onRegionChange.bind(this);
 
         this.aetheryteSelector = document.createElement("select");
         this.aetheryteSelector.id = "aetheryteSelector";
@@ -40,7 +39,7 @@ export class TeleportFrame extends BaseFrame<TeleportButtonSettings> {
     loadSettings(settings: TeleportButtonSettings | undefined): void {
         this.settings = settings;
 
-        this.selectedRegion = this.settings?.cache?.region;
+        this.selectedWorldArea = this.settings?.cache?.worldArea;
 
         if (this.settings?.aetheryteId != null && this.settings?.subId != null) {
             this.selectedAetheryte = `${this.settings?.aetheryteId}.${this.settings?.subId}`;
@@ -48,7 +47,7 @@ export class TeleportFrame extends BaseFrame<TeleportButtonSettings> {
     }
 
     renderHTML(): void {
-        this.domParent.append(PIUtils.createPILabeledElement("Region", this.regionSelector));
+        this.domParent.append(PIUtils.createPILabeledElement("Region", this.worldAreaSelector));
         this.domParent.append(PIUtils.createPILabeledElement("Aetheryte", this.aetheryteSelector));
     }
 
@@ -56,11 +55,11 @@ export class TeleportFrame extends BaseFrame<TeleportButtonSettings> {
         let results = await FFXIVApi.Teleport.getAetherytes();
 
         results.forEach((entry) => {
-            let regionMapping = this.aetheryteCache.get(entry.region) ?? new Map<string, Aetheryte[]>();
+            let regionMapping = this.aetheryteCache.get(entry.worldArea) ?? new Map<string, Aetheryte[]>();
             let areaList = regionMapping.get(entry.territory) ?? new Array<Aetheryte>();
             areaList.push(entry);
             regionMapping.set(entry.territory, areaList);
-            this.aetheryteCache.set(entry.region, regionMapping);
+            this.aetheryteCache.set(entry.worldArea, regionMapping);
 
             this.aetheryteIdCache.set(`${entry.id}.${entry.subId}`, entry);
         });
@@ -70,18 +69,18 @@ export class TeleportFrame extends BaseFrame<TeleportButtonSettings> {
     }
 
     private _loadRegionDropdown() {
-        this.regionSelector.length = 0;
+        this.worldAreaSelector.length = 0;
 
         let placeholder = PIUtils.createDefaultSelection("Select region...");
-        this.regionSelector.add(placeholder);
+        this.worldAreaSelector.add(placeholder);
 
-        if (this.selectedRegion == null) {
+        if (this.selectedWorldArea == null) {
             placeholder.selected = true;
-        } else if (!this.aetheryteCache.has(this.selectedRegion)) {
-            let failsafe = PIUtils.createDefaultSelection(this.selectedRegion);
+        } else if (!this.aetheryteCache.has(this.selectedWorldArea)) {
+            let failsafe = PIUtils.createDefaultSelection(this.selectedWorldArea);
             failsafe.selected = true;
 
-            this.regionSelector.add(failsafe);
+            this.worldAreaSelector.add(failsafe);
         }
 
         this.aetheryteCache.forEach((_, k) => {
@@ -89,11 +88,11 @@ export class TeleportFrame extends BaseFrame<TeleportButtonSettings> {
             element.value = k;
             element.textContent = k;
 
-            if (k == this.selectedRegion) {
+            if (k == this.selectedWorldArea) {
                 element.selected = true;
             }
 
-            this.regionSelector.add(element);
+            this.worldAreaSelector.add(element);
         });
     }
 
@@ -103,15 +102,15 @@ export class TeleportFrame extends BaseFrame<TeleportButtonSettings> {
         let placeholder = PIUtils.createDefaultSelection("Select aetheryte...");
         this.aetheryteSelector.add(placeholder);
         
-        if (this.selectedRegion == null || this.selectedAetheryte == null) {
+        if (this.selectedWorldArea == null || this.selectedAetheryte == null) {
             placeholder.selected = true;
-            if (this.selectedRegion == null) return;
+            if (this.selectedWorldArea == null) return;
         }
 
-        let regionAetherytes = this.aetheryteCache.get(this.selectedRegion) ?? new Map<string, Aetheryte[]>();
+        let regionAetherytes = this.aetheryteCache.get(this.selectedWorldArea) ?? new Map<string, Aetheryte[]>();
 
         var cache = this.settings?.cache;
-        if (cache != null && cache.region == this.selectedRegion && !regionAetherytes.has(cache.territory)) {
+        if (cache != null && cache.worldArea == this.selectedWorldArea && !regionAetherytes.has(cache.territory)) {
             let optGroup = document.createElement("optgroup");
             optGroup.id = cache.territory;
             optGroup.label = cache.territory;
@@ -164,7 +163,7 @@ export class TeleportFrame extends BaseFrame<TeleportButtonSettings> {
     }
 
     private _onRegionChange(): void {
-        this.selectedRegion = this.regionSelector.value;
+        this.selectedWorldArea = this.worldAreaSelector.value;
         this._loadAetheryteDropdown();
     }
 

@@ -46,7 +46,7 @@ public static class TeleportManager {
 
     public static string GetAetheryteName(AetheryteEntry entry) {
         if (entry.IsSharedHouse) {
-            var regionName = entry.AetheryteData.GameData?.TerritoryName() ?? "???";
+            var regionName = entry.AetheryteData.GameData?.Territory.Value?.PlaceName.Value?.Name.RawString ?? "???";
             return $"{regionName}, Ward {entry.Ward} Plot {entry.Plot}";
         }
 
