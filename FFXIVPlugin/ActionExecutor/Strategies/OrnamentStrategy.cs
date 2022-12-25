@@ -38,7 +38,7 @@ public class OrnamentStrategy : IActionStrategy {
         return action == null ? null : GetExecutableAction(action);
     }
 
-    public void Execute(uint actionId, dynamic? _) {
+    public void Execute(uint actionId, ActionPayload? _) {
         var ornament = GetOrnamentById(actionId);
 
         if (ornament == null) {

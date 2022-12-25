@@ -39,7 +39,7 @@ public class MinionStrategy : IActionStrategy {
         return action == null ? null : GetExecutableAction(action);
     }
 
-    public void Execute(uint actionId, dynamic? _) {
+    public void Execute(uint actionId, ActionPayload? _) {
         var minion = GetMinionById(actionId);
             
         if (minion == null) {

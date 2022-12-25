@@ -64,7 +64,7 @@ public abstract class FixedCommandStrategy<T> : IActionStrategy where T : ExcelR
         return this.GetAllowedItems().Find(ac => ac.ActionId == actionId);
     }
 
-    public void Execute(uint actionId, dynamic? options = null) {
+    public void Execute(uint actionId, ActionPayload? _) {
         if (this.GetIllegalActionIDs().Contains(actionId))
             throw new ArgumentException(string.Format(UIStrings.FixedCommandStrategy_IllegalActionError, actionId));
 

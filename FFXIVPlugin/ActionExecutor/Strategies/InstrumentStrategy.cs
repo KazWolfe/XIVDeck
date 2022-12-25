@@ -45,7 +45,7 @@ public class InstrumentStrategy : IActionStrategy {
         return !this.IsPerformUnlocked() ? null : PerformSheet.Where(i => i.RowId > 0).Select(GetExecutableAction).ToList();
     }
 
-    public void Execute(uint actionId, dynamic? _) {
+    public void Execute(uint actionId, ActionPayload? _) {
         // intentionally not checking for Bard here; the game will take care of that for us (and display a better
         // error than we normally can). It's legal for a perform to be on a non-Bard hotbar, so I'm not concerned
         // about this.

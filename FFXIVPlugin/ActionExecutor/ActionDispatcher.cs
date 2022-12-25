@@ -40,13 +40,6 @@ public class ActionDispatcher {
     public static Dictionary<HotbarSlotType, IActionStrategy> GetStrategies() {
         return Instance.Strategies;
     }
-        
-    public static void Execute(HotbarSlotType actionType, int actionId, IDictionary<string, dynamic>? options = null) {
-        if (!Injections.ClientState.IsLoggedIn)
-            throw new PlayerNotLoggedInException();
-            
-        GetStrategyForSlotType(actionType).Execute((uint) actionId, options);
-    }
 
     private Dictionary<HotbarSlotType, IActionStrategy> Strategies { get; } = new();
 

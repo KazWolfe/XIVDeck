@@ -68,7 +68,7 @@ public class GeneralActionStrategy : IActionStrategy {
         return GetExecutableAction(action);
     }
 
-    public unsafe void Execute(uint actionId, dynamic? _) {
+    public unsafe void Execute(uint actionId, ActionPayload? _) {
         var action = GetActionById(actionId);
             
         if (action == null) {
