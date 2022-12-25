@@ -2,6 +2,7 @@
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Common.Configuration;
+using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.Game; 
 
@@ -63,6 +64,18 @@ public static unsafe class GameConfig {
         public void Set(ConfigOption option, uint value) {
             if (!this.TryGetEntry((uint) option, out var entry)) return;
             SigHelper.SetConfigValueUInt(entry, value);
+        }
+
+        public IDisposable? TemporarySet(ConfigOption option, bool? value) {
+            if (value == null) return null;
+
+            var oldValue = this.GetBool(option);
+
+            return new DisposableWrapper(delegate {
+                this.Set(option, value.Value);
+            }, delegate {
+                this.Set(option, oldValue);
+            });
         }
     }
 
