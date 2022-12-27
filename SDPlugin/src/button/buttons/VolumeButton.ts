@@ -67,10 +67,8 @@ export class VolumeButton extends BaseButton {
     async onDialRotate(event: DialRotateEvent): Promise<void> {
         this.preEventGuard();
 
-        let newVolume = this.lastState!.volume + event.ticks * (this.settings?.multiplier ?? 1);
-
         await FFXIVPluginLink.instance.send(new SetVolume(this.settings!.channel, {
-            volume: newVolume
+            delta: event.ticks * (this.settings?.multiplier ?? 1),
         }));
     }
 
