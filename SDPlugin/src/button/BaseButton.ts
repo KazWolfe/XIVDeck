@@ -56,6 +56,10 @@ export abstract class BaseButton {
         plugin.sdPluginLink.showOk(this.context);
     }
     
+    public setSettings(settings: unknown) {
+        plugin.sdPluginLink.setSettings(this.context, settings);
+    }
+    
     public setImage(imageData: string, options: { target?: SetterTargets; state?: number }= {}): void {
         plugin.sdPluginLink.setImage(imageData, this.context, options);
     }

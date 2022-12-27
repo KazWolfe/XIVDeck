@@ -79,6 +79,7 @@ export class PIUtils {
             choiceInput.type = "radio";
             choiceInput.name = id;
             choiceInput.value = rs.value;
+            if (rs.checked) choiceInput.checked = true;
             
             let choiceLabel = document.createElement("label");
             choiceLabel.setAttribute("for", `r_${id}_choice${index}`);
@@ -151,5 +152,6 @@ export class PIUtils {
 
 export interface RadioSelection {
     value: string,
-    name: string
+    name: string,
+    checked?: boolean
 }

@@ -1,6 +1,6 @@
-﻿import {WebUtils} from "../../util/WebUtils";
-import {FFXIVAction, FFXIVClass, FFXIVHotbarSlot, VolumePayload} from "./GameTypes";
-import {FFXIVPluginLink} from "./FFXIVPluginLink";
+﻿import { WebUtils } from "../../util/WebUtils";
+import { FFXIVAction, FFXIVClass, FFXIVHotbarSlot, VolumePayload } from "./GameTypes";
+import { FFXIVPluginLink } from "./FFXIVPluginLink";
 
 type HTTPVerb = "GET" | "HEAD" | "POST" | "PUT" | "PATCH" | "DELETE"
 
@@ -120,23 +120,27 @@ export class FFXIVApi {
             return await FFXIVApi._requestWrapper(FFXIVApi.Action.base + `/${type}/${id}`) as FFXIVAction;
         }
 
-        public static async executeAction(type: string, id: number): Promise<void> {
-            await FFXIVApi._requestWrapper(FFXIVApi.Action.base + `/${type}/${id}/execute`, "POST");
+        public static async executeAction(type: string, id: number, payload: unknown = undefined): Promise<void> {
+            await FFXIVApi._requestWrapper(
+                FFXIVApi.Action.base + `/${type}/${id}/execute`,
+                "POST",
+                undefined,
+                payload);
         }
     };
-    
+
     public static Volume = class {
         private static get base(): string {
             return FFXIVApi.getBaseUrl() + "/volume";
         }
-        
+
         public static async getChannels(): Promise<Map<string, VolumePayload>> {
             let obj = await FFXIVApi._requestWrapper(FFXIVApi.Volume.base) as object;
             return new Map<string, VolumePayload>(Object.entries(obj));
         }
-        
+
         public static async getChannel(channel: string) {
             return await FFXIVApi._requestWrapper(FFXIVApi.Volume.base + `/${channel}`) as VolumePayload;
         }
-    }
+    };
 }
