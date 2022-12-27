@@ -28,10 +28,10 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
     internal WindowSystem WindowSystem { get; }
     internal SigHelper SigHelper { get; }
     internal GameStateCache GameStateCache { get; }
+    internal VolumeWatcher VolumeWatcher { get; }
 
     private DalamudPluginInterface PluginInterface { get; }
     private readonly HotbarWatcher _hotbarWatcher;
-    private readonly VolumeWatcher _volumeWatcher;
     private XIVDeckWebServer _xivDeckWebServer = null!;
     private readonly ChatLinkWiring _chatLinkWiring;
     private readonly IPCManager _ipcManager;
@@ -57,7 +57,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         // More plugin interfaces
         this._chatLinkWiring = new ChatLinkWiring();
         this._hotbarWatcher = new HotbarWatcher();
-        this._volumeWatcher = new VolumeWatcher();
+        this.VolumeWatcher = new VolumeWatcher();
         this.WindowSystem = new WindowSystem(this.Name);
         
         // Start the websocket server itself.
@@ -78,7 +78,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         DeferredChat.Cancel();
 
         this._hotbarWatcher.Dispose();
-        this._volumeWatcher.Dispose();
+        this.VolumeWatcher.Dispose();
         
         this._xivDeckWebServer.Dispose(); 
         this._chatLinkWiring.Dispose();
