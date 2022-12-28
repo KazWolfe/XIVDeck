@@ -4,6 +4,7 @@ using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Game.Managers;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
@@ -21,7 +22,7 @@ public class WaymarkStrategy : FixedCommandStrategy<FieldMarker> {
         PluginLog.Debug($"Executing {action} ({action.Name}) directly via hotbar");
         
         Injections.Framework.RunOnFrameworkThread(delegate {
-            GameUtils.ExecuteHotbarAction(HotbarSlotType.FieldMarker, action.RowId);
+            HotbarManager.ExecuteHotbarAction(HotbarSlotType.FieldMarker, action.RowId);
         });
     }
 }

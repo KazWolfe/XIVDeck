@@ -5,6 +5,7 @@ using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Game.Sheets;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 
@@ -53,7 +54,7 @@ public class CollectionStrategy : IActionStrategy {
         }
             
         Injections.Framework.RunOnFrameworkThread(delegate {
-            GameUtils.ExecuteHotbarAction(HotbarSlotType.Collection, actionId);
+            HotbarManager.ExecuteHotbarAction(HotbarSlotType.Collection, actionId);
         });
     }
 

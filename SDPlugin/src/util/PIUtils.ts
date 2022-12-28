@@ -35,7 +35,11 @@ export class PIUtils {
         return item;
     }
     
-    static createDefaultSelection(innerText: string = "item"): HTMLOptionElement {
+    static createDefaultSelection(innerText: string | null | undefined): HTMLOptionElement {
+        if (innerText == null) {
+            innerText = "item"
+        }
+        
         let el = document.createElement("option");
 
         el.value = "default";
@@ -91,6 +95,47 @@ export class PIUtils {
         labeledElement.setAttribute("type", "radio");
         labeledElement.id = id;
         
+        return labeledElement;
+    }
+    
+    static generateRange(label: string, id: string, min: number, max: number, step: number): HTMLElement {
+        let innerDiv = document.createElement("div");
+        innerDiv.classList.add("sdpi-item-value");
+        
+        let lowerSpan = document.createElement("span");
+        lowerSpan.setAttribute("value", min.toString());
+        lowerSpan.innerText = min.toString();
+        innerDiv.append(lowerSpan);
+        
+        let inputObj = document.createElement("input");
+        inputObj.type = "range";
+        inputObj.id = `${id}-input`;
+        inputObj.min = min.toString();
+        inputObj.max = max.toString();
+        inputObj.step = step.toString();
+        inputObj.setAttribute("list", `${id}-datalist`);
+        innerDiv.append(inputObj);
+        
+        let datalist = document.createElement("datalist");
+        datalist.id = `${id}-datalist`;
+        
+        for (var i = 0; i < ((max - min) / step) - 1; i++) {
+            var opt = document.createElement("option");
+            opt.innerText = (min + (i + 1) * step).toString();
+            datalist.append(opt);
+        }
+        
+        innerDiv.append(datalist);
+
+        let upperSpan = document.createElement("span");
+        upperSpan.setAttribute("value", max.toString());
+        upperSpan.innerText = max.toString();
+        innerDiv.append(upperSpan);
+
+        let labeledElement = this.createPILabeledElement(label, innerDiv);
+        labeledElement.setAttribute("type", "range");
+        labeledElement.id = id;
+
         return labeledElement;
     }
     

@@ -582,16 +582,22 @@ details.message summary {
 details.message:first-child {
     margin-top: 4px;
     margin-left: 0;
-    padding-left: 102px;
+    padding-left: 102px !important;
 }
 
 details.message h1 {
     text-align: left;
 }
 
+details:not(.pointer) > summary {
+    list-style: none;
+}
+
+details > summary::-webkit-details-marker
 .message > summary::-webkit-details-marker {
     display: none;
 }
+
 
 .info20,
 .question,
@@ -643,6 +649,17 @@ details.message h1 {
     color: var(--sdpi-color);
 }
 
+.sdpi-more-info-button {
+    display: flex;
+    align-self: right;
+    margin-left: auto;
+    position: fixed;
+    right: 17px;
+    bottom: 0px;
+    user-select: none;
+}
+
+
 .sdpi-bottom-bar {
     display: flex;
     align-self: right;
@@ -660,17 +677,6 @@ details.message h1 {
 .sdpi-bottom-bar button {
     min-height: 20px !important;
     height: 20px !important;
-}
-
-
-.sdpi-more-info-button {
-    display: flex;
-    align-self: right;
-    margin-left: auto;
-    position: fixed;
-    right: 17px;
-    bottom: 0px;
-    user-select: none;
 }
 
 details a {

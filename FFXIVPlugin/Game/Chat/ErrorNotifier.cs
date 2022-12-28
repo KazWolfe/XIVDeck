@@ -5,7 +5,7 @@ using Dalamud.Logging;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 
-namespace XIVDeck.FFXIVPlugin.Game; 
+namespace XIVDeck.FFXIVPlugin.Game.Chat; 
 
 public static class ErrorNotifier {
     private const int DebounceTime = 300;

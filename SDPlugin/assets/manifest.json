@@ -61,9 +61,36 @@
           "TitleAlignment": "bottom",
           "FontSize": "16"
         }
-      ],
+      ], 
       "Tooltip": "Switch to a specific class/job",
       "UUID": "dev.wolf.xivdeck.sdplugin.actions.SwitchClass"
+    },
+    {
+      "Icon": "assets/images/sidebar/volume",
+      "Name": "Change Volume",
+      "States": [
+        {
+          "Image": "assets/images/states/volume/unmuted",
+          "TitleAlignment": "top",
+          "FontSize": "12"
+        },
+        {
+          "Image": "assets/images/states/volume/muted",
+          "TitleAlignment": "top",
+          "FontSize": "12"
+        }
+      ],
+      "Controllers": [ "Keypad", "Encoder" ],
+      "Encoder": {
+        "layout": "$B1",
+        "TriggerDescription": {
+          "Rotate": "Set Volume",
+          "Push": "Mute Channel"
+        }
+      },
+      "DisableAutomaticStates": true,
+      "Tooltip": "Set the volume for a specific audio channel in game.",
+      "UUID": "dev.wolf.xivdeck.sdplugin.actions.Volume"
     }
   ],
   "PluginUUID": "dev.wolf.xivdeck",

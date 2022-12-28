@@ -18,8 +18,7 @@ const config = (environment: unknown, options: { mode: string; env: unknown }): 
     output: {
       library: 'connectElgatoStreamDeckSocket',
       libraryExport: 'default',
-      path: path.resolve(__dirname, 'dist/' + pluginNs + '.sdPlugin/js'),
-      filename: '[name].js'
+      path: path.resolve(__dirname, 'dist/' + pluginNs + '.sdPlugin/js')
     },
     plugins: [
       new copyWebpackPlugin({
@@ -50,10 +49,6 @@ const config = (environment: unknown, options: { mode: string; env: unknown }): 
             },
           }
         ],
-      }),
-      new webpack.ProvidePlugin({
-        $: 'jquery/src/jquery',
-        jquery: 'jquery/src/jquery'
       })
     ],
     module: {

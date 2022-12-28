@@ -1,9 +1,13 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using XIVDeck.FFXIVPlugin.ActionExecutor;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Game.Chat;
+using XIVDeck.FFXIVPlugin.Game.Managers;
+using XIVDeck.FFXIVPlugin.Game.Watchers;
 using XIVDeck.FFXIVPlugin.IPC;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server;
@@ -24,6 +28,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
     internal WindowSystem WindowSystem { get; }
     internal SigHelper SigHelper { get; }
     internal GameStateCache GameStateCache { get; }
+    internal VolumeWatcher VolumeWatcher { get; }
 
     private DalamudPluginInterface PluginInterface { get; }
     private readonly HotbarWatcher _hotbarWatcher;
@@ -52,6 +57,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         // More plugin interfaces
         this._chatLinkWiring = new ChatLinkWiring();
         this._hotbarWatcher = new HotbarWatcher();
+        this.VolumeWatcher = new VolumeWatcher();
         this.WindowSystem = new WindowSystem(this.Name);
         
         // Start the websocket server itself.
@@ -72,7 +78,9 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         DeferredChat.Cancel();
 
         this._hotbarWatcher.Dispose();
-        this._xivDeckWebServer.Dispose();
+        this.VolumeWatcher.Dispose();
+        
+        this._xivDeckWebServer.Dispose(); 
         this._chatLinkWiring.Dispose();
         this.SigHelper.Dispose();
         this._ipcManager.Dispose();

@@ -1,37 +1,41 @@
 ﻿import {BaseButton} from "../BaseButton";
-import AbstractStateEvent from "@rweich/streamdeck-events/dist/Events/Received/Plugin/AbstractStateEvent";
-import {KeyDownEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
+import {KeyDownEvent, WillAppearEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
 import plugin from "../../plugin";
 import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
 import {StateMessage} from "../../link/ffxivplugin/GameTypes";
+import {DidReceiveSettingsEvent} from "@rweich/streamdeck-events/dist/Events/Received";
 
 export type MacroButtonSettings = { 
     macroId: number
 }
 
 export class MacroButton extends BaseButton {
-    // The macro this button will trigger
-    macroId: number;
     
+    settings?: MacroButtonSettings;
     useGameIcon: boolean = true;
 
-    constructor(event: AbstractStateEvent) {
+    constructor(event: WillAppearEvent) {
         super(event.context);
 
-        let settings = event.settings as MacroButtonSettings;
-        this.macroId = settings.macroId;
-
-        this.render();
         this._xivEventListeners.add(plugin.xivPluginLink.on("_ready", this.render.bind(this)));
         this._xivEventListeners.add(plugin.xivPluginLink.on("stateUpdate", this.stateUpdate.bind(this)));
+        
+        this._sdEventListeners.set("keyDown", this.onKeyDown.bind(this));
+        
+        this.onReceivedSettings(event);
+    }
+    
+    async onReceivedSettings(event: DidReceiveSettingsEvent | WillAppearEvent) {
+        this.settings = event.settings as MacroButtonSettings;
+        await this.render();
     }
 
-    async execute(event: KeyDownEvent): Promise<void> {
-        if (this.macroId == null) {
+    async onKeyDown(event: KeyDownEvent): Promise<void> {
+        if (this.settings?.macroId == undefined) {
             throw Error("No macro ID was defined for this button!");
         }
         
-        await FFXIVApi.Action.executeAction("Macro", this.macroId);
+        await FFXIVApi.Action.executeAction("Macro", this.settings.macroId);
     }
 
     async stateUpdate(message: StateMessage) : Promise<void> {
@@ -46,15 +50,11 @@ export class MacroButton extends BaseButton {
             return
         }
 
-        if (!plugin.xivPluginLink.isReady()) {
+        if (!plugin.xivPluginLink.isReady() || this.settings?.macroId == undefined) {
             return;
         }
-
-        if (this.macroId == null) {
-            return
-        }
         
-        let actionData = await FFXIVApi.Action.getAction("Macro", this.macroId);
+        let actionData = await FFXIVApi.Action.getAction("Macro", this.settings.macroId);
         this.setImage(await FFXIVApi.getIcon(actionData.iconId));
     }
 }

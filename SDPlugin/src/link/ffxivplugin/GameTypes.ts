@@ -25,6 +25,20 @@ export type StateMessage = {
     params: string | null
 }
 
+export type VolumePayload = {
+    volume: number,
+    muted: boolean,
+}
+
+export type VolumeMessage = {
+    type: string,
+    channel: string,
+    data: { 
+        volume: number,
+        muted: boolean
+    }
+}
+
 export type FFXIVInitReply = {
     version: string,
     apiKey: string

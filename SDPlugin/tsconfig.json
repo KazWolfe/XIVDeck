@@ -19,5 +19,9 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-  }
+  },
+  "exclude": [
+    "lib/streamdeck-events",
+    "lib/streamdeck-ts"
+  ]
 }

@@ -1,9 +1,9 @@
 ﻿import {BaseButton} from "../BaseButton";
-import AbstractStateEvent from "@rweich/streamdeck-events/dist/Events/Received/Plugin/AbstractStateEvent";
-import {KeyDownEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
+import {KeyDownEvent, WillAppearEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
 import plugin from "../../plugin";
 import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
 import {StateMessage} from "../../link/ffxivplugin/GameTypes";
+import {DidReceiveSettingsEvent} from "@rweich/streamdeck-events/dist/Events/Received";
 
 export type HotbarButtonSettings = {
     hotbarId: number,
@@ -12,30 +12,30 @@ export type HotbarButtonSettings = {
 
 export class HotbarButton extends BaseButton {
 
-    // Information about the action that this button will be triggering
-    hotbarId: number;
-    slotId: number;
+    settings?: HotbarButtonSettings;
     
-    constructor(event: AbstractStateEvent) {
+    constructor(event: WillAppearEvent) {
         super(event.context);
         
-        let settings = event.settings as HotbarButtonSettings
-        
-        this.hotbarId = settings.hotbarId;
-        this.slotId = settings.slotId;
-        
-        // render if already exists and set up hooks to wait for events
         this._xivEventListeners.add(plugin.xivPluginLink.on("_ready", this.render.bind(this)));
         this._xivEventListeners.add(plugin.xivPluginLink.on("stateUpdate", this.stateUpdate.bind(this)));
+        
+        this._sdEventListeners.set("keyDown", this.onKeyDown.bind(this));
+        
+        this.onReceivedSettings(event);
+    }
+    
+    async onReceivedSettings(event: DidReceiveSettingsEvent | WillAppearEvent) {
+        this.settings = event.settings as HotbarButtonSettings;
         this.render();
     }
 
-    async execute(event: KeyDownEvent): Promise<void> {
-        if (this.hotbarId == null || this.slotId == null) {
+    async onKeyDown(event: KeyDownEvent): Promise<void> {
+        if (this.settings?.hotbarId == undefined || this.settings?.slotId == undefined) {
             throw new Error("No hotbarId/slotId defined for this button");
         }
         
-        await FFXIVApi.Hotbar.triggerHotbarSlot(this.hotbarId, this.slotId);
+        await FFXIVApi.Hotbar.triggerHotbarSlot(this.settings.hotbarId, this.settings.slotId);
     }
     
     async stateUpdate(message: StateMessage) : Promise<void> {
@@ -49,11 +49,11 @@ export class HotbarButton extends BaseButton {
             return;
         }
 
-        if (this.hotbarId == null || this.slotId == null) {
+        if (this.settings?.hotbarId == undefined || this.settings?.slotId == undefined) {
             return
         }
         
-        let response = await FFXIVApi.Hotbar.getHotbarSlot(this.hotbarId, this.slotId);
+        let response = await FFXIVApi.Hotbar.getHotbarSlot(this.settings.hotbarId, this.settings.slotId);
         this.setImage(response.iconData);
     }
 }

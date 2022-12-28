@@ -47,13 +47,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install Dependencies
-        run: npm install
+        run: yarn install
       - name: Patch Version
         run: |
           export APP_VERSION=$(echo '${{ github.ref }}' | sed "s!refs/tags/v!!")
-          npm version $APP_VERSION --no-git-tag-version --allow-same-version
+          yarn version --new-version $APP_VERSION --no-git-tag-version
       - name: Build for Release
-        run: npm run build-release
+        run: yarn build-release
       - name: Package Plugin
         run: (cd dist && zip -r dev.wolf.xivdeck.streamDeckPlugin dev.wolf.xivdeck.sdPlugin)
       - name: Report Build Hash

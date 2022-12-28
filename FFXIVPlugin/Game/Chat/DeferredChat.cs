@@ -4,7 +4,7 @@ using System.Threading;
 using Dalamud.Game.Text.SeStringHandling;
 using XIVDeck.FFXIVPlugin.Base;
 
-namespace XIVDeck.FFXIVPlugin.Game; 
+namespace XIVDeck.FFXIVPlugin.Game.Chat; 
 
 internal static class DeferredChat {
     private static readonly List<SeString> DeferredMessages = new();

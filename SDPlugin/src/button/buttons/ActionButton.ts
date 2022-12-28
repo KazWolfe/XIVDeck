@@ -1,9 +1,9 @@
 ﻿import {BaseButton} from "../BaseButton"
-import {KeyDownEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
-import AbstractStateEvent from "@rweich/streamdeck-events/dist/Events/Received/Plugin/AbstractStateEvent";
+import {KeyDownEvent, WillAppearEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
 import plugin from "../../plugin";
 import {StateMessage} from "../../link/ffxivplugin/GameTypes";
 import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
+import {DidReceiveSettingsEvent} from "@rweich/streamdeck-events/dist/Events/Received";
 
 export type ActionButtonSettings = {
     actionType: string,
@@ -12,30 +12,32 @@ export type ActionButtonSettings = {
 }
 
 export class ActionButton extends BaseButton {
-    actionType: string;
-    actionId: number;
+    settings?: ActionButtonSettings;
     
     useGameIcon: boolean = true;
     
-    constructor(event: AbstractStateEvent) {
+    constructor(event: WillAppearEvent) {
         super(event.context);
-
-        let settings = event.settings as ActionButtonSettings;
-
-        this.actionType = settings.actionType;
-        this.actionId = settings.actionId;
-
+        
         this._xivEventListeners.add(plugin.xivPluginLink.on("_ready", this.render.bind(this)));
         this._xivEventListeners.add(plugin.xivPluginLink.on("stateUpdate", this.stateUpdate.bind(this)));
+        
+        this._sdEventListeners.set("keyDown", this.onKeyDown.bind(this));
+        
+        this.onReceivedSettings(event);
+    }
+    
+    async onReceivedSettings(event: DidReceiveSettingsEvent | WillAppearEvent): Promise<void> {
+        this.settings = event.settings as ActionButtonSettings;
         this.render();
     }
 
-    async execute(event: KeyDownEvent): Promise<void> {
-        if (this.actionType == null || this.actionId == null) {
+    async onKeyDown(event: KeyDownEvent): Promise<void> {
+        if (this.settings?.actionType == undefined || this.settings?.actionId == undefined) {
             throw Error("Not action type/ID was defined for this button!");
         }
         
-        await FFXIVApi.Action.executeAction(this.actionType, this.actionId);
+        await FFXIVApi.Action.executeAction(this.settings.actionType, this.settings.actionId);
     }
     
     async render() {
@@ -48,16 +50,16 @@ export class ActionButton extends BaseButton {
             return;
         }
 
-        if (this.actionType == null || this.actionId == null) {
+        if (this.settings?.actionType == undefined || this.settings?.actionId == undefined) {
             return;
         }
         
-        let actionInfo = await FFXIVApi.Action.getAction(this.actionType, this.actionId);
+        let actionInfo = await FFXIVApi.Action.getAction(this.settings.actionType, this.settings.actionId);
         this.setImage(await FFXIVApi.getIcon(actionInfo.iconId));
     }
     
     private stateUpdate(message: StateMessage) {
-        if (this.actionType == "GearSet" && message.type == "GearSet") {
+        if (this.settings?.actionType == "GearSet" && message.type == "GearSet") {
             this.render();
         }
     }
