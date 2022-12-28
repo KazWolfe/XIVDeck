@@ -64,8 +64,6 @@ export class ButtonDispatcher {
     }
     
     private async _globalStateUpdate(event: StateMessage) {
-        console.log("asdf")
-        
         switch (event.type) {
             case "DEBUG_ClearIcons":
                 for await (let c of this._contextCache.values()) {

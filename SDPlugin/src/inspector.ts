@@ -20,7 +20,7 @@ class XIVDeckInspector {
     globalInspector!: GlobalFrame;
     
     constructor() {
-        console.log(this);
+        console.log("XIVDeck Property Inspector loaded!", this);
 
         this.sdPluginLink.on('websocketOpen', (event => {
             this.uuid = event.uuid;

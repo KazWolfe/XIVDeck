@@ -13,8 +13,6 @@ export class EmoteSettings implements BaseSubsetting {
     onUpdate?: (payload: EmotePayload) => void;
 
     constructor(payload: EmotePayload) {
-        console.log("creating new EmoteSettings", payload);
-
         this.payload = {...payload};
 
         this._logMessageRadio = PIUtils.generateRadioSelection(i18n.t("frames:action.subframes.emote.logSettings"), "logMode", "radio", ...[

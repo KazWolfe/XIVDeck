@@ -64,6 +64,8 @@ either the Individual or Shared tab of the Macro interface. *This feature does n
 create external macros.*
 * **Switch Class**: This action allows you to switch to a specific class directly. It will automatically
 trigger the first gearset for each class that it finds in your active Gearset list.
+* **Change Volume**: This action allows you to quickly mute or unmute independent audio channels in
+game at any time. Stream Deck + users can additionally use Dials to adjust volume more precisely.
 
 More action types may come later, depending on user demand, what can actually go on a hotbar, and what
 Dalamud ultimately supports or makes accessible. For actions that either cannot be put on a hotbar 

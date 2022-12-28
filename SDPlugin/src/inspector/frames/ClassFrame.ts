@@ -63,7 +63,6 @@ export class ClassFrame extends BaseFrame<ClassButtonSettings> {
 
         this.classSelector.options.length = 0;
         this.classSelector.add(PIUtils.createDefaultSelection(i18n.t("frames:class.default")));
-        console.log(this, groupCache);
         groupCache.forEach((v) => {
             this.classSelector.add(v);
         })

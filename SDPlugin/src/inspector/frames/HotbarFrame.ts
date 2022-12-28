@@ -76,7 +76,6 @@ export class HotbarFrame extends BaseFrame<HotbarButtonSettings> {
             }
         }
         
-        console.log(standardGroup, crossGroup);
         this.channelSelector.add(PIUtils.createDefaultSelection(i18n.t("frames:hotbar.default")));
         this.channelSelector.add(standardGroup);
         this.channelSelector.add(crossGroup);
