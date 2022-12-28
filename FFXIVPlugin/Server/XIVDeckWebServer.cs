@@ -60,7 +60,7 @@ public class XIVDeckWebServer : IDisposable {
     }
 
     private void ConfigureErrorHandlers() {
-        this._host.OnUnhandledException = async (ctx, ex) => {
+        this._host.OnUnhandledException = (ctx, ex) => {
             // Handle known exception types first, as these can be thrown by various subsystems
             switch (ex) {
                 case ActionLockedException:
@@ -78,10 +78,10 @@ public class XIVDeckWebServer : IDisposable {
             PluginLog.Error(ex, $"Unhandled exception while processing request: " +
                                 $"{ctx.Request.HttpMethod} {ctx.Request.Url.PathAndQuery}");
             ErrorNotifier.ShowError(ex.Message, debounce: true);
-            await ExceptionHandler.Default(ctx, ex);
+            return ExceptionHandler.Default(ctx, ex);
         };
 
-        this._host.OnHttpException = async (ctx, ex) => {
+        this._host.OnHttpException = (ctx, ex) => {
             var inner = ex.DataObject as Exception ?? (HttpException) ex;
 
             PluginLog.Warning(inner, $"Got HTTP {ex.StatusCode} while processing request: " +
@@ -92,7 +92,7 @@ public class XIVDeckWebServer : IDisposable {
                 ErrorNotifier.ShowError(ex.Message ?? inner.Message, true);
             }
             
-            await HttpExceptionHandler.Default(ctx, ex);
+            return HttpExceptionHandler.Default(ctx, ex);
         };
     }
 }

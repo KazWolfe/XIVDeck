@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dalamud.Logging;
 using EmbedIO;
 using EmbedIO.Routing;
 using EmbedIO.WebApi;
@@ -58,7 +59,7 @@ public class ActionController : WebApiController {
     }
 
     [Route(HttpVerbs.Post, "/{type}/{id}/execute")]
-    public async void ExecuteAction(string type, int id) {
+    public void ExecuteAction(string type, int id) {
         if (!Enum.TryParse<HotbarSlotType>(type, out var slotType))
             throw HttpException.NotFound(string.Format(UIStrings.ActionController_UnknownActionTypeError, type));
 
@@ -70,8 +71,10 @@ public class ActionController : WebApiController {
 
         ActionPayload? payload = null;
         if (payloadType != null) {
-            var requestBody = await this.HttpContext.GetRequestBodyAsStringAsync();
+            var requestBody = this.HttpContext.GetRequestBodyAsStringAsync().Result;
             payload = JsonConvert.DeserializeObject(requestBody, payloadType) as ActionPayload;
+            
+            PluginLog.Debug($"Body: {requestBody}\nPayload: {payload}");
         }
 
         GameUtils.ResetAFKTimer();
