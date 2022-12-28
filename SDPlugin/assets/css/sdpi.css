@@ -279,7 +279,7 @@ option {
 }
 
 .sdpi-item > *:not(.sdpi-item-label.empty):not(meter) {
-    min-height: 26px;
+    /* min-height: 26px; */
     padding: 0px 4px 0px 4px;
 }
 
@@ -372,6 +372,7 @@ table > caption {
     margin-right: 14px;
     margin-left: 4px;
     justify-content: space-evenly;
+    max-width: 224px;
 }
 
 canvas.sdpi-item-value {

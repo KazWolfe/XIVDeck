@@ -151,7 +151,7 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
             && (this.settings.cache != null || this.selectedActionName != null)) {
 
             let cachedAction = this.settings.cache;
-            let cachedName = cachedAction?.name ?? this.selectedActionName ?? "???";
+            let cachedName = StringUtils.toTitleCase( cachedAction?.name ?? this.selectedActionName ?? i18n.t("frames:action.unknown"));
 
             let failsafe = document.createElement("option");
             failsafe.value = this.selectedAction.toString();
