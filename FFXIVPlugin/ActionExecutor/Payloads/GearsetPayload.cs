@@ -3,5 +3,5 @@
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Payloads; 
 
 public record GearsetPayload : ActionPayload {
-    [JsonProperty("glamourPlateId")] public uint? GlamourPlateId = 0;
+    [JsonProperty("glamourPlateId")] public uint? GlamourPlateId;
 }
