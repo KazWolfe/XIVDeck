@@ -24,7 +24,15 @@
     "action": "Action",
     "default-type": "Select action type...",
     "default-action": "Select action...",
-    "unknown": "Unknown"
+    "unknown": "Unknown",
+    "subframes": {
+      "emote": {
+        "logSettings": "Log Settings",
+        "default": "Use Game Defaults",
+        "always": "Always Show Chat Log Message",
+        "never": "Never Show Chat Log Message"
+      }
+    }
   },
   "macro": {
     "type": "Macro Type",

@@ -60,8 +60,8 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
     }
 
     renderHTML(): void {
-        this.domParent.append(PIUtils.createPILabeledElement("Type", this.typeSelector));
-        this.domParent.append(PIUtils.createPILabeledElement("Action", this.actionSelector));
+        this.domParent.append(PIUtils.createPILabeledElement(i18n.t("frames:action.type"), this.typeSelector));
+        this.domParent.append(PIUtils.createPILabeledElement(i18n.t("frames:action.action"), this.actionSelector));
         this.domParent.append(this.subsettingsDiv);
     }
 
@@ -75,7 +75,7 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
     private _renderTypeDropdown(): void {
         this.typeSelector.innerHTML = ""; // clear the selector
 
-        let placeholder = PIUtils.createDefaultSelection("Select type...");
+        let placeholder = PIUtils.createDefaultSelection(i18n.t("frames:action.default-type"));
         this.typeSelector.add(placeholder);
 
         if (this.selectedType == null) {
@@ -105,7 +105,7 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
     private _renderActionDropdown() {
         this.actionSelector.innerHTML = ""; // clear the selector
 
-        let placeholder = PIUtils.createDefaultSelection("Select action...");
+        let placeholder = PIUtils.createDefaultSelection(i18n.t("frames:action.default-action"));
         placeholder.selected = true;
         this.actionSelector.add(placeholder);
 
@@ -132,7 +132,7 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
 
             let option = document.createElement("option");
             option.value = action.id.toString();
-            option.title = StringUtils.toTitleCase(action.name ?? "Unknown Action");
+            option.title = StringUtils.toTitleCase(action.name ?? i18n.t("frames:action.unknown"));
             option.textContent = `[#${action.id}] ${option.title}`;
 
             if (this.selectedAction == action.id && (this.settings.actionType == this.selectedType)) {
@@ -173,8 +173,6 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
     
     private _renderActionSubsettings() {
         this._clearSubsettingsModule();
-        
-        console.log("subsetting render requested");
         
         switch (this.selectedType) {
             case "Emote":
