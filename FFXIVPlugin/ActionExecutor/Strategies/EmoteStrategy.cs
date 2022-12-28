@@ -45,7 +45,11 @@ public class EmoteStrategy : IActionStrategy {
     public void Execute(uint actionId, ActionPayload? payload) {
         bool? logMode = null;
         if (payload is EmotePayload ep) {
-            logMode = ep.SendLogMessage;
+            logMode = ep.LogMode switch {
+                EmoteLogMode.Always => true,
+                EmoteLogMode.Never => false,
+                _ => null
+            };
         }
 
         var emote = GetEmoteById(actionId);
