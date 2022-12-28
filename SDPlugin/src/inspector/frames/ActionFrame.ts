@@ -160,11 +160,14 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
             failsafe.selected = true;
 
             if (cachedAction?.category != null) {
-                let parent = document.createElement("optgroup");
-                parent.label = StringUtils.toTitleCase(cachedAction.category);
-                placeholder.after(parent);
+                let parent = groupCache.get(cachedAction.category);
+                if (parent == null) {
+                    parent = document.createElement("optgroup");
+                    parent.label = StringUtils.toTitleCase(cachedAction.category);
+                    placeholder.after(parent);
+                }
 
-                parent.append(failsafe);
+                parent.prepend(failsafe);
             } else {
                 placeholder.after(failsafe);
             }
