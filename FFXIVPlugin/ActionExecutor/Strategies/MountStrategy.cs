@@ -35,7 +35,7 @@ public class MountStrategy : IActionStrategy {
         return _gameStateCache.UnlockedMounts!.Select(GetExecutableAction).ToList();
     }
 
-    public void Execute(uint actionId, dynamic? _) {
+    public void Execute(uint actionId, ActionPayload? _) {
         var mount = GetMountById(actionId);
 
         if (mount == null) {

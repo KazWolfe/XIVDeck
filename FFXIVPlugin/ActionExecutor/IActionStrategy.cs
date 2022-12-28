@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor;
 
@@ -6,7 +7,7 @@ public interface IActionStrategy {
     /**
      * Execute an event with the given Action ID, depending on the strategy for this action type.
      */
-    public void Execute(uint actionId, dynamic? options = null);
+    public void Execute(uint actionId, ActionPayload? options = null);
 
     /**
      * Get the Icon ID used for a specific action type
@@ -20,7 +21,8 @@ public interface IActionStrategy {
 
     /**
      * Get a dynamic list of items allowed by this strategy.
-     * 
      */
     public List<ExecutableAction>? GetAllowedItems();
+
+    public Type? GetPayloadType() => null;
 }

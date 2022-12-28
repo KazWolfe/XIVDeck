@@ -46,7 +46,7 @@ public class CollectionStrategy : IActionStrategy {
             .ToList();
     }
 
-    public void Execute(uint actionId, dynamic? _) {
+    public void Execute(uint actionId, ActionPayload? _) {
         var mcguffin = GetMcGuffinById(actionId);
 
         if (mcguffin == null) {

@@ -34,7 +34,7 @@ public class MacroStrategy : IActionStrategy {
         return null;
     }
 
-    public unsafe void Execute(uint actionId, dynamic? _) {
+    public unsafe void Execute(uint actionId, ActionPayload? _) {
         if (actionId > 199) {
             throw new ActionNotFoundException(HotbarSlotType.Macro, actionId);
         }

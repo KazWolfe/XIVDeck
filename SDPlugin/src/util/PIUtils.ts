@@ -28,6 +28,10 @@ export class PIUtils {
         sdLabel.innerText = label;
         sdLabel.className = "sdpi-item-label";
         
+        if (label == "") {
+            sdLabel.classList.add("empty");
+        }
+        
         formElement.classList.add("sdpi-item-value");
         
         item.append(sdLabel, formElement)
@@ -66,7 +70,7 @@ export class PIUtils {
         return true;
     }
     
-    static generateRadioSelection(title: string, id: string, ...choices: RadioSelection[]): HTMLElement {
+    static generateRadioSelection(title: string, id: string, type: "radio" | "checkbox" = "radio" , ...choices: RadioSelection[]): HTMLElement {
         let radioInner = document.createElement("div");
         radioInner.classList.add("sdpi-item-value");
         
@@ -76,9 +80,10 @@ export class PIUtils {
             
             let choiceInput = document.createElement("input");
             choiceInput.id = `r_${id}_choice${index}`;
-            choiceInput.type = "radio";
+            choiceInput.type = type;
             choiceInput.name = id;
             choiceInput.value = rs.value;
+            if (rs.checked) choiceInput.checked = true;
             
             let choiceLabel = document.createElement("label");
             choiceLabel.setAttribute("for", `r_${id}_choice${index}`);
@@ -92,7 +97,7 @@ export class PIUtils {
         });
         
         let labeledElement = this.createPILabeledElement(title, radioInner);
-        labeledElement.setAttribute("type", "radio");
+        labeledElement.setAttribute("type", type);
         labeledElement.id = id;
         
         return labeledElement;
@@ -151,5 +156,6 @@ export class PIUtils {
 
 export interface RadioSelection {
     value: string,
-    name: string
+    name: string,
+    checked?: boolean
 }

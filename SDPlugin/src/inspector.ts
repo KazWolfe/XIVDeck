@@ -2,6 +2,7 @@
 import {FFXIVPluginLink} from "./link/ffxivplugin/FFXIVPluginLink";
 import {DidReceiveGlobalSettingsEvent, DidReceiveSettingsEvent} from "@rweich/streamdeck-events/dist/Events/Received";
 import {PIDispatcher} from "./inspector/PIDispatcher";
+import plugin from "./plugin";
 import {DefaultGlobalSettings, GlobalSettings} from "./util/GlobalSettings";
 import {GlobalFrame} from "./inspector/frames/GlobalFrame";
 import {FFXIVInitReply} from "./link/ffxivplugin/GameTypes";
@@ -83,4 +84,6 @@ class XIVDeckInspector {
 
 
 const piInstance = new XIVDeckInspector();
+
+(<any> window).piInstance = piInstance;
 export default piInstance;

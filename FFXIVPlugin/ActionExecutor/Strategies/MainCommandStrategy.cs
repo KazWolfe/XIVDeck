@@ -37,7 +37,7 @@ public class MainCommandStrategy : IActionStrategy {
         }
     }
 
-    public unsafe void Execute(uint actionId, dynamic? _) {
+    public unsafe void Execute(uint actionId, ActionPayload? _) {
         if (this._mainCommandCache.All(command => actionId != command.RowId))
             throw new InvalidOperationException(string.Format(UIStrings.MainCommandStrategy_ActionInvalidError, actionId));
             

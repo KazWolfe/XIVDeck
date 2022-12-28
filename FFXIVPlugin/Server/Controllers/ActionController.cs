@@ -1,30 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using EmbedIO;
 using EmbedIO.Routing;
 using EmbedIO.WebApi;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.ActionExecutor;
+using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 
-namespace XIVDeck.FFXIVPlugin.Server.Controllers; 
+namespace XIVDeck.FFXIVPlugin.Server.Controllers;
 
 [ApiController("/action")]
 public class ActionController : WebApiController {
     [Route(HttpVerbs.Get, "/")]
     public Dictionary<HotbarSlotType, List<ExecutableAction>> GetActions() {
         XIVDeckPlugin.Instance.GameStateCache.Refresh();
-        
+
         Dictionary<HotbarSlotType, List<ExecutableAction>> actions = new();
 
         foreach (var (type, strategy) in ActionDispatcher.GetStrategies()) {
             var allowedItems = strategy.GetAllowedItems();
             if (allowedItems == null || allowedItems.Count == 0) continue;
-            
+
             actions[type] = allowedItems;
         }
 
@@ -48,7 +49,7 @@ public class ActionController : WebApiController {
         }
 
         var action = ActionDispatcher.GetStrategyForSlotType(slotType).GetExecutableActionById((uint) id);
-        
+
         if (action == null) {
             throw new ActionNotFoundException(slotType, (uint) id);
         }
@@ -57,12 +58,23 @@ public class ActionController : WebApiController {
     }
 
     [Route(HttpVerbs.Post, "/{type}/{id}/execute")]
-    public void ExecuteAction(string type, int id, [QueryData] NameValueCollection options) {
-        if (!Enum.TryParse<HotbarSlotType>(type, out var slotType)) {
+    public async void ExecuteAction(string type, int id) {
+        if (!Enum.TryParse<HotbarSlotType>(type, out var slotType))
             throw HttpException.NotFound(string.Format(UIStrings.ActionController_UnknownActionTypeError, type));
+
+        if (!Injections.ClientState.IsLoggedIn)
+            throw new PlayerNotLoggedInException();
+        
+        var strategy = ActionDispatcher.GetStrategyForSlotType(slotType);
+        var payloadType = strategy.GetPayloadType();
+
+        ActionPayload? payload = null;
+        if (payloadType != null) {
+            var requestBody = await this.HttpContext.GetRequestBodyAsStringAsync();
+            payload = JsonConvert.DeserializeObject(requestBody, payloadType) as ActionPayload;
         }
 
         GameUtils.ResetAFKTimer();
-        ActionDispatcher.Execute(slotType, id);
+        strategy.Execute((uint) id, payload);
     }
 }

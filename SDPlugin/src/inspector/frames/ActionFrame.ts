@@ -1,29 +1,40 @@
-﻿import {BaseFrame} from "../BaseFrame";
-import {ActionButtonSettings} from "../../button/buttons/ActionButton";
-import {FFXIVAction} from "../../link/ffxivplugin/GameTypes";
-import piInstance from "../../inspector";
-import {PIUtils} from "../../util/PIUtils";
-import {StringUtils} from "../../util/StringUtils";
-import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
+﻿import { EmotePayload } from "../../button/payloads/actions/EmotePayload";
+import { GearsetPayload } from "../../button/payloads/actions/GearsetPayload";
 import i18n from "../../i18n/i18n";
-
-const NAME_SUBSTITUTIONS: Record<string, string> = {
-    "FieldMarker": "Waymark",
-};
+import piInstance from "../../inspector";
+import { FFXIVApi } from "../../link/ffxivplugin/FFXIVApi";
+import { FFXIVAction } from "../../link/ffxivplugin/GameTypes";
+import { PIUtils } from "../../util/PIUtils";
+import { StringUtils } from "../../util/StringUtils";
+import { BaseFrame } from "../BaseFrame";
+import { ActionButtonSettings } from "../../button/buttons/ActionButton";
+import { EmoteSettings } from "./subsettings/actions/EmoteSettings";
+import { GearsetSettings } from "./subsettings/actions/GearsetSettings";
+import { BaseSubsetting } from "./subsettings/BaseSubsetting";
 
 
 export class ActionFrame extends BaseFrame<ActionButtonSettings> {
+
+    settings: ActionButtonSettings;
+
+    // cache
+    actionCache = new Map<string, FFXIVAction[]>();
+
+    // internal state
+    selectedType?: string;
+    selectedAction?: number;
+    selectedActionName?: string;
+    subsettingsModule?: BaseSubsetting;
+    
+    // dom
     typeSelector: HTMLSelectElement;
     actionSelector: HTMLSelectElement;
-    
-    actionData: Map<string, FFXIVAction[]> = new Map<string, FFXIVAction[]>();
-    
-    selectedType: string = "default";
-    selectedAction: number = -1;
-    selectedActionName: string = i18n.t("frames:action.unknown");
+    subsettingsDiv: HTMLDivElement;
 
     constructor() {
         super();
+        
+        this.settings = { };
 
         this.typeSelector = document.createElement("select");
         this.typeSelector.id = "typeSelector";
@@ -33,151 +44,198 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
         this.actionSelector.id = "actionSelector";
         this.actionSelector.onchange = this._onItemChange.bind(this);
         
-        this.typeSelector.add(PIUtils.createDefaultSelection(i18n.t("frames:action.default-type")));
-        
-        piInstance.xivPluginLink.on("_ready", this.loadGameData.bind(this));
+        this.subsettingsDiv = document.createElement("div");
+        this.subsettingsDiv.id = "subsettings";
+
+        piInstance.xivPluginLink.on("_ready", this._loadGameData.bind(this));
     }
 
     loadSettings(settings: ActionButtonSettings): void {
-        this.selectedType = settings.actionType || this.selectedType;
-        this.selectedAction = (settings.actionId !== undefined) ? settings.actionId : this.selectedAction;
-        this.selectedActionName = settings.actionName || this.selectedActionName;
+        this.settings = settings;
 
-        this._preloadDropdowns();
+        this.selectedType = this.settings?.actionType;
+        this.selectedAction = this.settings?.actionId;
+        this.selectedActionName = this.settings?.actionName;
+
+        this._renderTypeDropdown();
+        this._renderActionDropdown();
     }
 
     renderHTML(): void {
         this.domParent.append(PIUtils.createPILabeledElement(i18n.t("frames:action.type"), this.typeSelector));
         this.domParent.append(PIUtils.createPILabeledElement(i18n.t("frames:action.action"), this.actionSelector));
+        this.domParent.append(this.subsettingsDiv);
     }
 
-    async loadGameData(): Promise<void> {
-        this.actionData = await FFXIVApi.Action.getActions();
-        
-        this._renderTypes();
-        this._renderItems();
-        this._fillDropdowns();
+    private async _loadGameData(): Promise<void> {
+        this.actionCache = await FFXIVApi.Action.getActions();
+
+        this._renderTypeDropdown();
+        this._renderActionDropdown();
     }
-    
-    private _preloadDropdowns(onlyItem: boolean = false) {
-        if (this.selectedType != "default" && this.selectedAction >= 0) {
-            // If something is selected but game data is not present yet, bring data up so people don't think
-            // their settings are lost. Hacky as hell, but...
-            if (!onlyItem) {
-                let genericType = PIUtils.createDefaultSelection("");
-                let typeKey = `actiontypes:${this.selectedType}`
-                genericType.text = i18n.t(typeKey);
-                this.typeSelector.add(genericType);
-            }
-            
-            FFXIVApi.Action.getAction(this.selectedType, this.selectedAction)
-                .then((ac) => {
-                    this.selectedActionName = ac.name || this.selectedActionName;
-                }).catch(() => {})
-                .finally(() => {
-                    let genericSelection = document.createElement("option");
-                    genericSelection.disabled = true;
-                    genericSelection.text = `[#${this.selectedAction}] ${StringUtils.toTitleCase(this.selectedActionName)}`;
-                    genericSelection.value = this.selectedAction.toString();
-                    this.actionSelector.add(genericSelection);
-                    this.actionSelector.value = genericSelection.value;
-                });
+
+    private _renderTypeDropdown(): void {
+        this.typeSelector.innerHTML = ""; // clear the selector
+
+        let placeholder = PIUtils.createDefaultSelection(i18n.t("frames:action.default-type"));
+        this.typeSelector.add(placeholder);
+
+        if (this.selectedType == null) {
+            placeholder.selected = true;
+        } else if (!this.actionCache.has(this.selectedType)) {
+            let failsafe = PIUtils.createDefaultSelection(this.selectedType);
+            failsafe.value = this.selectedType;
+            failsafe.selected = true;
+
+            this.typeSelector.add(failsafe);
         }
+
+        this.actionCache.forEach((_, k) => {
+            let typeKey = `actiontypes:${k}`;
+
+            let element = document.createElement("option");
+            element.value = k;
+            element.textContent = i18n.t(typeKey);
+
+            if (k == this.selectedType)
+                element.selected = true;
+
+            this.typeSelector.add(element);
+        });
     }
-    
-    private _fillDropdowns(): void {
-        if (this.actionData.has(this.selectedType)) {
-            this.typeSelector.value = this.selectedType;
-            this.actionSelector.value = this.selectedAction.toString();
-            
-            // AAAAAAAAAAA
-            // This handles the edge case where the selected item was not returned by the game, generally the case when
-            // the character logged in does not have this action unlocked.
-            if ([...this.actionSelector.options].map(opt => opt.value).indexOf(this.selectedAction.toString()) < 0) {
-                this._preloadDropdowns(true);
-            }
-        } else {
-            this._preloadDropdowns();
-        }
-    }
-    
-    private _renderTypes() {
-        this.typeSelector.options.length = 0;
-        this.typeSelector.add(PIUtils.createDefaultSelection(i18n.t("frames:action.default-type")));
-        
-        console.log(this.actionData, typeof(this.actionData))
-        
-        this.actionData.forEach((_, k) => {
-            let option = document.createElement("option");
-            let typeKey = `actiontypes:${k}`
-            option.value = k;
-            option.innerText = i18n.t(typeKey);
-            this.typeSelector.add(option);
-        })
-    }
-    
-    private _renderItems() {
-        // reset this dropdown and clear out all options
-        this.actionSelector.innerHTML = "";
 
-        let groupCache: Map<string, HTMLOptGroupElement> = new Map<string, HTMLOptGroupElement>();
+    private _renderActionDropdown() {
+        this.actionSelector.innerHTML = ""; // clear the selector
 
-        if (this.selectedType == "default") {
-            this.actionSelector.disabled = true;
-            return
-        }
-        
-        let items = this.actionData.get(this.selectedType) || [];
-        console.debug("Loaded current selectable items for this PI instance", items)
+        let placeholder = PIUtils.createDefaultSelection(i18n.t("frames:action.default-action"));
+        placeholder.selected = true;
+        this.actionSelector.add(placeholder);
 
-        this.actionSelector.add(PIUtils.createDefaultSelection(i18n.t("frames:action.default-action")));
+        // abort if there's no selected type - nothing to filter this on
+        if (this.selectedType == null) return;
 
-        items.forEach((ac) => {
+        let groupCache = new Map<string, HTMLOptGroupElement>();
+        let filteredActions = this.actionCache.get(this.selectedType) ?? [];
+        let actionFound = false;
+
+        filteredActions.forEach((action) => {
             let parent: HTMLSelectElement | HTMLOptGroupElement = this.actionSelector;
-            
-            if (ac.category) {
-                if (groupCache.has(ac.category)) {
-                    parent = groupCache.get(ac.category)!;
+
+            if (action.category) {
+                if (groupCache.has(action.category)) {
+                    parent = groupCache.get(action.category)!;
                 } else {
                     parent = document.createElement("optgroup");
-                    parent.label = StringUtils.toTitleCase(ac.category);
+                    parent.label = StringUtils.toTitleCase(action.category);
                     this.actionSelector.append(parent);
-                    groupCache.set(ac.category, parent);
+                    groupCache.set(action.category, parent);
                 }
             }
-                
+
             let option = document.createElement("option");
-            option.value = ac.id.toString();
-            option.title = StringUtils.toTitleCase(ac.name || i18n.t("frames:action.unknown"));
-            option.innerText = `[#${ac.id}] ${option.title}`;
-            
+            option.value = action.id.toString();
+            option.title = StringUtils.toTitleCase(action.name ?? i18n.t("frames:action.unknown"));
+            option.textContent = `[#${action.id}] ${option.title}`;
+
+            if (this.selectedAction == action.id && (this.settings.actionType == this.selectedType)) {
+                option.selected = true;
+                actionFound = true;
+                this._renderActionSubsettings();
+            }
+
             parent.append(option);
         });
 
-        this.actionSelector.disabled = false;
+        // handle case of the filtered action not being returned or available
+        if (!actionFound && this.selectedAction != null && (this.settings.actionType == this.selectedType)
+            && (this.settings.cache != null || this.selectedActionName != null)) {
+
+            let cachedAction = this.settings.cache;
+            let cachedName = cachedAction?.name ?? this.selectedActionName ?? "???";
+
+            let failsafe = document.createElement("option");
+            failsafe.value = this.selectedAction.toString();
+            failsafe.textContent = `[#${this.selectedAction}] ${cachedName}`;
+            failsafe.disabled = true;
+            failsafe.selected = true;
+
+            if (cachedAction?.category != null) {
+                let parent = document.createElement("optgroup");
+                parent.label = StringUtils.toTitleCase(cachedAction.category);
+                placeholder.after(parent);
+
+                parent.append(failsafe);
+            } else {
+                placeholder.after(failsafe);
+            }
+
+            this._renderActionSubsettings();
+        }
     }
     
-    private _onTypeChange() {
-        this.selectedType = this.typeSelector.value;
-        this._renderItems();
-    }
-    
-    private _onItemChange() {
-        let newSelection = this.actionSelector.value;
+    private _renderActionSubsettings() {
+        this._clearSubsettingsModule();
         
-        this.selectedType = this.typeSelector.value;
-        
-        if (newSelection == "default") {
-            return;
+        switch (this.selectedType) {
+            case "Emote":
+                this.subsettingsModule = new EmoteSettings(this.settings?.payload as EmotePayload);
+                break;
+            case "GearSet":
+                this.subsettingsModule = new GearsetSettings(this.settings?.payload as GearsetPayload);
+                break;
         }
         
-        this.selectedAction = parseInt(newSelection);
-        this.selectedActionName = this.actionSelector.selectedOptions[0].title || i18n.t("frames:action.unknown");
+        if (this.subsettingsModule != null) {
+            this.subsettingsDiv.append(this.subsettingsModule.getHtml());
+            this.subsettingsModule.onUpdate = this._onSubsettingsUpdate.bind(this);
+        }
+    }
+    
+    private _clearSubsettingsModule() {
+        this.subsettingsDiv.innerHTML = "";
+        this.subsettingsModule = undefined;
+    }
+
+    private _onTypeChange(event: Event): void {
+        this._clearSubsettingsModule();
         
-        this.setSettings({
-            actionId: this.selectedAction,
-            actionType: this.selectedType,
-            actionName: this.selectedActionName
-        })
+        this.selectedType = (event.target as HTMLSelectElement).value;
+        this._renderActionDropdown();
+    }
+
+    private _onItemChange(event: Event): void {
+        let selectedActionId = (event.target as HTMLSelectElement).value;
+        
+        if (selectedActionId == "default" || this.selectedType == "default" || this.selectedType == null) return;
+
+        this.selectedAction = parseInt(selectedActionId);
+        
+        // initialize settings if unset
+        if (this.settings == undefined) {
+            this.settings = { };
+        }
+        
+        // if type is changing, we need to reset payload in addition to all other changes.
+        if (this.selectedType != this.settings.actionType) {
+            this.settings.payload = undefined;
+        }
+        
+        this.settings.actionType = this.selectedType;
+        this.settings.actionId = this.selectedAction;
+        this.settings.cache = this.actionCache.get(this.selectedType)?.find((e) => e.id == this.selectedAction);
+        
+        // ToDo: Remove this (eventually). Migration.
+        this.settings.actionName = undefined;
+        
+        this.setSettings(this.settings);
+        
+        this._renderActionSubsettings();
+    }
+    
+    private _onSubsettingsUpdate(payload: unknown) {
+        if (this.selectedType == null) return;
+        
+        this.settings.payload = payload;
+        this.setSettings(this.settings);
     }
 }

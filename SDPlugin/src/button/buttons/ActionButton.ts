@@ -1,14 +1,16 @@
 ﻿import {BaseButton} from "../BaseButton"
 import {KeyDownEvent, WillAppearEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
 import plugin from "../../plugin";
-import {StateMessage} from "../../link/ffxivplugin/GameTypes";
+import { FFXIVAction, StateMessage } from "../../link/ffxivplugin/GameTypes";
 import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
 import {DidReceiveSettingsEvent} from "@rweich/streamdeck-events/dist/Events/Received";
 
 export type ActionButtonSettings = {
-    actionType: string,
-    actionId: number,
-    actionName: string
+    actionType?: string,
+    actionId?: number,
+    actionName?: string,
+    cache?: FFXIVAction
+    payload?: unknown
 }
 
 export class ActionButton extends BaseButton {
@@ -37,7 +39,7 @@ export class ActionButton extends BaseButton {
             throw Error("Not action type/ID was defined for this button!");
         }
         
-        await FFXIVApi.Action.executeAction(this.settings.actionType, this.settings.actionId);
+        await FFXIVApi.Action.executeAction(this.settings.actionType, this.settings.actionId, this.settings.payload);
     }
     
     async render() {
@@ -56,6 +58,14 @@ export class ActionButton extends BaseButton {
         
         let actionInfo = await FFXIVApi.Action.getAction(this.settings.actionType, this.settings.actionId);
         this.setImage(await FFXIVApi.getIcon(actionInfo.iconId));
+        
+        // ToDo: Remove eventually - migration
+        if (this.settings.cache == null && this.settings.actionName != null) {
+            // this.settings.cache = actionInfo;
+            // this.settings.actionName = undefined;
+
+            // this.setSettings(this.settings);
+        }
     }
     
     private stateUpdate(message: StateMessage) {

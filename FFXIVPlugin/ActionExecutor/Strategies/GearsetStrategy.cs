@@ -4,11 +4,12 @@ using System.Linq;
 using Dalamud.Logging;
 using Dalamud.Memory;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using XIVDeck.FFXIVPlugin.ActionExecutor.Payloads;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 
-namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
+namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.GearSet)]
 public class GearsetStrategy : IActionStrategy {
@@ -27,7 +28,7 @@ public class GearsetStrategy : IActionStrategy {
         // we want to intentionally bypass the cache here as the cache is a bit messy and, well, not always up to
         // date. this can get called quite a bit, so we don't want to force updating everything each time (which
         // (invalidates the entire point of the cache).
-            
+
         var gsEntry = RaptureGearsetModule.Instance()->Gearset[(int) slot - 1];
 
         if (gsEntry == null || !gsEntry->Flags.HasFlag(RaptureGearsetModule.GearsetFlag.Exists))
@@ -48,18 +49,26 @@ public class GearsetStrategy : IActionStrategy {
 
     public List<ExecutableAction> GetAllowedItems() {
         GameStateCache.Refresh();
-            
+
         return GameStateCache.Gearsets!.Select(GetExecutableAction).ToList();
     }
 
-    public void Execute(uint actionSlot, dynamic? _) {
-        var gearset =  GetGearsetBySlot(actionSlot);
+    public void Execute(uint actionSlot, ActionPayload? payload) {
+        var gearset = GetGearsetBySlot(actionSlot);
 
         if (gearset == null)
             throw new ArgumentException(string.Format(UIStrings.GearsetStrategy_GearsetNotFoundError, actionSlot));
 
         var command = $"/gearset change {gearset.Value.Slot + 1}";
-            
+
+        switch (payload) {
+            case GearsetPayload {GlamourPlateId: >= 1 and <= 20} p:
+                command += $" {p.GlamourPlateId}";
+                break;
+            case GearsetPayload {GlamourPlateId: not null}:
+                throw new ArgumentException("Glamour Plate ID must be between 1 and 20.");
+        }
+
         PluginLog.Debug($"Would execute command: {command}");
         Injections.Framework.RunOnFrameworkThread(delegate { GameUtils.SendSanitizedChatMessage(command); });
     }
@@ -68,7 +77,9 @@ public class GearsetStrategy : IActionStrategy {
         var gearset = GetGearsetBySlot(slot);
 
         if (gearset == null) return 0;
-            
+
         return 062800 + (int) gearset.Value.ClassJob;
     }
+
+    public Type GetPayloadType() => typeof(GearsetPayload);
 }
