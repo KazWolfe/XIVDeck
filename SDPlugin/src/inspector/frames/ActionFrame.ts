@@ -1,4 +1,5 @@
 ﻿import { EmotePayload } from "../../button/payloads/actions/EmotePayload";
+import { GearsetPayload } from "../../button/payloads/actions/GearsetPayload";
 import i18n from "../../i18n/i18n";
 import piInstance from "../../inspector";
 import { FFXIVApi } from "../../link/ffxivplugin/FFXIVApi";
@@ -8,6 +9,7 @@ import { StringUtils } from "../../util/StringUtils";
 import { BaseFrame } from "../BaseFrame";
 import { ActionButtonSettings } from "../../button/buttons/ActionButton";
 import { EmoteSettings } from "./subsettings/actions/EmoteSettings";
+import { GearsetSettings } from "./subsettings/actions/GearsetSettings";
 import { BaseSubsetting } from "./subsettings/BaseSubsetting";
 
 
@@ -179,6 +181,7 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
                 this.subsettingsModule = new EmoteSettings(this.settings?.payload as EmotePayload);
                 break;
             case "GearSet":
+                this.subsettingsModule = new GearsetSettings(this.settings?.payload as GearsetPayload);
                 break;
         }
         

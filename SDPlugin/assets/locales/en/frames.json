@@ -31,6 +31,10 @@
         "default": "Use Game Defaults",
         "always": "Always Show Chat Log Message",
         "never": "Never Show Chat Log Message"
+      },
+      "gearset": {
+        "manualPlate": "Override Glamour Plate",
+        "plateId": "Plate ID"
       }
     }
   },

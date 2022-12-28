@@ -17,7 +17,7 @@ export class EmoteSettings implements BaseSubsetting {
 
         this.payload = {...payload};
 
-        this._logMessageRadio = PIUtils.generateRadioSelection(i18n.t("frames:action.subframes.emote.logSettings"), "logMode", ...[
+        this._logMessageRadio = PIUtils.generateRadioSelection(i18n.t("frames:action.subframes.emote.logSettings"), "logMode", "radio", ...[
             {value: EmoteLogMode.DEFAULT, name: i18n.t("frames:action.subframes.emote.default"), checked: true},
             {value: EmoteLogMode.ALWAYS, name: i18n.t("frames:action.subframes.emote.always")},
             {value: EmoteLogMode.NEVER, name: i18n.t("frames:action.subframes.emote.never")}
