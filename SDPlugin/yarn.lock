@@ -100,20 +100,20 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@rweich/streamdeck-events@^4.1.0":
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/@rweich/streamdeck-events/-/streamdeck-events-4.1.0.tgz#0710901de85748f43f0dd22c8e5298c75023031f"
-  integrity sha512-Ted4xQfYHueKy8GhNB/sqf0ZkcA/e+z4aRsUKSAuxXBGVaXEMAmi09kzP79+YlIZ6p/sMRTDgME48shX95+RoQ==
+"@rweich/streamdeck-events@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@rweich/streamdeck-events/-/streamdeck-events-5.0.0.tgz#3fee98cb7eb7f28bfe864b3bcbc281204386ab2c"
+  integrity sha512-i3BUQs8UnIWldx5jxWi1Ex98UwqmSiEZ20n5D2aAddVZDl8/iq5XEF+9jIyBO2VSfHgN8wo+R2CYsttA/LAISg==
   dependencies:
     "@sinclair/typebox" "0.24.49"
     ajv "^8.6.2"
 
-"@rweich/streamdeck-ts@^4.1.0":
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/@rweich/streamdeck-ts/-/streamdeck-ts-4.1.0.tgz#509d6994f16f198409403c500b675becd696465e"
-  integrity sha512-wkTZJOWqNRZ1y3zKLY+odKxbeZQOgQCPy5bZqUNmpmC8gfHtdALkmkJGyIF3bHoakqcNlo0NtOQZIyuwOMWrtA==
+"@rweich/streamdeck-ts@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@rweich/streamdeck-ts/-/streamdeck-ts-5.0.0.tgz#2a3ee1aec24f6996dc91b03b4a85ba3f145de5f8"
+  integrity sha512-XAtIb+0zkjPlHl3j3ZOIc1YfUjZsO+p+wqPcCixathASnmwh5hyEvgfz650bDER814/if1/4fKLBqe35tgw2iQ==
   dependencies:
-    "@rweich/streamdeck-events" "^4.1.0"
+    "@rweich/streamdeck-events" "^5.0.0"
     "@sinclair/typebox" "^0.24.49"
     ajv "^8.9.0"
     eventemitter3 "^4.0.7"
