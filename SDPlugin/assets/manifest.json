@@ -85,7 +85,8 @@
         "layout": "$B1",
         "TriggerDescription": {
           "Rotate": "Set Volume",
-          "Push": "Mute Channel"
+          "Push": "Mute Channel",
+          "Touch": "Mute Channel"
         }
       },
       "DisableAutomaticStates": true,
