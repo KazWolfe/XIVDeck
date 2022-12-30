@@ -6,7 +6,7 @@ using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Server;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 
-namespace XIVDeck.FFXIVPlugin.Game.Managers; 
+namespace XIVDeck.FFXIVPlugin.Game.Watchers; 
 
 public class HotbarWatcher : IDisposable {
     private readonly HotBarSlot[,] _hotbarCache = new HotBarSlot[17,16];

@@ -4,8 +4,6 @@ using System.Linq;
 using System.Reflection;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using XIVDeck.FFXIVPlugin.Base;
-using XIVDeck.FFXIVPlugin.Exceptions;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor; 
 

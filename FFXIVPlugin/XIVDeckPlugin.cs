@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using XIVDeck.FFXIVPlugin.ActionExecutor;

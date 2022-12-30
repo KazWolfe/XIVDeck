@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using EmbedIO;
 using EmbedIO.Routing;
 using EmbedIO.WebApi;
-using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.Game.Data;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 using XIVDeck.FFXIVPlugin.Server.Types;

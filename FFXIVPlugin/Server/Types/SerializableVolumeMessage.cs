@@ -1,5 +1,4 @@
 ﻿using System;
-using Dalamud.Logging;
 using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.Game.Data;
 using XIVDeck.FFXIVPlugin.Game.Watchers;
