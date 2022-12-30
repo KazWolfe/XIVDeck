@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 // ReSharper disable InconsistentNaming - meh.
@@ -14,25 +13,25 @@ internal static class InputUtil {
     private static extern IntPtr FindWindowEx(IntPtr hWndParent, IntPtr hWndChildAfter, string lpszClass, string? lpszWindow);
 
     [DllImport("user32.dll")]
-    private static extern int GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);
+    private static extern int GetWindowThreadProcessId(IntPtr hWnd, out int processId);
     
     [DllImport("user32.dll")]
     private static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
     
-    public static bool TryFindGameWindow(out IntPtr hwnd) {
-        hwnd = IntPtr.Zero;
+    public static bool TryFindGameWindow(out IntPtr handle) {
+        handle = IntPtr.Zero;
         while (true)
         {
-            hwnd = FindWindowEx(IntPtr.Zero, hwnd, "FFXIVGAME", null);
-            if (hwnd == IntPtr.Zero) break;
-            GetWindowThreadProcessId(hwnd, out var pid);
-            if (pid == Process.GetCurrentProcess().Id) break;
+            handle = FindWindowEx(IntPtr.Zero, handle, "FFXIVGAME", null);
+            if (handle == IntPtr.Zero) break;
+            var _ = GetWindowThreadProcessId(handle, out var pid);
+            if (pid == Environment.ProcessId) break;
         }
-        return hwnd != IntPtr.Zero;
+        return handle != IntPtr.Zero;
     }
     
-    public static void SendKeycode(IntPtr hwnd, int keycode) {
-        SendMessage(hwnd, WM_KEYDOWN, (IntPtr)keycode, (IntPtr)0);
-        SendMessage(hwnd, WM_KEYUP, (IntPtr)keycode, (IntPtr)0);
+    public static void SendKeycode(IntPtr windowHandle, int keycode) {
+        SendMessage(windowHandle, WM_KEYDOWN, (IntPtr)keycode, (IntPtr)0);
+        SendMessage(windowHandle, WM_KEYUP, (IntPtr)keycode, (IntPtr)0);
     }
 }

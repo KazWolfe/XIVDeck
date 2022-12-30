@@ -7,7 +7,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Payloads;
 public enum EmoteLogMode {
     Default,
     Always,
-    Never,
+    Never
 }
 
 public record EmotePayload : ActionPayload {

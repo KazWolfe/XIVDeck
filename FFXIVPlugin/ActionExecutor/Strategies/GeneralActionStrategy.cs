@@ -39,7 +39,7 @@ public class GeneralActionStrategy : IActionStrategy {
         var illegalActions = new List<uint> {
             13, // Advanced Materia Melding - automatically injected on use of Materia Melding
             29, // Sort Pet Hotbar (Normal) - contextual
-            30, // Sort Pet Hotbar (Cross)  - contextual
+            30  // Sort Pet Hotbar (Cross)  - contextual
         };
 
         foreach (var action in ActionSheet) {
@@ -104,20 +104,8 @@ public class GeneralActionStrategy : IActionStrategy {
     }
 
     public unsafe List<ExecutableAction> GetAllowedItems() {
-        List<ExecutableAction> actions = new(); 
-            
-        foreach (var action in ActionSheet) {
-            if (this.GetIllegalActionIDs().Contains(action.RowId)) {
-                continue;
-            }
-                
-            if (action.UnlockLink != 0 && !UIState.Instance()->IsUnlockLinkUnlocked(action.UnlockLink)) {
-                continue;
-            }
-                
-            actions.Add(GetExecutableAction(action));
-        }
-
-        return actions;
+        return ActionSheet.Where(action => !this.GetIllegalActionIDs().Contains(action.RowId))
+            .Where(action => action.UnlockLink == 0 || UIState.Instance()->IsUnlockLinkUnlocked(action.UnlockLink))
+            .Select(GetExecutableAction).ToList();
     }
 }

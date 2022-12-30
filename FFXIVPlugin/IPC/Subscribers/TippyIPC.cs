@@ -49,20 +49,21 @@ internal class TippyIPC : IPluginIpcClient {
         
         var versionEndpoint = Injections.PluginInterface.GetIpcSubscriber<int>("Tippy.APIVersion");
         
-        // this line may explode with an exception, but that should be fine as we'd normally catch that.
+        // this line may explode with an exception, but that should be fine as we'd normally catch that higher up./
         var version = versionEndpoint.InvokeFunc();
        
         this._tippyApiVersionSubscriber = versionEndpoint;
 
-        if (version == 1) {
-            this._tippyRegisterTipSubscriber = Injections.PluginInterface.GetIpcSubscriber<string, bool>("Tippy.RegisterTip");
-            this.Enabled = true;
-            PluginLog.Information("Enabled Tippy IPC connection!");
-            
-            this.RegisterTips();
-        } else if (version > 0) {
+        if (version != 1) {
             PluginLog.Warning($"Tippy IPC detected, but version {version} is incompatible!");
+            return;
         }
+        
+        this._tippyRegisterTipSubscriber = Injections.PluginInterface.GetIpcSubscriber<string, bool>("Tippy.RegisterTip");
+        this.Enabled = true;
+        PluginLog.Information("Enabled Tippy IPC connection!");
+            
+        this.RegisterTips();
     }
     
     public bool RegisterTip(string tip) {

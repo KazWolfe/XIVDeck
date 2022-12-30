@@ -30,7 +30,7 @@ public static unsafe class GameConfig {
         
         public bool TryGetBool(ConfigOption option, out bool value) {
             value = false;
-            if (!TryGetEntry((uint) option, out var entry)) return false;
+            if (!this.TryGetEntry((uint) option, out var entry)) return false;
             value = entry->Value.UInt != 0;
             return true;
         }

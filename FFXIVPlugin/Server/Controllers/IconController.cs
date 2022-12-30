@@ -6,7 +6,7 @@ using XIVDeck.FFXIVPlugin.Server.Helpers;
 
 namespace XIVDeck.FFXIVPlugin.Server.Controllers;
 
-[ApiController(("/icon"))]
+[ApiController("/icon")]
 public class IconController : WebApiController {
     
     [Route(HttpVerbs.Get, "/{iconId}")]

@@ -85,7 +85,7 @@ internal unsafe class GameStateCache {
             gearsets.Add(new Gearset {
                 Slot = i + 1,
                 ClassJob = gs->ClassJob,
-                Name = name,
+                Name = name
             });
         }
 

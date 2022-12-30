@@ -7,5 +7,5 @@ public enum SoundChannel {
     Voice,
     System,
     Ambient,
-    Performance,
+    Performance
 }

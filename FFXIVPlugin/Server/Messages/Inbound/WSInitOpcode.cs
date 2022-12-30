@@ -39,7 +39,7 @@ public class WSInitOpcode : BaseInboundMessage {
             await context.WebSocket.CloseAsync(CloseStatusCode.ProtocolError,
                 "The version of the Stream Deck plugin is too old.", context.CancellationToken);
             
-            PluginLog.Warning($"The currently-installed version of the XIVDeck Stream Deck plugin " +
+            PluginLog.Warning("The currently-installed version of the XIVDeck Stream Deck plugin " +
                               $"is {this.Version}, but version {Constants.MinimumSDPluginVersion} is needed.");
             ForcedUpdateNag.Show();
 

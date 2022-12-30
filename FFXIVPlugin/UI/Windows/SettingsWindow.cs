@@ -10,7 +10,7 @@ using XIVDeck.FFXIVPlugin.UI.Windows.Nags;
 namespace XIVDeck.FFXIVPlugin.UI.Windows;
 
 public class SettingsWindow : Window {
-    public static readonly string WindowKey = "###xivDeckSettingsWindow";
+    public const string WindowKey = "###xivDeckSettingsWindow";
 
     private readonly XIVDeckPlugin _plugin = XIVDeckPlugin.Instance;
 

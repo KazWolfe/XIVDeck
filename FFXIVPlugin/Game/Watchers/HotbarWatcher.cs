@@ -43,7 +43,7 @@ public class HotbarWatcher : IDisposable {
                 this._hotbarCache[hotbarId, slotId] = new HotBarSlot {
                     CommandId = gameSlot->CommandId,
                     Icon = calculatedIcon,
-                    CommandType = gameSlot->CommandType,
+                    CommandType = gameSlot->CommandType
                 };
             }
         }

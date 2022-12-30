@@ -80,7 +80,7 @@ public class ActionDispatcher {
 
 [AttributeUsage(AttributeTargets.Class)]
 public class ActionStrategyAttribute : Attribute {
-    public HotbarSlotType HotbarSlotType;
+    public readonly HotbarSlotType HotbarSlotType;
 
     public ActionStrategyAttribute(HotbarSlotType hotbarSlotType) {
         this.HotbarSlotType = hotbarSlotType;
