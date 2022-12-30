@@ -1,5 +1,5 @@
 ﻿import {BaseButton} from "../BaseButton";
-import {KeyDownEvent, WillAppearEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
+import { KeyDownEvent, TouchTapEvent, WillAppearEvent } from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
 import {
     DialRotateEvent,
     DialPressEvent
@@ -33,8 +33,9 @@ export class VolumeButton extends BaseButton {
         this._xivEventListeners.add(plugin.xivPluginLink.on("volumeUpdate", this.onVolumeUpdate.bind(this)));
         this._xivEventListeners.add(plugin.xivPluginLink.on("_wsClosed", this.renderInvalidState.bind(this)));
 
-        this._sdEventListeners.set("keyDown", this.onKeyDown.bind(this));
-        this._sdEventListeners.set("dialPress", this.onDialPress.bind(this));
+        this._sdEventListeners.set("touchTap", this.onPress.bind(this));
+        this._sdEventListeners.set("keyDown", this.onPress.bind(this));
+        this._sdEventListeners.set("dialPress", this.onPress.bind(this));
         this._sdEventListeners.set("dialRotate", this.onDialRotate.bind(this));
 
         this.onReceivedSettings(event);
@@ -45,30 +46,22 @@ export class VolumeButton extends BaseButton {
         await this.loadFromGame();
     }
 
-    async onDialPress(event: DialPressEvent): Promise<void> {
-        // ignore dial release events
-        if (!event.pressed) return;
-
-        this.preEventGuard();
-
-        await FFXIVPluginLink.instance.send(new SetVolume(this.settings!.channel, {
-            muted: !this.lastState!.muted
-        }));
-    }
-
-    async onKeyDown(event: KeyDownEvent): Promise<void> {
-        this.preEventGuard();
-
-        await FFXIVPluginLink.instance.send(new SetVolume(this.settings!.channel, {
-            muted: !this.lastState!.muted
-        }));
-    }
-
     async onDialRotate(event: DialRotateEvent): Promise<void> {
         this.preEventGuard();
 
         await FFXIVPluginLink.instance.send(new SetVolume(this.settings!.channel, {
             delta: event.ticks * (this.settings?.multiplier ?? 1),
+        }));
+    }
+    
+    async onPress(event: DialPressEvent | KeyDownEvent | TouchTapEvent): Promise<void> {
+        // ignore dial release events specifically
+        if (event instanceof DialPressEvent && !event.pressed) return;
+        
+        this.preEventGuard();
+
+        await FFXIVPluginLink.instance.send(new SetVolume(this.settings!.channel, {
+            muted: !this.lastState!.muted
         }));
     }
 
