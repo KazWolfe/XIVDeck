@@ -18,6 +18,7 @@ public static class NewtonsoftJsonShim {
     }
 }
 
+[AttributeUsage(AttributeTargets.Parameter)]
 public class JsonDataAttribute : Attribute, IRequestDataAttribute<WebApiController> {
     public async Task<object?> GetRequestDataAsync(WebApiController controller, Type type, string parameterName) {
         string body;

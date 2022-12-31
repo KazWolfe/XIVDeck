@@ -14,14 +14,18 @@ public class XIVDeckWebServer : IDisposable {
     private readonly IWebServer _host;
     private readonly CancellationTokenSource _cts = new();
 
+    private readonly XIVDeckWSServer _wsServer;
+
     public XIVDeckWebServer(int port) {
         this._host = new WebServer(o => o
             .WithUrlPrefixes(GenerateUrlPrefixes(port))
             .WithMode(HttpListenerMode.Microsoft)
         );
 
+        this._wsServer = new XIVDeckWSServer("/ws");
+
         this._host.WithCors(origins: "file://");
-        this._host.WithModule(new XIVDeckWSServer("/ws"));
+        this._host.WithModule(this._wsServer);
         this._host.WithModule(new AuthModule("/"));
 
         this._host.StateChanged += (_, e) => {
@@ -40,6 +44,7 @@ public class XIVDeckWebServer : IDisposable {
 
     public void Dispose() {
         this._cts.Cancel();
+        this._wsServer.Dispose();
         GC.SuppressFinalize(this);
     }
 
@@ -73,7 +78,7 @@ public class XIVDeckWebServer : IDisposable {
             }
 
             // And then fallback to unknown exceptions
-            PluginLog.Error(ex, $"Unhandled exception while processing request: " +
+            PluginLog.Error(ex, "Unhandled exception while processing request: " +
                                 $"{ctx.Request.HttpMethod} {ctx.Request.Url.PathAndQuery}");
             ErrorNotifier.ShowError(ex.Message, debounce: true);
             return ExceptionHandler.Default(ctx, ex);

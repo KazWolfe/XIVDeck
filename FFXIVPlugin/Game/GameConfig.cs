@@ -86,7 +86,7 @@ public static unsafe class GameConfig {
     }
 
 
-    public static GameConfigSection System;
-    public static GameConfigSection UiConfig;
-    public static GameConfigSection UiControl;
+    public static readonly GameConfigSection System;
+    public static readonly GameConfigSection UiConfig;
+    public static readonly GameConfigSection UiControl;
 }
