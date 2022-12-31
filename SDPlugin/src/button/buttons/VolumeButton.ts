@@ -92,6 +92,7 @@ export class VolumeButton extends BaseButton {
             icon: `images/states/volume/o_${muted ? 'muted' : 'unmuted'}.png`,
             indicator: {
                 value: this.lastState.volume,
+                opacity: 1.0,
                 bar_fill_c: muted ? "red" : null
             }
         });
