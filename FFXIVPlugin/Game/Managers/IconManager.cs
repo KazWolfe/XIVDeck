@@ -1,19 +1,17 @@
 ﻿using System;
-using System.IO;
 using Dalamud.Logging;
 using Lumina.Data.Files;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.IPC.Subscribers;
+using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.Game.Managers; 
 
 // borrowed from https://github.com/Caraxi/RemindMe/blob/master/IconManager.cs
-public class IconManager {
+public static class IconManager {
     private const string IconFileFormat = "ui/icon/{0:D3}000/{1}{2:D6}{3}.tex";
 
-    public static string GetIconPath(string lang, int iconId, bool hq = false, bool highres = false, bool forceOriginal = false) {
+    private static string GetIconPath(string lang, int iconId, bool hq = false, bool highres = false, bool forceOriginal = false) {
         var path = string.Format(IconFileFormat, 
             iconId / 1000, (hq ? "hq/" : "") + lang, iconId, highres ? "_hr1" : "");
 
@@ -23,7 +21,7 @@ public class IconManager {
         return path;
     }
 
-    public TexFile? GetIcon(string lang, int iconId, bool hq = false, bool highres = false) {
+    public static TexFile? GetIcon(string lang, int iconId, bool hq = false, bool highres = false) {
         TexFile? texFile;
         
         if (lang.Length > 0 && !lang.EndsWith("/"))
@@ -48,32 +46,18 @@ public class IconManager {
         switch (texFile) {
             case null when lang.Length > 0:
                 PluginLog.Debug($"Couldn't get lang-specific icon for {texPath}, falling back to no-lang");
-                return this.GetIcon(string.Empty, iconId, hq, true);
+                return GetIcon(string.Empty, iconId, hq, true);
             case null when highres:
                 PluginLog.Debug($"Couldn't get highres icon for {texPath}, falling back to lowres");
-                return this.GetIcon(lang, iconId, hq);
+                return GetIcon(lang, iconId, hq);
             default:
                 return texFile;
         }
     }
+    
+    public static string GetIconAsPngString(int iconId, bool hq = false) {
+        var icon = GetIcon("", iconId, hq, true) ?? GetIcon("", 0, hq, true)!;
 
-    private static Image GetImage(TexFile tex) {
-        return Image.LoadPixelData<Bgra32>(tex.ImageData, tex.Header.Width, tex.Header.Height);
-    }
-
-    public byte[] GetIconAsPng(int iconId, bool hq = false) {
-        var icon = this.GetIcon("", iconId, hq, true) ?? this.GetIcon("", 0, hq, true)!;
-
-        var image = GetImage(icon);
-
-        using var stream = new MemoryStream();
-        image.SaveAsPng(stream);
-        return stream.ToArray();
-    }
-
-    public string GetIconAsPngString(int iconId, bool hq = false) {
-        var pngBytes = this.GetIconAsPng(iconId, hq);
-
-        return "data:image/png;base64," + Convert.ToBase64String(pngBytes);
+        return "data:image/png;base64," + Convert.ToBase64String(icon.GetImage().ConvertToPng());
     }
 }

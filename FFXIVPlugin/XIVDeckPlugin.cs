@@ -5,7 +5,6 @@ using XIVDeck.FFXIVPlugin.ActionExecutor;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Game.Chat;
-using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Game.Watchers;
 using XIVDeck.FFXIVPlugin.IPC;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
@@ -23,7 +22,6 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
     public string Name => UIStrings.XIVDeck_Title;
         
     internal PluginConfig Configuration { get; }
-    internal IconManager IconManager { get; }
     internal WindowSystem WindowSystem { get; }
     internal SigHelper SigHelper { get; }
     internal GameStateCache GameStateCache { get; }
@@ -44,7 +42,6 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         this.Configuration = this.PluginInterface.GetPluginConfig() as PluginConfig ?? new PluginConfig();
         
         // Various managers for advanced hooking into the game
-        this.IconManager = new IconManager();
         this.SigHelper = new SigHelper();
 
         // Load in and initialize a lot of various game state and plugin interface things.

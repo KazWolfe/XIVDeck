@@ -35,7 +35,7 @@ public class HotbarController : WebApiController {
             IconId = iconId,
             SlotType = hotbarItem->CommandType,
             CommandId = (int) hotbarItem->CommandId,
-            IconData = plugin.IconManager.GetIconAsPngString(iconId % 1000000, iconId >= 1000000)
+            IconData = IconManager.GetIconAsPngString(iconId % 1000000, iconId >= 1000000)
         };
         
     }
