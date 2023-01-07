@@ -6,6 +6,7 @@ using Dalamud.Interface.Windowing;
 using ImGuiNET;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.UI.Windows.Nags;
+using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.UI.Windows;
 
@@ -109,7 +110,7 @@ public class SettingsWindow : Window {
         /* FOOTER */
         ImGui.Separator();
 
-        if (ImGui.Button(UIStrings.SettingsWindow_GitHubLink)) PluginUI.OpenXIVDeckGitHub();
+        if (ImGui.Button(UIStrings.SettingsWindow_GitHubLink)) UiUtil.OpenXIVDeckGitHub();
         
 #if DEBUG
         ImGui.SameLine();

@@ -38,7 +38,7 @@ public class ForcedUpdateNag : NagWindow {
 
         ImGui.SetCursorPosY(windowSize.Y - placeholderButtonSize.Y);
         if (ImGui.Button(UIStrings.Nag_OpenGithubDownloadButton)) {
-            PluginUI.OpenXIVDeckGitHub($"/releases/tag/v{VersionUtils.GetCurrentMajMinBuild()}");
+            UiUtil.OpenXIVDeckGitHub($"/releases/tag/v{VersionUtils.GetCurrentMajMinBuild()}");
         }
     }
 }

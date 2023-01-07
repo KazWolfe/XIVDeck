@@ -33,7 +33,7 @@ public class SetupNag : NagWindow {
         ImGui.Text(UIStrings.SetupNag_ResolutionHelp);
         
         if (ImGui.Button(UIStrings.Nag_OpenGithubDownloadButton)) {
-            PluginUI.OpenXIVDeckGitHub($"/releases/tag/v{VersionUtils.GetCurrentMajMinBuild()}");
+            UiUtil.OpenXIVDeckGitHub($"/releases/tag/v{VersionUtils.GetCurrentMajMinBuild()}");
         }
             
         // spacer, but bigger
