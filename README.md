@@ -27,19 +27,19 @@ create an interactive and pleasant human interface experience.
 This plugin has two primary components:
 
 * The [XIVDeck Game Plugin](FFXIVPlugin), which is a Dalamud plugin responsible for interacting
-with Final Fantasy XIV and hosting a local WebSocket server that allows other systems to
-communicate with the game.
-* The [XIVDeck Stream Deck Plugin](SDPlugin), which is a JavaScript plugin written
-using the Elgato Stream Deck SDK. It exposes a number of actions that will allow the game to
-deeply interact with the Stream Deck.
+with Final Fantasy XIV and hosting a local webserver that allows other systems to communicate 
+with the game.
+* The [XIVDeck Stream Deck Plugin](SDPlugin), which is a JavaScript plugin written using the 
+Elgato Stream Deck SDK. It exposes a number of actions that will allow the game to deeply 
+interact with the Stream Deck.
 
-For those hardware other than the Elgato Stream Deck, community-made plugins are available:
+For those using hardware other than the Elgato Stream Deck, community-made plugins are available:
 
 * [Loupedeck/Razer Stream Controller Plugin](https://github.com/bendobos/LoupeXIVDeck) by bendobos
 
 Please note that the above plugins are _not_ endorsed and may be missing features or otherwise
 have problems. Please contact the relevant maintainer if there are issues using non-Stream Deck
-plugins.
+plugins. If you are a maintainer of a plugin using my API, please reach out via Discord!
 
 ## Using the Plugin
 
@@ -78,9 +78,20 @@ The XIVDeck plugins are available for download from [this repository's Releases 
 To install the Stream Deck plugin, simply open the `XIVDeck.streamDeckPlugin` file. The Elgato 
 Stream Deck software will take care of all installation steps.
 
-To install the FFXIV plugin, simply add it through the Dalamud Plugin Installer. Note that testing
-versions are also available (and may at times be the only live version), but this requires you to 
-[enable Dalamud Testing plugins][dalamudfaq-test] first.
+To install the FFXIV plugin, simply add it through the Dalamud Plugin Installer. To opt in to
+testing versions (when available), right-click XIVDeck's entry in the Plugin Installer and select
+`Receive plugin testing versions`. 
+
+### Getting Help
+
+Technical support for release and testing versions of XIVDeck is available in the
+[Goat Place Discord][goatplace]'s [XIVDeck help thread][support-thread]. 
+
+Please report bugs and submit feature requests through GitHub Issues when possible. I also will
+accept bugs and feature requests on Discord, but may ask you to open an Issue anyways. 
+
+I cannot offer support for self-built versions of XIVDeck, nor versions installed from unofficial
+repositories. Please ensure that you are using the official release(s) of all relevant tools.
 
 ### Building the Plugin
 
@@ -88,16 +99,18 @@ If for some reason you'd rather be on the bleeding edge, you may also manually b
 Note that support is *not* provided for self-built versions.
 
 The XIVDeck Game Plugin is more or less self-contained and only needs to go through your IDE's
-normal build processes. Place the output files (or symlink them) to 
-`%APPDATA%\XIVLauncher\devPlugins\XIVDeck` to get started.
+normal build processes. Build the plugin normally and add the output `Debug` folder as a dev 
+plugin path in Dalamud's settings.
 
-The XIVDeck Stream Deck Plugin can be installed by copying or symlinking the 
-`StreamDeckPlugin` folder to `%APPDATA%\Elgato\StreamDeck\Plugins\dev.wolf.xivdeck.sdPlugin`.
-Note that after creating this link, you need to *fully restart* the Stream Deck software for
-the plugin to be detected.
+The XIVDeck Stream Deck Plugin can be built by running `yarn build`. Symlink or copy the 
+resulting`dist/dev.wolf.xivdeck.sdPlugin` folder to 
+`%APPDATA%\Elgato\StreamDeck\Plugins\dev.wolf.xivdeck.sdPlugin`. Note that after creating this 
+link, you need to *fully restart* the Stream Deck software for the plugin to be detected.
 
 [ffxiv]: https://www.finalfantasyxiv.com
 [streamdeck]: https://www.elgato.com/en/stream-deck
 [releases]: https://github.com/KazWolfe/XIVDeck/releases
 [dalamudfaq-test]: https://goatcorp.github.io/faq/dalamud_troubleshooting.html#q-how-do-i-enable-plugin-test-builds
 [dalamudfaq-tos]: https://goatcorp.github.io/faq/xl_troubleshooting#q-are-xivlauncher-dalamud-and-dalamud-plugins-safe-to-use
+[goatplace]: https://discord.gg/holdshift
+[support-thread]: https://discord.com/channels/581875019861328007/1019648519226806323
