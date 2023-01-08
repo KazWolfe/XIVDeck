@@ -1,4 +1,5 @@
 ﻿import {WillAppearEvent, WillDisappearEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
+import { GameNotRunningError } from "../link/ffxivplugin/exceptions/Exceptions";
 import {BaseButton} from "./BaseButton";
 import {ActionButton} from "./buttons/ActionButton";
 import {HotbarButton} from "./buttons/HotbarButton";
@@ -89,8 +90,13 @@ export class ButtonDispatcher {
         button.dispatch(event)
             .catch((e) => {
                 button!.showAlert();
-                console.error("Error trying to execute button:", e, event);
-                plugin.sdPluginLink.logMessage(`Got error while trying to execute button: ${e}`)
+                
+                if (e instanceof GameNotRunningError) {
+                    console.warn("Could not process event as the game is not running.", event)
+                } else {
+                    console.error("Error trying to execute button:", e, event);
+                    plugin.sdPluginLink.logMessage(`Got error while trying to execute button: ${e}`);
+                }
             });
     }
     

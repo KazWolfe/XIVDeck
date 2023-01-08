@@ -1,4 +1,5 @@
 ﻿import {EventEmitter} from "../../util/EventEmitter";
+import { GameNotRunningError } from "./exceptions/Exceptions";
 import {FFXIVOpcode} from "./MessageBase";
 import {InitOpcode} from "./messages/outbound/InitOpcode";
 import AbstractStreamdeckConnector from "@rweich/streamdeck-ts/dist/AbstractStreamdeckConnector";
@@ -36,7 +37,7 @@ export class FFXIVPluginLink {
 
     public async send(payload: FFXIVOpcode): Promise<unknown> {
         if (!this.isGameAlive || !this._websocket) {
-            return Promise.reject(Error("The game does not appear to be alive, or a websocket has not been created yet."));
+            return Promise.reject(new GameNotRunningError());
         }
 
         return this._websocket.send(JSON.stringify(payload));

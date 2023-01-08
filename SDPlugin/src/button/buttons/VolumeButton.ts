@@ -1,4 +1,5 @@
-﻿import {BaseButton} from "../BaseButton";
+﻿import { GameNotRunningError } from "../../link/ffxivplugin/exceptions/Exceptions";
+import {BaseButton} from "../BaseButton";
 import { KeyDownEvent, TouchTapEvent, WillAppearEvent } from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
 import {
     DialRotateEvent,
@@ -119,7 +120,7 @@ export class VolumeButton extends BaseButton {
             value: "--",
             icon: "images/common/o_nodata.png",
             indicator: {
-                value: 75,
+                value: 0,
                 opacity: 0.6,
                 bar_fill_c: null
             }
@@ -136,12 +137,13 @@ export class VolumeButton extends BaseButton {
     }
 
     private preEventGuard() {
-        if (!this.lastState) {
+        if (!plugin.xivPluginLink.isReady())
+            throw new GameNotRunningError();
+        
+        if (!this.lastState) 
             throw Error("Current volume state not loaded yet.");
-        }
 
-        if (!this.settings?.channel) {
+        if (!this.settings?.channel)
             throw Error("Sound channel not yet set.");
-        }
     }
 }
