@@ -12,19 +12,7 @@ public static class VersionUtils {
         return $"{version.Major}.{version.Minor}.{version.Build}";
     }
 
-    /// <summary>
-    /// Compare two versions by Maj.Min.Build only, ignoring revisions.
-    /// </summary>
-    /// <param name="left">The version to check against.</param>
-    /// <param name="right">The version to compare relative to.</param>
-    /// <returns>Returns true if the passed version is newer than the base version.</returns>
-    public static bool IsOlderThan(this Version left, Version right) {
-        if (left.Major < right.Major) return true;
-        if (left.Major > right.Major) return false;
-
-        if (left.Minor < right.Minor) return true;
-        if (left.Minor > right.Minor) return false;
-
-        return left.Build < right.Build;
+    public static Version StripRevision(this Version version) {
+        return new Version(version.Major, version.Major, version.Build);
     }
 }

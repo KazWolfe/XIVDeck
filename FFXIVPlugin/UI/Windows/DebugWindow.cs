@@ -8,6 +8,7 @@ using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
+using XIVDeck.FFXIVPlugin.UI.Windows.Nags;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.UI.Windows; 
@@ -89,5 +90,15 @@ public class DebugWindow : Window  {
         if (ImGui.Checkbox(UIStrings.SettingsWindow_ListenOnNetwork, ref this._listenOnAllInterfaces)) {
             XIVDeckPlugin.Instance.Configuration.ListenOnAllInterfaces = this._listenOnAllInterfaces;
         }
+        
+        ImGui.Spacing();
+        if (ImGui.Button("Reset Nags")) {
+            NagWindow.CloseAllNags();
+        }
+        if (ImGui.Button("Open Forced Update Nag")) ForcedUpdateNag.Show();
+        ImGui.SameLine();
+        if (ImGui.Button("Open Setup Nag")) SetupNag.Show();
+        ImGui.SameLine();
+        if (ImGui.Button("Open Testing Update Nag")) TestingUpdateNag.Show();
     }
 }

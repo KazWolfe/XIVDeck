@@ -18,6 +18,7 @@ internal static class DeferredChat {
         
         Injections.Chat.Print(message);
     }
+    
     internal static void SendDeferredMessages(long millis = 0) {
         // Create a new CTS that can be used to cancel the next deferred message send 
         _cts = new CancellationTokenSource();

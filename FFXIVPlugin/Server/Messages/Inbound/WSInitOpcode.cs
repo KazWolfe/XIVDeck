@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Threading.Tasks;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
@@ -26,19 +27,18 @@ public enum PluginMode {
 [WSOpcode("init")]
 public class WSInitOpcode : BaseInboundMessage {
     public string Version { get; set; } = default!;
-    [JsonProperty("mode")]
-    public PluginMode? Mode { get; set; }
-    
+    [JsonProperty("mode")] public PluginMode? Mode { get; set; }
+
     public override async Task Process(IWebSocketContext context) {
         // hide all nags
         NagWindow.CloseAllNags();
-        
+
         var sdPluginVersion = System.Version.Parse(this.Version);
-        
+
         if (sdPluginVersion < System.Version.Parse(Constants.MinimumSDPluginVersion)) {
             await context.WebSocket.CloseAsync(CloseStatusCode.ProtocolError,
                 "The version of the Stream Deck plugin is too old.", context.CancellationToken);
-            
+
             PluginLog.Warning("The currently-installed version of the XIVDeck Stream Deck plugin " +
                               $"is {this.Version}, but version {Constants.MinimumSDPluginVersion} is needed.");
             ForcedUpdateNag.Show();
@@ -46,23 +46,30 @@ public class WSInitOpcode : BaseInboundMessage {
             return;
         }
 
-        var xivPluginVersion = Assembly.GetExecutingAssembly().GetName().Version!;
-        var reply = new WSInitReplyMessage(xivPluginVersion.GetMajMinBuild(), AuthHelper.Instance.Secret);  
+        var xivPluginVersion = Assembly.GetExecutingAssembly().GetName().Version!.StripRevision();
+        var reply = new WSInitReplyMessage(xivPluginVersion.GetMajMinBuild(), AuthHelper.Instance.Secret);
         await context.SendMessage(reply);
         PluginLog.Information($"XIVDeck Stream Deck Plugin ({this.Mode}) version {this.Version} has connected!");
 
-        // version check
-        if (sdPluginVersion.IsOlderThan(xivPluginVersion) && (this.Mode is null or PluginMode.Plugin)) {
-            var updateMessage = new SeStringBuilder()
-                .Append(ErrorNotifier.BuildPrefixedString(""))
-                .AddText("Your version of the XIVDeck Stream Deck Plugin is out of date. Please consider installing ")
-                .Add(ChatLinkWiring.GetPayload(LinkCode.GetGithubReleaseLink))
-                .AddUiForeground($"\xE0BB version {xivPluginVersion.GetMajMinBuild()}", 32)
-                .Add(RawPayload.LinkTerminator)
-                .AddText(" from GitHub!")
-                .Build();
-            
-            DeferredChat.SendOrDeferMessage(updateMessage);
+        // version check behavior
+        if (this.Mode is PluginMode.Plugin) {
+            if (sdPluginVersion < xivPluginVersion) {
+                DeferredChat.SendOrDeferMessage(new SeStringBuilder()
+                    .Append(ErrorNotifier.BuildPrefixedString(""))
+                    .AddText("Your version of the XIVDeck Stream Deck Plugin is out of date. Please consider installing ")
+                    .Add(ChatLinkWiring.GetPayload(LinkCode.GetGithubReleaseLink))
+                    .AddUiForeground($"\xE0BB version {xivPluginVersion.GetMajMinBuild()}", 32)
+                    .Add(RawPayload.LinkTerminator)
+                    .AddText(" from GitHub!")
+                    .Build()
+                );
+            } else if (sdPluginVersion > xivPluginVersion) {
+                DeferredChat.SendOrDeferMessage(ErrorNotifier.BuildPrefixedString(
+                        "The version of the XIVDeck Stream Deck Plugin installed is newer than the game " +
+                        "plugin. Please install any updates from the Dalamud Plugin Installer."
+                    )
+                );
+            }
         }
 
         // check for first-run

@@ -13,6 +13,7 @@ public abstract class NagWindow : Window, IDisposable {
         ForcedUpdateNag.Hide();
         SetupNag.Hide();
         PortInUseNag.Hide();
+        TestingUpdateNag.Hide();
     }
     
     private const ImGuiWindowFlags WindowFlags = ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoDocking |
