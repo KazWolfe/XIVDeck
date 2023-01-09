@@ -18,8 +18,8 @@
     <PropertyGroup Label="Target">
         <PlatformTarget>x64</PlatformTarget>
         <TargetFramework>net7.0-windows</TargetFramework>
-        <LangVersion>10</LangVersion>
-        <Platforms>x64</Platforms>
+        <LangVersion>11</LangVersion>
+        <Platforms>AnyCPU</Platforms>
         <Configurations>Debug;Release</Configurations>
     </PropertyGroup>
     <PropertyGroup Label="Build">
@@ -36,7 +36,8 @@
     <PropertyGroup Label="Feature">
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
-    
+
+    <!-- Anonymize and shorten build paths for release -->
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
         <PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))=S:\</PathMap>
     </PropertyGroup>
@@ -47,13 +48,13 @@
 
     <ItemGroup>
         <!-- Image conversion to extract PNGs from Lumina -->
-        <PackageReference Include="SixLabors.ImageSharp" Version="2.1.3" />
+        <PackageReference Include="SixLabors.ImageSharp" Version="2.1.3"/>
 
         <!-- Webserver and socketing -->
         <PackageReference Include="EmbedIO" Version="3.4.3" />
         
         <!-- Dalamud things -->
-        <PackageReference Include="DalamudPackager" Version="2.1.10" GeneratePathProperty="false" />
+        <PackageReference Include="DalamudPackager" Version="2.1.10" GeneratePathProperty="false"/>
         <Reference Include="FFXIVClientStructs">
             <HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
             <Private>false</Private>
@@ -94,8 +95,8 @@
     <!-- Localization -->
     <ItemGroup>
         <!-- Do not include pseudo-localization files in the release build -->
-        <EmbeddedResource Remove="Resources\Localization\UIStrings.qps-ploc.resx" Condition="'$(Configuration)' == 'Release'" />
-        <None Include="Resources\Localization\UIStrings.qps-ploc.resx" Condition="'$(Configuration)' == 'Release'" />
+        <EmbeddedResource Remove="Resources\Localization\UIStrings.qps-ploc.resx" Condition="'$(Configuration)' == 'Release'"/>
+        <None Include="Resources\Localization\UIStrings.qps-ploc.resx" Condition="'$(Configuration)' == 'Release'"/>
 
         <EmbeddedResource Update="Resources\Localization\UIStrings.resx">
             <Generator>ResXFileCodeGenerator</Generator>
@@ -109,10 +110,13 @@
     </ItemGroup>
 
     <Target Name="PackagePluginRelease" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
-        <DalamudPackager ProjectDir="$(ProjectDir)" OutputPath="$(OutputPath)" AssemblyName="$(AssemblyName)" MakeZip="true" VersionComponents="3" />
+        <DalamudPackager ProjectDir="$(ProjectDir)" OutputPath="$(OutputPath)" AssemblyName="$(AssemblyName)"
+                         MakeZip="true"
+                         VersionComponents="3"/>
     </Target>
 
     <Target Name="PackagePluginDebug" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
-        <DalamudPackager ProjectDir="$(ProjectDir)" OutputPath="$(OutputPath)" AssemblyName="$(AssemblyName)" MakeZip="false" VersionComponents="3" />
+        <DalamudPackager ProjectDir="$(ProjectDir)" OutputPath="$(OutputPath)" AssemblyName="$(AssemblyName)"
+                         MakeZip="false" VersionComponents="3"/>
     </Target>
 </Project>

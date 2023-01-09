@@ -96,11 +96,10 @@ repositories. Please ensure that you are using the official release(s) of all re
 ### Building the Plugin
 
 If for some reason you'd rather be on the bleeding edge, you may also manually build the plugins.
-Note that support is *not* provided for self-built versions.
 
 The XIVDeck Game Plugin is more or less self-contained and only needs to go through your IDE's
-normal build processes. Build the plugin normally and add the output `Debug` folder as a dev 
-plugin path in Dalamud's settings.
+normal build processes. Build the plugin normally and add the output folder as a dev plugin 
+path in Dalamud's settings.
 
 The XIVDeck Stream Deck Plugin can be built by running `yarn build`. Symlink or copy the 
 resulting`dist/dev.wolf.xivdeck.sdPlugin` folder to 
