@@ -14,7 +14,7 @@ namespace XIVDeck.FFXIVPlugin.Server.Controllers;
 public class CommandController : WebApiController {
     
     [Route(HttpVerbs.Post, "/")]
-    public void ExecuteCommand([JsonData] SerializableTextCommand command) {
+    public void ExecuteCommand([NJsonData] SerializableTextCommand command) {
         if (!Injections.ClientState.IsLoggedIn)
             throw new PlayerNotLoggedInException();
 

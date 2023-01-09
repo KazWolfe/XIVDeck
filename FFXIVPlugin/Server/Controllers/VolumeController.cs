@@ -28,7 +28,7 @@ public class VolumeController : WebApiController {
     }
 
     [Route(HttpVerbs.Put, "/{channel}")]
-    public SerializableVolumeMessage SetChannel(SoundChannel channel, [JsonData] SerializableVolumeMessage body) {
+    public SerializableVolumeMessage SetChannel(SoundChannel channel, [NJsonData] SerializableVolumeMessage body) {
         body.ApplyToChannel(channel);
 
         return new SerializableVolumeMessage(channel);

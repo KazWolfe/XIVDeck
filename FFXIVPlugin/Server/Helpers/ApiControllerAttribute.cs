@@ -21,11 +21,10 @@ public static class ApiControllerWiring {
         foreach (var type in assembly.GetTypes()) {
             var controllerAttribute = type.GetCustomAttribute<ApiControllerAttribute>();
 
-            if (controllerAttribute != null) {
-                webServer.WithWebApi(controllerAttribute.BaseUrl, NewtonsoftJsonShim.Serialize, m => {
-                    m.WithController(type);
-                });
-            }
+            if (controllerAttribute == null) continue;
+            
+            webServer.WithWebApi(controllerAttribute.BaseUrl, NewtonsoftJsonShim.Serialize,
+                m => { m.WithController(type); });
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Dalamud.Logging;
 using EmbedIO;
 using EmbedIO.Routing;
@@ -59,7 +60,7 @@ public class ActionController : WebApiController {
     }
 
     [Route(HttpVerbs.Post, "/{type}/{id}/execute")]
-    public void ExecuteAction(string type, int id) {
+    public async Task ExecuteAction(string type, int id) {
         if (!Enum.TryParse<HotbarSlotType>(type, out var slotType))
             throw HttpException.NotFound(string.Format(UIStrings.ActionController_UnknownActionTypeError, type));
 
@@ -71,7 +72,7 @@ public class ActionController : WebApiController {
 
         ActionPayload? payload = null;
         if (payloadType != null) {
-            var requestBody = this.HttpContext.GetRequestBodyAsStringAsync().Result;
+            var requestBody = await this.HttpContext.GetRequestBodyAsStringAsync();
             payload = JsonConvert.DeserializeObject(requestBody, payloadType) as ActionPayload;
             
             PluginLog.Debug($"Body: {requestBody}\nPayload: {payload}");
