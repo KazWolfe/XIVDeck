@@ -8,7 +8,7 @@ using XIVDeck.FFXIVPlugin.Base;
 
 namespace XIVDeck.FFXIVPlugin.Game.Managers; 
 
-public static class HotbarManager {
+internal static class HotbarManager {
     public static bool IsCrossHotbar(int hotbarId) {
         return hotbarId switch {
             < 0 or > 19 => throw new ArgumentOutOfRangeException(nameof(hotbarId), @"Hotbar ID must be between 0 and 19."),
@@ -39,7 +39,7 @@ public static class HotbarManager {
         
         // Handle the main hotbar, which is a bit interesting as it can behave oddly at times.
         var mainBarName = isCrossHotbar ? "_ActionCross" : "_ActionBar";
-        var mainBarPtr = Injections.GameGui.GetAddonByName(mainBarName, 1);
+        var mainBarPtr = Injections.GameGui.GetAddonByName(mainBarName);
 
         if (mainBarPtr != IntPtr.Zero) {
             var activeHotbarId = *(byte*) (mainBarPtr + 0x23C); // offset to RaptureHotbarId
@@ -54,7 +54,7 @@ public static class HotbarManager {
         // And handle any extra visible normal hotbars
         if (!isCrossHotbar) {
             var actionBarName = $"_ActionBar{hotbarId:00}";
-            var actionBarPtr = Injections.GameGui.GetAddonByName(actionBarName, 1);
+            var actionBarPtr = Injections.GameGui.GetAddonByName(actionBarName);
 
             if (actionBarPtr != IntPtr.Zero) {
                 SafePulseBar((AddonActionBarBase*) actionBarPtr, slotId);
@@ -62,6 +62,15 @@ public static class HotbarManager {
                 PluginLog.Debug($"Couldn't find hotbar addon {actionBarName}");
             }
         }
+    }
+    
+    public static unsafe int CalcIconForSlot(HotBarSlot* slot) {
+        if (slot->CommandType == HotbarSlotType.Empty) {
+            return 0;
+        }
+
+        CalcBForSlot(slot, out var slotActionType, out var slotActionId);
+        return slot->GetIconIdForSlot(slotActionType, slotActionId);
     }
 
     private static unsafe void SafePulseBar(AddonActionBarBase* actionBar, int slotId) {
@@ -74,5 +83,19 @@ public static class HotbarManager {
         }
 
         actionBar->PulseActionBarSlot(slotId);
+    }
+
+    private static unsafe void CalcBForSlot(HotBarSlot* slot, out HotbarSlotType actionType, out uint actionId) {
+        var hotbarModule = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule();
+
+        // Take in default values, just in case GetSlotAppearance fails for some reason
+        var acType = slot->IconTypeB;
+        var acId = slot->IconB;
+        ushort actionCost = slot->UNK_0xCA;
+        
+        RaptureHotbarModule.GetSlotAppearance(&acType, &acId, &actionCost, hotbarModule, slot);
+
+        actionType = acType;
+        actionId = acId;
     }
 }

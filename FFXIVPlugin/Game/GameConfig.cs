@@ -9,9 +9,6 @@ namespace XIVDeck.FFXIVPlugin.Game;
 // Shamelessly stolen from SimpleTweaks, again. Thank you for the work, Cara!
 // https://github.com/Caraxi/SimpleTweaksPlugin/blob/main/Utility/GameConfig.cs
 public static unsafe class GameConfig {
-
-    private static readonly SigHelper SigHelper = XIVDeckPlugin.Instance.SigHelper;
-
     public class GameConfigSection {
 
         private readonly ConfigBase* _configBase;
@@ -44,7 +41,7 @@ public static unsafe class GameConfig {
 
         public void Set(ConfigOption option, bool value) {
             if (!this.TryGetEntry((uint) option, out var entry)) return;
-            SigHelper.SetConfigValueUInt(entry, value ? 1U : 0U);
+            entry->SetValue(value ? 1U : 0U);
         }
 
         public bool TryGetUInt(ConfigOption option, out uint value) {
@@ -63,7 +60,7 @@ public static unsafe class GameConfig {
 
         public void Set(ConfigOption option, uint value) {
             if (!this.TryGetEntry((uint) option, out var entry)) return;
-            SigHelper.SetConfigValueUInt(entry, value);
+            entry->SetValue(value);
         }
 
         public IDisposable? TemporarySet(ConfigOption option, bool? value) {

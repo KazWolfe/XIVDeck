@@ -17,7 +17,6 @@ namespace XIVDeck.FFXIVPlugin.Server.Controllers;
 public class HotbarController : WebApiController {
     [Route(HttpVerbs.Get, "/{hotbarId}/{slotId}")]
     public unsafe SerializableHotbarSlot GetHotbarSlot(int hotbarId, int slotId) {
-        var plugin = XIVDeckPlugin.Instance;
         var hotbarModule = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule();
 
         try {
@@ -27,7 +26,7 @@ public class HotbarController : WebApiController {
         }
 
         var hotbarItem = hotbarModule->HotBar[hotbarId]->Slot[slotId];
-        var iconId = plugin.SigHelper.CalcIconForSlot(hotbarItem);
+        var iconId = HotbarManager.CalcIconForSlot(hotbarItem);
 
         return new SerializableHotbarSlot {
             HotbarId = hotbarId,

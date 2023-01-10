@@ -3,6 +3,7 @@ using Dalamud.Game;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Server;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 
@@ -33,7 +34,7 @@ public class HotbarWatcher : IDisposable {
                 //       Would also involve making HotbarController read icon IDs from this cache, which might be
                 //       a good idea anyways. To my knowledge, IconB will *always* change with Icon, so this might be
                 //       the way to go.
-                var calculatedIcon = XIVDeckPlugin.Instance.SigHelper.CalcIconForSlot(gameSlot);
+                var calculatedIcon = HotbarManager.CalcIconForSlot(gameSlot);
 
                 if (gameSlot->CommandId == cachedSlot.CommandId && 
                     calculatedIcon == cachedSlot.Icon &&

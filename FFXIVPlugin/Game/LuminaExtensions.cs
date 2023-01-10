@@ -1,5 +1,4 @@
 ﻿using Lumina.Excel.GeneratedSheets;
-using XIVDeck.FFXIVPlugin.Game.Sheets;
 
 namespace XIVDeck.FFXIVPlugin.Game; 
 

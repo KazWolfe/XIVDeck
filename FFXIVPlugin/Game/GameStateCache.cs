@@ -14,17 +14,23 @@ namespace XIVDeck.FFXIVPlugin.Game;
 // borrowed from https://github.com/goaaats/Dalamud.FindAnything/blob/master/Dalamud.FindAnything/GameStateCache.cs
 // ... and then promptly adapted and destroyed. I am sorry, goat.
 internal unsafe class GameStateCache {
-    private static bool IsUnlockLinkUnlockedOrQuestCompleted(uint unlockLinkOrQuestId) {
-        return UIState.Instance()->IsUnlockLinkUnlockedOrQuestCompleted(unlockLinkOrQuestId, 1);
-    }
-    
     internal static bool IsEmoteUnlocked(Emote? emote) {
         // Work around showing emotes if nobody is logged in.
         if (!Injections.ClientState.IsLoggedIn) return false;
         
+        // WARNING: This is a reimplementation of UIState#IsEmoteUnlocked, but designed to hopefully be a bit faster and
+        // more reliable. As a result, this is not exactly faithful to how the game does it, but the logic is the same.
+        // Particularly:
+        // 1. IsEmoteUnlocked will check Emote#EmoteCategory, but we're using Emote#Order as it's more in line with how
+        //    the emote UI works.
+        // 2. IsEmoteUnlocked uses its own (inlined) checks rather than IULUOQC. However, this inlined version is (for
+        //    now) functionally identical to IULUOQC with the default arguments.
+        // Both of these decisions *should* be safe, but are being recorded here for posterity for when Square decides
+        // to blow all this up.
+        
         if (emote == null || emote.Order == 0) return false;
-
-        return emote.UnlockLink == 0 || IsUnlockLinkUnlockedOrQuestCompleted(emote.UnlockLink);
+        
+        return emote.UnlockLink == 0 || UIState.Instance()->IsUnlockLinkUnlockedOrQuestCompleted(emote.UnlockLink);
     }
 
     internal static bool IsMountUnlocked(uint mountId) {

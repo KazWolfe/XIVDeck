@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Game.ClientState.Conditions;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel;
@@ -32,7 +33,7 @@ public class InstrumentStrategy : IActionStrategy {
 
     public unsafe bool IsPerformUnlocked() {
         // APPARENTLY unlock 255 is performance?!
-        return XIVDeckPlugin.Instance.SigHelper.IsQuestCompleted(68555) && UIState.Instance()->IsUnlockLinkUnlocked(255);
+        return QuestManager.IsQuestComplete(68555) && UIState.Instance()->IsUnlockLinkUnlocked(255);
     }
 
     public ExecutableAction? GetExecutableActionById(uint actionId) {
