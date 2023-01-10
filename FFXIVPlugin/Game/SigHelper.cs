@@ -33,14 +33,14 @@ internal unsafe class SigHelper : IDisposable {
 
     /***** functions *****/
     [Signature(Signatures.SanitizeChatString, Fallibility = Fallibility.Fallible)]
-    private readonly delegate* unmanaged<Utf8String*, int, IntPtr, void> _sanitizeChatString = null!;
+    private readonly delegate* unmanaged<Utf8String*, int, nint, void> _sanitizeChatString = null!;
 
     // UIModule, message, unused, byte
     [Signature(Signatures.SendChatMessage, Fallibility = Fallibility.Fallible)]
-    private readonly delegate* unmanaged<IntPtr, IntPtr, IntPtr, byte, void> _processChatBoxEntry = null!;
+    private readonly delegate* unmanaged<nint, nint, nint, byte, void> _processChatBoxEntry = null!;
     /***** hooks *****/
-    private delegate IntPtr RaptureGearsetModule_WriteFile(IntPtr a1, IntPtr a2);
-    private delegate IntPtr MacroUpdate(IntPtr a1, IntPtr macroPage, IntPtr macroNumber);
+    private delegate nint RaptureGearsetModule_WriteFile(nint a1, nint a2);
+    private delegate nint MacroUpdate(nint a1, nint macroPage, nint macroNumber);
 
     [Signature(Signatures.SaveGearset, DetourName = nameof(DetourGearsetSave))]
     private Hook<RaptureGearsetModule_WriteFile>? RGM_WriteFileHook { get; init; }
@@ -67,7 +67,7 @@ internal unsafe class SigHelper : IDisposable {
     internal string GetSanitizedString(string input) {
         var uString = Utf8String.FromString(input);
 
-        this._sanitizeChatString(uString, 0x27F, IntPtr.Zero);
+        this._sanitizeChatString(uString, 0x27F, nint.Zero);
         var output = uString->ToString();
 
         uString->Dtor();
@@ -93,12 +93,12 @@ internal unsafe class SigHelper : IDisposable {
         var payloadMem = Marshal.AllocHGlobal(400);
         Marshal.StructureToPtr(new ChatPayload(messageBytes), payloadMem, false);
 
-        this._processChatBoxEntry((IntPtr) Framework.Instance()->GetUiModule(), payloadMem, IntPtr.Zero, 0);
+        this._processChatBoxEntry((nint) Framework.Instance()->GetUiModule(), payloadMem, nint.Zero, 0);
 
         Marshal.FreeHGlobal(payloadMem);
     }
 
-    private IntPtr DetourGearsetSave(IntPtr a1, IntPtr a2) {
+    private nint DetourGearsetSave(nint a1, nint a2) {
         PluginLog.Debug("Gearset update!");
         var tmp = this.RGM_WriteFileHook!.Original(a1, a2);
 
@@ -111,7 +111,7 @@ internal unsafe class SigHelper : IDisposable {
         return tmp;
     }
 
-    private IntPtr DetourMacroUpdate(IntPtr a1, IntPtr macroPage, IntPtr macroSlot) {
+    private nint DetourMacroUpdate(nint a1, nint macroPage, nint macroSlot) {
         PluginLog.Debug("Macro update!");
         var tmp = this.MacroUpdateHook!.Original(a1, macroPage, macroSlot);
 

@@ -30,10 +30,9 @@ public class InstrumentStrategy : IActionStrategy {
     private static Perform? GetActionById(uint id) {
         return PerformSheet.GetRow(id);
     }
-
-    public unsafe bool IsPerformUnlocked() {
-        // APPARENTLY unlock 255 is performance?!
-        return QuestManager.IsQuestComplete(68555) && UIState.Instance()->IsUnlockLinkUnlocked(255);
+    
+    private static unsafe bool IsPerformUnlocked() {
+        return UIState.Instance()->IsUnlockLinkUnlocked(255);
     }
 
     public ExecutableAction? GetExecutableActionById(uint actionId) {
@@ -42,7 +41,7 @@ public class InstrumentStrategy : IActionStrategy {
     }
 
     public List<ExecutableAction>? GetAllowedItems() {
-        return !this.IsPerformUnlocked() ? null : PerformSheet.Where(i => i.RowId > 0).Select(GetExecutableAction).ToList();
+        return !IsPerformUnlocked() ? null : PerformSheet.Where(i => i.RowId > 0).Select(GetExecutableAction).ToList();
     }
 
     public void Execute(uint actionId, ActionPayload? _) {
@@ -50,7 +49,7 @@ public class InstrumentStrategy : IActionStrategy {
         // error than we normally can). It's legal for a perform to be on a non-Bard hotbar, so I'm not concerned
         // about this.
             
-        if (!this.IsPerformUnlocked()) {
+        if (!IsPerformUnlocked()) {
             throw new ActionLockedException(UIStrings.InstrumentStrategy_PerformanceLockedError);
         }
             

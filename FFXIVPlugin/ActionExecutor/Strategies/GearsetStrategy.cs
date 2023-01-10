@@ -37,7 +37,7 @@ public class GearsetStrategy : IActionStrategy {
         return new GameStateCache.Gearset {
             Slot = gsEntry->ID,
             ClassJob = gsEntry->ClassJob,
-            Name = MemoryHelper.ReadString(new IntPtr(gsEntry->Name), 47)
+            Name = MemoryHelper.ReadString(new nint(gsEntry->Name), 47)
         };
     }
 

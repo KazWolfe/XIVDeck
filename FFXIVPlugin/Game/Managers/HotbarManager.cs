@@ -41,7 +41,7 @@ internal static class HotbarManager {
         var mainBarName = isCrossHotbar ? "_ActionCross" : "_ActionBar";
         var mainBarPtr = Injections.GameGui.GetAddonByName(mainBarName);
 
-        if (mainBarPtr != IntPtr.Zero) {
+        if (mainBarPtr != nint.Zero) {
             var activeHotbarId = *(byte*) (mainBarPtr + 0x23C); // offset to RaptureHotbarId
 
             if (activeHotbarId == hotbarId) {
@@ -56,7 +56,7 @@ internal static class HotbarManager {
             var actionBarName = $"_ActionBar{hotbarId:00}";
             var actionBarPtr = Injections.GameGui.GetAddonByName(actionBarName);
 
-            if (actionBarPtr != IntPtr.Zero) {
+            if (actionBarPtr != nint.Zero) {
                 SafePulseBar((AddonActionBarBase*) actionBarPtr, slotId);
             } else {
                 PluginLog.Debug($"Couldn't find hotbar addon {actionBarName}");

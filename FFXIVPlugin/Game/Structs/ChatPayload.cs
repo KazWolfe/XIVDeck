@@ -7,7 +7,7 @@ namespace XIVDeck.FFXIVPlugin.Game.Structs;
 [StructLayout(LayoutKind.Explicit)]
 [SuppressMessage("ReSharper", "PrivateFieldCanBeConvertedToLocalVariable")]
 internal readonly struct ChatPayload : IDisposable {
-    [FieldOffset(0)] private readonly IntPtr _stringPtr;
+    [FieldOffset(0)] private readonly nint _stringPtr;
     [FieldOffset(16)] private readonly ulong _stringLength;
     [FieldOffset(8)] private readonly ulong _unknown1 = 64;
     [FieldOffset(24)] private readonly ulong _unknown2 = 0;

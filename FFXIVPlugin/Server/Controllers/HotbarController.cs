@@ -20,7 +20,7 @@ public class HotbarController : WebApiController {
         var hotbarModule = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule();
 
         try {
-            this.SafetyCheckHotbar(hotbarId, slotId);
+            SafetyCheckHotbar(hotbarId, slotId);
         } catch (ArgumentException ex) {
             throw HttpException.BadRequest(ex.Message);
         }
@@ -42,7 +42,7 @@ public class HotbarController : WebApiController {
     [Route(HttpVerbs.Post, "/{hotbarId}/{slotId}/execute")]
     public unsafe void TriggerHotbarSlot(int hotbarId, int slotId) {
         try {
-            this.SafetyCheckHotbar(hotbarId, slotId);
+            SafetyCheckHotbar(hotbarId, slotId);
         } catch (ArgumentException ex) { 
             throw HttpException.BadRequest(UIStrings.HotbarController_InvalidHotbarOrSlotError, ex);
         }
@@ -64,7 +64,7 @@ public class HotbarController : WebApiController {
         });
     }
 
-    private void SafetyCheckHotbar(int hotbarId, int slotId) {
+    private static void SafetyCheckHotbar(int hotbarId, int slotId) {
         // ToDo: Set this to be 19 (or do something) once ClientStructs supports pet/extra hotbars.
         if (hotbarId is < 0 or > 17)
             throw new ArgumentException(UIStrings.HotbarController_InvalidHotbarIdError);

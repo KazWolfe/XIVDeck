@@ -25,7 +25,7 @@ public class VolumeWatcher : IDisposable {
     private readonly Dictionary<SoundChannel, (uint Level, bool Muted)> _volumeCache = new();
     
     // list of changes to apply
-    private Dictionary<SoundChannel, (uint? RequestedLevel, bool? RequestedMute)> _enqueuedChanges = new();
+    private readonly Dictionary<SoundChannel, (uint? RequestedLevel, bool? RequestedMute)> _enqueuedChanges = new();
     
     public VolumeWatcher() {
         Injections.Framework.Update += this.OnGameUpdate;

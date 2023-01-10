@@ -1,6 +1,4 @@
-﻿#nullable enable
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Memory;
 using Dalamud.Utility.Signatures;
@@ -86,7 +84,7 @@ internal unsafe class GameStateCache {
             if (gs == null || !gs->Flags.HasFlag(RaptureGearsetModule.GearsetFlag.Exists))
                 continue;
 
-            var name = MemoryHelper.ReadString(new IntPtr(gs->Name), 47);
+            var name = MemoryHelper.ReadString(new nint(gs->Name), 47);
 
             gearsets.Add(new Gearset {
                 Slot = i + 1,
