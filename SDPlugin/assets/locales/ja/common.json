@@ -12,9 +12,9 @@
     "headline": "XIVDeck Game Pluginは検出されませんでした。",
     "clickMore": "クリックして詳細を見る",
     "checkFor": "以下を確認してください:",
-    "checkGameRunning": "Final Fantasy XIV は実行中です",
-    "checkPluginInstalled": "XIVDeck Game Pluginは正常にインストール、および設定されています。",
-    "checkSettingsCorrect": "下記の接続設定は正常です。",
+    "checkGameRunning": "Final Fantasy XIV が実行中であること",
+    "checkPluginInstalled": "XIVDeck Game Pluginが正常にインストール、および設定されていること。",
+    "checkSettingsCorrect": "下記の接続設定が正しいこと",
     "resolveSteps": "上記のすべてを確認した後、この設定ペインを更新して、再度ゲームへの接続を試みます。"
   }
 }

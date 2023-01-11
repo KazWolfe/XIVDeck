@@ -24,12 +24,29 @@
     "action": "Aktion",
     "default-type": "Aktionstyp auswählen...",
     "default-action": "Aktion auswählen...",
-    "unknown": "Unbekannt"
+    "unknown": "Unbekannt",
+    "subframes": {
+      "emote": {
+        "logSettings": "Chat Log-Einstellung",
+        "default": "Spiel-Standardeinstellungen verwenden",
+        "always": "Immer Chat-Log-Nachricht anzeigen",
+        "never": "Niemals Chat-Log-Nachricht anzeigen"
+      },
+      "gearset": {
+        "manualPlate": "Überschreibe Projektionsplatten",
+        "plateId": "Projektionsplatten-Nummer"
+      }
+    }
   },
   "macro": {
     "type": "Makrotyp",
     "number": "Makronummer",
     "individual": "Individuell",
     "shared": "Geteilt"
+  },
+  "volume": {
+    "default-type": "Wähle eine Kategorie...",
+    "channel": "Soundkategorie",
+    "step": "Regelungsschritt"
   }
 }

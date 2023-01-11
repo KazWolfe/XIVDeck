@@ -1,0 +1,9 @@
+{
+  "Master": "マスターボリューム",
+  "BackgroundMusic": "BGM",
+  "SoundEffects": "効果音",
+  "Voice": "ボイス",
+  "System": "システム音",
+  "Ambient": "環境音",
+  "Performance": "楽器演奏"
+}

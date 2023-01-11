@@ -24,12 +24,29 @@
     "action": "アクション",
     "default-type": "アクションタイプを選択...",
     "default-action": "アクションを選択...",
-    "unknown": "不明"
+    "unknown": "不明",
+    "subframes": {
+      "emote": {
+        "logSettings": "ログ設定",
+        "default": "ゲームの既定値を使用",
+        "always": "常にチャットログメッセージを表示する",
+        "never": "チャットログメッセージを表示しない"
+      },
+      "gearset": {
+        "manualPlate": "ミラージュプレートを上書き",
+        "plateId": "プレートNo"
+      }
+    }
   },
   "macro": {
     "type": "マクロタイプ",
     "number": "マクロ No.",
     "individual": "個別",
     "shared": "共有"
+  },
+  "volume": {
+    "default-type": "チャンネルを選択",
+    "channel": "チャンネル",
+    "step": "刻み幅"
   }
 }

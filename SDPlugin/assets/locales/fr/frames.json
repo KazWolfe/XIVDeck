@@ -24,12 +24,29 @@
     "action": "Action",
     "default-type": "Sélectionnez le type d'action...",
     "default-action": "Sélectionnez l'action...",
-    "unknown": "Inconnu"
+    "unknown": "Inconnu",
+    "subframes": {
+      "emote": {
+        "logSettings": "Paramètres de fenêtre de log",
+        "default": "Utiliser les paramètres par défaut",
+        "always": "Toujours afficher les messages de la fenêtre de log",
+        "never": "Jamais afficher les messages de la fenêtre de log"
+      },
+      "gearset": {
+        "manualPlate": "Forcer la planche mirage",
+        "plateId": "ID de la planche"
+      }
+    }
   },
   "macro": {
     "type": "Type de Macro",
     "number": "Numéro de Macro",
     "individual": "Personnage",
     "shared": "Communes"
+  },
+  "volume": {
+    "default-type": "Sélectionner un canal...",
+    "channel": "Canal",
+    "step": "Taille par étape"
   }
 }

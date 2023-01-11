@@ -12,7 +12,7 @@
     "headline": "Das XIVDeck Spieleplugin wurde nicht erkannt!",
     "clickMore": "Drücken für mehr Information...",
     "checkFor": "Bitte Drücken um sicherzustellen dass:",
-    "checkGameRunning": "Final Fantasy XIV ausgeführt wird",
+    "checkGameRunning": "Final Fantasy XIV wird ausgeführt",
     "checkPluginInstalled": "The XIVDeck Plugin ist ordnungsgemäß installiert und konfiguriert,",
     "checkSettingsCorrect": "Die folgenden Verbindungseinstellungen sind korrekt.",
     "resolveSteps": "Nachdem alle oben genannten Einstellungen überprüft wurden, aktualisiere dieses Einstellungsfenster, um einen erneuten Verbindungsversuch zum Spiel durchzuführen."

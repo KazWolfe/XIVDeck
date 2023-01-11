@@ -13,8 +13,8 @@
     "clickMore": "Cliquez ici pour plus d'informations...",
     "checkFor": "Veuillez vérifier que :",
     "checkGameRunning": "Final Fantasy XIV est en cours d'exécution",
-    "checkPluginInstalled": "Le plugin de jeu de XIVDeck est correctement installé et configuré,",
-    "checkSettingsCorrect": "Les paramètres de connexion ci-dessous sont corrects.",
+    "checkPluginInstalled": "Le plugin de jeu XIVDeck est correctement installé et configuré",
+    "checkSettingsCorrect": "Les paramètres de connexion ci-dessous sont corrects",
     "resolveSteps": "Après avoir vérifié tout ce qui précède, rafraîchissez ce volet de paramètres pour réessayer la connexion au jeu."
   }
 }
