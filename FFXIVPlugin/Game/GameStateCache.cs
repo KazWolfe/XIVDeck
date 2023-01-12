@@ -27,6 +27,14 @@ internal unsafe class GameStateCache {
         // to blow all this up.
         
         if (emote == null || emote.Order == 0) return false;
+
+        // HACK - We need to handle GC emotes as a special case
+        switch (emote.RowId) {
+            case 55 when PlayerState.Instance()->GrandCompany != 1: // Maelstrom
+            case 56 when PlayerState.Instance()->GrandCompany != 2: // Twin Adders
+            case 57 when PlayerState.Instance()->GrandCompany != 3: // Immortal Flames
+                return false;
+        }
         
         return emote.UnlockLink == 0 || UIState.Instance()->IsUnlockLinkUnlockedOrQuestCompleted(emote.UnlockLink);
     }
