@@ -249,4 +249,25 @@ Range: {1}-{2}</value>
 
 Default: Off</value>
     </data>
+    <data name="TestingUpdateNag_Headline" xml:space="preserve">
+        <value>Warning: XIVDeck Testing Version Mismatch</value>
+    </data>
+    <data name="TestingUpdateNag_MismatchDetectedText" xml:space="preserve">
+        <value>A version mismatch was detected between the currently-installed version of the Stream Deck Plugin and the Game Plugin. Certain features may not work properly.</value>
+    </data>
+    <data name="TestingUpdateNag_PleaseTestProperly" xml:space="preserve">
+        <value>In order to properly help test XIVDeck releases, you need to be on the correct (matching) version of the Stream Deck Plugin. Please use the below button to download the correct version of the Stream Deck Plugin for your testing build.</value>
+    </data>
+    <data name="TestingUpdateNag_DismissHelp" xml:space="preserve">
+        <value>This message may be dismissed, but will reappear so long as test mode is enabled and a version mismatch is detected.</value>
+    </data>
+    <data name="TestingUpdateNag_IgnoreButton" xml:space="preserve">
+        <value>Ignore For Now</value>
+    </data>
+    <data name="TestingUpdateNag_DownloadButton" xml:space="preserve">
+        <value>Download v{0}</value>
+    </data>
+    <data name="WSInitOpcode_GamePluginOutdated" xml:space="preserve">
+        <value>The version of the XIVDeck Stream Deck Plugin installed is newer than the game plugin. Please install any updates from the Dalamud Plugin Installer.</value>
+    </data>
 </root>

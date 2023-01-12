@@ -24,11 +24,11 @@ public class PluginConfig : IPluginConfiguration {
          * EXPERIMENTAL - This boolean allows integration with the Penumbra IPC for icon load purposes.
          */
     public bool UsePenumbraIPC { get; set; }
-        
+
     /**
          * EXPERIMENTAL - This boolean allows using /micon values for the Macro field
          */
-    public bool UseMIconIcons { get; set; }
+    public bool UseMIconIcons { get; set; } = true;
         
     public int WebSocketPort { get; set; } = 37984;
 

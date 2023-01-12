@@ -1,6 +1,7 @@
 ﻿using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using ImGuiNET;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.UI.Windows.Nags;
@@ -10,10 +11,6 @@ public class TestingUpdateNag : NagWindow {
     private static bool _dismissed = false;
 
     public static void Show() {
-// #if DEBUG
-//         return;
-// #endif
-
         if (_dismissed) return;
 
         _instance ??= new TestingUpdateNag();
@@ -36,31 +33,26 @@ public class TestingUpdateNag : NagWindow {
         var currentVersion = VersionUtils.GetCurrentMajMinBuild();
 
         ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
-        ImGui.Text("Warning: Testing Version Mismatch");
+        ImGui.Text(UIStrings.TestingUpdateNag_Headline);
         ImGui.PopStyleColor();
 
         ImGui.Separator();
 
-        ImGui.Text("A version mismatch was detected between the currently-installed version of the Stream Deck " +
-                   "Plugin and the Game Plugin. Certain features may not work properly.");
-
-        ImGui.Text("In order to properly help test XIVDeck releases, you need to be on the correct (matching) " +
-                   "version of the Stream Deck Plugin. Please use the below button to download the correct version " +
-                   "of the Stream Deck Plugin for your testing build.");
+        ImGui.Text(UIStrings.TestingUpdateNag_MismatchDetectedText);
+        ImGui.Text(UIStrings.TestingUpdateNag_PleaseTestProperly);
 
         ImGui.Spacing();
 
-        ImGui.TextColored(ImGuiColors.DalamudGrey, "This message may be dismissed, but will reappear so long as " +
-                                                   "test mode is enabled and a version mismatch is detected.");
+        ImGui.TextColored(ImGuiColors.DalamudGrey, UIStrings.TestingUpdateNag_DismissHelp);
 
         ImGui.SetCursorPosY(windowSize.Y - placeholderButtonSize.Y);
-        if (ImGui.Button("Ignore For Now")) {
+        if (ImGui.Button(UIStrings.TestingUpdateNag_IgnoreButton)) {
             _dismissed = true;
             Hide();
         }
 
         ImGui.SameLine();
-        if (ImGui.Button($"Download v{currentVersion}")) {
+        if (ImGui.Button(string.Format(UIStrings.TestingUpdateNag_DownloadButton, currentVersion))) {
             UiUtil.OpenXIVDeckGitHub($"/releases/tag/v{currentVersion}");
         }
     }

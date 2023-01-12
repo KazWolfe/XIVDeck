@@ -97,14 +97,11 @@ public class SettingsWindow : Window {
         ImGui.Checkbox(UIStrings.SettingsWindow_EnablePenumbraIPC, ref this._usePenumbraIPC);
         ImGuiComponents.HelpMarker(UIStrings.SettingsWindow_EnablePenumbraIPC_Help);
         
-        ImGui.Dummy(new Vector2(0, 10));
-
-        ImGui.TextColored(ImGuiColors.DalamudYellow, UIStrings.SettingsWindow_ExperimentalSettings);
-        ImGui.Indent();
         ImGui.Checkbox(UIStrings.SettingsWindow_Experiment_MIcon, ref this._useMIconIcons);
         ImGuiComponents.HelpMarker(UIStrings.SettingsWindow_UseMIcon_Help);
-        ImGui.Unindent();
         
+        ImGui.Dummy(new Vector2(0, 10));
+
         ImGui.EndChild();
 
         /* FOOTER */

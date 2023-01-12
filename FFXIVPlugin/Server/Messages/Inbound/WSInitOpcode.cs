@@ -53,10 +53,17 @@ public class WSInitOpcode : BaseInboundMessage {
 
         // version check behavior
         if (this.Mode is PluginMode.Plugin) {
-            if (sdPluginVersion < xivPluginVersion) {
+            if (Injections.PluginInterface.IsTesting && sdPluginVersion < xivPluginVersion) {
+#if !DEBUG
+                TestingUpdateNag.Show();
+#else
+                PluginLog.Debug("I assume you have a good reason for having a version mismatch...");
+#endif
+            } else if (sdPluginVersion < xivPluginVersion) {
                 DeferredChat.SendOrDeferMessage(new SeStringBuilder()
                     .Append(ErrorNotifier.BuildPrefixedString(""))
-                    .AddText("Your version of the XIVDeck Stream Deck Plugin is out of date. Please consider installing ")
+                    .AddText(
+                        "Your version of the XIVDeck Stream Deck Plugin is out of date. Please consider installing ")
                     .Add(ChatLinkWiring.GetPayload(LinkCode.GetGithubReleaseLink))
                     .AddUiForeground($"\xE0BB version {xivPluginVersion.GetMajMinBuild()}", 32)
                     .Add(RawPayload.LinkTerminator)
@@ -64,11 +71,8 @@ public class WSInitOpcode : BaseInboundMessage {
                     .Build()
                 );
             } else if (sdPluginVersion > xivPluginVersion) {
-                DeferredChat.SendOrDeferMessage(ErrorNotifier.BuildPrefixedString(
-                        "The version of the XIVDeck Stream Deck Plugin installed is newer than the game " +
-                        "plugin. Please install any updates from the Dalamud Plugin Installer."
-                    )
-                );
+                var errorString = ErrorNotifier.BuildPrefixedString(UIStrings.WSInitOpcode_GamePluginOutdated);
+                DeferredChat.SendOrDeferMessage(errorString);
             }
         }
 
