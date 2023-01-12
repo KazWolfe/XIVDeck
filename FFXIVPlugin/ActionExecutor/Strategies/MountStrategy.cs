@@ -21,7 +21,8 @@ public class MountStrategy : IActionStrategy {
             ActionId = (int) mount.RowId,
             ActionName = mount.Singular.ToString(),
             IconId = mount.Icon,
-            HotbarSlotType = HotbarSlotType.Mount
+            HotbarSlotType = HotbarSlotType.Mount,
+            SortOrder = (mount.UIPriority << 8) + mount.Order
         };
     }
         

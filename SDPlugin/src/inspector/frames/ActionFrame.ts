@@ -117,6 +117,12 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
         let groupCache = new Map<string, HTMLOptGroupElement>();
         let filteredActions = this.actionCache.get(this.selectedType) ?? [];
         let actionFound = false;
+        
+        // sort the actions by sort order
+        filteredActions = filteredActions.sort((a, b) => {
+            if (a.sortOrder == null || b.sortOrder == null) return 0;
+            return (a.sortOrder > b.sortOrder) ? 1 : -1;
+        });
 
         filteredActions.forEach((action) => {
             let parent: HTMLSelectElement | HTMLOptGroupElement = this.actionSelector;
@@ -135,7 +141,7 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
             let option = document.createElement("option");
             option.value = action.id.toString();
             option.title = StringUtils.toTitleCase(action.name ?? i18n.t("frames:action.unknown"));
-            option.textContent = `[#${action.id}] ${option.title}`;
+            option.textContent = option.title;
 
             if (this.selectedAction == action.id && (this.settings.actionType == this.selectedType)) {
                 option.selected = true;
@@ -155,7 +161,7 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
 
             let failsafe = document.createElement("option");
             failsafe.value = this.selectedAction.toString();
-            failsafe.textContent = `[#${this.selectedAction}] ${cachedName}`;
+            failsafe.textContent = cachedName;
             failsafe.disabled = true;
             failsafe.selected = true;
 

@@ -22,7 +22,8 @@ public class EmoteStrategy : IActionStrategy {
             ActionName = emote.Name.ToString(),
             IconId = emote.Icon,
             Category = emote.EmoteCategory.Value?.Name.ToString() ?? null,
-            HotbarSlotType = HotbarSlotType.Emote
+            HotbarSlotType = HotbarSlotType.Emote,
+            SortOrder = emote.Order
         };
     }
 

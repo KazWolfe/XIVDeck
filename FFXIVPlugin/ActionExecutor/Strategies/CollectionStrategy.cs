@@ -24,7 +24,8 @@ public class CollectionStrategy : IActionStrategy {
             ActionName = uiData.Name.ToString(), 
             IconId = (int) uiData.Icon,
             Category = null,
-            HotbarSlotType = HotbarSlotType.Collection
+            HotbarSlotType = HotbarSlotType.Collection,
+            SortOrder = uiData.Order
         };
     }
 

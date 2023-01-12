@@ -21,7 +21,8 @@ public class MinionStrategy : IActionStrategy {
             ActionId = (int) minion.RowId,
             ActionName = minion.Singular.ToString(),
             IconId = minion.Icon,
-            HotbarSlotType = HotbarSlotType.Minion
+            HotbarSlotType = HotbarSlotType.Minion,
+            SortOrder = minion.Order
         };
     }
         

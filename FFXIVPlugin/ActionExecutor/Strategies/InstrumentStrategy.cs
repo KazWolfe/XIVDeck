@@ -23,7 +23,8 @@ public class InstrumentStrategy : IActionStrategy {
             ActionId = (int) instrument.RowId,
             ActionName = instrument.Instrument.ToString(),
             IconId = instrument.Order,
-            HotbarSlotType = HotbarSlotType.PerformanceInstrument
+            HotbarSlotType = HotbarSlotType.PerformanceInstrument,
+            SortOrder = instrument.Order
         };
     }
 

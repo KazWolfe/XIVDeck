@@ -23,7 +23,8 @@ public class GeneralActionStrategy : IActionStrategy {
             ActionId = (int) action.RowId,
             ActionName = action.Name.ToString(),
             IconId = action.Icon,
-            HotbarSlotType = HotbarSlotType.GeneralAction
+            HotbarSlotType = HotbarSlotType.GeneralAction,
+            SortOrder = action.UIPriority,
         };
     }
         

@@ -19,7 +19,8 @@ public class OrnamentStrategy : IActionStrategy {
             ActionId = (int) ornament.RowId,
             ActionName = ornament.Singular.ToString(),
             IconId = ornament.Icon,
-            HotbarSlotType = HotbarSlotType.FashionAccessory
+            HotbarSlotType = HotbarSlotType.FashionAccessory,
+            SortOrder = ornament.Order
         };
     }
         

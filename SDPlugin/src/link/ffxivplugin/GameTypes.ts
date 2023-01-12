@@ -4,6 +4,7 @@
     type: string;
     category: string | null,
     iconId: number
+    sortOrder?: number | null;
 }
 
 export type FFXIVClass = {
