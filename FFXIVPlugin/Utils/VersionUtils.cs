@@ -13,6 +13,6 @@ public static class VersionUtils {
     }
 
     public static Version StripRevision(this Version version) {
-        return new Version(version.Major, version.Major, version.Build);
+        return new Version(version.Major, version.Minor, version.Build);
     }
 }
