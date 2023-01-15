@@ -241,10 +241,10 @@ Plage : {1}-{2}</value>
         <value>XIVDeck est accessible depuis les ordinateurs de votre réseau !</value>
     </data>
   <data name="SettingsWindow_ListenOnNetwork" xml:space="preserve">
-        <value>Écouter sur toutes les interfaces</value>
+        <value>Écouter toutes les interfaces</value>
     </data>
   <data name="SettingsWindow_UseMIcon_Help" xml:space="preserve">
-        <value>Lorsque cette option est activée, le Stream Deck respectera toutes les commandes /micon dans les macros. Lorsqu'elle est désactivée, le Stream Deck n'affichera que l'icône de la macro en provenance du menu déroulant.
+        <value>Lorsque cette option est activée, le Stream Deck respectera toutes les commandes /micon dans les macros. Lorsqu'elle est désactivée, le Stream Deck n'affichera que l'icône de la Macro en provenance du menu déroulant.
 
 Par défaut : Désactivé</value>
     </data>

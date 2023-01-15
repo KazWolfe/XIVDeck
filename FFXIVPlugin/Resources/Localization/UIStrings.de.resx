@@ -249,4 +249,29 @@ Bereich: {1}-{2}</value>
 
 Standard: Aus</value>
     </data>
+  <data name="TestingUpdateNag_Headline" xml:space="preserve">
+        <value>Warnung: XIVDeck Testversion stimmt nicht überein</value>
+    </data>
+  <data name="TestingUpdateNag_MismatchDetectedText" xml:space="preserve">
+        <value>Es wurde ein Versionskonflikt zwischen der aktuell installierten Version des Stream Deck Plugins und dem Game Plugin entdeckt. Bestimmte Funktionen funktionieren möglicherweise nicht richtig.</value>
+    </data>
+  <data name="TestingUpdateNag_PleaseTestProperly" xml:space="preserve">
+        <value>Um beim Test von XIVDeck Versionen richtig zu helfen, muss die richtige (übereinstimmenden) Version des Stream Deck Plugins installiert sein. Verwenden die untenstehende Schaltfläche, um die korrekte Version des Stream Deck Plugins für die Testversion herunterzuladen.</value>
+    </data>
+  <data name="TestingUpdateNag_DismissHelp" xml:space="preserve">
+        <value>Diese Nachricht kann verworfen werden, wird aber wieder angezeigt, solange der Testmodus aktiviert ist und ein Versionsfehler festgestellt wird.</value>
+    </data>
+  <data name="TestingUpdateNag_IgnoreButton" xml:space="preserve">
+        <value>Vorerst ignorieren</value>
+    </data>
+  <data name="TestingUpdateNag_DownloadButton" xml:space="preserve">
+        <value>v{0} herunterladen</value>
+    </data>
+  <data name="WSInitOpcode_GamePluginOutdated" xml:space="preserve">
+        <value>Die Version des XIVDeck Stream Deck Plugins ist neuer als das Spiel-Plugin. Bitte installieren Sie alle Updates vom Dalamud Plugin Installer.</value>
+    </data>
+  <data name="ForcedUpdateNag_BypassButton" xml:space="preserve">
+        <comment>Shown when the user is given the option to temporarily ignore the update error.</comment>
+        <value>Vorerst ignorieren</value>
+    </data>
 </root>

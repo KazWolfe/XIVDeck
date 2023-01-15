@@ -28,12 +28,12 @@
     "subframes": {
       "emote": {
         "logSettings": "Paramètres de fenêtre de log",
-        "default": "Utiliser les paramètres par défaut",
+        "default": "Utiliser les paramètres par défaut du jeu",
         "always": "Toujours afficher les messages de la fenêtre de log",
-        "never": "Jamais afficher les messages de la fenêtre de log"
+        "never": "Ne jamais afficher les messages de la fenêtre de log"
       },
       "gearset": {
-        "manualPlate": "Forcer la planche mirage",
+        "manualPlate": "Supplanter la planche mirage",
         "plateId": "ID de la planche"
       }
     }
@@ -47,6 +47,6 @@
   "volume": {
     "default-type": "Sélectionner un canal...",
     "channel": "Canal",
-    "step": "Taille par étape"
+    "step": "Unités par pas"
   }
 }
