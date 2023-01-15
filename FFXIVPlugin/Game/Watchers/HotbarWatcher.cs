@@ -32,26 +32,26 @@ public class HotbarWatcher : IDisposable {
                 var gameSlot = hotbar->Slot[slotId];
                 var cachedSlot = this._hotbarCache[hotbarId, slotId];
 
-                // ToDo: Maybe performance optimizations here by caching SlotB information instead?
-                //       Would also involve making HotbarController read icon IDs from this cache, which might be
-                //       a good idea anyways. To my knowledge, IconB will *always* change with Icon, so this might be
-                //       the way to go.
-                var calculatedIcon = HotbarManager.CalcIconForSlot(gameSlot);
+                // We calculate IconB first so that we know what "appearance" the slot has. This allows us to optimize
+                // icon lookups, as they're the more expensive of the two calls. If IconB hasn't changed, the icon 
+                // itself wouldn't have changed either.
+                HotbarManager.CalcBForSlot(gameSlot, out var calculatedBType, out var calculatedBId);
 
-                if (gameSlot->CommandId == cachedSlot.CommandId && 
-                    calculatedIcon == cachedSlot.Icon &&
-                    gameSlot->CommandType == cachedSlot.CommandType) continue;
+                if (gameSlot->CommandId == cachedSlot.CommandId &&
+                    gameSlot->CommandType == cachedSlot.CommandType &&
+                    calculatedBType == cachedSlot.IconTypeB &&
+                    calculatedBId == cachedSlot.IconB) continue;
                 
-                PluginLog.Verbose($"HOTBAR CHANGE ON HOTBAR {hotbarId}, SLOT {slotId}\n" +
-                                  $"CommandID - Old: {cachedSlot.CommandId}  New: {gameSlot->CommandId}\n" +
-                                  $"CommandType - Old: {cachedSlot.CommandType}  New: {gameSlot->CommandType}\n" +
-                                  $"Icon - Old: {cachedSlot.Icon}  New: {calculatedIcon}");
+                var calculatedIcon = gameSlot->GetIconIdForSlot(calculatedBType, calculatedBId);
+                if (calculatedIcon == cachedSlot.Icon) continue;
 
                 updatedSlots.Add(new MicroHotbarSlot(hotbarId, slotId));
                 this._hotbarCache[hotbarId, slotId] = new HotBarSlot {
                     CommandId = gameSlot->CommandId,
                     Icon = calculatedIcon,
-                    CommandType = gameSlot->CommandType
+                    CommandType = gameSlot->CommandType,
+                    IconTypeB = calculatedBType,
+                    IconB = calculatedBId
                 };
             }
         }

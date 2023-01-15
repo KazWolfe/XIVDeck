@@ -70,6 +70,7 @@ internal static class HotbarManager {
         }
 
         CalcBForSlot(slot, out var slotActionType, out var slotActionId);
+
         return slot->GetIconIdForSlot(slotActionType, slotActionId);
     }
 
@@ -85,7 +86,7 @@ internal static class HotbarManager {
         actionBar->PulseActionBarSlot(slotId);
     }
 
-    private static unsafe void CalcBForSlot(HotBarSlot* slot, out HotbarSlotType actionType, out uint actionId) {
+    public static unsafe void CalcBForSlot(HotBarSlot* slot, out HotbarSlotType actionType, out uint actionId) {
         var hotbarModule = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule();
 
         // Take in default values, just in case GetSlotAppearance fails for some reason
