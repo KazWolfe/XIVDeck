@@ -1,5 +1,6 @@
 ﻿using Dalamud.Interface;
 using Dalamud.Interface.Colors;
+using Dalamud.Interface.Components;
 using ImGuiNET;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils;
@@ -21,7 +22,9 @@ public class ForcedUpdateNag : NagWindow {
         _instance = null;
     }
 
-    public ForcedUpdateNag() : base("sdPluginVeryOutdated", 300, 150) { }
+    private string _versionString = VersionUtils.GetCurrentMajMinBuild();
+
+    public ForcedUpdateNag() : base("sdPluginVeryOutdated", 350, 180) { }
     
     protected override void _internalDraw() {
         var windowSize = ImGui.GetWindowContentRegionMax();
@@ -31,11 +34,25 @@ public class ForcedUpdateNag : NagWindow {
         
         ImGui.Separator();
         
-        ImGui.Text(UIStrings.ForcedUpdateNag_ResolutionHelp);
-        
+        ImGui.Text(UIStrings.ForcedUpdateNag_ProblemDescription);
+        ImGui.Text(UIStrings.ForcedUpdateNag_SupportInfo);
+
         ImGui.SetCursorPosY(windowSize.Y - placeholderButtonSize.Y);
-        if (ImGui.Button(UIStrings.Nag_OpenGithubDownloadButton)) {
-            UiUtil.OpenXIVDeckGitHub($"/releases/tag/v{VersionUtils.GetCurrentMajMinBuild()}");
+
+        if (ImGui.GetIO().KeyCtrl) {
+            if (ImGui.Button(UIStrings.ForcedUpdateNag_BypassButton)) {
+                Hide();
+            }
+            return;
         }
+        
+        if (ImGui.Button(UIStrings.Nag_OpenGithubDownloadButton)) {
+            UiUtil.OpenXIVDeckGitHub($"/releases/tag/v{this._versionString}");
+        }
+        ImGui.SameLine();
+        if (ImGui.Button(UIStrings.ForcedUpdateNag_SupportButton)) {
+            Dalamud.Utility.Util.OpenLink(Constants.GoatPlaceDiscord);
+        }
+        ImGuiComponents.HelpMarker(UIStrings.ForcedUpdateNag_BypassInstructions);
     }
 }

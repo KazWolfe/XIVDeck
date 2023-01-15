@@ -150,7 +150,7 @@
   <data name="Nag_OpenSettingsButton" xml:space="preserve">
         <value>XIVDeck 設定を開く</value>
     </data>
-  <data name="ForcedUpdateNag_ResolutionHelp" xml:space="preserve">
+  <data name="ForcedUpdateNag_ProblemDescription" xml:space="preserve">
         <value>引き続き XIVDeck を使用するには、 XIVDeck GitHubから最新版の Stream Deck プラグインをダウンロードし、インストールしてください。</value>
     </data>
   <data name="SetupNag_Headline" xml:space="preserve">

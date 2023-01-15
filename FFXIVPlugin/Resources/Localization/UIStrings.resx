@@ -143,7 +143,7 @@ Default: Off</value>
 Range: {1}-{2}</value>
     </data>
     <data name="ForcedUpdateNag_Headline" xml:space="preserve">
-        <value>The XIVDeck Stream Deck Plugin is critically out of date and has been disabled.</value>
+        <value>The XIVDeck Stream Deck Plugin is out of date!</value>
     </data>
     <data name="Nag_OpenGithubDownloadButton" xml:space="preserve">
         <value>Open XIVDeck Download Page</value>
@@ -151,8 +151,8 @@ Range: {1}-{2}</value>
     <data name="Nag_OpenSettingsButton" xml:space="preserve">
         <value>Open XIVDeck Settings</value>
     </data>
-    <data name="ForcedUpdateNag_ResolutionHelp" xml:space="preserve">
-        <value>Please download and install the latest version of the Stream Deck Plugin from the XIVDeck GitHub to continue using XIVDeck.</value>
+    <data name="ForcedUpdateNag_ProblemDescription" xml:space="preserve">
+        <value>The version of the XIVDeck Stream Deck Plugin currently installed is not compatible with the installed version of the Dalamud Plugin. To re-enable XIVDeck, please download and install the latest version of the Stream Deck Plugin from the button below.</value>
     </data>
     <data name="SetupNag_Headline" xml:space="preserve">
         <value>A Stream Deck has never connected to the game.</value>
@@ -269,5 +269,19 @@ Default: Off</value>
     </data>
     <data name="WSInitOpcode_GamePluginOutdated" xml:space="preserve">
         <value>The version of the XIVDeck Stream Deck Plugin installed is newer than the game plugin. Please install any updates from the Dalamud Plugin Installer.</value>
+    </data>
+    <data name="ForcedUpdateNag_SupportInfo" xml:space="preserve">
+        <value>Stuck? Visit the Goat Place Discord for help!</value>
+    </data>
+    <data name="ForcedUpdateNag_SupportButton" xml:space="preserve">
+        <value>Open Discord</value>
+    </data>
+    <data name="ForcedUpdateNag_BypassInstructions" xml:space="preserve">
+        <value>To bypass this message temporarily, hold CTRL.
+This will not re-enable the plugin.</value>
+    </data>
+    <data name="ForcedUpdateNag_BypassButton" xml:space="preserve">
+        <comment>Shown when the user is given the option to temporarily ignore the update error.</comment>
+        <value>Ignore For Now</value>
     </data>
 </root>

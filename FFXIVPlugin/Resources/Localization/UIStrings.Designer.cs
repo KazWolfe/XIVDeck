@@ -231,7 +231,26 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The XIVDeck Stream Deck Plugin is critically out of date and has been disabled..
+        ///   Looks up a localized string similar to Ignore For Now.
+        /// </summary>
+        internal static string ForcedUpdateNag_BypassButton {
+            get {
+                return ResourceManager.GetString("ForcedUpdateNag_BypassButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To bypass this message temporarily, hold CTRL.
+        ///This will not re-enable the plugin..
+        /// </summary>
+        internal static string ForcedUpdateNag_BypassInstructions {
+            get {
+                return ResourceManager.GetString("ForcedUpdateNag_BypassInstructions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The XIVDeck Stream Deck Plugin is out of date!.
         /// </summary>
         internal static string ForcedUpdateNag_Headline {
             get {
@@ -240,11 +259,29 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please download and install the latest version of the Stream Deck Plugin from the XIVDeck GitHub to continue using XIVDeck..
+        ///   Looks up a localized string similar to The version of the XIVDeck Stream Deck Plugin currently installed is not compatible with the installed version of the Dalamud Plugin. To re-enable XIVDeck, please download and install the latest version of the Stream Deck Plugin from the button below..
         /// </summary>
-        internal static string ForcedUpdateNag_ResolutionHelp {
+        internal static string ForcedUpdateNag_ProblemDescription {
             get {
-                return ResourceManager.GetString("ForcedUpdateNag_ResolutionHelp", resourceCulture);
+                return ResourceManager.GetString("ForcedUpdateNag_ProblemDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Discord.
+        /// </summary>
+        internal static string ForcedUpdateNag_SupportButton {
+            get {
+                return ResourceManager.GetString("ForcedUpdateNag_SupportButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stuck? Visit the Goat Place Discord for help!.
+        /// </summary>
+        internal static string ForcedUpdateNag_SupportInfo {
+            get {
+                return ResourceManager.GetString("ForcedUpdateNag_SupportInfo", resourceCulture);
             }
         }
         

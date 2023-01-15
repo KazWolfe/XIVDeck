@@ -150,7 +150,7 @@ Bereich: {1}-{2}</value>
   <data name="Nag_OpenSettingsButton" xml:space="preserve">
         <value>XIVDeck Einstellungen öffnen</value>
     </data>
-  <data name="ForcedUpdateNag_ResolutionHelp" xml:space="preserve">
+  <data name="ForcedUpdateNag_ProblemDescription" xml:space="preserve">
         <value>Bitte lade die neueste Version des Stream Deck Plugins vom XIVDeck GitHub herunter und installiere diese, um XIVDeck weiterzunutzen.</value>
     </data>
   <data name="SetupNag_Headline" xml:space="preserve">

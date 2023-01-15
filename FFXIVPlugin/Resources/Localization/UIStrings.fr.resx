@@ -150,7 +150,7 @@ Plage : {1}-{2}</value>
   <data name="Nag_OpenSettingsButton" xml:space="preserve">
         <value>Ouvrir les Paramètres de XIVDeck</value>
     </data>
-  <data name="ForcedUpdateNag_ResolutionHelp" xml:space="preserve">
+  <data name="ForcedUpdateNag_ProblemDescription" xml:space="preserve">
         <value>Veuillez télécharger et installer la dernière version du plugin Stream Deck à partir de la page GitHub de XIVDeck pour continuer à utiliser XIVDeck.</value>
     </data>
   <data name="SetupNag_Headline" xml:space="preserve">
