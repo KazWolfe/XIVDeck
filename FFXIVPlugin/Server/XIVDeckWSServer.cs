@@ -54,14 +54,11 @@ public class XIVDeckWSServer : WebSocketModule {
         Instance = null;
         base.Dispose();
     }
-        
-    public void BroadcastString(string payload) {
-        this.BroadcastAsync(payload);
-    }
 
     public void BroadcastMessage(BaseOutboundMessage message) {
-        var serializedData = JsonConvert.SerializeObject(message);
-            
-        this.BroadcastString(serializedData);
+        Task.Run(async () => {
+            var serializedData = JsonConvert.SerializeObject(message);
+            await this.BroadcastAsync(serializedData);
+        });
     }
 }

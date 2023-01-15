@@ -23,7 +23,12 @@ export type FFXIVClass = {
 
 export type StateMessage = {
     type: string,
-    params: string | null
+    params?: unknown
+}
+
+export type HotbarUpdateMessage = { 
+    type: "Hotbar",
+    params?: Array<{hotbarId: number, slotId: number}>
 }
 
 export type VolumePayload = {

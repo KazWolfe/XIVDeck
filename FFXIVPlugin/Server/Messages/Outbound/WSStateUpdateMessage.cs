@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace XIVDeck.FFXIVPlugin.Server.Messages.Outbound; 
 
@@ -10,15 +11,16 @@ public class WSStateUpdateMessage : BaseOutboundMessage {
     private const string MessageName = "stateUpdate";
 
     [JsonProperty("type")] public string StateType { get; set; }
-    [JsonProperty("params")] public string? Parameters { get; set; }
-
-    public WSStateUpdateMessage(string stateType, string parameters) : base(MessageName) {
-        this.StateType = stateType;
-        this.Parameters = parameters;
-    }
-
+    
     public WSStateUpdateMessage(string stateType) : base(MessageName) {
         this.StateType = stateType;
-        this.Parameters = null;
+    }
+}
+
+public class WSStateUpdateMessage<T> : WSStateUpdateMessage {
+    [JsonProperty("params")] public T? Parameters { get; set; }
+    
+    public WSStateUpdateMessage(string stateType, T parameters) : base(stateType) {
+        this.Parameters = parameters;
     }
 }

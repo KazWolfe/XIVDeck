@@ -19,3 +19,8 @@ public class SerializableHotbarSlot {
     // methods, but maintaining this is fine for now.
     [JsonProperty("iconData")] public string IconData = default!;
 }
+
+public record MicroHotbarSlot(int HotbarId, int SlotId) {
+    [JsonProperty("hotbarId")] public int HotbarId = HotbarId;
+    [JsonProperty("slotId")] public int SlotId = SlotId;
+}

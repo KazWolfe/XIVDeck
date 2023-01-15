@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Dalamud.Game;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
@@ -6,6 +7,7 @@ using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Server;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
+using XIVDeck.FFXIVPlugin.Server.Types;
 
 namespace XIVDeck.FFXIVPlugin.Game.Watchers; 
 
@@ -20,8 +22,8 @@ public class HotbarWatcher : IDisposable {
         var hotbarModule =
             FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->GetUiModule()->
                 GetRaptureHotbarModule();
-
-        var hotbarUpdated = false;
+        
+        List<MicroHotbarSlot> updatedSlots = new();
 
         for (var hotbarId = 0; hotbarId < 17; hotbarId++) {
             var hotbar = hotbarModule->HotBar[hotbarId];
@@ -39,8 +41,13 @@ public class HotbarWatcher : IDisposable {
                 if (gameSlot->CommandId == cachedSlot.CommandId && 
                     calculatedIcon == cachedSlot.Icon &&
                     gameSlot->CommandType == cachedSlot.CommandType) continue;
+                
+                PluginLog.Verbose($"HOTBAR CHANGE ON HOTBAR {hotbarId}, SLOT {slotId}\n" +
+                                  $"CommandID - Old: {cachedSlot.CommandId}  New: {gameSlot->CommandId}\n" +
+                                  $"CommandType - Old: {cachedSlot.CommandType}  New: {gameSlot->CommandType}\n" +
+                                  $"Icon - Old: {cachedSlot.Icon}  New: {calculatedIcon}");
 
-                hotbarUpdated = true;
+                updatedSlots.Add(new MicroHotbarSlot(hotbarId, slotId));
                 this._hotbarCache[hotbarId, slotId] = new HotBarSlot {
                     CommandId = gameSlot->CommandId,
                     Icon = calculatedIcon,
@@ -49,9 +56,10 @@ public class HotbarWatcher : IDisposable {
             }
         }
             
-        if (hotbarUpdated) {
+        if (updatedSlots.Count > 0) {
             PluginLog.Debug("Detected a change to hotbar(s)!");
-            XIVDeckWSServer.Instance?.BroadcastMessage(new WSStateUpdateMessage("Hotbar"));
+            var message = new WSStateUpdateMessage<List<MicroHotbarSlot>>("Hotbar", updatedSlots);
+            XIVDeckWSServer.Instance?.BroadcastMessage(message);
         }
     }
 
