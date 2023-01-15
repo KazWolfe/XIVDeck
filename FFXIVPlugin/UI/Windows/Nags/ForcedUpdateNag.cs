@@ -27,9 +27,7 @@ public class ForcedUpdateNag : NagWindow {
         var windowSize = ImGui.GetWindowContentRegionMax();
         var placeholderButtonSize = ImGuiHelpers.GetButtonSize("placeholder");
         
-        ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudRed);
-        ImGui.Text(UIStrings.ForcedUpdateNag_Headline);
-        ImGui.PopStyleColor();
+        ImGui.TextColored(ImGuiColors.DalamudRed, UIStrings.ForcedUpdateNag_Headline);
         
         ImGui.Separator();
         

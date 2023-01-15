@@ -26,6 +26,8 @@ public abstract class NagWindow : Window, IDisposable {
     protected NagWindow(string name, int sizeX = 300, int sizeY = 250) : base(name, WindowFlags, true) {
         this.Size = new Vector2(sizeX, sizeY);
         this.SizeCondition = ImGuiCond.Always;
+        
+        this.RespectCloseHotkey = false;
 
         this.BgAlpha = 0.85f;
 
