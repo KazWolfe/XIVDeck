@@ -7,12 +7,16 @@ import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
 import i18n from "../../i18n/i18n";
 
 export class ClassFrame extends BaseFrame<ClassButtonSettings> {
+    isDial: boolean;
+    
     classSelector: HTMLSelectElement;
     selected: number = -1; // prevent against race to load in visible settings
     selectedName: string = i18n.t("frames:class.unknown");
     
     constructor() {
         super();
+
+        this.isDial = (piInstance.sdPluginLink.actionInfo?.controller == "Encoder");
         
         this.classSelector = document.createElement("select")
         this.classSelector.id = "classSelector";
@@ -30,6 +34,14 @@ export class ClassFrame extends BaseFrame<ClassButtonSettings> {
     }
 
     renderHTML(): void {
+        if (this.isDial) {
+            let noSettingsMessage = document.createElement("p");
+            noSettingsMessage.textContent = "No settings for class dials!";
+            
+            this.domParent.append(noSettingsMessage);
+            return;
+        }
+        
         let sdItem = PIUtils.createPILabeledElement(i18n.t("frames:class.class"), this.classSelector);
         
         this.classSelector.options.length = 0;

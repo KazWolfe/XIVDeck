@@ -62,6 +62,14 @@
           "FontSize": "16"
         }
       ], 
+      "Controllers": [ "Keypad", "Encoder" ],
+      "Encoder": {
+        "layout": "$A1",
+        "TriggerDescription": {
+          "Rotate": "Seek",
+          "Push": "Change Class"
+        }
+      },
       "Tooltip": "Switch to a specific class/job",
       "UUID": "dev.wolf.xivdeck.sdplugin.actions.SwitchClass"
     },

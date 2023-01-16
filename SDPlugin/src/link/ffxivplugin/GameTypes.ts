@@ -10,8 +10,8 @@
 export type FFXIVClass = {
     id: number,
     name: string,
-    
     categoryName: string,
+    abbreviation: string,
     sortOrder: number,
     
     iconId: number,
