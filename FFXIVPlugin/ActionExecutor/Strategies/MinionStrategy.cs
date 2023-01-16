@@ -53,7 +53,7 @@ public class MinionStrategy : IActionStrategy {
             
         var command = $"/minion \"{minion.Singular}\"";
             
-        PluginLog.Debug($"Would execute command: {command}");
+        PluginLog.Debug($"Executing command: {command}");
         Injections.Framework.RunOnFrameworkThread(delegate {
             GameUtils.SendSanitizedChatMessage(command);
         });

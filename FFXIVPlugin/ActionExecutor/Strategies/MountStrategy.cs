@@ -49,7 +49,7 @@ public class MountStrategy : IActionStrategy {
             
         var command = $"/mount \"{mount.Singular}\"";
             
-        PluginLog.Debug($"Would execute command: {command}");
+        PluginLog.Debug($"Executing command: {command}");
         Injections.Framework.RunOnFrameworkThread(delegate {
             GameUtils.SendSanitizedChatMessage(command);
         });

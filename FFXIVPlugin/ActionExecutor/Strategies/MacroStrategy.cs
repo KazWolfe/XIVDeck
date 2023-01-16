@@ -48,7 +48,7 @@ public class MacroStrategy : IActionStrategy {
             throw new IllegalGameStateException(UIStrings.MacroStrategy_MacroEmptyError);
         }
 
-        PluginLog.Debug($"Would execute macro number {macroNumber}");
+        PluginLog.Debug($"Executing macro number {macroNumber}");
         Injections.Framework.RunOnFrameworkThread(delegate { RaptureShellModule.Instance->ExecuteMacro(macro); });
     }
 

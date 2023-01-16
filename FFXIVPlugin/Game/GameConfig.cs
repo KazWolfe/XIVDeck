@@ -63,13 +63,11 @@ public static unsafe class GameConfig {
             entry->SetValue(value);
         }
 
-        public IDisposable? TemporarySet(ConfigOption option, bool? value) {
-            if (value == null) return null;
-
+        public IDisposable TemporarySet(ConfigOption option, bool value) {
             var oldValue = this.GetBool(option);
 
             return new DisposableWrapper(delegate {
-                this.Set(option, value.Value);
+                this.Set(option, value);
             }, delegate {
                 this.Set(option, oldValue);
             });

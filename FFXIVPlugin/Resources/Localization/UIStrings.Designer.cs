@@ -240,7 +240,7 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To bypass this message temporarily, hold CTRL.
+        ///   Looks up a localized string similar to To ignore this error temporarily, hold CTRL.
         ///This will not re-enable the plugin..
         /// </summary>
         internal static string ForcedUpdateNag_BypassInstructions {

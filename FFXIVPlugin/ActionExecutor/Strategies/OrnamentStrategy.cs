@@ -51,7 +51,7 @@ public class OrnamentStrategy : IActionStrategy {
         }
             
         var command = $"/fashion \"{ornament.Singular}\"";
-        PluginLog.Debug($"Would execute command: {command}");
+        PluginLog.Debug($"Executing command: {command}");
         Injections.Framework.RunOnFrameworkThread(delegate {
             GameUtils.SendSanitizedChatMessage(command);
         });

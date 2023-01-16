@@ -277,7 +277,7 @@ Default: Off</value>
         <value>Open Discord</value>
     </data>
     <data name="ForcedUpdateNag_BypassInstructions" xml:space="preserve">
-        <value>To bypass this message temporarily, hold CTRL.
+        <value>To ignore this error temporarily, hold CTRL.
 This will not re-enable the plugin.</value>
     </data>
     <data name="ForcedUpdateNag_BypassButton" xml:space="preserve">

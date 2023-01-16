@@ -91,7 +91,7 @@ public class GeneralActionStrategy : IActionStrategy {
 
         var command = $"/generalaction \"{action.Name}\"";
             
-        PluginLog.Debug($"Would execute command: {command}");
+        PluginLog.Debug($"Executing command: {command}");
         Injections.Framework.RunOnFrameworkThread(delegate { GameUtils.SendSanitizedChatMessage(command); });
     }
 

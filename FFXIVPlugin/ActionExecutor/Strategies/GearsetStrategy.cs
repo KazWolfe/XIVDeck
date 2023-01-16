@@ -69,7 +69,7 @@ public class GearsetStrategy : IActionStrategy {
                 throw new ArgumentException("Glamour Plate ID must be between 1 and 20.");
         }
 
-        PluginLog.Debug($"Would execute command: {command}");
+        PluginLog.Debug($"Executing command: {command}");
         Injections.Framework.RunOnFrameworkThread(delegate { GameUtils.SendSanitizedChatMessage(command); });
     }
 

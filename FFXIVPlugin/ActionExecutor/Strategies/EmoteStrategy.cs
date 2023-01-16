@@ -70,9 +70,9 @@ public class EmoteStrategy : IActionStrategy {
             throw new ActionLockedException(string.Format(UIStrings.EmoteStrategy_EmoteLockedError, emote.Name));
         }
 
-        PluginLog.Debug($"Would execute command: {textCommand.Command}");
+        PluginLog.Debug($"Executing command: {textCommand.Command}");
         Injections.Framework.RunOnFrameworkThread(delegate {
-            using var _ = GameConfig.UiConfig.TemporarySet(ConfigOption.EmoteTextType, logMode);
+            using var _ = logMode != null ? GameConfig.UiConfig.TemporarySet(ConfigOption.EmoteTextType, logMode.Value) : null;
             GameUtils.SendSanitizedChatMessage(textCommand.Command);
         });
     }

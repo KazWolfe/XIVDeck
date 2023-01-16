@@ -24,15 +24,13 @@ public class SettingsWindow : Window {
 
     public SettingsWindow(bool forceMainWindow = true) :
         base(WindowKey, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoCollapse, forceMainWindow) {
-
-        var minSize = new Vector2(350, 250);
         
-        this.Size = minSize;
         this.SizeCondition = ImGuiCond.FirstUseEver;
         this.SizeConstraints = new WindowSizeConstraints {
-            MinimumSize = minSize,
+            MinimumSize = new Vector2(350, 250),
             MaximumSize = new Vector2(450, 400)
         };
+        this.Size = this.SizeConstraints.Value.MinimumSize;
         
         this.IsOpen = true;
     }
