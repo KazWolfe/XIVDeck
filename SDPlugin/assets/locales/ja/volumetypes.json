@@ -1,9 +1,27 @@
 {
-  "Master": "マスターボリューム",
-  "BackgroundMusic": "BGM",
-  "SoundEffects": "効果音",
-  "Voice": "ボイス",
-  "System": "システム音",
-  "Ambient": "環境音",
-  "Performance": "楽器演奏"
+  "Master": {
+    "full": "マスターボリューム"
+  },
+  "BackgroundMusic": {
+    "full": "BGM",
+    "short": "BGM"
+  },
+  "SoundEffects": {
+    "full": "効果音",
+    "short": "効果音"
+  },
+  "Voice": {
+    "full": "ボイス",
+    "short": "ボイス"
+  },
+  "System": {
+    "full": "システム音"
+  },
+  "Ambient": {
+    "full": "環境音",
+    "short": "環境音"
+  },
+  "Performance": {
+    "full": "楽器演奏"
+  }
 }

@@ -1,9 +1,30 @@
 {
-  "Master": "Master Volume",
-  "BackgroundMusic": "Background Music",
-  "SoundEffects": "Sound Effects",
-  "Voice": "Voice",
-  "System": "System Sounds",
-  "Ambient": "Ambient Sounds",
-  "Performance": "Performance"
+  "Master": {
+    "full": "Master Volume",
+    "short": "Master"
+  },
+  "BackgroundMusic": {
+    "full": "Background Music",
+    "short": "BGM"
+  },
+  "SoundEffects": {
+    "full": "Sound Effects",
+    "short": "SFX"
+  },
+  "Voice": {
+    "full": "Voice",
+    "short": "Voice"
+  },
+  "System": {
+    "full": "System Sounds",
+    "short": "Sys"
+  },
+  "Ambient": {
+    "full": "Ambient Sounds",
+    "short": "Amb"
+  },
+  "Performance": {
+    "full": "Performance",
+    "short": "Bard"
+  }
 }

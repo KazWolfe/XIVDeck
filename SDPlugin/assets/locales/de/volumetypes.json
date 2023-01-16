@@ -1,9 +1,23 @@
 {
-  "Master": "Hauptlautstärke",
-  "BackgroundMusic": "Hintergrundmusik",
-  "SoundEffects": "Soundeffekte",
-  "Voice": "Stimmen",
-  "System": "Systemtöne",
-  "Ambient": "Umgebungsgeräusche",
-  "Performance": "Kompositionen"
+  "Master": {
+    "full": "Hauptlautstärke"
+  },
+  "BackgroundMusic": {
+    "full": "Hintergrundmusik"
+  },
+  "SoundEffects": {
+    "full": "Soundeffekte"
+  },
+  "Voice": {
+    "full": "Stimmen"
+  },
+  "System": {
+    "full": "Systemtöne"
+  },
+  "Ambient": {
+    "full": "Umgebungsgeräusche"
+  },
+  "Performance": {
+    "full": "Kompositionen"
+  }
 }

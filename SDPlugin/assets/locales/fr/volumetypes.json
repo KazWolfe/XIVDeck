@@ -1,9 +1,23 @@
 {
-  "Master": "Volume général",
-  "BackgroundMusic": "Musique",
-  "SoundEffects": "Effets sonores",
-  "Voice": "Voix",
-  "System": "Sons systèmes",
-  "Ambient": "Ambiance sonore",
-  "Performance": "Actions d'Interprétation"
+  "Master": {
+    "full": "Volume général"
+  },
+  "BackgroundMusic": {
+    "full": "Musique"
+  },
+  "SoundEffects": {
+    "full": "Effets sonores"
+  },
+  "Voice": {
+    "full": "Voix"
+  },
+  "System": {
+    "full": "Sons systèmes"
+  },
+  "Ambient": {
+    "full": "Ambiance sonore"
+  },
+  "Performance": {
+    "full": "Actions d'Interprétation"
+  }
 }

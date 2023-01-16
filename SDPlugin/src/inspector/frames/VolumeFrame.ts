@@ -1,10 +1,9 @@
-﻿import {BaseFrame} from "../BaseFrame";
-import {MacroButtonSettings} from "../../button/buttons/MacroButton";
-import {PIUtils} from "../../util/PIUtils";
+﻿import { VolumeButtonMode, VolumeButtonSettings } from "../../button/settings/VolumeButtonSettings";
 import i18n from "../../i18n/i18n";
-import {VolumeButton, VolumeButtonSettings} from "../../button/buttons/VolumeButton";
 import piInstance from "../../inspector";
-import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
+import { FFXIVApi } from "../../link/ffxivplugin/FFXIVApi";
+import { PIUtils } from "../../util/PIUtils";
+import { BaseFrame } from "../BaseFrame";
 
 export class VolumeFrame extends BaseFrame<VolumeButtonSettings> {
     // state
@@ -12,12 +11,15 @@ export class VolumeFrame extends BaseFrame<VolumeButtonSettings> {
 
     // settings
     selectedChannel: string = "default";
-    selectedMultiplier: number = 1;
+    selectedMode: VolumeButtonMode = VolumeButtonMode.MUTE;
+    selectedMultiplier: number = 0;
+    selectedValue: number = 100;
 
     // dom
     channelSelector: HTMLSelectElement;
-    multiplierRange: HTMLElement;
-    multiplierRangeInput: HTMLInputElement;
+    buttonModeField: HTMLElement;
+    valueContainer: HTMLElement;
+    valueInput?: HTMLInputElement;
 
     constructor() {
         super();
@@ -29,9 +31,15 @@ export class VolumeFrame extends BaseFrame<VolumeButtonSettings> {
         this.channelSelector.onchange = this._onChannelChange.bind(this);
         this.channelSelector.add(PIUtils.createDefaultSelection(i18n.t("frames:volume.default-type")));
 
-        this.multiplierRange = PIUtils.generateRange(i18n.t("frames:volume.step"), "volMultiplier", 1, 5, 1);
-        this.multiplierRangeInput = this.multiplierRange.getElementsByTagName("input")[0];
-        this.multiplierRangeInput.onchange = this._onMultiplierChange.bind(this);
+        this.buttonModeField = PIUtils.generateRadioSelection("Mode", "buttonMode", "radio", ...[
+            {value: VolumeButtonMode.SET, name: "Set"},
+            {value: VolumeButtonMode.ADJUST, name: "Adjust"},
+            {value: VolumeButtonMode.MUTE, name: "Mute"}
+        ]);
+        this.buttonModeField.onchange = this._onModeChange.bind(this);
+        
+        this.valueContainer = document.createElement("div");
+        this.valueContainer.id = "valueContainer";
 
         piInstance.xivPluginLink.on("_ready", this.loadGameData.bind(this));
     }
@@ -40,12 +48,17 @@ export class VolumeFrame extends BaseFrame<VolumeButtonSettings> {
         this.selectedChannel = settings.channel ?? this.selectedChannel;
         this.channelSelector.value = this.selectedChannel;
 
-        this.selectedMultiplier = settings.multiplier ?? 1;
-        this.multiplierRangeInput.value = this.selectedMultiplier.toString();
+        // Ugly hack to handle multiplier case for dials
+        this.selectedMultiplier = settings.multiplier ?? (this.isDial ? 1 : 0);
+        this.selectedValue = settings.value ?? 100;
+        this.selectedMode = settings.mode ?? VolumeButtonMode.MUTE;
+        
+        this._renderRadio();
+        this.renderValueInput();
 
         // hack in to load the last known channel (if set)
         if (this.selectedChannel != "default") {
-            let typeKey = `volumetypes:${this.selectedChannel}`;
+            let typeKey = `volumetypes:${this.selectedChannel}.full`;
             let genericType = PIUtils.createDefaultSelection(i18n.t(typeKey));
             genericType.id = this.selectedChannel;
             this.channelSelector.add(genericType);
@@ -54,16 +67,39 @@ export class VolumeFrame extends BaseFrame<VolumeButtonSettings> {
 
     renderHTML(): void {
         this.domParent.append(PIUtils.createPILabeledElement(i18n.t("frames:volume.channel"), this.channelSelector));
-
-        if (this.isDial) {
-            this.domParent.append(this.multiplierRange);
-        } else {
-            let note = document.createElement("p");
-            note.innerText = "Press this button to mute or unmute the current channel. Volume adjustments require a " +
-                "Stream Deck+ for now.";
-            
-            this.domParent.append(note);
+        
+        if (!this.isDial) {
+            this.domParent.append(this.buttonModeField);
         }
+
+        this.domParent.append(this.valueContainer);
+        this.renderValueInput();
+    }
+    
+    renderValueInput() {
+        let elements: { rangeDiv: HTMLElement, input: HTMLInputElement }
+        let value: string;
+        
+        if (this.isDial) {
+            elements = PIUtils.generateRange(i18n.t("frames:volume.step"), "volMultiplier", 1, 5, 1);
+            value = this.selectedMultiplier.toString();
+        } else if (this.selectedMode == VolumeButtonMode.SET) {
+            elements = PIUtils.generateRange("Volume", "volValue", 0, 100, null);
+            value = this.selectedValue.toString();
+        } else if (this.selectedMode == VolumeButtonMode.ADJUST) {
+            elements = PIUtils.generateRange(i18n.t("frames:volume.step"), "volMultiplier", -25, 25, null);
+            value = this.selectedMultiplier.toString();
+        } else {
+            this.valueContainer.innerHTML = "";
+            this.valueInput = undefined;
+            return;
+        }
+
+        this.valueInput = elements.input;
+        this.valueInput.value = value;
+        this.valueInput.onchange = this._onValueChange.bind(this);
+
+        this.valueContainer.replaceChildren(elements.rangeDiv);
     }
 
     private async loadGameData() {
@@ -75,7 +111,7 @@ export class VolumeFrame extends BaseFrame<VolumeButtonSettings> {
 
         volumeData.forEach((v, k) => {
             let option = document.createElement("option");
-            let typeKey = `volumetypes:${k}`;
+            let typeKey = `volumetypes:${k}.full`;
             option.value = k;
             option.innerText = i18n.t(typeKey);
             this.channelSelector.add(option);
@@ -83,31 +119,80 @@ export class VolumeFrame extends BaseFrame<VolumeButtonSettings> {
 
         this.channelSelector.value = this.selectedChannel;
     }
+    
+    private _renderRadio() {
+        if (this.isDial) return;
 
+        let element: HTMLInputElement | null =
+            this.buttonModeField.querySelector(`input[name="buttonMode"][value="${(this.selectedMode)}"]`);
+
+        if (element == null) return;
+        element.checked = true;
+    }
+    
     private async _onChannelChange() {
-        let newSelection = this.channelSelector.value;
         this.selectedChannel = this.channelSelector.value;
 
-        if (newSelection == "default") {
+        this._save()
+    }
+    
+    private async _onModeChange(event: Event) {
+        // Mode change has no effect (and shouldn't even execute) on dials, so just ignore it.
+        if (this.isDial) return;
+
+        let element = event.target as HTMLInputElement;
+        if (!element.checked) return;
+
+        if (!Object.values(VolumeButtonMode).includes(element.value as VolumeButtonMode)) {
             return;
         }
 
-        this.setSettings({
-            channel: this.selectedChannel,
-            multiplier: this.selectedMultiplier
-        });
+        this.selectedMode = element.value as VolumeButtonMode;
+        this.renderValueInput();
+        
+        this._save();
     }
 
-    private async _onMultiplierChange() {
-        this.selectedMultiplier = parseInt(this.multiplierRangeInput.value);
-
+    private async _onValueChange(event: Event) {
+        let element = event.target as HTMLInputElement;
+        
+        if (this.isDial || this.selectedMode == VolumeButtonMode.ADJUST) {
+            this.selectedMultiplier = parseInt(element.value);
+        } else if (this.selectedMode == VolumeButtonMode.SET) {
+            this.selectedValue = parseInt(element.value);
+        }
+        
+        this._save()
+    }
+    
+    private _save() {
         if (this.selectedChannel == "default") {
             return;
         }
-
-        this.setSettings({
+        
+        if (this.isDial) {
+            this.setSettings({
+                channel: this.selectedChannel,
+                multiplier: this.selectedMultiplier
+            });
+            
+            return;
+        }
+        
+        let settings: VolumeButtonSettings = {
             channel: this.selectedChannel,
-            multiplier: this.selectedMultiplier
-        });
+            mode: this.selectedMode
+        }
+        
+        switch (this.selectedMode) {
+            case VolumeButtonMode.SET:
+                settings.value = this.selectedValue;
+                break;
+            case VolumeButtonMode.ADJUST:
+                settings.multiplier = this.selectedMultiplier;
+                break;
+        }
+        
+        this.setSettings(settings);
     }
 }

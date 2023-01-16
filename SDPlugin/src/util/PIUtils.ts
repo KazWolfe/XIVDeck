@@ -103,7 +103,7 @@ export class PIUtils {
         return labeledElement;
     }
     
-    static generateRange(label: string, id: string, min: number, max: number, step: number): HTMLElement {
+    static generateRange(label: string, id: string, min: number, max: number, step: number | null): {rangeDiv: HTMLElement, input: HTMLInputElement} {
         let innerDiv = document.createElement("div");
         innerDiv.classList.add("sdpi-item-value");
         
@@ -113,35 +113,69 @@ export class PIUtils {
         innerDiv.append(lowerSpan);
         
         let inputObj = document.createElement("input");
+        inputObj.classList.add("floating-tooltip");
         inputObj.type = "range";
         inputObj.id = `${id}-input`;
         inputObj.min = min.toString();
         inputObj.max = max.toString();
-        inputObj.step = step.toString();
-        inputObj.setAttribute("list", `${id}-datalist`);
         innerDiv.append(inputObj);
-        
-        let datalist = document.createElement("datalist");
-        datalist.id = `${id}-datalist`;
-        
-        for (var i = 0; i < ((max - min) / step) - 1; i++) {
-            var opt = document.createElement("option");
-            opt.innerText = (min + (i + 1) * step).toString();
-            datalist.append(opt);
+
+        if (step) {
+            inputObj.step = step.toString();
+            inputObj.setAttribute("list", `${id}-datalist`);
+
+            let datalist = document.createElement("datalist");
+            datalist.id = `${id}-datalist`;
+
+            for (var i = 0; i < ((max - min) / step) - 1; i++) {
+                var opt = document.createElement("option");
+                opt.innerText = (min + (i + 1) * step).toString();
+                datalist.append(opt);
+            }
+
+            innerDiv.append(datalist);
         }
         
-        innerDiv.append(datalist);
-
         let upperSpan = document.createElement("span");
         upperSpan.setAttribute("value", max.toString());
         upperSpan.innerText = max.toString();
         innerDiv.append(upperSpan);
+        
+        let tooltip = document.createElement("div");
+        tooltip.classList.add("sdpi-info-label", "hidden");
+        tooltip.style.top = "-1000px";
+        innerDiv.append(tooltip);
+        
+        const drawTooltip = () => {
+            const tooltipWidth = tooltip.getBoundingClientRect().width;
+            const inputRect = inputObj.getBoundingClientRect();
+            const width = inputRect.width - tooltipWidth / 2;
+            const percentage = (parseInt(inputObj.value) - min) / (max - min);
+            if (tooltip.classList.contains('hidden')) {
+                tooltip.style.top = "-1000px";
+            } else {
+                tooltip.style.left = `${inputRect.left + Math.round(width * percentage - tooltipWidth / 4)}px`
+                tooltip.textContent = `${inputObj.value}`
+                tooltip.style.top = `${inputRect.top - 30}px`
+            }
+        }
+        inputObj.addEventListener("mouseenter", () => {
+            tooltip.classList.remove("hidden");
+            tooltip.classList.add("shown");
+            drawTooltip();
+        }, false);
+        inputObj.addEventListener("mouseout", () => {
+            tooltip.classList.remove("shown");
+            tooltip.classList.add("hidden");
+            drawTooltip();
+        }, false)
+        inputObj.addEventListener("input", drawTooltip, false);
 
         let labeledElement = this.createPILabeledElement(label, innerDiv);
         labeledElement.setAttribute("type", "range");
         labeledElement.id = id;
 
-        return labeledElement;
+        return {rangeDiv: labeledElement, input: inputObj};
     }
     
     static localizeDomTree() {
