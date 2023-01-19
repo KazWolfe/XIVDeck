@@ -2,34 +2,38 @@
 using System;
 using Dalamud.Configuration;
 
-namespace XIVDeck.FFXIVPlugin.Base; 
+namespace XIVDeck.FFXIVPlugin.Base;
 
 [Serializable]
 public class PluginConfig : IPluginConfiguration {
     public int Version { get; set; } = 0;
-
-    /**
-         * Disabling safe mode allows for certain verification checks that the plugin does to be skipped.
-         * This value can *only* be set through manual configuration edits.
-         */
+    
+    /// <summary>
+    /// Determines if the plugin is in "safe mode". Disabling this setting allows certain high-risk actions to be taken
+    /// without any guards.
+    /// </summary>
     public bool SafeMode { get; set; } = true;
-
-    /**
-         * This boolean saves a persistent configuration for if a Stream Deck has ever been connected to the plugin.
-         * If not, the plugin will display a nag message on startup to install and set up the associated plugin.
-         */
+    
+    /// <summary>
+    /// Set when a Stream Deck (or other API client) has been linked to this game plugin at least once. Effectively used
+    /// to track setup state of the application.
+    /// </summary>
     public bool HasLinkedStreamDeckPlugin { get; set; }
 
-    /** 
-         * EXPERIMENTAL - This boolean allows integration with the Penumbra IPC for icon load purposes.
-         */
+    /// <summary>
+    /// Set when the user has requested the Penumbra IPC be enabled to show modded icons on the Stream Deck.
+    /// </summary>
     public bool UsePenumbraIPC { get; set; }
-
-    /**
-         * EXPERIMENTAL - This boolean allows using /micon values for the Macro field
-         */
+    
+    /// <summary>
+    /// Set when the user has requested that macro icons set through the /micon command are resolved. When not set,
+    /// XIVDeck will instead use the icon specified in the macro dropdown, regardless of /micon setting.
+    /// </summary>
     public bool UseMIconIcons { get; set; } = true;
-        
+
+    /// <summary>
+    /// The port that XIVDeck should listen to on localhost.
+    /// </summary>
     public int WebSocketPort { get; set; } = 37984;
 
     /// <summary>

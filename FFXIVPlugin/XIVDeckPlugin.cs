@@ -92,6 +92,10 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
     internal void DrawConfigUI() {
         var instance = this.WindowSystem.GetWindow(SettingsWindow.WindowKey);
         
+        // Window lifetimes are managed completely by themselves, and we trust the GC to clean up after us. In this 
+        // case, when a window is created, we just init and let itself magic itself into place. SettingsWindow's
+        // OnClose() will remove it from the WindowSystem when we're done. Not a _great_ pattern, but eh. Not bad 
+        // enough to bother fixing either.
         if (instance == null) {
             this.WindowSystem.AddWindow(new SettingsWindow());
         }

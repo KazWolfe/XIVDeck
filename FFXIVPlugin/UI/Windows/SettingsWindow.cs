@@ -11,7 +11,7 @@ using XIVDeck.FFXIVPlugin.Utils;
 namespace XIVDeck.FFXIVPlugin.UI.Windows;
 
 public class SettingsWindow : Window {
-    public const string WindowKey = "###xivDeckSettingsWindow";
+    public static readonly string WindowKey =$"{UIStrings.SettingsWindow_Title}###xivDeckSettingsWindow";
 
     private readonly XIVDeckPlugin _plugin = XIVDeckPlugin.Instance;
 
@@ -31,7 +31,7 @@ public class SettingsWindow : Window {
             MaximumSize = new Vector2(450, 400)
         };
         this.Size = this.SizeConstraints.Value.MinimumSize;
-        
+        this.WindowName = WindowKey;
         this.IsOpen = true;
     }
 
@@ -54,7 +54,6 @@ public class SettingsWindow : Window {
 
     public override void Draw() {
         var windowSize = ImGui.GetContentRegionAvail();
-        this.WindowName = UIStrings.SettingsWindow_Title + WindowKey;
 
         var pbs = ImGuiHelpers.GetButtonSize("placeholder");
         
