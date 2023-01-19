@@ -118,23 +118,8 @@ export class PIUtils {
         inputObj.id = `${id}-input`;
         inputObj.min = min.toString();
         inputObj.max = max.toString();
+        if (step) inputObj.step = step.toString();
         innerDiv.append(inputObj);
-
-        if (step) {
-            inputObj.step = step.toString();
-            inputObj.setAttribute("list", `${id}-datalist`);
-
-            let datalist = document.createElement("datalist");
-            datalist.id = `${id}-datalist`;
-
-            for (var i = 0; i < ((max - min) / step) - 1; i++) {
-                var opt = document.createElement("option");
-                opt.innerText = (min + (i + 1) * step).toString();
-                datalist.append(opt);
-            }
-
-            innerDiv.append(datalist);
-        }
         
         let upperSpan = document.createElement("span");
         upperSpan.setAttribute("value", max.toString());
