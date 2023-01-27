@@ -10,18 +10,16 @@ public class TestingUpdateNag : NagWindow {
     private static TestingUpdateNag? _instance;
     private static bool _dismissed = false;
 
-    public static void Show() {
+    internal static void Show() {
         if (_dismissed) return;
 
         _instance ??= new TestingUpdateNag();
         _instance.IsOpen = true;
     }
 
-    public static void Hide() {
+    internal static void Hide() {
         if (_instance == null) return;
-
-        _instance.Dispose();
-        _instance = null;
+        _instance.IsOpen = false;
     }
 
     public TestingUpdateNag() : base("sdPluginTestVersionMismatch", 400, 250) { }

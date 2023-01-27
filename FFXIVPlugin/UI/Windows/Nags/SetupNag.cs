@@ -9,16 +9,14 @@ namespace XIVDeck.FFXIVPlugin.UI.Windows.Nags;
 public class SetupNag : NagWindow {
     private static SetupNag? _instance;
 
-    public static void Show() {
+    internal static void Show() {
         _instance ??= new SetupNag();
         _instance.IsOpen = true;
     }
 
-    public static void Hide() {
+    internal static void Hide() {
         if (_instance == null) return;
-        
-        _instance.Dispose();
-        _instance = null;
+        _instance.IsOpen = false;
     }
 
     public SetupNag() : base("sdPluginNotInstalled", 400, 325) { }

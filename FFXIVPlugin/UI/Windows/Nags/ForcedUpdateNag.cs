@@ -10,16 +10,14 @@ namespace XIVDeck.FFXIVPlugin.UI.Windows.Nags;
 public class ForcedUpdateNag : NagWindow {
     private static ForcedUpdateNag? _instance;
 
-    public static void Show() {
+    internal static void Show() {
         _instance ??= new ForcedUpdateNag();
         _instance.IsOpen = true;
     }
 
-    public static void Hide() {
+    internal static void Hide() {
         if (_instance == null) return;
-        
-        _instance.Dispose();
-        _instance = null;
+        _instance.IsOpen = false;
     }
 
     private string _versionString = VersionUtils.GetCurrentMajMinBuild();

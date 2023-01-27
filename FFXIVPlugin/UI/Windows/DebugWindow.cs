@@ -16,16 +16,16 @@ namespace XIVDeck.FFXIVPlugin.UI.Windows;
 // ReSharper disable once UnusedType.Global - Used in #DEBUG builds from SettingsWindow
 public class DebugWindow : Window  {
     private const string WindowKey = "XIVDeck Debug Tools";
+
+    private static DebugWindow? _instance;
     
-    internal static void InitializeWindow() {
-        var windowSystem = XIVDeckPlugin.Instance.WindowSystem;
-        var instance = windowSystem.GetWindow(WindowKey);
-        
-        if (instance == null) {
-            windowSystem.AddWindow(new DebugWindow());
-        } else {
-            instance.IsOpen = true;
+    internal static DebugWindow GetOrCreate() {
+        if (_instance == null) {
+            _instance = new DebugWindow();
+            XIVDeckPlugin.Instance.WindowSystem.AddWindow(_instance);
         }
+
+        return _instance;
     }
 
     private readonly XIVDeckPlugin _plugin = XIVDeckPlugin.Instance;
@@ -36,18 +36,12 @@ public class DebugWindow : Window  {
     private DebugWindow() : base(WindowKey, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse) {
         this.Size = new Vector2(300, 250);
         this.SizeCondition = ImGuiCond.FirstUseEver;
-        
-        this.IsOpen = true;
     }
 
     public override void OnOpen() {
         this._listenOnAllInterfaces = XIVDeckPlugin.Instance.Configuration.ListenOnAllInterfaces;
     }
 
-    public override void OnClose() {
-        this._plugin.WindowSystem.RemoveWindow(this);
-    }
-    
     public override void Draw() {
         ImGui.Text("Hello, world! Enjoying your time behind the curtain?");
 

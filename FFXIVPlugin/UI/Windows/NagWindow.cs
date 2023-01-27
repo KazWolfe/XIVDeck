@@ -1,15 +1,13 @@
-﻿using System;
-using System.Numerics;
+﻿using System.Numerics;
 using Dalamud.Interface;
 using Dalamud.Interface.Windowing;
-using Dalamud.Logging;
 using ImGuiNET;
 using XIVDeck.FFXIVPlugin.UI.Windows.Nags;
 
 namespace XIVDeck.FFXIVPlugin.UI.Windows; 
 
-public abstract class NagWindow : Window, IDisposable {
-    public static void CloseAllNags() {
+public abstract class NagWindow : Window {
+    internal static void CloseAllNags() {
         ForcedUpdateNag.Hide();
         SetupNag.Hide();
         PortInUseNag.Hide();
@@ -35,7 +33,6 @@ public abstract class NagWindow : Window, IDisposable {
         this.Position = new Vector2((viewport.WorkSize.X - sizeX) / 2, (viewport.WorkSize.Y - sizeY) / 3);
 
         // automatically open a nag window on creation
-        PluginLog.Debug($"construction of window: {this.WindowName}");
         XIVDeckPlugin.Instance.WindowSystem.AddWindow(this);
         this.IsOpen = true;
     }
@@ -44,19 +41,5 @@ public abstract class NagWindow : Window, IDisposable {
         ImGui.PushTextWrapPos();
         this._internalDraw();
         ImGui.PopTextWrapPos();
-    }
-
-    public override void OnClose() {
-        // block close attempts
-        this.IsOpen = true;
-    }
-
-    public virtual void Dispose() {
-        if (XIVDeckPlugin.Instance.WindowSystem.GetWindow(this.WindowName) != null) {
-            XIVDeckPlugin.Instance.WindowSystem.RemoveWindow(this);
-            PluginLog.Debug($"disposal of window: {this.WindowName}");
-        }
-        
-        GC.SuppressFinalize(this);
     }
 }

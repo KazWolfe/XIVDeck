@@ -11,7 +11,18 @@ using XIVDeck.FFXIVPlugin.Utils;
 namespace XIVDeck.FFXIVPlugin.UI.Windows;
 
 public class SettingsWindow : Window {
-    public static readonly string WindowKey =$"{UIStrings.SettingsWindow_Title}###xivDeckSettingsWindow";
+    public const string WindowKey = "###xivDeckSettingsWindow";
+
+    private static SettingsWindow? _instance;
+    
+    internal static SettingsWindow GetOrCreate() {
+        if (_instance == null) {
+            _instance = new SettingsWindow();
+            XIVDeckPlugin.Instance.WindowSystem.AddWindow(_instance);
+        }
+
+        return _instance;
+    }
 
     private readonly XIVDeckPlugin _plugin = XIVDeckPlugin.Instance;
 
@@ -31,8 +42,7 @@ public class SettingsWindow : Window {
             MaximumSize = new Vector2(450, 400)
         };
         this.Size = this.SizeConstraints.Value.MinimumSize;
-        this.WindowName = WindowKey;
-        this.IsOpen = true;
+        this.WindowName = UIStrings.SettingsWindow_Title + WindowKey;
     }
 
     public override void OnOpen() {
@@ -46,10 +56,6 @@ public class SettingsWindow : Window {
 
         // experimental flags
         this._useMIconIcons = this._plugin.Configuration.UseMIconIcons;
-    }
-
-    public override void OnClose() {
-        this._plugin.WindowSystem.RemoveWindow(this);
     }
 
     public override void Draw() {
@@ -109,7 +115,8 @@ public class SettingsWindow : Window {
 #if DEBUG
         ImGui.SameLine();
         if (ImGui.Button("Debug")) {
-            DebugWindow.InitializeWindow();
+            var debugWindow = DebugWindow.GetOrCreate();
+            debugWindow.IsOpen = true;
         }
 #endif
 

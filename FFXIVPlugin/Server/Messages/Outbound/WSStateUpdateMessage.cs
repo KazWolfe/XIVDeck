@@ -1,5 +1,4 @@
-﻿using System.Runtime.Serialization;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace XIVDeck.FFXIVPlugin.Server.Messages.Outbound; 
 

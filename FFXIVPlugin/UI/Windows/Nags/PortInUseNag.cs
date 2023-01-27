@@ -9,16 +9,14 @@ namespace XIVDeck.FFXIVPlugin.UI.Windows.Nags;
 public class PortInUseNag : NagWindow {
     private static PortInUseNag? _instance;
     
-    public static void Show() {
+    internal static void Show() {
         _instance ??= new PortInUseNag();
         _instance.IsOpen = true;
     }
 
-    public static void Hide() {
+    internal static void Hide() {
         if (_instance == null) return;
-        
-        _instance.Dispose();
-        _instance = null;
+        _instance.IsOpen = false;
     }
 
     private PortInUseNag() : base("sdPortInUse", 300, 150) { }
