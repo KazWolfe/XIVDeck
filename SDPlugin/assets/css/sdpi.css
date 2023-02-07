@@ -606,7 +606,7 @@ details.message:first-child {
 }
 
 details.message > summary:first-of-type {
-    line-height: 48px;
+    /* line-height: 48px; */
 }
 
 details.message h1 {
