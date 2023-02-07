@@ -3,12 +3,12 @@
         <Product>XIVDeck Game Plugin</Product>
         <Authors>Kaz Wolfe</Authors>
         <Company>Blacksite Technologies</Company>
-        <Version>0.3.5</Version>
+        <Version>0.3.6</Version>
 
         <AssemblyName>XIVDeck.FFXIVPlugin</AssemblyName>
 
         <Description>A Dalamud plugin that exposes an API and game logic for use with a Stream Deck.</Description>
-        <Copyright>(c) 2022, KazWolfe</Copyright>
+        <Copyright>(c) 2023, KazWolfe</Copyright>
         <IsPackable>false</IsPackable>
         <NeutralLanguage>en</NeutralLanguage>
         <Nullable>enable</Nullable>
