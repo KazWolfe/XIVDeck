@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
 using Dalamud.Logging;
 using EmbedIO;
 using XIVDeck.FFXIVPlugin.Exceptions;
@@ -44,7 +46,17 @@ public class XIVDeckWebServer : IDisposable {
     public bool IsRunning => (this._host.State != WebServerState.Stopped);
 
     public void StartServer() {
-        this._host.Start(this._cts.Token);
+        Task.Run(async () => {
+            try {
+                await this._host.RunAsync(this._cts.Token);
+            } catch (HttpListenerException ex) {
+                if (ex.ErrorCode == 32) {
+                    PluginLog.Warning(ex, "Port was already in use!");
+                } else {
+                    PluginLog.Error("Error when starting web server", ex);
+                }
+            }
+        });
     }
 
     public void Dispose() {
