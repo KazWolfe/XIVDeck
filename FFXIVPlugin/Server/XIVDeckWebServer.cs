@@ -19,14 +19,19 @@ public class XIVDeckWebServer : IDisposable {
     private readonly PluginLogShim _logShim = new();
     private readonly XIVDeckWSServer _wsServer;
 
-    public XIVDeckWebServer(int port) {
+    public XIVDeckWebServer(XIVDeckPlugin plugin) {
         Swan.Logging.Logger.RegisterLogger(this._logShim);
+
+        var listenerMode = plugin.Configuration.HttpListenerMode;
+        var port = plugin.Configuration.WebSocketPort;
+
+        PluginLog.Debug($"Starting EmbedIO server on port {port} with listener mode {listenerMode}");
 
         // FIXME: the EmbedIO listener mode has a problem where "localhost" only resolves to IPv6.
         // If localhost is somehow resolved to 127.0.0.1, all communication will fail for no apparent reason.
         this._host = new WebServer(o => o
             .WithUrlPrefixes(GenerateUrlPrefixes(port))
-            .WithMode(HttpListenerMode.Microsoft)
+            .WithMode(listenerMode)
         );
 
         this._wsServer = new XIVDeckWSServer("/ws");

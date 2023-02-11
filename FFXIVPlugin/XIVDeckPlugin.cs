@@ -109,7 +109,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
             this._xivDeckWebServer.Dispose();
         }
 
-        this._xivDeckWebServer = new XIVDeckWebServer(this.Configuration.WebSocketPort);
+        this._xivDeckWebServer = new XIVDeckWebServer(this);
         this._xivDeckWebServer.StartServer();
     }
 }

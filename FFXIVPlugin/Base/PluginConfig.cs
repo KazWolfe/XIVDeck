@@ -1,6 +1,9 @@
 ﻿#nullable enable
 using System;
 using Dalamud.Configuration;
+using EmbedIO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace XIVDeck.FFXIVPlugin.Base;
 
@@ -42,6 +45,14 @@ public class PluginConfig : IPluginConfiguration {
     /// This setting is config file only, as it introduces security concerns.
     /// </summary>
     public bool ListenOnAllInterfaces { get; set; } = false;
+
+    /// <summary>
+    /// Set the HTTP Listener Mode used by EmbedIO.
+    ///
+    /// Internal configuration setting for now.
+    /// </summary>
+    [JsonConverter(typeof(StringEnumConverter))]
+    public HttpListenerMode HttpListenerMode { get; set; } = HttpListenerMode.Microsoft;
 
     public void Save() {
         Injections.PluginInterface.SavePluginConfig(this);
