@@ -1,5 +1,6 @@
 ﻿export type GlobalSettings = {
     ws: {
+        hostname?: string,
         port: number
     }
 }

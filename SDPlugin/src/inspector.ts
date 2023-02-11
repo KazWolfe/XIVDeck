@@ -51,15 +51,16 @@ class XIVDeckInspector {
         let globalSettings = {...DefaultGlobalSettings, ...(event.settings as GlobalSettings)};
         this.globalInspector.loadSettings(globalSettings);
         
-        this._initializeXIVLinkWS(globalSettings.ws.port)
+        this._initializeXIVLinkWS(globalSettings)
     }
     
     handleDidReceiveSettings(event: DidReceiveSettingsEvent) {
         this.dispatcher.handleReceivedSettings(event);
     }
     
-    private _initializeXIVLinkWS(port: number) {
-        this.xivPluginLink.port = port;
+    private _initializeXIVLinkWS(globalSettings: GlobalSettings) {
+        if (globalSettings.ws.hostname) this.xivPluginLink.hostname = globalSettings.ws.hostname;
+        this.xivPluginLink.port = globalSettings.ws.port;
         
         // The PI can't actually determine if the game is alive or not, so we'll force it to think it is.
         this.xivPluginLink.isGameAlive = true;

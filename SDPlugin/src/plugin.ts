@@ -38,6 +38,7 @@ class XIVDeckPlugin {
 
     handleDidReceiveGlobalSettings(event: DidReceiveGlobalSettingsEvent) {
         let globalSettings = {...DefaultGlobalSettings, ...(event.settings as GlobalSettings)};
+        if (globalSettings.ws.hostname) this.xivPluginLink.hostname = globalSettings.ws.hostname;
         this.xivPluginLink.port = globalSettings.ws.port;
         
         // if a connection already exists and is running, close it and re-open it. otherwise, just start a new connect

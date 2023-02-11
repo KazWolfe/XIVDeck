@@ -13,6 +13,7 @@ export class FFXIVPluginLink {
     static eventManager: EventEmitter = new EventEmitter();
 
     // settings
+    public hostname: string = "localhost";
     public port: number = 37984;
     public isGameAlive: boolean = false;
     public apiKey: string = "";
@@ -32,7 +33,8 @@ export class FFXIVPluginLink {
     }
 
     get baseUrl(): string {
-        return `http://localhost:${this.port}`;
+        // noinspection HttpUrlsUsage
+        return `http://${this.hostname}:${this.port}`;
     }
 
     public async send(payload: FFXIVOpcode): Promise<unknown> {
@@ -56,7 +58,8 @@ export class FFXIVPluginLink {
         }
 
         this._doConnectionRetries = doRetry;
-        this._websocket = new WebSocket(`ws://localhost:${this.port}/ws`);
+        // noinspection HttpUrlsUsage
+        this._websocket = new WebSocket(`ws://${this.hostname}:${this.port}/ws`);
 
         this._websocket.onopen = () => {
             // this shouldn't actually be here, but managing the instance of the application is a significant pain
