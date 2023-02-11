@@ -14,12 +14,17 @@ public class XIVDeckWebServer : IDisposable {
     private readonly IWebServer _host;
     private readonly CancellationTokenSource _cts = new();
 
+    private readonly PluginLogShim _logShim = new();
     private readonly XIVDeckWSServer _wsServer;
 
     public XIVDeckWebServer(int port) {
+        Swan.Logging.Logger.RegisterLogger(this._logShim);
+
+        // FIXME: the EmbedIO listener mode has a problem where "localhost" only resolves to IPv6.
+        // If localhost is somehow resolved to 127.0.0.1, all communication will fail for no apparent reason.
         this._host = new WebServer(o => o
             .WithUrlPrefixes(GenerateUrlPrefixes(port))
-            .WithMode(HttpListenerMode.EmbedIO)
+            .WithMode(HttpListenerMode.Microsoft)
         );
 
         this._wsServer = new XIVDeckWSServer("/ws");
@@ -45,13 +50,17 @@ public class XIVDeckWebServer : IDisposable {
     public void Dispose() {
         this._cts.Cancel();
         this._wsServer.Dispose();
+
+        Swan.Logging.Logger.UnregisterLogger(this._logShim);
+        this._logShim.Dispose();
+
         GC.SuppressFinalize(this);
     }
 
     private static string[] GenerateUrlPrefixes(int port) {
-        var prefixes = new List<string> { $"http://localhost:{port}", $"http://127.0.0.1:{port}" };
-        
-        if (Socket.OSSupportsIPv6) 
+        var prefixes = new List<string> {$"http://localhost:{port}", $"http://127.0.0.1:{port}"};
+
+        if (Socket.OSSupportsIPv6)
             prefixes.Add($"http://[::1]:{port}");
 
         if (XIVDeckPlugin.Instance.Configuration.ListenOnAllInterfaces) {
@@ -68,11 +77,11 @@ public class XIVDeckWebServer : IDisposable {
             switch (ex) {
                 case ActionLockedException:
                     throw HttpException.Forbidden(ex.Message, ex);
-                
+
                 case PlayerNotLoggedInException:
                 case IllegalGameStateException:
                     throw HttpException.BadRequest(ex.Message, ex);
-                
+
                 case ActionNotFoundException:
                     throw HttpException.NotFound(ex.Message, ex);
             }
@@ -94,7 +103,7 @@ public class XIVDeckWebServer : IDisposable {
             if (ctx.Request.HttpVerb == HttpVerbs.Post) {
                 ErrorNotifier.ShowError(ex.Message ?? inner.Message, true);
             }
-            
+
             return HttpExceptionHandler.Default(ctx, ex);
         };
     }
