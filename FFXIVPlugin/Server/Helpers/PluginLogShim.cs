@@ -1,5 +1,6 @@
 ﻿using System;
 using Dalamud.Logging;
+using EmbedIO;
 using Swan.Logging;
 
 namespace XIVDeck.FFXIVPlugin.Server.Helpers; 
@@ -16,6 +17,9 @@ public class PluginLogShim : ILogger {
     }
 
     public void Log(LogMessageReceivedEventArgs logEvent) {
+        // Ignore HTTP exceptions, as they're probably going to be handled elsewhere.
+        if (logEvent.Exception is HttpException) return;
+
         switch (logEvent.MessageType) {
             case LogLevel.Trace:
                 PluginLog.Debug(logEvent.Exception!, $"[EmbedIO] {logEvent.Message}");

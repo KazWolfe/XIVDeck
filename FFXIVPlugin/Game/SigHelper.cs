@@ -38,6 +38,7 @@ internal unsafe class SigHelper : IDisposable {
     // UIModule, message, unused, byte
     [Signature(Signatures.SendChatMessage, Fallibility = Fallibility.Fallible)]
     private readonly delegate* unmanaged<nint, nint, nint, byte, void> _processChatBoxEntry = null!;
+    
     /***** hooks *****/
     private delegate nint RaptureGearsetModule_WriteFile(nint a1, nint a2);
     private delegate nint MacroUpdate(nint a1, nint macroPage, nint macroNumber);
