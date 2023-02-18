@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Dalamud.Logging;
 using EmbedIO.WebSockets;
 using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 using XIVDeck.FFXIVPlugin.Server.Messages;
+using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.Server; 
 
 public class XIVDeckWSServer : WebSocketModule {
     public static XIVDeckWSServer? Instance { get; private set; }
+
+    private readonly SemaphoreSlim _sendLock = new(1, 1);
         
     public XIVDeckWSServer(string urlPath) : base(urlPath, true) {
         // this is a bit hacky, but *should* be alright as the server shouldn't actually ever create more than one.
@@ -52,13 +56,17 @@ public class XIVDeckWSServer : WebSocketModule {
 
     public new void Dispose() {
         Instance = null;
+        
+        this._sendLock.Dispose();
         base.Dispose();
     }
 
     public void BroadcastMessage(BaseOutboundMessage message) {
         Task.Run(async () => {
-            var serializedData = JsonConvert.SerializeObject(message);
-            await this.BroadcastAsync(serializedData);
+            using (await this._sendLock.UseWaitAsync()) {
+                var serializedData = JsonConvert.SerializeObject(message);
+                await this.BroadcastAsync(serializedData);
+            }
         });
     }
 }
