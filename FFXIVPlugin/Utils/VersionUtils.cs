@@ -32,7 +32,7 @@ public static class VersionUtils {
         var versionText = xivPluginVersion.GetMajMinBuild();
         var versionHighlight = new SeStringBuilder()
             .Add(ChatLinkWiring.GetPayload(LinkCode.GetGithubReleaseLink))
-            .AddUiForeground(string.Format(UIStrings.VersionUtils_UpdateAlert_Link, versionText), 32)
+            .AddUiForeground(string.Format(UIStrings.VersionUtils_UpdateAlert_Link, "\xE0BB", versionText), 32)
             .Add(RawPayload.LinkTerminator)
             .Build();
 

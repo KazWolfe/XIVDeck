@@ -744,7 +744,7 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  version {0}.
+        ///   Looks up a localized string similar to {0}version {1}.
         /// </summary>
         internal static string VersionUtils_UpdateAlert_Link {
             get {

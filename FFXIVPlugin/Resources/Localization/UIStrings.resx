@@ -285,8 +285,8 @@ This will not re-enable the plugin.</value>
         <value>Ignore For Now</value>
     </data>
     <data name="VersionUtils_UpdateAlert_Link" xml:space="preserve">
-        <value> version {0}</value>
-        <comment>Highlighted section of the update message and used as the link to GitHub. "\xE0BB" must be placed at the start of the link.</comment>
+        <value>{0}version {1}</value>
+        <comment>Highlighted section of the update message and used as the link to GitHub. {0} is the "play" icon, {1} is the version number. {0} must be at the start of the message.</comment>
     </data>
     <data name="VersionUtils_UpdateAlert" xml:space="preserve">
         <value>Your version of the XIVDeck Stream Deck Plugin is out of date. Please consider installing {0} from GitHub!</value>
