@@ -52,23 +52,10 @@ public class WSInitOpcode : BaseInboundMessage {
 
         // version check behavior
         if (this.Mode is PluginMode.Plugin) {
-            if (Injections.PluginInterface.IsTesting && sdPluginVersion < xivPluginVersion) {
-#if !DEBUG
-                TestingUpdateNag.Show();
-#else
-                PluginLog.Debug("I assume you have a good reason for having a version mismatch...");
-#endif
+            if (Injections.PluginInterface is {IsTesting: true, IsDev: false} && sdPluginVersion < xivPluginVersion) {
+                TestingUpdateNag.Show(); 
             } else if (sdPluginVersion < xivPluginVersion) {
-                DeferredChat.SendOrDeferMessage(new SeStringBuilder()
-                    .Append(ErrorNotifier.BuildPrefixedString(""))
-                    .AddText(
-                        "Your version of the XIVDeck Stream Deck Plugin is out of date. Please consider installing ")
-                    .Add(ChatLinkWiring.GetPayload(LinkCode.GetGithubReleaseLink))
-                    .AddUiForeground($"\xE0BB version {xivPluginVersion.GetMajMinBuild()}", 32)
-                    .Add(RawPayload.LinkTerminator)
-                    .AddText(" from GitHub!")
-                    .Build()
-                );
+                DeferredChat.SendOrDeferMessage(VersionUtils.GenerateUpdateNagString(xivPluginVersion));
             } else if (sdPluginVersion > xivPluginVersion) {
                 var errorString = ErrorNotifier.BuildPrefixedString(UIStrings.WSInitOpcode_GamePluginOutdated);
                 DeferredChat.SendOrDeferMessage(errorString);

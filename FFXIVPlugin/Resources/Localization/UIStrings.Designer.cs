@@ -735,6 +735,24 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your version of the XIVDeck Stream Deck Plugin is out of date. Please consider installing {0} from GitHub!.
+        /// </summary>
+        internal static string VersionUtils_UpdateAlert {
+            get {
+                return ResourceManager.GetString("VersionUtils_UpdateAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  version {0}.
+        /// </summary>
+        internal static string VersionUtils_UpdateAlert_Link {
+            get {
+                return ResourceManager.GetString("VersionUtils_UpdateAlert_Link", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The version of the XIVDeck Stream Deck Plugin installed is newer than the game plugin. Please install any updates from the Dalamud Plugin Installer..
         /// </summary>
         internal static string WSInitOpcode_GamePluginOutdated {

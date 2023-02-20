@@ -284,4 +284,12 @@ This will not re-enable the plugin.</value>
         <comment>Shown when the user is given the option to temporarily ignore the update error.</comment>
         <value>Ignore For Now</value>
     </data>
+    <data name="VersionUtils_UpdateAlert_Link" xml:space="preserve">
+        <value> version {0}</value>
+        <comment>Highlighted section of the update message and used as the link to GitHub. "\xE0BB" must be placed at the start of the link.</comment>
+    </data>
+    <data name="VersionUtils_UpdateAlert" xml:space="preserve">
+        <value>Your version of the XIVDeck Stream Deck Plugin is out of date. Please consider installing {0} from GitHub!</value>
+        <comment>General message notifying the user of a version update. The {0} is replaced with a colored link to GitHub ("version 1.2.3") for updating named `VersionUtils_UpdateAlert_Link`. Only *one* {0} is permitted!!</comment>
+    </data>
 </root>
