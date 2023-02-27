@@ -5,7 +5,7 @@ using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel;
 using XIVDeck.FFXIVPlugin.Base;
-using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Game.Chat;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor;
@@ -91,7 +91,9 @@ public abstract class FixedCommandStrategy<T> : IActionStrategy where T : ExcelR
         }
 
         PluginLog.Debug($"Executing command: {command}");
-        Injections.Framework.RunOnFrameworkThread(delegate { GameUtils.SendSanitizedChatMessage(command); });
+        Injections.Framework.RunOnFrameworkThread(delegate {
+            ChatHelper.GetInstance().SendSanitizedChatMessage(command);
+        });
     }
 
     public int GetIconId(uint actionId) {

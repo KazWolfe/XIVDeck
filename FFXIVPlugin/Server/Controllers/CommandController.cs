@@ -4,6 +4,7 @@ using EmbedIO.WebApi;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Game.Chat;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 using XIVDeck.FFXIVPlugin.Server.Types;
@@ -28,7 +29,7 @@ public class CommandController : WebApiController {
         GameUtils.ResetAFKTimer();
         
         Injections.Framework.RunOnFrameworkThread(delegate {
-            GameUtils.SendSanitizedChatMessage(command.Command, command.SafeMode);
+            ChatHelper.GetInstance().SendSanitizedChatMessage(command.Command, command.SafeMode);
         });
     }
 }

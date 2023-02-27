@@ -6,6 +6,7 @@ using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Game.Chat;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
@@ -53,7 +54,7 @@ public class OrnamentStrategy : IActionStrategy {
         var command = $"/fashion \"{ornament.Singular}\"";
         PluginLog.Debug($"Executing command: {command}");
         Injections.Framework.RunOnFrameworkThread(delegate {
-            GameUtils.SendSanitizedChatMessage(command);
+            ChatHelper.GetInstance().SendSanitizedChatMessage(command);
         });
     }
 

@@ -87,7 +87,8 @@
 
     <ItemGroup>
         <Content Include="..\SDPlugin\assets\images\icon@2x.png">
-            <Link>images\icon.png</Link>
+            <TargetPath>images\icon.png</TargetPath>
+            <Visible>false</Visible>
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
     </ItemGroup>

@@ -6,7 +6,7 @@ using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 
-namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
+namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.Macro)]
 public class MacroStrategy : IActionStrategy {
@@ -16,7 +16,7 @@ public class MacroStrategy : IActionStrategy {
     }
 
     public unsafe ExecutableAction GetExecutableActionById(uint actionId) {
-        var macro = GetMacro((actionId / 100 > 0), ((int) actionId % 100));
+        var macro = GetMacro((actionId / 100 > 0), (int) actionId % 100);
 
         // Macros are weird, inasmuch as they can't be null. Something will always exist, even if empty.
         return new ExecutableAction {
@@ -28,11 +28,8 @@ public class MacroStrategy : IActionStrategy {
         };
     }
 
-    public List<ExecutableAction>? GetAllowedItems() {
-        // this will always return null as macros are a bit... weird. macro selection will take place completely
-        // on the stream deck's side.
-        return null;
-    }
+    // Macros will always return null, as they're selected on the client side and we don't get a say.
+    public List<ExecutableAction>? GetAllowedItems() => null;
 
     public unsafe void Execute(uint actionId, ActionPayload? _) {
         if (actionId > 199) {
@@ -56,7 +53,7 @@ public class MacroStrategy : IActionStrategy {
         if (XIVDeckPlugin.Instance.Configuration.UseMIconIcons) {
             return this.GetAdjustedIconId(item);
         }
-        
+
         var macro = GetMacro((item / 100 > 0), ((int) item % 100));
         return (int) macro->IconId;
     }
@@ -66,8 +63,9 @@ public class MacroStrategy : IActionStrategy {
         var macroId = item % 100;
 
         return Injections.Framework.RunOnTick(() => {
-            // It's terrifying that the easiest way to get macro icon information is to just create a virtual
-            // hotbar slot, but it's also the easiest and most effective.
+            // It's terrifying that creating a virtual hotbar slot is probably the easiest way to get a macro icon ID,
+            // but here we are.
+
             var slot = new HotBarSlot();
             slot.Set(HotbarSlotType.Macro, (macroPage << 8) + macroId);
             slot.LoadIconFromSlotB();

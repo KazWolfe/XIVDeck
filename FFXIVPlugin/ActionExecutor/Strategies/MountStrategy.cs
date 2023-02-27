@@ -7,6 +7,7 @@ using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Game.Chat;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils;
 
@@ -51,7 +52,7 @@ public class MountStrategy : IActionStrategy {
             
         PluginLog.Debug($"Executing command: {command}");
         Injections.Framework.RunOnFrameworkThread(delegate {
-            GameUtils.SendSanitizedChatMessage(command);
+            ChatHelper.GetInstance().SendSanitizedChatMessage(command);
         });
     }
         
