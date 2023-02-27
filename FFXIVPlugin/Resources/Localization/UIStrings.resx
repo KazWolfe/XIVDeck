@@ -292,4 +292,7 @@ This will not re-enable the plugin.</value>
         <value>Your version of the XIVDeck Stream Deck Plugin is out of date. Please consider installing {0} from GitHub!</value>
         <comment>General message notifying the user of a version update. The {0} is replaced with a colored link to GitHub ("version 1.2.3") for updating named `VersionUtils_UpdateAlert_Link`. Only *one* {0} is permitted!!</comment>
     </data>
+    <data name="MainCommandStrategy_MainCommandLocked" xml:space="preserve">
+        <value>The main command "{0}" cannot be used at this time.</value>
+    </data>
 </root>

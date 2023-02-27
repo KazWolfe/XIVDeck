@@ -412,6 +412,15 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The main command &quot;{0}&quot; cannot be used at this time..
+        /// </summary>
+        internal static string MainCommandStrategy_MainCommandLocked {
+            get {
+                return ResourceManager.GetString("MainCommandStrategy_MainCommandLocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The minion &quot;{0}&quot; isn&apos;t unlocked and therefore can&apos;t be used..
         /// </summary>
         internal static string MinionStrategy_MinionLockedError {
