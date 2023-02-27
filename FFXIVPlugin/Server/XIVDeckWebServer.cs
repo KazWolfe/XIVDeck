@@ -54,12 +54,10 @@ public class XIVDeckWebServer : IDisposable {
         Task.Run(async () => {
             try {
                 await this._host.RunAsync(this._cts.Token);
-            } catch (HttpListenerException ex) {
-                if (ex.ErrorCode == 32) {
-                    PluginLog.Warning(ex, "Port was already in use!");
-                } else {
-                    PluginLog.Error("Error when starting web server", ex);
-                }
+            } catch (HttpListenerException ex) when (ex.ErrorCode == 32) {
+                PluginLog.Warning(ex, "Port was already in use!");
+            } catch (Exception ex) {
+                PluginLog.Error(ex, "Error when starting web server!");
             }
         });
     }
