@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Memory;
-using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel.GeneratedSheets;
@@ -56,7 +55,6 @@ internal unsafe class GameStateCache {
     }
 
     internal GameStateCache() {
-        SignatureHelper.Initialise(this);
         this.Refresh();
     }
 

@@ -23,7 +23,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         
     internal PluginConfig Configuration { get; }
     internal WindowSystem WindowSystem { get; }
-    internal DetourHelper DetourHelper { get; }
+    internal GameHooks GameHooks { get; }
     internal GameStateCache GameStateCache { get; }
     internal VolumeWatcher VolumeWatcher { get; }
 
@@ -41,22 +41,17 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
 
         this.Configuration = this.PluginInterface.GetPluginConfig() as PluginConfig ?? new PluginConfig();
         
-        // Various managers for advanced hooking into the game
-        this.DetourHelper = new DetourHelper();
-
-        // Load in and initialize a lot of various game state and plugin interface things.
+        // DI and services are boring.
+        this.GameHooks = new GameHooks();
         this.GameStateCache = new GameStateCache();
         SerializableGameClass.LoadCache();
         ActionDispatcher.GetStrategies();
         this._ipcManager = new IPCManager();
-        
-        // More plugin interfaces
         this._chatLinkWiring = new ChatLinkWiring();
         this._hotbarWatcher = new HotbarWatcher();
         this.VolumeWatcher = new VolumeWatcher();
         this.WindowSystem = new WindowSystem(this.Name);
         
-        // Start the websocket server itself.
         this.InitializeWebServer();
         
         this.PluginInterface.UiBuilder.Draw += this.WindowSystem.Draw;
@@ -78,7 +73,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         
         this._xivDeckWebServer.Dispose(); 
         this._chatLinkWiring.Dispose();
-        this.DetourHelper.Dispose();
+        this.GameHooks.Dispose();
         this._ipcManager.Dispose();
 
         Injections.ClientState.Login -= DalamudHooks.OnGameLogin;

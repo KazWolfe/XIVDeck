@@ -10,7 +10,7 @@ using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 
 namespace XIVDeck.FFXIVPlugin.Game;
 
-internal class DetourHelper : IDisposable {
+internal class GameHooks : IDisposable {
     private static class Signatures {
         // todo: this is *way* too broad. this game is very write-happy when it comes to gearset updates.
         internal const string SaveGearset = "48 89 5C 24 ?? 48 89 74 24 ?? 57 48 83 EC 30 48 8B F2 48 8B F9 33 D2";
@@ -34,7 +34,7 @@ internal class DetourHelper : IDisposable {
 
     /***** the actual class *****/
 
-    internal DetourHelper() {
+    internal GameHooks() {
         SignatureHelper.Initialise(this);
 
         this.RGM_WriteFileHook?.Enable();
