@@ -15,7 +15,6 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 [ActionStrategy(HotbarSlotType.MainCommand)]
 public class MainCommandStrategy : IActionStrategy {
     private static readonly ExcelSheet<MainCommand> MainCommands = Injections.DataManager.GetExcelSheet<MainCommand>()!;
-    private readonly UnlockHelper _unlockHelper = UnlockHelper.GetInstance();
 
     private static ExecutableAction GetExecutableAction(MainCommand mainCommand) {
         return new ExecutableAction {
@@ -33,7 +32,7 @@ public class MainCommandStrategy : IActionStrategy {
         if (mainCommand == null || mainCommand.Category == 0)
             throw new InvalidOperationException(string.Format(UIStrings.MainCommandStrategy_ActionInvalidError, actionId));
 
-        if (!this._unlockHelper.IsMainCommandUnlocked(actionId))
+        if (!mainCommand.IsUnlocked())
             throw new ActionLockedException(string.Format(UIStrings.MainCommandStrategy_MainCommandLocked, mainCommand.Name));
 
         Injections.Framework.RunOnFrameworkThread(delegate {
@@ -48,7 +47,7 @@ public class MainCommandStrategy : IActionStrategy {
     public List<ExecutableAction> GetAllowedItems() {
         return MainCommands
             .Where(r => r.Category != 0)
-            .Where(r => this._unlockHelper.IsMainCommandUnlocked(r.RowId))
+            .Where(r => r.IsUnlocked())
             .Select(GetExecutableAction)
             .ToList();
     }

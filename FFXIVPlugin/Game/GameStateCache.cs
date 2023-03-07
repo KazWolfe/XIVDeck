@@ -2,6 +2,7 @@
 using System.Linq;
 using Dalamud.Memory;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
+using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
@@ -52,6 +53,10 @@ internal unsafe class GameStateCache {
 
     internal static bool IsMcGuffinUnlocked(uint mcguffinId) {
         return PlayerState.Instance()->IsMcGuffinUnlocked(mcguffinId);
+    }
+
+    internal static bool IsMainCommandUnlocked(uint mainCommandId) {
+        return Framework.Instance()->GetUiModule()->IsMainCommandUnlocked(mainCommandId);
     }
 
     internal GameStateCache() {
