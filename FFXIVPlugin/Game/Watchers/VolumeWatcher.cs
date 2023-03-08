@@ -105,7 +105,7 @@ public class VolumeWatcher : IDisposable {
     }
 
     private static bool IsMutedRaw(SoundChannel channel) {
-        return GameConfig.System.GetUInt(Channels[channel].MuteState) == 1u;
+        return GameConfig.System.GetBool(Channels[channel].MuteState);
     }
 
     private static void SetVolume(SoundChannel channel, uint level) {
