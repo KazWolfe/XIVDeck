@@ -30,7 +30,7 @@ jobs:
           pull_request_body: 'Update localization with latest translations from crowdin'
             
           crowdin_branch_name: ${{ github.ref_name }}
-          localization_branch_name: 'crowdin-${{ github.ref_name }}'
+          localization_branch_name: 'crowdin/${{ github.ref_name }}'
           pull_request_base_branch_name: ${{ github.ref_name }}
           
           config: 'crowdin.yml'

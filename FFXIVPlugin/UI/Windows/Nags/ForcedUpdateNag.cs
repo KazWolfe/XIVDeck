@@ -1,4 +1,5 @@
-﻿using Dalamud.Interface;
+﻿using System.Numerics;
+using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using ImGuiNET;
@@ -22,21 +23,16 @@ public class ForcedUpdateNag : NagWindow {
 
     private string _versionString = VersionUtils.GetCurrentMajMinBuild();
 
-    public ForcedUpdateNag() : base("sdPluginVeryOutdated", 350, 180) { }
+    public ForcedUpdateNag() : base("sdPluginVeryOutdated", 350) { }
     
     protected override void _internalDraw() {
-        var windowSize = ImGui.GetWindowContentRegionMax();
-        var placeholderButtonSize = ImGuiHelpers.GetButtonSize("placeholder");
-        
         ImGui.TextColored(ImGuiColors.DalamudRed, UIStrings.ForcedUpdateNag_Headline);
         
         ImGui.Separator();
         
         ImGui.Text(UIStrings.ForcedUpdateNag_ProblemDescription);
         ImGui.Text(UIStrings.ForcedUpdateNag_SupportInfo);
-
-        ImGui.SetCursorPosY(windowSize.Y - placeholderButtonSize.Y);
-
+        
         if (ImGui.GetIO().KeyCtrl) {
             if (ImGui.Button(UIStrings.ForcedUpdateNag_BypassButton)) {
                 Hide();

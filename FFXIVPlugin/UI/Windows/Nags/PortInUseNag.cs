@@ -18,7 +18,7 @@ public class PortInUseNag : NagWindow {
         _instance.IsOpen = false;
     }
 
-    private PortInUseNag() : base("sdPortInUse", 300, 175) { }
+    private PortInUseNag() : base("sdPortInUse", 300) { }
 
     protected override void _internalDraw() {
         ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);

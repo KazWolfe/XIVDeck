@@ -277,7 +277,7 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stuck? Visit the Goat Place Discord for help!.
+        ///   Looks up a localized string similar to Stuck? Visit the XIVLauncher &amp; Dalamud Discord for help!.
         /// </summary>
         internal static string ForcedUpdateNag_SupportInfo {
             get {
@@ -618,7 +618,16 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If the XIVDeck Stream Deck Plugin is already installed, please make sure the port is set correctly in the configuration and that you&apos;ve created at least one button..
+        ///   Looks up a localized string similar to Already Installed the Companion Plugin?.
+        /// </summary>
+        internal static string SetupNag_AlreadyInstalled {
+            get {
+                return ResourceManager.GetString("SetupNag_AlreadyInstalled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If the XIVDeck Stream Deck Plugin has already been installed, please verify that the port number in the Stream Deck Plugin&apos;s configuration is set to {0}, and that you have created at least one button on your Stream Deck..
         /// </summary>
         internal static string SetupNag_AlreadyInstalledHelp {
             get {
@@ -636,7 +645,7 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To dismiss this message, resolve the above problem or uninstall the XIVDeck plugin..
+        ///   Looks up a localized string similar to This message will automatically be dismissed once the Stream Deck Plugin has been detected..
         /// </summary>
         internal static string SetupNag_DismissHelp {
             get {
@@ -645,11 +654,58 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A Stream Deck has never connected to the game..
+        ///   Looks up a localized string similar to Welcome to XIVDeck!.
         /// </summary>
         internal static string SetupNag_Headline {
             get {
                 return ResourceManager.GetString("SetupNag_Headline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wait, how do I install this?.
+        /// </summary>
+        internal static string SetupNag_HowInstall {
+            get {
+                return ResourceManager.GetString("SetupNag_HowInstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Stream Deck application will take care of the rest and set the plugin up with the default settings..
+        /// </summary>
+        internal static string SetupNag_HowInstall_OtherInfo {
+            get {
+                return ResourceManager.GetString("SetupNag_HowInstall_OtherInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In order to install XIVDeck, you need an Elgato Stream Deck and the Stream Deck software..
+        /// </summary>
+        internal static string SetupNag_HowInstall_Requirements {
+            get {
+                return ResourceManager.GetString("SetupNag_HowInstall_Requirements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1. Visit the XIVDeck Download Page using the button above.
+        ///2. Download &quot;XIVDeck.streamDeckPlugin&quot; and open it.
+        ///3. When prompted, choose to install the custom action..
+        /// </summary>
+        internal static string SetupNag_HowInstall_Steps {
+            get {
+                return ResourceManager.GetString("SetupNag_HowInstall_Steps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click to join the Discord!.
+        /// </summary>
+        internal static string SetupNag_JoinDiscord {
+            get {
+                return ResourceManager.GetString("SetupNag_JoinDiscord", resourceCulture);
             }
         }
         
@@ -663,7 +719,7 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If you haven&apos;t done so already, please make sure you&apos;ve downloaded and installed the companion XIVDeck Stream Deck Plugin from GitHub..
+        ///   Looks up a localized string similar to XIVDeck requires the use of the companion XIVDeck Stream Deck plugin to be useful. If you haven&apos;t yet downloaded the companion plugin from GitHub, please do so now..
         /// </summary>
         internal static string SetupNag_ResolutionHelp {
             get {

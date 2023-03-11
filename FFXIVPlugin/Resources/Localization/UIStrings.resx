@@ -155,13 +155,13 @@ Range: {1}-{2}</value>
         <value>The version of the XIVDeck Stream Deck Plugin currently installed is not compatible with the installed version of the Dalamud Plugin. To re-enable XIVDeck, please download and install the latest version of the Stream Deck Plugin from the button below.</value>
     </data>
     <data name="SetupNag_Headline" xml:space="preserve">
-        <value>A Stream Deck has never connected to the game.</value>
+        <value>Welcome to XIVDeck!</value>
     </data>
     <data name="SetupNag_ResolutionHelp" xml:space="preserve">
-        <value>If you haven't done so already, please make sure you've downloaded and installed the companion XIVDeck Stream Deck Plugin from GitHub.</value>
+        <value>XIVDeck requires the use of the companion XIVDeck Stream Deck plugin to be useful. If you haven't yet downloaded the companion plugin from GitHub, please do so now.</value>
     </data>
     <data name="SetupNag_AlreadyInstalledHelp" xml:space="preserve">
-        <value>If the XIVDeck Stream Deck Plugin is already installed, please make sure the port is set correctly in the configuration and that you've created at least one button.</value>
+        <value>If the XIVDeck Stream Deck Plugin has already been installed, please verify that the port number in the Stream Deck Plugin's configuration is set to {0}, and that you have created at least one button on your Stream Deck.</value>
     </data>
     <data name="SetupNag_CurrentPort" xml:space="preserve">
         <value>Current port: {0}</value>
@@ -170,7 +170,7 @@ Range: {1}-{2}</value>
         <value>If you need to change the port the server is hosted on, you may do so from XIVDeck's settings.</value>
     </data>
     <data name="SetupNag_DismissHelp" xml:space="preserve">
-        <value>To dismiss this message, resolve the above problem or uninstall the XIVDeck plugin.</value>
+        <value>This message will automatically be dismissed once the Stream Deck Plugin has been detected.</value>
     </data>
     <data name="CollectionStrategy_CollectionNotFoundError" xml:space="preserve">
         <value>No Collection with ID {0} exists.</value>
@@ -271,7 +271,7 @@ Default: Off</value>
         <value>The version of the XIVDeck Stream Deck Plugin installed is newer than the game plugin. Please install any updates from the Dalamud Plugin Installer.</value>
     </data>
     <data name="ForcedUpdateNag_SupportInfo" xml:space="preserve">
-        <value>Stuck? Visit the Goat Place Discord for help!</value>
+        <value>Stuck? Visit the XIVLauncher &amp; Dalamud Discord for help!</value>
     </data>
     <data name="ForcedUpdateNag_SupportButton" xml:space="preserve">
         <value>Open Discord</value>
@@ -294,5 +294,25 @@ This will not re-enable the plugin.</value>
     </data>
     <data name="MainCommandStrategy_MainCommandLocked" xml:space="preserve">
         <value>The main command "{0}" cannot be used at this time.</value>
+    </data>
+    <data name="SetupNag_HowInstall" xml:space="preserve">
+        <value>Wait, how do I install this?</value>
+    </data>
+    <data name="SetupNag_HowInstall_Requirements" xml:space="preserve">
+        <value>In order to install XIVDeck, you need an Elgato Stream Deck and the Stream Deck software.</value>
+    </data>
+    <data name="SetupNag_HowInstall_Steps" xml:space="preserve">
+        <value>1. Visit the XIVDeck Download Page using the button above.
+2. Download "XIVDeck.streamDeckPlugin" and open it.
+3. When prompted, choose to install the custom action.</value>
+    </data>
+    <data name="SetupNag_HowInstall_OtherInfo" xml:space="preserve">
+        <value>The Stream Deck application will take care of the rest and set the plugin up with the default settings.</value>
+    </data>
+    <data name="SetupNag_AlreadyInstalled" xml:space="preserve">
+        <value>Already Installed the Companion Plugin?</value>
+    </data>
+    <data name="SetupNag_JoinDiscord" xml:space="preserve">
+        <value>Click to join the Discord!</value>
     </data>
 </root>

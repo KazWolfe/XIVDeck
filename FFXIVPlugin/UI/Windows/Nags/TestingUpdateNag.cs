@@ -1,5 +1,6 @@
 ﻿using Dalamud.Interface;
 using Dalamud.Interface.Colors;
+using Dalamud.Interface.Components;
 using ImGuiNET;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils;
@@ -22,12 +23,9 @@ public class TestingUpdateNag : NagWindow {
         _instance.IsOpen = false;
     }
 
-    public TestingUpdateNag() : base("sdPluginTestVersionMismatch", 400, 250) { }
+    public TestingUpdateNag() : base("sdPluginTestVersionMismatch", 400) { }
 
     protected override void _internalDraw() {
-        var windowSize = ImGui.GetWindowContentRegionMax();
-        var placeholderButtonSize = ImGuiHelpers.GetButtonSize("placeholder");
-
         var currentVersion = VersionUtils.GetCurrentMajMinBuild();
 
         ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
@@ -43,14 +41,18 @@ public class TestingUpdateNag : NagWindow {
 
         ImGui.TextColored(ImGuiColors.DalamudGrey, UIStrings.TestingUpdateNag_DismissHelp);
 
-        ImGui.SetCursorPosY(windowSize.Y - placeholderButtonSize.Y);
         if (ImGui.Button(UIStrings.TestingUpdateNag_IgnoreButton)) {
             _dismissed = true;
             Hide();
         }
 
         ImGui.SameLine();
-        if (ImGui.Button(string.Format(UIStrings.TestingUpdateNag_DownloadButton, currentVersion))) {
+
+        var buttonText = string.Format(UIStrings.TestingUpdateNag_DownloadButton, currentVersion);
+        var buttonSize = ImGuiHelpers.GetButtonSize(buttonText);
+        buttonSize.X *= 2;
+        ImGui.SetCursorPosX(ImGui.GetWindowWidth() - buttonSize.X - ImGui.GetStyle().ItemSpacing.X);
+        if (ImGui.Button(buttonText, buttonSize)) {
             UiUtil.OpenXIVDeckGitHub($"/releases/tag/v{currentVersion}");
         }
     }

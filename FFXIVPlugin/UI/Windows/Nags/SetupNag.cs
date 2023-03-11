@@ -1,5 +1,7 @@
 ﻿using System.Numerics;
+using Dalamud.Interface;
 using Dalamud.Interface.Colors;
+using Dalamud.Interface.Components;
 using ImGuiNET;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils;
@@ -19,7 +21,7 @@ public class SetupNag : NagWindow {
         _instance.IsOpen = false;
     }
 
-    public SetupNag() : base("sdPluginNotInstalled", 400, 325) { }
+    public SetupNag() : base("sdPluginNotInstalled", 400) { }
 
     protected override void _internalDraw() {
         ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
@@ -33,20 +35,45 @@ public class SetupNag : NagWindow {
         if (ImGui.Button(UIStrings.Nag_OpenGithubDownloadButton)) {
             UiUtil.OpenXIVDeckGitHub($"/releases/tag/v{VersionUtils.GetCurrentMajMinBuild()}");
         }
+        
+        ImGui.Spacing();
+
+        if (ImGui.CollapsingHeader(UIStrings.SetupNag_HowInstall)) {
+            ImGui.Indent(10);
             
-        // spacer, but bigger
-        ImGui.Dummy(new Vector2(0, 15));
-        
-        ImGui.Text(UIStrings.SetupNag_AlreadyInstalledHelp);
-        
-        ImGui.Text(string.Format(UIStrings.SetupNag_CurrentPort, XIVDeckPlugin.Instance.Configuration.WebSocketPort));
-        
-        ImGui.Text(UIStrings.SetupNag_PortChangeHelp);
-        if (ImGui.Button(UIStrings.Nag_OpenSettingsButton)) {
-            XIVDeckPlugin.Instance.DrawConfigUI();
+            ImGui.Text(UIStrings.SetupNag_HowInstall_Requirements);
+            
+            ImGui.Indent(10);
+            ImGui.TextUnformatted(UIStrings.SetupNag_HowInstall_Steps);
+            ImGui.Unindent(10);
+            
+            ImGui.TextUnformatted(UIStrings.SetupNag_HowInstall_OtherInfo);
+            
+            ImGui.Unindent(10);
         }
+
+        if (ImGui.CollapsingHeader(UIStrings.SetupNag_AlreadyInstalled)) {
+            ImGui.Indent(10);
             
+            ImGui.Text(string.Format(UIStrings.SetupNag_AlreadyInstalledHelp,
+                XIVDeckPlugin.Instance.Configuration.WebSocketPort));
+        
+            ImGui.Text(UIStrings.SetupNag_PortChangeHelp);
+        
+            if (ImGui.Button(UIStrings.Nag_OpenSettingsButton)) {
+                XIVDeckPlugin.Instance.DrawConfigUI();
+            }
+            
+            ImGui.Unindent(10);
+        }
+
         ImGui.Spacing();
         ImGui.TextColored(ImGuiColors.DalamudGrey, UIStrings.SetupNag_DismissHelp);
+        ImGui.TextColored(ImGuiColors.DalamudGrey, UIStrings.ForcedUpdateNag_SupportInfo);
+        ImGui.SameLine();
+        if (ImGuiComponents.IconButton(FontAwesomeIcon.Headset)) {
+            Dalamud.Utility.Util.OpenLink(Constants.GoatPlaceDiscord);
+        }
+        if (ImGui.IsItemHovered()) ImGui.SetTooltip(UIStrings.SetupNag_JoinDiscord); 
     }
 }
