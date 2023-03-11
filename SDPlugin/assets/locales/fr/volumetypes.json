@@ -1,23 +1,30 @@
 {
   "Master": {
-    "full": "Volume général"
+    "full": "Volume général",
+    "short": "Global"
   },
   "BackgroundMusic": {
-    "full": "Musique"
+    "full": "Musique",
+    "short": "Fond"
   },
   "SoundEffects": {
-    "full": "Effets sonores"
+    "full": "Effets sonores",
+    "short": "Effets"
   },
   "Voice": {
-    "full": "Voix"
+    "full": "Voix",
+    "short": "Voix"
   },
   "System": {
-    "full": "Sons systèmes"
+    "full": "Sons systèmes",
+    "short": "Syst"
   },
   "Ambient": {
-    "full": "Ambiance sonore"
+    "full": "Ambiance sonore",
+    "short": "Amb"
   },
   "Performance": {
-    "full": "Actions d'Interprétation"
+    "full": "Actions d'Interprétation",
+    "short": "Barde"
   }
 }

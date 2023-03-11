@@ -1,6 +1,7 @@
 {
   "Master": {
-    "full": "マスターボリューム"
+    "full": "マスターボリューム",
+    "short": ""
   },
   "BackgroundMusic": {
     "full": "BGM",
@@ -15,13 +16,15 @@
     "short": "ボイス"
   },
   "System": {
-    "full": "システム音"
+    "full": "システム音",
+    "short": ""
   },
   "Ambient": {
     "full": "環境音",
     "short": "環境音"
   },
   "Performance": {
-    "full": "楽器演奏"
+    "full": "楽器演奏",
+    "short": ""
   }
 }

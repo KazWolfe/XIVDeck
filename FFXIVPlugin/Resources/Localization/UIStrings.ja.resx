@@ -248,4 +248,41 @@
 
 デフォルト: OFF</value>
     </data>
+  <data name="TestingUpdateNag_Headline" xml:space="preserve">
+        <value>警告：XIVDeckのバージョンが一致しません</value>
+    </data>
+  <data name="TestingUpdateNag_MismatchDetectedText" xml:space="preserve">
+        <value>インストールされているStreamDeckプラグインと、ゲーム内プラグインのバージョンが一致していません。
+一部の機能が正常に動作しない可能性があります。</value>
+    </data>
+  <data name="TestingUpdateNag_PleaseTestProperly" xml:space="preserve">
+        <value>XIVDeckを適切に利用するためは、正しいバージョンのStreamDeckプラグインを使用する必要があります。
+以下のボタンから、StreamDeckプラグインをダウンロードしてください。</value>
+    </data>
+  <data name="TestingUpdateNag_DismissHelp" xml:space="preserve">
+        <value>このメッセージを消した場合でも、テストモードが有効で、バージョンの不一致が検出されると再び表示されます。</value>
+    </data>
+  <data name="TestingUpdateNag_IgnoreButton" xml:space="preserve">
+        <value>今は無視する</value>
+    </data>
+  <data name="TestingUpdateNag_DownloadButton" xml:space="preserve">
+        <value>{0}をダウンロード</value>
+    </data>
+  <data name="WSInitOpcode_GamePluginOutdated" xml:space="preserve">
+        <value>インストールされているXIVDeck StreamDeck プラグインのバージョンは、ゲームプラグインよりも新しいバージョンです。Dalamudプラグインインストーラから更新をインストールしてください。</value>
+    </data>
+  <data name="ForcedUpdateNag_SupportInfo" xml:space="preserve">
+        <value>動かない？Discordを起動して、XIV Luncherのサーバーを見に行ってください！</value>
+    </data>
+  <data name="ForcedUpdateNag_SupportButton" xml:space="preserve">
+        <value>Discordを開く</value>
+    </data>
+  <data name="ForcedUpdateNag_BypassInstructions" xml:space="preserve">
+        <value>このエラーを一時的に無視するには、Ctrlキーを押したままにしてください。
+この操作では、プラグインは再有効化されません。</value>
+    </data>
+  <data name="ForcedUpdateNag_BypassButton" xml:space="preserve">
+        <comment>Shown when the user is given the option to temporarily ignore the update error.</comment>
+        <value>今は無視する</value>
+    </data>
 </root>

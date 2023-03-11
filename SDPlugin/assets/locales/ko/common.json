@@ -1,0 +1,20 @@
+{
+  "headers": {
+    "action": "",
+    "plugin": ""
+  },
+  "versionInfo": {
+    "build": "",
+    "runtime": "",
+    "game": ""
+  },
+  "connError": {
+    "headline": "",
+    "clickMore": "",
+    "checkFor": "",
+    "checkGameRunning": "",
+    "checkPluginInstalled": "",
+    "checkSettingsCorrect": "",
+    "resolveSteps": ""
+  }
+}
