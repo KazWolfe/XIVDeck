@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using XIVDeck.FFXIVPlugin.Game.Chat;
@@ -37,8 +34,6 @@ public static class VersionUtils {
             .Build();
 
         var outer = UIStrings.VersionUtils_UpdateAlert.Split("{0}", 2);
-        var components = outer.Select(segment => (SeString) segment).ToList();
-        components.Insert(1, versionHighlight); 
 
         return new SeStringBuilder()
             .Append(ErrorNotifier.BuildPrefixedString(""))

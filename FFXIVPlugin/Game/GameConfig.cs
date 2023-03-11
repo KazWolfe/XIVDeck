@@ -66,45 +66,50 @@ public static unsafe class GameConfig {
             return this.TryGetEntry(index, out entry);
         }
 
-        public bool TryGetBool(ConfigOption option, out bool value) {
+        private bool TryGetEntry(string option, out ConfigEntry* entry) {
+            entry = null;
+            return this.TryGetIndex(option, out var index) && this.TryGetEntry(index, out entry);
+        }
+
+        public bool TryGetBool(string option, out bool value) {
             value = false;
             if (!this.TryGetEntry(option, out var entry)) return false;
             value = entry->Value.UInt != 0;
             return true;
         }
 
-        public bool GetBool(ConfigOption option) {
+        public bool GetBool(string option) {
             if (!this.TryGetBool(option, out var value))
                 throw new ArgumentOutOfRangeException(nameof(option), @$"No option {option} was found.");
 
             return value;
         }
 
-        public void Set(ConfigOption option, bool value) {
+        public void Set(string option, bool value) {
             if (!this.TryGetEntry(option, out var entry)) return;
             entry->SetValue(value ? 1U : 0U);
         }
 
-        public bool TryGetUInt(ConfigOption option, out uint value) {
+        public bool TryGetUInt(string option, out uint value) {
             value = 0;
             if (!this.TryGetEntry(option, out var entry)) return false;
             value = entry->Value.UInt;
             return true;
         }
 
-        public uint GetUInt(ConfigOption option) {
+        public uint GetUInt(string option) {
             if (!this.TryGetUInt(option, out var value))
                 throw new ArgumentOutOfRangeException(nameof(option), @$"No option {option} was found.");
 
             return value;
         }
 
-        public void Set(ConfigOption option, uint value) {
+        public void Set(string option, uint value) {
             if (!this.TryGetEntry(option, out var entry)) return;
             entry->SetValue(value);
         }
 
-        public IDisposable TemporarySet(ConfigOption option, bool value) {
+        public IDisposable TemporarySet(string option, bool value) {
             var oldValue = this.GetBool(option);
 
             this.Set(option, value);

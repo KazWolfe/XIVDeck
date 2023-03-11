@@ -493,9 +493,9 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Default port: {0}
-        ///
-        ///Range: {1}-{2}.
+        ///   Looks up a localized string similar to Changing this setting will re-trigger the Welcome screen.
+        ///            
+        ///Default port: {0}, Range: {1}-{2}.
         /// </summary>
         internal static string SettingsWindow_APIPort_Help {
             get {

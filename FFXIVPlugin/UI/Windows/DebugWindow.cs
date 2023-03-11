@@ -29,9 +29,7 @@ public class DebugWindow : Window {
 
         return _instance;
     }
-
-    private readonly XIVDeckPlugin _plugin = XIVDeckPlugin.Instance;
-
+    
     // secret configs
     private bool _listenOnAllInterfaces;
     private int _httpListenerMode;
@@ -41,7 +39,9 @@ public class DebugWindow : Window {
         this.SizeCondition = ImGuiCond.FirstUseEver;
     }
 
-    public override void OnOpen() {
+    public override void PreDraw() {
+        base.PreDraw();
+        
         this._listenOnAllInterfaces = XIVDeckPlugin.Instance.Configuration.ListenOnAllInterfaces;
         this._httpListenerMode = (int) XIVDeckPlugin.Instance.Configuration.HttpListenerMode;
     }

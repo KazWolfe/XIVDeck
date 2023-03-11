@@ -138,9 +138,9 @@ Default: Off</value>
         <value>Listen IP: {0}</value>
     </data>
     <data name="SettingsWindow_APIPort_Help" xml:space="preserve">
-        <value>Default port: {0}
-
-Range: {1}-{2}</value>
+        <value>Changing this setting will re-trigger the Welcome screen.
+            
+Default port: {0}, Range: {1}-{2}</value>
     </data>
     <data name="ForcedUpdateNag_Headline" xml:space="preserve">
         <value>The XIVDeck Stream Deck Plugin is out of date!</value>

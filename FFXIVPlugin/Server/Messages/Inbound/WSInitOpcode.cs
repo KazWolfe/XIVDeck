@@ -1,7 +1,5 @@
 ﻿using System.Reflection;
 using System.Threading.Tasks;
-using Dalamud.Game.Text.SeStringHandling;
-using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Logging;
 using EmbedIO.WebSockets;
 using Newtonsoft.Json;
@@ -10,7 +8,6 @@ using XIVDeck.FFXIVPlugin.Game.Chat;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
-using XIVDeck.FFXIVPlugin.UI;
 using XIVDeck.FFXIVPlugin.UI.Windows;
 using XIVDeck.FFXIVPlugin.UI.Windows.Nags;
 using XIVDeck.FFXIVPlugin.Utils;

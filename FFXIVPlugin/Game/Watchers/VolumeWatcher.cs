@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Dalamud.Game;
 using Dalamud.Logging;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game.Data;
 using XIVDeck.FFXIVPlugin.Server;
@@ -11,14 +10,14 @@ using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 namespace XIVDeck.FFXIVPlugin.Game.Watchers; 
 
 public class VolumeWatcher : IDisposable {
-    public static readonly Dictionary<SoundChannel, (ConfigOption Level, ConfigOption MuteState)> Channels = new() {
-        {SoundChannel.Master, (ConfigOption.SoundMaster, ConfigOption.IsSndMaster)},
-        {SoundChannel.BackgroundMusic, (ConfigOption.SoundBgm, ConfigOption.IsSndBgm)},
-        {SoundChannel.SoundEffects, (ConfigOption.SoundSe, ConfigOption.IsSndSe)},
-        {SoundChannel.Voice, (ConfigOption.SoundVoice, ConfigOption.IsSndVoice)},
-        {SoundChannel.System, (ConfigOption.SoundSystem, ConfigOption.IsSndSystem)},
-        {SoundChannel.Ambient, (ConfigOption.SoundEnv, ConfigOption.IsSndEnv)},
-        {SoundChannel.Performance, (ConfigOption.SoundPerform, ConfigOption.IsSndPerform)}
+    public static readonly Dictionary<SoundChannel, (string Level, string MuteState)> Channels = new() {
+        {SoundChannel.Master, ("SoundMaster", "IsSndMaster")},
+        {SoundChannel.BackgroundMusic, ("SoundBgm", "IsSndBgm")},
+        {SoundChannel.SoundEffects, ("SoundSe", "IsSndSe")},
+        {SoundChannel.Voice, ("SoundVoice", "IsSndVoice")},
+        {SoundChannel.System, ("SoundSystem", "IsSndSystem")},
+        {SoundChannel.Ambient, ("SoundEnv", "IsSndEnv")},
+        {SoundChannel.Performance, ("SoundPerform", "IsSndPerform")}
     };
     
     // internal cache of volume states for known update

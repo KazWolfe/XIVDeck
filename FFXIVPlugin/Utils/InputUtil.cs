@@ -15,6 +15,7 @@ internal static partial class InputUtil {
     [LibraryImport("user32.dll")]
     private static partial int GetWindowThreadProcessId(nint hWnd, out int processId);
     
+    // ReSharper disable once UnusedMethodReturnValue.Local
     [LibraryImport("user32.dll")]
     private static partial nint SendMessageW(nint hWnd, uint msg, nint wParam, nint lParam);
     
