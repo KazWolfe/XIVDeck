@@ -6,11 +6,15 @@ on:
 jobs:
   synchronize-with-crowdin:
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: write
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Update localization
-        uses: crowdin/github-action@1.1.0
+        uses: crowdin/github-action@v1
         with:
           upload_translations: true
           upload_sources: true
@@ -19,8 +23,6 @@ jobs:
   
           download_translations: true
           skip_untranslated_strings: true
-          skip_untranslated_files: true
-          export_only_approved: true
           push_translations: true
           commit_message: '[Crowdin] Synchronize Localization Changes'
           create_pull_request: true
