@@ -513,7 +513,7 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use Penumbra Icons.
+        ///   Looks up a localized string similar to Enable Penumbra Integration.
         /// </summary>
         internal static string SettingsWindow_EnablePenumbraIPC {
             get {

@@ -105,7 +105,7 @@
         <comment>"Illegal commands" in this case mean commands that normally cannot be sent to the game and may cause damage or harm if proper care is not taken.</comment>
     </data>
     <data name="SettingsWindow_EnablePenumbraIPC" xml:space="preserve">
-        <value>Use Penumbra Icons</value>
+        <value>Enable Penumbra Integration</value>
         <comment>Setting to enable integration with another app named Penumbra.</comment>
     </data>
     <data name="SettingsWindow_EnablePenumbraIPC_Help" xml:space="preserve">

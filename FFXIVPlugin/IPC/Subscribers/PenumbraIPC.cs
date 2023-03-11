@@ -16,7 +16,7 @@ internal class PenumbraIPC : IPluginIpcClient {
     public int Version { get; private set; } = -1;
     
     private ICallGateSubscriber<(int BreakingVersion, int Version)>? _penumbraApiVersionsSubscriber;
-    private ICallGateSubscriber<string, string>? _penumbraResolveDefaultSubscriber;
+    private ICallGateSubscriber<string, string>? _penumbraResolveInterfaceSubscriber;
 
     private readonly ICallGateSubscriber<object?> _penumbraRegisteredSubscriber;
 
@@ -39,7 +39,7 @@ internal class PenumbraIPC : IPluginIpcClient {
 
         // explicitly reset to null so that any future calls fail gracefully
         this._penumbraApiVersionsSubscriber = null;
-        this._penumbraResolveDefaultSubscriber = null;
+        this._penumbraResolveInterfaceSubscriber = null;
 
         this.Enabled = false;
 
@@ -53,7 +53,7 @@ internal class PenumbraIPC : IPluginIpcClient {
        }
        
        this._penumbraApiVersionsSubscriber = Injections.PluginInterface.GetIpcSubscriber<(int, int)>("Penumbra.ApiVersions");
-       this._penumbraResolveDefaultSubscriber = Injections.PluginInterface.GetIpcSubscriber<string, string>("Penumbra.ResolveDefaultPath");
+       this._penumbraResolveInterfaceSubscriber = Injections.PluginInterface.GetIpcSubscriber<string, string>("Penumbra.ResolveInterfacePath");
 
        try {
            (var breakingVersion, this.Version) = this._penumbraApiVersionsSubscriber.InvokeFunc();
@@ -67,12 +67,12 @@ internal class PenumbraIPC : IPluginIpcClient {
    }
    
     public string ResolvePenumbraPath(string path) {
-        if (!this.Enabled || this._penumbraResolveDefaultSubscriber == null) return path;
+        if (!this.Enabled || this._penumbraResolveInterfaceSubscriber == null) return path;
 
         try {
-            return this._penumbraResolveDefaultSubscriber.InvokeFunc(path);
+            return this._penumbraResolveInterfaceSubscriber.InvokeFunc(path);
         } catch (IpcNotReadyError) {
-            PluginLog.Debug("Got a NotReadyError trying to call ResolveDefaultPath. Falling back to normal path");
+            PluginLog.Debug("Got a NotReadyError trying to call ResolveInterfacePath. Falling back to normal path");
             return path;
         } catch (Exception ex) {
             PluginLog.Error(ex, "Failed to invoke Penumbra IPC, disabling!");
