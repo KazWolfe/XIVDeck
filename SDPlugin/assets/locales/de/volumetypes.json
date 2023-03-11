@@ -1,23 +1,30 @@
 {
   "Master": {
-    "full": "Hauptlautstärke"
+    "full": "Hauptlautstärke",
+    "short": "Master"
   },
   "BackgroundMusic": {
-    "full": "Hintergrundmusik"
+    "full": "Hintergrundmusik",
+    "short": "BGM"
   },
   "SoundEffects": {
-    "full": "Soundeffekte"
+    "full": "Soundeffekte",
+    "short": "SFX"
   },
   "Voice": {
-    "full": "Stimmen"
+    "full": "Stimmen",
+    "short": "Stimmen"
   },
   "System": {
-    "full": "Systemtöne"
+    "full": "Systemtöne",
+    "short": "Sys"
   },
   "Ambient": {
-    "full": "Umgebungsgeräusche"
+    "full": "Umgebungsgeräusche",
+    "short": "Amb"
   },
   "Performance": {
-    "full": "Kompositionen"
+    "full": "Kompositionen",
+    "short": "Barde"
   }
 }

@@ -1,0 +1,52 @@
+{
+  "global": {
+    "port-label": ""
+  },
+  "command": {
+    "command-label": ""
+  },
+  "hotbar": {
+    "hotbar": "",
+    "slot": "",
+    "standard-pl": "",
+    "cross-pl": "",
+    "standard": "",
+    "cross": "",
+    "default": ""
+  },
+  "class": {
+    "default": "",
+    "class": "",
+    "unknown": ""
+  },
+  "action": {
+    "type": "",
+    "action": "",
+    "default-type": "",
+    "default-action": "",
+    "unknown": "",
+    "subframes": {
+      "emote": {
+        "logSettings": "",
+        "default": "",
+        "always": "",
+        "never": ""
+      },
+      "gearset": {
+        "manualPlate": "",
+        "plateId": ""
+      }
+    }
+  },
+  "macro": {
+    "type": "",
+    "number": "",
+    "individual": "",
+    "shared": ""
+  },
+  "volume": {
+    "default-type": "",
+    "channel": "",
+    "step": ""
+  }
+}

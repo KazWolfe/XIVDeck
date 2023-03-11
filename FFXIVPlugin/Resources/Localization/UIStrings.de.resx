@@ -270,8 +270,29 @@ Standard: Aus</value>
   <data name="WSInitOpcode_GamePluginOutdated" xml:space="preserve">
         <value>Die Version des XIVDeck Stream Deck Plugins ist neuer als das Spiel-Plugin. Bitte installieren Sie alle Updates vom Dalamud Plugin Installer.</value>
     </data>
+  <data name="ForcedUpdateNag_SupportInfo" xml:space="preserve">
+        <value>Du benötigst Unterstützung? Bitte schildere dein Problem im XIVLauncher &amp; Dalamud Discord (#how-to-get-help)!</value>
+    </data>
+  <data name="ForcedUpdateNag_SupportButton" xml:space="preserve">
+        <value>Discord öffnen</value>
+    </data>
+  <data name="ForcedUpdateNag_BypassInstructions" xml:space="preserve">
+        <value>Um diesen Fehler vorübergehend zu ignorieren, halte STRG gedrückt.
+Dies wird das Plugin nicht wieder aktivieren.</value>
+    </data>
   <data name="ForcedUpdateNag_BypassButton" xml:space="preserve">
         <comment>Shown when the user is given the option to temporarily ignore the update error.</comment>
         <value>Vorerst ignorieren</value>
+    </data>
+  <data name="VersionUtils_UpdateAlert_Link" xml:space="preserve">
+        <value>{0}Version {1}</value>
+        <comment>Highlighted section of the update message and used as the link to GitHub. {0} is the "play" icon, {1} is the version number. {0} must be at the start of the message.</comment>
+    </data>
+  <data name="VersionUtils_UpdateAlert" xml:space="preserve">
+        <value>Deine Version des XIVDeck Stream Deck Plugins ist nicht mehr auf dem neuesten Stand. Bitte installiere {0} vom GitHub!</value>
+        <comment>General message notifying the user of a version update. The {0} is replaced with a colored link to GitHub ("version 1.2.3") for updating named `VersionUtils_UpdateAlert_Link`. Only *one* {0} is permitted!!</comment>
+    </data>
+  <data name="MainCommandStrategy_MainCommandLocked" xml:space="preserve">
+        <value>Der Hauptbefehl {0} kann zurzeit nicht verwendet werden.</value>
     </data>
 </root>

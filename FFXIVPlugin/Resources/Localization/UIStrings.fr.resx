@@ -248,4 +248,39 @@ Plage : {1}-{2}</value>
 
 Par défaut : Désactivé</value>
     </data>
+  <data name="TestingUpdateNag_Headline" xml:space="preserve">
+        <value>Avertissement : La version de test de XIVDeck ne correspond pas</value>
+    </data>
+  <data name="TestingUpdateNag_MismatchDetectedText" xml:space="preserve">
+        <value>Une incompatibilité de version a été détectée entre la version actuellement installée du plugin Stream Deck et le plugin du jeu. Certaines fonctionnalités peuvent ne pas fonctionner correctement.</value>
+    </data>
+  <data name="TestingUpdateNag_PleaseTestProperly" xml:space="preserve">
+        <value>Afin de correctement aider à tester les releases de XIVDeck, vous devez être sur la version correcte (et donc correspondante) du plugin Stream Deck. Veuillez utiliser le bouton ci-dessous pour télécharger la version adéquate du Plugin Stream Deck pour votre version de test.</value>
+    </data>
+  <data name="TestingUpdateNag_DismissHelp" xml:space="preserve">
+        <value>Vous pouvez faire disparaître ce message, mais il continuera d'apparaître tant que le mode de test est activé et qu'une incompatibilité de version est détectée.</value>
+    </data>
+  <data name="TestingUpdateNag_IgnoreButton" xml:space="preserve">
+        <value>Ignorer pour l'instant</value>
+    </data>
+  <data name="TestingUpdateNag_DownloadButton" xml:space="preserve">
+        <value>Télécharger la version {0}</value>
+    </data>
+  <data name="WSInitOpcode_GamePluginOutdated" xml:space="preserve">
+        <value>La version du plugin XIVDeck Stream Deck installée est plus récente que le plugin du jeu. Veuillez le mettre jour à partir de l'installateur de plugins de Dalamud.</value>
+    </data>
+  <data name="ForcedUpdateNag_SupportInfo" xml:space="preserve">
+        <value>Bloqué ? Visitez le serveur Discord Goat Place pour obtenir de l'aide !</value>
+    </data>
+  <data name="ForcedUpdateNag_SupportButton" xml:space="preserve">
+        <value>Ouvrir Discord</value>
+    </data>
+  <data name="ForcedUpdateNag_BypassInstructions" xml:space="preserve">
+        <value>Pour temporairement ignorer cette erreur, maintenez CTRL.
+Cela ne réactivera pas le plugin.</value>
+    </data>
+  <data name="ForcedUpdateNag_BypassButton" xml:space="preserve">
+        <comment>Shown when the user is given the option to temporarily ignore the update error.</comment>
+        <value>Ignorer pour l'instant</value>
+    </data>
 </root>
