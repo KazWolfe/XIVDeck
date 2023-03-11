@@ -85,7 +85,7 @@ testing versions (when available), right-click XIVDeck's entry in the Plugin Ins
 ### Getting Help
 
 Technical support for release and testing versions of XIVDeck is available in the
-[Goat Place Discord][goatplace]'s [XIVDeck help thread][support-thread]. 
+[XIVLauncher & Dalamud Discord][goatplace]'s [XIVDeck help thread][support-thread]. 
 
 Please report bugs and submit feature requests through GitHub Issues when possible. I also will
 accept bugs and feature requests on Discord, but may ask you to open an Issue anyways. 
