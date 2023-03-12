@@ -861,5 +861,14 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
                 return ResourceManager.GetString("XIVDeck_Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XIVDeck&apos;s server has unexpectedly failed and has been disabled. Please restart your game. If this keeps happening, please report this bug!.
+        /// </summary>
+        internal static string XIVDeckWebServer_RunException {
+            get {
+                return ResourceManager.GetString("XIVDeckWebServer_RunException", resourceCulture);
+            }
+        }
     }
 }

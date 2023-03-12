@@ -54,11 +54,11 @@ public class XIVDeckWSServer : WebSocketModule {
 
     internal IReadOnlyList<IWebSocketContext> Connections => this.ActiveContexts;
 
-    public new void Dispose() {
-        Instance = null;
+    protected override void Dispose(bool disposing) {
+        base.Dispose(disposing);
         
+        Instance = null;
         this._sendLock.Dispose();
-        base.Dispose();
     }
 
     public void BroadcastMessage(BaseOutboundMessage message) {

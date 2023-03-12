@@ -8,7 +8,9 @@ using Dalamud.Logging;
 using EmbedIO;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game.Chat;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
+using XIVDeck.FFXIVPlugin.Server.Messages;
 
 namespace XIVDeck.FFXIVPlugin.Server;
 
@@ -17,7 +19,8 @@ public class XIVDeckWebServer : IDisposable {
     private readonly CancellationTokenSource _cts = new();
 
     private readonly PluginLogShim _logShim = new();
-    private readonly XIVDeckWSServer _wsServer;
+
+    private Task? _serverTask;
 
     public XIVDeckWebServer(XIVDeckPlugin plugin) {
         Swan.Logging.Logger.RegisterLogger(this._logShim);
@@ -34,10 +37,8 @@ public class XIVDeckWebServer : IDisposable {
             .WithMode(listenerMode)
         );
 
-        this._wsServer = new XIVDeckWSServer("/ws");
-
         this._host.WithCors(origins: "file://");
-        this._host.WithModule(this._wsServer);
+        this._host.WithModule(new XIVDeckWSServer("/ws"));
         this._host.WithModule(new AuthModule("/"));
 
         this._host.StateChanged += (_, e) => {
@@ -51,20 +52,22 @@ public class XIVDeckWebServer : IDisposable {
     public bool IsRunning => (this._host.State != WebServerState.Stopped);
 
     public void StartServer() {
-        Task.Run(async () => {
+        this._serverTask = Task.Run(async () => {
             try {
                 await this._host.RunAsync(this._cts.Token);
             } catch (HttpListenerException ex) when (ex.ErrorCode == 32) {
                 PluginLog.Warning(ex, "Port was already in use!");
             } catch (Exception ex) {
-                PluginLog.Error(ex, "Error when starting web server!");
+                PluginLog.Error(ex, "Error during webserver run!");
+                ErrorNotifier.ShowError(UIStrings.XIVDeckWebServer_RunException, false, true, true);
             }
-        });
+        }, this._cts.Token);
     }
 
     public void Dispose() {
         this._cts.Cancel();
-        this._wsServer.Dispose();
+        this._serverTask?.Wait();
+        this._host.Dispose();
 
         Swan.Logging.Logger.UnregisterLogger(this._logShim);
         this._logShim.Dispose();

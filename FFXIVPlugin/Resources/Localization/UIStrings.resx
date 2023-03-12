@@ -315,4 +315,7 @@ This will not re-enable the plugin.</value>
     <data name="SetupNag_JoinDiscord" xml:space="preserve">
         <value>Click to join the Discord!</value>
     </data>
+    <data name="XIVDeckWebServer_RunException" xml:space="preserve">
+        <value>XIVDeck's server has unexpectedly failed and has been disabled. Please restart your game. If this keeps happening, please report this bug!</value>
+    </data>
 </root>
