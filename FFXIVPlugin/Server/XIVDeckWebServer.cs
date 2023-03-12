@@ -14,19 +14,30 @@ using XIVDeck.FFXIVPlugin.Server.Messages;
 
 namespace XIVDeck.FFXIVPlugin.Server;
 
-public class XIVDeckWebServer : IDisposable {
-    private readonly IWebServer _host;
-    private readonly CancellationTokenSource _cts = new();
-
+public class XIVDeckWebServer : IXIVDeckServer {
     private readonly PluginLogShim _logShim = new();
+    private readonly XIVDeckPlugin _plugin;
 
+    // Core web server components
+    private IWebServer? _host;
+    private CancellationTokenSource? _cts;
     private Task? _serverTask;
+
+    // Exposed modules
+    private XIVDeckWSServer? _wsServer;
 
     public XIVDeckWebServer(XIVDeckPlugin plugin) {
         Swan.Logging.Logger.RegisterLogger(this._logShim);
+        this._plugin = plugin;
+    }
 
-        var listenerMode = plugin.Configuration.HttpListenerMode;
-        var port = plugin.Configuration.WebSocketPort;
+    public bool IsRunning => this._host != null && this._host.State != WebServerState.Stopped;
+
+    public void StartServer() {
+        this._cts = new CancellationTokenSource();
+
+        var listenerMode = this._plugin.Configuration.HttpListenerMode;
+        var port = this._plugin.Configuration.WebSocketPort;
 
         PluginLog.Debug($"Starting EmbedIO server on port {port} with listener mode {listenerMode}");
 
@@ -37,21 +48,19 @@ public class XIVDeckWebServer : IDisposable {
             .WithMode(listenerMode)
         );
 
+        this._wsServer = new XIVDeckWSServer("/ws");
+
         this._host.WithCors(origins: "file://");
-        this._host.WithModule(new XIVDeckWSServer("/ws"));
+        this._host.WithModule(this._wsServer);
         this._host.WithModule(new AuthModule("/"));
 
         this._host.StateChanged += (_, e) => {
             PluginLog.Debug($"EmbedIO server changed state to {e.NewState.ToString()}");
         };
 
-        this.ConfigureErrorHandlers();
+        ConfigureErrorHandlers(this._host);
         ApiControllerWiring.Autowire(this._host);
-    }
 
-    public bool IsRunning => (this._host.State != WebServerState.Stopped);
-
-    public void StartServer() {
         this._serverTask = Task.Run(async () => {
             try {
                 await this._host.RunAsync(this._cts.Token);
@@ -64,15 +73,25 @@ public class XIVDeckWebServer : IDisposable {
         }, this._cts.Token);
     }
 
-    public void Dispose() {
-        this._cts.Cancel();
+    public void StopServer() {
+        this._cts?.Cancel();
         this._serverTask?.Wait();
-        this._host.Dispose();
+        this._host?.Dispose();
+
+        PluginLog.Debug("Web server has been stopped.");
+    }
+
+    public void Dispose() {
+        this.StopServer();
 
         Swan.Logging.Logger.UnregisterLogger(this._logShim);
         this._logShim.Dispose();
 
         GC.SuppressFinalize(this);
+    }
+
+    public void BroadcastMessage(BaseOutboundMessage message) {
+        this._wsServer?.BroadcastMessage(message);
     }
 
     private static string[] GenerateUrlPrefixes(int port) {
@@ -89,8 +108,8 @@ public class XIVDeckWebServer : IDisposable {
         return prefixes.ToArray();
     }
 
-    private void ConfigureErrorHandlers() {
-        this._host.OnUnhandledException = (ctx, ex) => {
+    private static void ConfigureErrorHandlers(IWebServer server) {
+        server.OnUnhandledException = (ctx, ex) => {
             // Handle known exception types first, as these can be thrown by various subsystems
             switch (ex) {
                 case ActionLockedException:
@@ -111,7 +130,7 @@ public class XIVDeckWebServer : IDisposable {
             return ExceptionHandler.Default(ctx, ex);
         };
 
-        this._host.OnHttpException = (ctx, ex) => {
+        server.OnHttpException = (ctx, ex) => {
             var inner = ex.DataObject as Exception ?? (HttpException) ex;
 
             PluginLog.Warning(inner, $"Got HTTP {ex.StatusCode} while processing request: " +

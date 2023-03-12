@@ -53,7 +53,7 @@ internal class GameHooks : IDisposable {
         var tmp = this.RGM_WriteFileHook!.Original(a1, a2);
 
         try {
-            XIVDeckWSServer.Instance?.BroadcastMessage(new WSStateUpdateMessage("GearSet"));
+            XIVDeckPlugin.Instance.Server.BroadcastMessage(new WSStateUpdateMessage("GearSet"));
         } catch (Exception ex) {
             PluginLog.Error(ex, "Gearset update notification on hook failed");
         }
@@ -66,7 +66,7 @@ internal class GameHooks : IDisposable {
         var tmp = this.MacroUpdateHook!.Original(a1, macroPage, macroSlot);
 
         try {
-            XIVDeckWSServer.Instance?.BroadcastMessage(new WSStateUpdateMessage("Macro"));
+            XIVDeckPlugin.Instance.Server.BroadcastMessage(new WSStateUpdateMessage("Macro"));
         } catch (Exception ex) {
             PluginLog.Error(ex, "Macro update notification on hook failed");
         }

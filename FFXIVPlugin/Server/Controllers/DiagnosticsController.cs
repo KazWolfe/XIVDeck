@@ -17,7 +17,6 @@ public class DiagnosticsController : WebApiController {
         report.Status = "online";
         report.Version = VersionUtils.GetCurrentMajMinBuild();
         report.ApiKey = AuthHelper.Instance.Secret;
-        report.NumConnections = XIVDeckWSServer.Instance?.Connections.Count ?? 0;
         report.Configuration = XIVDeckPlugin.Instance.Configuration;
         
         return report;

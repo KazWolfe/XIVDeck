@@ -13,7 +13,7 @@ public static class DalamudHooks {
         DeferredChat.SendDeferredMessages(6000);
         
         // this should probably be moved, but update macro/gearset states at login
-        XIVDeckWSServer.Instance?.BroadcastMessage(new WSStateUpdateMessage("GearSet"));
-        XIVDeckWSServer.Instance?.BroadcastMessage(new WSStateUpdateMessage("Macro"));
+        XIVDeckPlugin.Instance.Server.BroadcastMessage(new WSStateUpdateMessage("GearSet"));
+        XIVDeckPlugin.Instance.Server.BroadcastMessage(new WSStateUpdateMessage("Macro"));
     }
 }

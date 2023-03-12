@@ -12,15 +12,12 @@ using XIVDeck.FFXIVPlugin.Utils;
 namespace XIVDeck.FFXIVPlugin.Server; 
 
 public class XIVDeckWSServer : WebSocketModule {
-    public static XIVDeckWSServer? Instance { get; private set; }
-
     private readonly SemaphoreSlim _sendLock = new(1, 1);
+
+    private readonly WSOpcodeWiring _wsModules = new();
         
     public XIVDeckWSServer(string urlPath) : base(urlPath, true) {
-        // this is a bit hacky, but *should* be alright as the server shouldn't actually ever create more than one.
-        // if it does, the instance will be replaced and any notifiers will point to the new (proper) place. I hope.
-        Instance = this;
-        WSOpcodeWiring.Autowire();
+        this._wsModules.Autowire();
     }
 
     protected override async Task OnMessageReceivedAsync(IWebSocketContext context, byte[] buffer, IWebSocketReceiveResult result) {
@@ -42,7 +39,7 @@ public class XIVDeckWSServer : WebSocketModule {
             return;
         }
 
-        var instance = WSOpcodeWiring.GetInstance(message.Opcode, rawData);
+        var instance = this._wsModules.GetInstance(message.Opcode, rawData);
 
         if (instance == null) {
             PluginLog.Warning($"WebSocket message failed to deserialize to instance: {rawData}");
@@ -57,7 +54,7 @@ public class XIVDeckWSServer : WebSocketModule {
     protected override void Dispose(bool disposing) {
         base.Dispose(disposing);
         
-        Instance = null;
+        PluginLog.Debug("WS server is going away!");
         this._sendLock.Dispose();
     }
 

@@ -61,7 +61,7 @@ public class VolumeWatcher : IDisposable {
             result = (volumeLevel, muted);
             PluginLog.Verbose($"Volume update for channel {channel.ToString()}. " +
                               $"Vol = {volumeLevel} Muted = {muted}");
-            XIVDeckWSServer.Instance?.BroadcastMessage(new WSVolumeUpdateMessage(channel, volumeLevel, muted));
+            XIVDeckPlugin.Instance.Server.BroadcastMessage(new WSVolumeUpdateMessage(channel, volumeLevel, muted));
             
             this._volumeCache[channel] = result;
         }

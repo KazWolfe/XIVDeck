@@ -53,18 +53,18 @@ public class DebugWindow : Window {
         ImGui.Indent();
 
         if (ImGui.Button("Clear Icons")) {
-            XIVDeckWSServer.Instance?.BroadcastMessage(new WSStateUpdateMessage("DEBUG_ClearIcons"));
+            XIVDeckPlugin.Instance.Server.BroadcastMessage(new WSStateUpdateMessage("DEBUG_ClearIcons"));
         }
 
         ImGui.SameLine();
         if (ImGui.Button("Redraw All Icons")) {
-            XIVDeckWSServer.Instance?.BroadcastMessage(new WSStateUpdateMessage("IconCache"));
+            XIVDeckPlugin.Instance.Server.BroadcastMessage(new WSStateUpdateMessage("IconCache"));
         }
 
         if (ImGui.Button("Resend Init Command")) {
             var xivPluginVersion = Assembly.GetExecutingAssembly().GetName().Version!;
             var packet = new WSInitReplyMessage(xivPluginVersion.GetMajMinBuild(), AuthHelper.Instance.Secret);
-            XIVDeckWSServer.Instance?.BroadcastMessage(packet);
+            XIVDeckPlugin.Instance.Server.BroadcastMessage(packet);
         }
         
         ImGui.Unindent();

@@ -17,28 +17,28 @@ public class WSOpcodeAttribute : Attribute {
     }
 }
 
-public static class WSOpcodeWiring {
-    private static readonly Dictionary<string, Type> Opcodes = new();
+public class WSOpcodeWiring {
+    private readonly Dictionary<string, Type> _opcodes = new();
 
-    public static void Autowire() {
+    public void Autowire() {
         var assembly = Assembly.GetExecutingAssembly();
 
         foreach (var type in assembly.GetTypes()) {
             var opcodeAttribute = type.GetCustomAttribute<WSOpcodeAttribute>();
 
             if (opcodeAttribute != null) {
-                Opcodes[opcodeAttribute.Opcode] = type;
+                this._opcodes[opcodeAttribute.Opcode] = type;
                 PluginLog.Debug($"Registered WebSocket opcode {opcodeAttribute.Opcode}");
             }
         }
     }
 
-    public static BaseInboundMessage? GetInstance(string opcode, string jsonData) {
-        if (!Opcodes.ContainsKey(opcode)) {
+    public BaseInboundMessage? GetInstance(string opcode, string jsonData) {
+        if (!this._opcodes.ContainsKey(opcode)) {
             throw new ArgumentOutOfRangeException(nameof(opcode), 
                 string.Format(UIStrings.WSOpcodeWiring_UnknownOpcodeError, opcode));
         }
 
-        return (BaseInboundMessage?) JsonConvert.DeserializeObject(jsonData, Opcodes[opcode]);
+        return (BaseInboundMessage?) JsonConvert.DeserializeObject(jsonData, this._opcodes[opcode]);
     }
 }

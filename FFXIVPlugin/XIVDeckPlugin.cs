@@ -14,33 +14,33 @@ using XIVDeck.FFXIVPlugin.UI;
 using XIVDeck.FFXIVPlugin.UI.Windows;
 using XIVDeck.FFXIVPlugin.UI.Windows.Nags;
 
-namespace XIVDeck.FFXIVPlugin; 
+namespace XIVDeck.FFXIVPlugin;
 
 // ReSharper disable once ClassNeverInstantiated.Global - instantiation handled by Dalamud
 public sealed class XIVDeckPlugin : IDalamudPlugin {
     internal static XIVDeckPlugin Instance { get; private set; } = null!;
     public string Name => UIStrings.XIVDeck_Title;
-        
+
     internal PluginConfig Configuration { get; }
     internal WindowSystem WindowSystem { get; }
     internal GameHooks GameHooks { get; }
     internal GameStateCache GameStateCache { get; }
     internal VolumeWatcher VolumeWatcher { get; }
+    internal IXIVDeckServer Server { get; }
 
     private DalamudPluginInterface PluginInterface { get; }
     private readonly HotbarWatcher _hotbarWatcher;
-    private XIVDeckWebServer _xivDeckWebServer = null!;
     private readonly ChatLinkWiring _chatLinkWiring;
     private readonly IPCManager _ipcManager;
 
     public XIVDeckPlugin(DalamudPluginInterface pluginInterface) {
         pluginInterface.Create<Injections>();
-        
+
         Instance = this;
         this.PluginInterface = pluginInterface;
 
         this.Configuration = this.PluginInterface.GetPluginConfig() as PluginConfig ?? new PluginConfig();
-        
+
         // DI and services are boring.
         this.GameHooks = new GameHooks();
         this.GameStateCache = new GameStateCache();
@@ -51,9 +51,10 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         this._hotbarWatcher = new HotbarWatcher();
         this.VolumeWatcher = new VolumeWatcher();
         this.WindowSystem = new WindowSystem(this.Name);
-        
+        this.Server = new XIVDeckWebServer(this);
+
         this.InitializeWebServer();
-        
+
         this.PluginInterface.UiBuilder.Draw += this.WindowSystem.Draw;
         this.PluginInterface.UiBuilder.OpenConfigUi += this.DrawConfigUI;
 
@@ -70,8 +71,8 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
 
         this._hotbarWatcher.Dispose();
         this.VolumeWatcher.Dispose();
-        
-        this._xivDeckWebServer.Dispose(); 
+
+        this.Server.Dispose();
         this._chatLinkWiring.Dispose();
         this.GameHooks.Dispose();
         this._ipcManager.Dispose();
@@ -100,11 +101,9 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
     }
 
     internal void InitializeWebServer() {
-        if (this._xivDeckWebServer is {IsRunning: true}) {
-            this._xivDeckWebServer.Dispose();
-        }
+        if (this.Server is {IsRunning: true})
+            this.Server.StopServer();
 
-        this._xivDeckWebServer = new XIVDeckWebServer(this);
-        this._xivDeckWebServer.StartServer();
+        this.Server.StartServer();
     }
 }

@@ -59,7 +59,7 @@ public class HotbarWatcher : IDisposable {
         if (updatedSlots.Count > 0) {
             PluginLog.Debug("Detected a change to hotbar(s)!");
             var message = new WSStateUpdateMessage<List<MicroHotbarSlot>>("Hotbar", updatedSlots);
-            XIVDeckWSServer.Instance?.BroadcastMessage(message);
+            XIVDeckPlugin.Instance.Server.BroadcastMessage(message);
         }
     }
 
