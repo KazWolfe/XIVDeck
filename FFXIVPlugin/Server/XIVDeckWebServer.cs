@@ -113,14 +113,14 @@ public class XIVDeckWebServer : IXIVDeckServer {
             // Handle known exception types first, as these can be thrown by various subsystems
             switch (ex) {
                 case ActionLockedException:
-                    throw HttpException.Forbidden(ex.Message, ex);
+                    return server.OnHttpException(ctx, HttpException.Forbidden(ex.Message, ex));
 
                 case PlayerNotLoggedInException:
                 case IllegalGameStateException:
-                    throw HttpException.BadRequest(ex.Message, ex);
+                    return server.OnHttpException(ctx, HttpException.BadRequest(ex.Message, ex));
 
                 case ActionNotFoundException:
-                    throw HttpException.NotFound(ex.Message, ex);
+                    return server.OnHttpException(ctx, HttpException.NotFound(ex.Message, ex));
             }
 
             // And then fallback to unknown exceptions

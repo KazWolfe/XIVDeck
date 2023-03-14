@@ -24,7 +24,7 @@ public class ActionController : WebApiController {
 
         Dictionary<HotbarSlotType, List<ExecutableAction>> actions = new();
 
-        foreach (var (type, strategy) in ActionDispatcher.GetStrategies()) {
+        foreach (var (type, strategy) in XIVDeckPlugin.Instance.ActionDispatcher.GetStrategies()) {
             var allowedItems = strategy.GetAllowedItems();
             if (allowedItems == null || allowedItems.Count == 0) continue;
 
@@ -50,7 +50,7 @@ public class ActionController : WebApiController {
             throw HttpException.NotFound(string.Format(UIStrings.ActionController_UnknownActionTypeError, type));
         }
 
-        var action = ActionDispatcher.GetStrategyForSlotType(slotType).GetExecutableActionById((uint) id);
+        var action = XIVDeckPlugin.Instance.ActionDispatcher.GetStrategyForType(slotType).GetExecutableActionById((uint) id);
 
         if (action == null) {
             throw new ActionNotFoundException(slotType, (uint) id);
@@ -67,7 +67,7 @@ public class ActionController : WebApiController {
         if (!Injections.ClientState.IsLoggedIn)
             throw new PlayerNotLoggedInException();
         
-        var strategy = ActionDispatcher.GetStrategyForSlotType(slotType);
+        var strategy = XIVDeckPlugin.Instance.ActionDispatcher.GetStrategyForType(slotType);
         var payloadType = strategy.GetPayloadType();
 
         ActionPayload? payload = null;

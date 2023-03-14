@@ -27,6 +27,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
     internal GameStateCache GameStateCache { get; }
     internal VolumeWatcher VolumeWatcher { get; }
     internal IXIVDeckServer Server { get; }
+    internal ActionDispatcher ActionDispatcher { get; }
 
     private DalamudPluginInterface PluginInterface { get; }
     private readonly HotbarWatcher _hotbarWatcher;
@@ -45,7 +46,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         this.GameHooks = new GameHooks();
         this.GameStateCache = new GameStateCache();
         SerializableGameClass.LoadCache();
-        ActionDispatcher.GetStrategies();
+        this.ActionDispatcher = new ActionDispatcher();
         this._ipcManager = new IPCManager();
         this._chatLinkWiring = new ChatLinkWiring();
         this._hotbarWatcher = new HotbarWatcher();
