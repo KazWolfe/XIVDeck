@@ -4,7 +4,6 @@ using Dalamud.Game;
 using Dalamud.Logging;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game.Data;
-using XIVDeck.FFXIVPlugin.Server;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 
 namespace XIVDeck.FFXIVPlugin.Game.Watchers; 

@@ -2,7 +2,6 @@
 using Dalamud.Hooking;
 using Dalamud.Logging;
 using Dalamud.Utility.Signatures;
-using XIVDeck.FFXIVPlugin.Server;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 
 // ReSharper disable InconsistentNaming - matching expected documentation things

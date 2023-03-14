@@ -1,6 +1,5 @@
 ﻿using System;
 using XIVDeck.FFXIVPlugin.Game.Chat;
-using XIVDeck.FFXIVPlugin.Server;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 
 namespace XIVDeck.FFXIVPlugin.Game; 
