@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Numerics;
 using System.Reflection;
@@ -43,7 +44,9 @@ public class DebugWindow : Window {
         base.PreDraw();
         
         this._listenOnAllInterfaces = XIVDeckPlugin.Instance.Configuration.ListenOnAllInterfaces;
-        this._httpListenerMode = (int) XIVDeckPlugin.Instance.Configuration.HttpListenerMode;
+
+        var listenerMode = XIVDeckPlugin.Instance.Configuration.HttpListenerMode;
+        this._httpListenerMode = listenerMode != null ? (int) listenerMode.Value + 1 : 0;
     }
 
     public override void Draw() {
@@ -75,13 +78,16 @@ public class DebugWindow : Window {
 
         if (ImGui.Checkbox(UIStrings.SettingsWindow_ListenOnNetwork, ref this._listenOnAllInterfaces)) {
             XIVDeckPlugin.Instance.Configuration.ListenOnAllInterfaces = this._listenOnAllInterfaces;
+            XIVDeckPlugin.Instance.Configuration.Save();
         }
 
-        var listenerModes = Enum.GetNames<HttpListenerMode>();
-        if (ImGui.Combo("HTTP Listener Mode", ref this._httpListenerMode, listenerModes, listenerModes.Length)) {
-            XIVDeckPlugin.Instance.Configuration.HttpListenerMode = (HttpListenerMode) this._httpListenerMode;
+        var listenerModes = new List<string> {"Default"};
+        listenerModes.AddRange(Enum.GetNames<HttpListenerMode>());
+        if (ImGui.Combo("HTTP Listener Mode", ref this._httpListenerMode, listenerModes.ToArray(), listenerModes.Count)) {
+            XIVDeckPlugin.Instance.Configuration.HttpListenerMode = this._httpListenerMode == 0 ? null : (HttpListenerMode) this._httpListenerMode - 1;
+            XIVDeckPlugin.Instance.Configuration.Save();
         }
-        
+
         ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudRed);
         if (ImGui.Button("KILL SERVER")) {
             var field = XIVDeckPlugin.Instance.GetType().GetField("_xivDeckWebServer",

@@ -52,7 +52,8 @@ public class PluginConfig : IPluginConfiguration {
     /// Internal configuration setting for now.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
-    public HttpListenerMode HttpListenerMode { get; set; } = HttpListenerMode.Microsoft;
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public HttpListenerMode? HttpListenerMode { get; set; }
 
     public void Save() {
         Injections.PluginInterface.SavePluginConfig(this);

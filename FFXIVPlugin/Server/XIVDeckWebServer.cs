@@ -11,6 +11,7 @@ using XIVDeck.FFXIVPlugin.Game.Chat;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 using XIVDeck.FFXIVPlugin.Server.Messages;
+using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.Server;
 
@@ -36,7 +37,7 @@ public class XIVDeckWebServer : IXIVDeckServer {
     public void StartServer() {
         this._cts = new CancellationTokenSource();
 
-        var listenerMode = this._plugin.Configuration.HttpListenerMode;
+        var listenerMode = GetListenerMode();
         var port = this._plugin.Configuration.WebSocketPort;
 
         PluginLog.Debug($"Starting EmbedIO server on port {port} with listener mode {listenerMode}");
@@ -94,17 +95,34 @@ public class XIVDeckWebServer : IXIVDeckServer {
         this._wsServer?.BroadcastMessage(message);
     }
 
-    private static string[] GenerateUrlPrefixes(int port) {
-        var prefixes = new List<string> {$"http://localhost:{port}", $"http://127.0.0.1:{port}"};
-
-        if (Socket.OSSupportsIPv6)
-            prefixes.Add($"http://[::1]:{port}");
-
-        if (XIVDeckPlugin.Instance.Configuration.ListenOnAllInterfaces) {
-            PluginLog.Warning("XIVDeck is configured to listen on all interfaces!!");
-            prefixes.Add($"http://*:{port}");
+    private static HttpListenerMode GetListenerMode() {
+        if (XIVDeckPlugin.Instance.Configuration.HttpListenerMode != null) {
+            var mode = XIVDeckPlugin.Instance.Configuration.HttpListenerMode.Value;
+            PluginLog.Debug($"Config explicitly set HttpListenerMode to {mode}.");
+            return mode;
         }
 
+        if (Dalamud.Utility.Util.IsLinux()) {
+            PluginLog.Information("Linux environment detected; using EmbedIO listener.");
+            return HttpListenerMode.EmbedIO;
+        }
+
+        PluginLog.Debug("HttpListenerMode not set; using default Microsoft listener.");
+        return HttpListenerMode.Microsoft;
+    }
+
+    private static string[] GenerateUrlPrefixes(int port) {
+        if (XIVDeckPlugin.Instance.Configuration.ListenOnAllInterfaces) {
+            PluginLog.Warning("XIVDeck is configured to listen on all interfaces! THIS IS A SECURITY RISK!");
+            return new[] { "http://*:${port}" };
+        }
+
+        var prefixes = new List<string> {$"http://localhost:{port}"};
+
+        // Add in explicit URL prefixes for v4 (and v6) because HttpListener just doesn't let us grab all traffic on an interface.
+        if (NetworkUtil.HostSupportsLocalIPv4()) prefixes.Add($"http://127.0.0.1:{port}");
+        if (NetworkUtil.HostSupportsLocalIPv6()) prefixes.Add($"http://[::1]:{port}");
+        
         return prefixes.ToArray();
     }
 
