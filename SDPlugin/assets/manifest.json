@@ -110,6 +110,10 @@
     {
       "Platform": "windows",
       "MinimumVersion": "10"
+    },
+    {
+      "Platform": "mac",
+      "MinimumVersion": "11"
     }
   ],
   "Software": {
@@ -118,6 +122,9 @@
   "ApplicationsToMonitor": {
     "windows": [
       "ffxiv_dx11.exe"
+    ],
+    "mac": [
+      "dezent.XIV-on-Mac"
     ]
   }
 }
