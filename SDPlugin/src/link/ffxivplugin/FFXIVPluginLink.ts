@@ -13,7 +13,7 @@ export class FFXIVPluginLink {
     static eventManager: EventEmitter = new EventEmitter();
 
     // settings
-    public hostname: string = "localhost";
+    public hostname: string = "127.0.0.1";
     public port: number = 37984;
     public isGameAlive: boolean = false;
     public apiKey: string = "";
