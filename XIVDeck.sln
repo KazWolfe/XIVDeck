@@ -1,10 +1,27 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{560E523D-7ECB-4122-B65A-FB033EEC2AD7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{76DE2ECA-BA3A-4F5E-A7D4-D591E6FD96D4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E020D481-A308-4D17-B019-CB7E4CA40133}"
+    ProjectSection(SolutionItems) = preProject
+        README.md = README.md
+        crowdin.yml = crowdin.yml
+    EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XIVDeck.FFXIVPlugin", "src\FFXIVPlugin\XIVDeck.FFXIVPlugin.csproj", "{3B131829-50B8-4E72-BEBA-1762F0C61294}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XIVDeck.SDPlugin", "src\SDPlugin\XIVDeck.SDPlugin.esproj", "{299F16FD-C8AC-4774-95E5-7311D085595E}"
+Project("{349C5851-65DF-11DA-9384-00065B846F21}") = "XIVDeck.SDPlugin", "src\SDPlugin\XIVDeck.SDPlugin.esproj", "{299F16FD-C8AC-4774-95E5-7311D085595E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbedIO", "lib\EmbedIO\src\EmbedIO\EmbedIO.csproj", "{A08FAEF8-4F1F-420D-9948-59F58C9BEA3E}"
 EndProject
 Global
+    GlobalSection(NestedProjects) = preSolution
+        {A08FAEF8-4F1F-420D-9948-59F58C9BEA3E} = {76DE2ECA-BA3A-4F5E-A7D4-D591E6FD96D4}
+        {3B131829-50B8-4E72-BEBA-1762F0C61294} = {560E523D-7ECB-4122-B65A-FB033EEC2AD7}
+        {299F16FD-C8AC-4774-95E5-7311D085595E} = {560E523D-7ECB-4122-B65A-FB033EEC2AD7}
+    EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Release|Any CPU = Release|Any CPU
 		Debug|Any CPU = Debug|Any CPU
@@ -16,5 +33,9 @@ Global
 		{3B131829-50B8-4E72-BEBA-1762F0C61294}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{299F16FD-C8AC-4774-95E5-7311D085595E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{299F16FD-C8AC-4774-95E5-7311D085595E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A08FAEF8-4F1F-420D-9948-59F58C9BEA3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A08FAEF8-4F1F-420D-9948-59F58C9BEA3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A08FAEF8-4F1F-420D-9948-59F58C9BEA3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A08FAEF8-4F1F-420D-9948-59F58C9BEA3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal

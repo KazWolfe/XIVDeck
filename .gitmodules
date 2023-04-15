@@ -1,0 +1,3 @@
+[submodule "lib/EmbedIO"]
+	path = lib/EmbedIO
+	url = https://github.com/KazWolfe/embedio.git
