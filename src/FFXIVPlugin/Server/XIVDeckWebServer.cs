@@ -41,8 +41,6 @@ public class XIVDeckWebServer : IXIVDeckServer {
 
         PluginLog.Debug($"Starting EmbedIO server on port {port} with listener mode {listenerMode}");
 
-        // FIXME: the EmbedIO listener mode has a problem where "localhost" only resolves to IPv6.
-        // If localhost is somehow resolved to 127.0.0.1, all communication will fail for no apparent reason.
         this._host = new WebServer(o => o
             .WithUrlPrefixes(GenerateUrlPrefixes(port))
             .WithMode(listenerMode)
@@ -101,19 +99,21 @@ public class XIVDeckWebServer : IXIVDeckServer {
             return mode;
         }
 
+        // If you're wondering why this is here despite the below line doing the same thing, it's legacy just in case
+        // I want to swap the default listener for a specific operating system class.
         if (Dalamud.Utility.Util.IsLinux()) {
             PluginLog.Information("Linux environment detected; using EmbedIO listener.");
             return HttpListenerMode.EmbedIO;
         }
 
-        PluginLog.Debug("HttpListenerMode not set; using default Microsoft listener.");
-        return HttpListenerMode.Microsoft;
+        PluginLog.Debug("HttpListenerMode not set; using EmbedIO listener.");
+        return HttpListenerMode.EmbedIO;
     }
 
     private static string[] GenerateUrlPrefixes(int port) {
         if (XIVDeckPlugin.Instance.Configuration.ListenOnAllInterfaces) {
             PluginLog.Warning("XIVDeck is configured to listen on all interfaces! THIS IS A SECURITY RISK!");
-            return new[] { "http://*:${port}" };
+            return new[] { $"http://*:${port}" };
         }
 
         var prefixes = new List<string> {$"http://localhost:{port}"};
