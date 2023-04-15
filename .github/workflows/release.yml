@@ -25,7 +25,7 @@ jobs:
       - name: Build Plugin
         run: |
           $ver = '${{ github.ref }}' -replace 'refs/tags/v',''
-          invoke-expression 'dotnet build --no-restore --configuration Release --nologo -p:AssemblyVersion=$ver -p:Version=$ver -p:FileVersion=$ver FFXIVPlugin'
+          invoke-expression 'dotnet build --no-restore --configuration Release --nologo -p:AssemblyVersion=$ver -p:Version=$ver -p:FileVersion=$ver src/FFXIVPlugin'
       - name: Report Build Hash
         run: |
           $fileHashInfo = Get-FileHash .\src\FFXIVPlugin\bin\Release\XIVDeck.FFXIVPlugin\latest.zip;
