@@ -15,7 +15,7 @@ jobs:
       - name: Set up .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: 7.0.x
       - name: Restore Dependencies
         run: dotnet restore
       - name: Download Dalamud
@@ -28,13 +28,13 @@ jobs:
           invoke-expression 'dotnet build --no-restore --configuration Release --nologo -p:AssemblyVersion=$ver -p:Version=$ver -p:FileVersion=$ver FFXIVPlugin'
       - name: Report Build Hash
         run: |
-          $fileHashInfo = Get-FileHash .\FFXIVPlugin\bin\Release\XIVDeck.FFXIVPlugin\latest.zip;
+          $fileHashInfo = Get-FileHash .\src\FFXIVPlugin\bin\Release\XIVDeck.FFXIVPlugin\latest.zip;
           Write-Output "Hash of XIVDeck.FFXIVPlugin: $($fileHashInfo.Hash)";
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: XIVDeck.FFXIVPlugin
-          path: .\FFXIVPlugin\bin\Release\XIVDeck.FFXIVPlugin\
+          path: .\src\FFXIVPlugin\bin\Release\XIVDeck.FFXIVPlugin\
 
   build-sdplugin:
     name: Build XIVDeck Stream Deck Plugin
@@ -42,7 +42,7 @@ jobs:
     
     defaults: 
       run:
-        working-directory: ./SDPlugin
+        working-directory: ./src/SDPlugin
     
     steps:
       - uses: actions/checkout@v3
@@ -62,14 +62,14 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: XIVDeck.SDPlugin
-          path: ./SDPlugin/dist/dev.wolf.xivdeck.streamDeckPlugin
+          path: ./src/SDPlugin/dist/dev.wolf.xivdeck.streamDeckPlugin
       - name: Add Artifact to Release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./SDPlugin/dist/dev.wolf.xivdeck.streamDeckPlugin
+          asset_path: ./src/SDPlugin/dist/dev.wolf.xivdeck.streamDeckPlugin
           asset_name: XIVDeck.streamDeckPlugin
           asset_content_type: application/zip
           

@@ -4,8 +4,8 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'FFXIVPlugin/Resources/Localization/*.resx'
-      - 'SDPlugin/assets/locales/*/*.json'
+      - 'src/FFXIVPlugin/Resources/Localization/*.resx'
+      - 'src/SDPlugin/assets/locales/*/*.json'
     
 jobs:
   crowdin-upload:

@@ -105,6 +105,12 @@ StyleCopReport.xml
 *.scc
 *.js.map
 
+# Random annoying files
+.DS_Store
+Thumbs.db
+._*
+[Dd]esktop.ini
+
 # Chutzpah Test files
 _Chutzpah*
 

@@ -26,10 +26,10 @@ create an interactive and pleasant human interface experience.
 
 This plugin has two primary components:
 
-* The [XIVDeck Game Plugin](FFXIVPlugin), which is a Dalamud plugin responsible for interacting
+* The [XIVDeck Game Plugin](src/FFXIVPlugin), which is a Dalamud plugin responsible for interacting
 with Final Fantasy XIV and hosting a local webserver that allows other systems to communicate 
 with the game.
-* The [XIVDeck Stream Deck Plugin](SDPlugin), which is a JavaScript plugin written using the 
+* The [XIVDeck Stream Deck Plugin](src/SDPlugin), which is a JavaScript plugin written using the 
 Elgato Stream Deck SDK. It exposes a number of actions that will allow the game to deeply 
 interact with the Stream Deck.
 
