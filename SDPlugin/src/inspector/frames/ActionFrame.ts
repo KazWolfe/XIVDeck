@@ -83,7 +83,10 @@ export class ActionFrame extends BaseFrame<ActionButtonSettings> {
         if (this.selectedType == null) {
             placeholder.selected = true;
         } else if (!this.actionCache.has(this.selectedType)) {
-            let failsafe = PIUtils.createDefaultSelection(this.selectedType);
+            let typeKey = `actiontypes:${this.selectedType}`;
+            let failsafeName = i18n.t(typeKey);
+            
+            let failsafe = PIUtils.createDefaultSelection(failsafeName);
             failsafe.value = this.selectedType;
             failsafe.selected = true;
 

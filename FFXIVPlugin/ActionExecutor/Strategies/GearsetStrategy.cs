@@ -19,7 +19,7 @@ public class GearsetStrategy : IActionStrategy {
     private static ExecutableAction GetExecutableAction(GameStateCache.Gearset gearset) {
         return new ExecutableAction {
             ActionId = gearset.Slot,
-            ActionName = gearset.Name,
+            ActionName = $"{gearset.Slot}: {gearset.Name}",
             IconId = 062800 + (int) gearset.ClassJob,
             HotbarSlotType = HotbarSlotType.GearSet
         };
