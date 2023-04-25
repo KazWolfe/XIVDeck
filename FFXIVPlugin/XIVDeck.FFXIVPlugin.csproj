@@ -43,7 +43,10 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
+        <DalamudLibPath Condition="$([MSBuild]::IsOSPlatform('Windows'))">$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
+        <DalamudLibPath Condition="$([MSBuild]::IsOSPlatform('Linux'))">$(HOME)/.xlcore/dalamud/Hooks/dev/</DalamudLibPath>
+        <DalamudLibPath Condition="$([MSBuild]::IsOSPlatform('OSX'))">$(HOME)/Library/Application Support/XIV on Mac/dalamud/Hooks/dev/</DalamudLibPath>
+        <DalamudLibPath Condition="$(DALAMUD_HOME) != ''">$(DALAMUD_HOME)/</DalamudLibPath>
     </PropertyGroup>
 
     <ItemGroup>
@@ -86,8 +89,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="..\SDPlugin\assets\images\icon@2x.png">
-            <TargetPath>images\icon.png</TargetPath>
+        <Content Include="../SDPlugin/assets/images/icon@2x.png">
+            <TargetPath>images/icon.png</TargetPath>
             <Visible>false</Visible>
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
@@ -96,14 +99,14 @@
     <!-- Localization -->
     <ItemGroup>
         <!-- Do not include pseudo-localization files in the release build -->
-        <EmbeddedResource Remove="Resources\Localization\UIStrings.qps-ploc.resx" Condition="'$(Configuration)' == 'Release'" />
-        <None Include="Resources\Localization\UIStrings.qps-ploc.resx" Condition="'$(Configuration)' == 'Release'" />
+        <EmbeddedResource Remove="Resources/Localization/UIStrings.qps-ploc.resx" Condition="'$(Configuration)' == 'Release'" />
+        <None Include="Resources/Localization/UIStrings.qps-ploc.resx" Condition="'$(Configuration)' == 'Release'" />
 
-        <EmbeddedResource Update="Resources\Localization\UIStrings.resx">
+        <EmbeddedResource Update="Resources/Localization/UIStrings.resx">
             <Generator>ResXFileCodeGenerator</Generator>
             <LastGenOutput>UIStrings.Designer.cs</LastGenOutput>
         </EmbeddedResource>
-        <Compile Update="Resources\Localization\UIStrings.Designer.cs">
+        <Compile Update="Resources/Localization/UIStrings.Designer.cs">
             <DesignTime>True</DesignTime>
             <AutoGen>True</AutoGen>
             <DependentUpon>UIStrings.resx</DependentUpon>
