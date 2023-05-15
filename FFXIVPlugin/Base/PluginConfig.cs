@@ -55,6 +55,11 @@ public class PluginConfig : IPluginConfiguration {
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public HttpListenerMode? HttpListenerMode { get; set; }
 
+    /// <summary>
+    /// Suppresses nag messages related to multiboxing.
+    /// </summary>
+    public bool SuppressMultiboxNag = false;
+
     public void Save() {
         Injections.PluginInterface.SavePluginConfig(this);
     }

@@ -8,10 +8,11 @@ namespace XIVDeck.FFXIVPlugin.UI.Windows;
 
 public abstract class NagWindow : Window {
     internal static void CloseAllNags() {
-        ForcedUpdateNag.Hide();
+        ForcedUpdateNag.Hide(); 
         SetupNag.Hide();
         PortInUseNag.Hide();
         TestingUpdateNag.Hide();
+        MultiboxNag.Hide();
     }
 
     private const ImGuiWindowFlags WindowFlags = ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoDocking |

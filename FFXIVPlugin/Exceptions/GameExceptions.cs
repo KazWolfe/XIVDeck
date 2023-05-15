@@ -2,10 +2,11 @@
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 
-namespace XIVDeck.FFXIVPlugin.Exceptions; 
+namespace XIVDeck.FFXIVPlugin.Exceptions;
 
+public interface IXIVDeckException { }
 
-public class IllegalGameStateException : InvalidOperationException {
+public class IllegalGameStateException : InvalidOperationException, IXIVDeckException {
     public IllegalGameStateException(string message) : 
         base(message) { }
 }
@@ -22,7 +23,9 @@ public class ActionLockedException : IllegalGameStateException {
         base(message) { }
 }
 
-public class ActionNotFoundException : ArgumentException {
+public class ActionNotFoundException : ArgumentException, IXIVDeckException {
     public ActionNotFoundException(HotbarSlotType actionType, uint actionId) : 
         base(string.Format(UIStrings.Exceptions_ActionNotFound, actionType, actionId)) { }
+
+    public ActionNotFoundException(string message) : base(message) { }
 }

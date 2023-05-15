@@ -457,6 +457,51 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Multiboxing has been detected. XIVDeck might not work properly!.
+        /// </summary>
+        internal static string MultiboxNag_ChatWarning {
+            get {
+                return ResourceManager.GetString("MultiboxNag_ChatWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        internal static string MultiboxNag_CloseButton {
+            get {
+                return ResourceManager.GetString("MultiboxNag_CloseButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XIVDeck has detected another instance of Final Fantasy XIV running on your computer. As such, it has been disabled in this client..
+        /// </summary>
+        internal static string MultiboxNag_MultiboxingDetected {
+            get {
+                return ResourceManager.GetString("MultiboxNag_MultiboxingDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Multiboxing is unsupported and there may be unexpected behavior. If your Stream Deck no longer works after receiving this message, please restart all instances of your game client..
+        /// </summary>
+        internal static string MultiboxNag_MultiboxingIsUnsupported {
+            get {
+                return ResourceManager.GetString("MultiboxNag_MultiboxingIsUnsupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Don&apos;t show this warning again..
+        /// </summary>
+        internal static string MultiboxNag_SuppressWarning {
+            get {
+                return ResourceManager.GetString("MultiboxNag_SuppressWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open XIVDeck Download Page.
         /// </summary>
         internal static string Nag_OpenGithubDownloadButton {
@@ -480,6 +525,51 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         internal static string OrnamentStrategy_OrnamentLockedError {
             get {
                 return ResourceManager.GetString("OrnamentStrategy_OrnamentLockedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ignore For Now.
+        /// </summary>
+        internal static string PortInUseNag_IgnoreForNow {
+            get {
+                return ResourceManager.GetString("PortInUseNag_IgnoreForNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XIVDeck has detected that port {0} is already in use by another application..
+        /// </summary>
+        internal static string PortInUseNag_PortAlreadyInUse {
+            get {
+                return ResourceManager.GetString("PortInUseNag_PortAlreadyInUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XIVDeck has detected that port {0} is .
+        /// </summary>
+        internal static string PortInUseNag_PortIsAlreadyInUse {
+            get {
+                return ResourceManager.GetString("PortInUseNag_PortIsAlreadyInUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In order to use XIVDeck, this port must be changed to a free one. To do this, please choose a new port number in the XIVDeck Game Plugin settings, and enter that same port number in the XIVDeck Stream Deck Plugin settings..
+        /// </summary>
+        internal static string PortInUseNag_ResolutionInstructions {
+            get {
+                return ResourceManager.GetString("PortInUseNag_ResolutionInstructions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The XIVDeck API port is already in use!.
+        /// </summary>
+        internal static string PortInUseNag_Title {
+            get {
+                return ResourceManager.GetString("PortInUseNag_Title", resourceCulture);
             }
         }
         

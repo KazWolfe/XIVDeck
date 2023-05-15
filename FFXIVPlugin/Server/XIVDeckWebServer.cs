@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Dalamud.Logging;
@@ -10,6 +11,7 @@ using XIVDeck.FFXIVPlugin.Game.Chat;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 using XIVDeck.FFXIVPlugin.Server.Messages;
+using XIVDeck.FFXIVPlugin.UI.Windows.Nags;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.Server;
@@ -62,8 +64,10 @@ public class XIVDeckWebServer : IXIVDeckServer {
         this._serverTask = Task.Run(async () => {
             try {
                 await this._host.RunAsync(this._cts.Token);
-            } catch (HttpListenerException ex) when (ex.ErrorCode == 32) {
-                PluginLog.Warning(ex, "Port was already in use!");
+            } catch (HttpListenerException ex) when (ex.ErrorCode is 32 or 183) {
+                this.HandlePortConflict(ex);
+            } catch (SocketException ex) when (ex.ErrorCode == 10048) {
+                this.HandlePortConflict(ex);
             } catch (Exception ex) {
                 PluginLog.Error(ex, "Error during webserver run!");
                 ErrorNotifier.ShowError(UIStrings.XIVDeckWebServer_RunException, false, true, true);
@@ -160,5 +164,16 @@ public class XIVDeckWebServer : IXIVDeckServer {
 
             return HttpExceptionHandler.Default(ctx, ex);
         };
+    }
+
+    private void HandlePortConflict(Exception ex) {
+        PluginLog.Warning(ex, "Port was already in use!");
+
+        if (!UiUtil.IsMultiboxing()) {
+            PortInUseNag.Show();
+            return;
+        }
+
+        MultiboxNag.Show();
     }
 }

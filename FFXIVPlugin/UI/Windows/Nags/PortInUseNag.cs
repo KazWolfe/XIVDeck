@@ -1,5 +1,6 @@
 ﻿using Dalamud.Interface.Colors;
 using ImGuiNET;
+using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 
 namespace XIVDeck.FFXIVPlugin.UI.Windows.Nags;
@@ -18,28 +19,31 @@ public class PortInUseNag : NagWindow {
         _instance.IsOpen = false;
     }
 
-    private PortInUseNag() : base("sdPortInUse") { }
+    private readonly PluginConfig _pluginConfig;
+
+    private PortInUseNag() : base("sdPortInUse", 350) {
+        this._pluginConfig = XIVDeckPlugin.Instance.Configuration;
+    }
 
     protected override void _internalDraw() {
         ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
-        ImGui.Text("The XIVDeck API port is already in use!");
+        ImGui.Text(UIStrings.PortInUseNag_Title);
         ImGui.PopStyleColor();
 
         ImGui.Separator();
 
-        ImGui.Text($"XIVDeck has detected that port {XIVDeckPlugin.Instance.Configuration.WebSocketPort} is " +
-                   "already in use by another application.");
+        ImGui.Text(string.Format(UIStrings.PortInUseNag_PortAlreadyInUse, this._pluginConfig.WebSocketPort));
 
-        ImGui.Text("In order to use XIVDeck, this port must be changed to a free one. To do this, please choose " +
-                   "a new port number in the XIVDeck Game Plugin settings, and enter that same port number in the " +
-                   "XIVDeck Stream Deck Plugin settings.");
+        ImGui.Text(UIStrings.PortInUseNag_ResolutionInstructions);
+
+        ImGui.Spacing();
 
         if (ImGui.Button(UIStrings.Nag_OpenSettingsButton)) {
             XIVDeckPlugin.Instance.DrawConfigUI();
         }
 
         ImGui.SameLine();
-        if (ImGui.Button("Ignore")) {
+        if (ImGui.Button(UIStrings.PortInUseNag_IgnoreForNow)) {
             Hide();
         }
     }
