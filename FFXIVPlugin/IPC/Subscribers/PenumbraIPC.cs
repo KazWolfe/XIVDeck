@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Dalamud.Logging;
 using Dalamud.Plugin.Ipc;
 using Dalamud.Plugin.Ipc.Exceptions;
@@ -47,7 +48,7 @@ internal class PenumbraIPC : IPluginIpcClient {
     }
     
    private void _initializeIpc() {
-       if (!Injections.PluginInterface.PluginNames.Contains("Penumbra")) {
+       if (Injections.PluginInterface.InstalledPlugins.All(p => p.InternalName != "Penumbra")) {
            PluginLog.Debug("Penumbra was not found, will not create IPC at this time");
            return;
        }
