@@ -1,21 +1,30 @@
 ﻿using System;
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
+using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Game.Managers;
+
+using Marker = XIVDeck.FFXIVPlugin.Game.Data.Marker;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
 [ActionStrategy(HotbarSlotType.Marker)]
 public class MarkerStrategy : FixedCommandStrategy<Marker> {
-    protected override string GetNameForAction(Marker action) => action.Name.ToString();
-
-    protected override HotbarSlotType GetHotbarSlotType() => HotbarSlotType.Marker;
-
+    
     protected override int GetIconForAction(Marker action) => action.Icon;
 
     protected override string GetCommandToCallAction(Marker action) => throw new NotSupportedException();
+    
+    protected override ExecutableAction? BuildExecutableAction(Marker action) {
+        return new ExecutableAction {
+            ActionId = (int) action.RowId,
+            ActionName = action.Name.ToString(),
+            IconId = this.GetIconForAction(action),
+            HotbarSlotType = HotbarSlotType.Marker,
+            SortOrder = action.SortOrder,
+        };
+    }
 
     protected override void ExecuteInner(Marker action) {
         PluginLog.Debug($"Executing {action} ({action.Name}) directly via hotbar");

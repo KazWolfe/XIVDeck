@@ -12,11 +12,10 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor;
 
 public abstract class FixedCommandStrategy<T> : IActionStrategy where T : ExcelRow {
     private readonly List<ExecutableAction> _actionCache = new();
-
-    protected abstract string GetNameForAction(T action);
-    protected abstract HotbarSlotType GetHotbarSlotType();
+    
     protected abstract int GetIconForAction(T action);
     protected abstract string? GetCommandToCallAction(T action);
+    protected abstract ExecutableAction? BuildExecutableAction(T action);
 
     protected virtual IEnumerable<uint> GetIllegalActionIDs() => Array.Empty<uint>();
 
@@ -43,15 +42,11 @@ public abstract class FixedCommandStrategy<T> : IActionStrategy where T : ExcelR
             if (row.RowId == 0) continue;
             if (this.GetIllegalActionIDs().Contains(row.RowId)) continue;
 
-            var actionName = this.GetNameForAction(row);
-            if (string.IsNullOrEmpty(actionName)) continue;
+            var action = this.BuildExecutableAction(row);
+            
+            if (action == null || string.IsNullOrEmpty(action.ActionName)) continue;
 
-            this._actionCache.Add(new ExecutableAction {
-                ActionId = (int) row.RowId,
-                ActionName = actionName,
-                IconId = this.GetIconForAction(row),
-                HotbarSlotType = this.GetHotbarSlotType()
-            });
+            this._actionCache.Add(action);
         }
 
         return this._actionCache;

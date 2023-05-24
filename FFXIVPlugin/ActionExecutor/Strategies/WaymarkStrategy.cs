@@ -9,14 +9,18 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.FieldMarker)]
 public class WaymarkStrategy : FixedCommandStrategy<FieldMarker> {
-    protected override string GetNameForAction(FieldMarker action) => action.Name.ToString();
-
-    protected override HotbarSlotType GetHotbarSlotType() => HotbarSlotType.FieldMarker;
-
     protected override int GetIconForAction(FieldMarker action) => action.UiIcon;
-
     protected override string GetCommandToCallAction(FieldMarker action) => throw new NotSupportedException();
     
+    protected override ExecutableAction BuildExecutableAction(FieldMarker action) {
+        return new ExecutableAction {
+            ActionId = (int) action.RowId,
+            ActionName = action.Name.ToString(),
+            IconId = this.GetIconForAction(action),
+            HotbarSlotType = HotbarSlotType.FieldMarker
+        };
+    }
+
     protected override void ExecuteInner(FieldMarker action) {
         PluginLog.Debug($"Executing {action} ({action.Name}) directly via hotbar");
         
