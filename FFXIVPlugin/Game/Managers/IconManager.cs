@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Dalamud.Logging;
 using Lumina.Data.Files;
 using XIVDeck.FFXIVPlugin.Base;
@@ -29,7 +30,7 @@ public static class IconManager {
         
         var texPath = GetIconPath(lang, iconId, hq, true);
 
-        if (texPath.Substring(1, 2) == ":\\") {
+        if (Path.IsPathRooted(texPath)) {
             PluginLog.Verbose($"Using on-disk asset {texPath}");
             texFile = Injections.DataManager.GameData.GetFileFromDisk<TexFile>(texPath);
         } else {
