@@ -2,7 +2,6 @@
 using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using XIVDeck.FFXIVPlugin.Base;
-using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Game.Managers;
 
 using Marker = XIVDeck.FFXIVPlugin.Game.Data.Marker;
@@ -16,7 +15,7 @@ public class MarkerStrategy : FixedCommandStrategy<Marker> {
 
     protected override string GetCommandToCallAction(Marker action) => throw new NotSupportedException();
     
-    protected override ExecutableAction? BuildExecutableAction(Marker action) {
+    protected override ExecutableAction BuildExecutableAction(Marker action) {
         return new ExecutableAction {
             ActionId = (int) action.RowId,
             ActionName = action.Name.ToString(),

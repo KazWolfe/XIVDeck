@@ -41,7 +41,7 @@ public class XIVDeckWebServer : IXIVDeckServer {
         var listenerMode = GetListenerMode();
         var port = this._plugin.Configuration.WebSocketPort;
 
-        PluginLog.Debug($"Starting EmbedIO server on port {port} with listener mode {listenerMode}");
+        PluginLog.Information($"Starting EmbedIO server on port {port} with listener mode {listenerMode}");
 
         this._host = new WebServer(o => o
             .WithUrlPrefixes(GenerateUrlPrefixes(port))

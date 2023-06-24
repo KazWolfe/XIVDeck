@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Logging;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game.Chat;
