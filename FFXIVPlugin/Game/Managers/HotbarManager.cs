@@ -87,6 +87,14 @@ internal static class HotbarManager {
     }
 
     public static unsafe void CalcBForSlot(HotBarSlot* slot, out HotbarSlotType actionType, out uint actionId) {
+        // short circuit, just a micro-optimization.
+        if (slot->CommandType == 0 && slot->CommandId == 0) {
+            actionType = HotbarSlotType.Empty;
+            actionId = 0;
+            
+            return;
+        }
+
         var hotbarModule = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule();
 
         // Take in default values, just in case GetSlotAppearance fails for some reason

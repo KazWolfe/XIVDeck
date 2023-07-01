@@ -80,7 +80,9 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
 
         Injections.ClientState.Login -= DalamudHooks.OnGameLogin;
         this.PluginInterface.LanguageChanged -= this.UpdateLang;
-
+        this.PluginInterface.UiBuilder.OpenConfigUi -= this.DrawConfigUI;
+        this.PluginInterface.UiBuilder.Draw -= this.WindowSystem.Draw;
+        
         // setting to null here is okay as this will only be called on plugin teardown.
         // Nothing should *ever* run past this point.
         Instance = null!;
