@@ -15,8 +15,6 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.Minion)]
 public class MinionStrategy : IActionStrategy {
-    private static readonly GameStateCache GameStateCache = XIVDeckPlugin.Instance.GameStateCache;
-
     private static ExecutableAction GetExecutableAction(Companion minion) {
         return new ExecutableAction {
             ActionId = (int) minion.RowId,
@@ -32,8 +30,10 @@ public class MinionStrategy : IActionStrategy {
     }
         
     public List<ExecutableAction> GetAllowedItems() {
-        GameStateCache.Refresh();
-        return GameStateCache.UnlockedMinions!.Select(GetExecutableAction).ToList();
+        return Injections.DataManager.GetExcelSheet<Companion>()!
+            .Where(c => c.IsUnlocked())
+            .Select(GetExecutableAction)
+            .ToList();
     }
 
     public ExecutableAction? GetExecutableActionById(uint actionId) {

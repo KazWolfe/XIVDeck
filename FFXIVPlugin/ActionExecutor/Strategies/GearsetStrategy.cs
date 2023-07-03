@@ -8,59 +8,42 @@ using XIVDeck.FFXIVPlugin.ActionExecutor.Payloads;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Game.Chat;
+using XIVDeck.FFXIVPlugin.Game.Data;
+using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.GearSet)]
 public class GearsetStrategy : IActionStrategy {
-    private static readonly GameStateCache GameStateCache = XIVDeckPlugin.Instance.GameStateCache;
-
-    private static ExecutableAction GetExecutableAction(GameStateCache.Gearset gearset) {
+    private static ExecutableAction GetExecutableAction(Gearset gearset) {
         return new ExecutableAction {
-            ActionId = gearset.Slot,
-            ActionName = $"{gearset.Slot}: {gearset.Name}",
+            ActionId = gearset.Slot + 1,
+            ActionName = $"{gearset.Slot + 1}: {gearset.Name}",
             IconId = 062800 + (int) gearset.ClassJob,
             HotbarSlotType = HotbarSlotType.GearSet
         };
     }
 
-    private static unsafe GameStateCache.Gearset? GetGearsetBySlot(uint slot) {
-        // we want to intentionally bypass the cache here as the cache is a bit messy and, well, not always up to
-        // date. this can get called quite a bit, so we don't want to force updating everything each time (which
-        // (invalidates the entire point of the cache).
-
-        var gsEntry = RaptureGearsetModule.Instance()->Gearset[(int) slot - 1];
-
-        if (gsEntry == null || !gsEntry->Flags.HasFlag(RaptureGearsetModule.GearsetFlag.Exists))
-            return null;
-
-        return new GameStateCache.Gearset {
-            Slot = gsEntry->ID,
-            ClassJob = gsEntry->ClassJob,
-            Name = MemoryHelper.ReadString(new nint(gsEntry->Name), 47)
-        };
-    }
-
     public ExecutableAction? GetExecutableActionById(uint slotId) {
-        var gearset = GetGearsetBySlot(slotId);
+        var gearset = GearsetManager.GetGearset((int) slotId - 1);
 
-        return gearset == null ? null : GetExecutableAction(gearset.Value);
+        return gearset == null ? null : GetExecutableAction(gearset);
     }
 
     public List<ExecutableAction> GetAllowedItems() {
-        GameStateCache.Refresh();
-
-        return GameStateCache.Gearsets!.Select(GetExecutableAction).ToList();
+        return GearsetManager.GetGearsets()
+            .Select(GetExecutableAction)
+            .ToList();
     }
 
     public void Execute(uint actionSlot, ActionPayload? payload) {
-        var gearset = GetGearsetBySlot(actionSlot);
+        var gearset = GearsetManager.GetGearset((int) actionSlot - 1);
 
         if (gearset == null)
             throw new ArgumentException(string.Format(UIStrings.GearsetStrategy_GearsetNotFoundError, actionSlot));
 
-        var command = $"/gearset change {gearset.Value.Slot + 1}";
+        var command = $"/gearset change {gearset.Slot + 1}";
 
         switch (payload) {
             case GearsetPayload {GlamourPlateId: >= 1 and <= 20} p:
@@ -77,11 +60,10 @@ public class GearsetStrategy : IActionStrategy {
     }
 
     public int GetIconId(uint slot) {
-        var gearset = GetGearsetBySlot(slot);
-
+        var gearset = GearsetManager.GetGearset((int) slot - 1);
+        
         if (gearset == null) return 0;
-
-        return 062800 + (int) gearset.Value.ClassJob;
+        return 062800 + (int) gearset.ClassJob;
     }
 
     public Type GetPayloadType() => typeof(GearsetPayload);

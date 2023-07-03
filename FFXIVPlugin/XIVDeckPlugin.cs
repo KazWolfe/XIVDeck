@@ -24,7 +24,6 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
     internal PluginConfig Configuration { get; }
     internal WindowSystem WindowSystem { get; }
     internal GameHooks GameHooks { get; }
-    internal GameStateCache GameStateCache { get; }
     internal VolumeWatcher VolumeWatcher { get; }
     internal IXIVDeckServer Server { get; }
     internal ActionDispatcher ActionDispatcher { get; }
@@ -44,7 +43,6 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
 
         // DI and services are boring.
         this.GameHooks = new GameHooks();
-        this.GameStateCache = new GameStateCache();
         SerializableGameClass.LoadCache();
         this.ActionDispatcher = new ActionDispatcher();
         this._ipcManager = new IPCManager();

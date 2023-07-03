@@ -16,8 +16,6 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.Emote)]
 public class EmoteStrategy : IActionStrategy {
-    private static readonly GameStateCache GameStateCache = XIVDeckPlugin.Instance.GameStateCache;
-
     private static ExecutableAction GetExecutableAction(Emote emote) {
         return new ExecutableAction {
             ActionId = (int) emote.RowId,
@@ -40,9 +38,10 @@ public class EmoteStrategy : IActionStrategy {
     }
 
     public List<ExecutableAction> GetAllowedItems() {
-        GameStateCache.Refresh();
-
-        return GameStateCache.UnlockedEmotes!.Select(GetExecutableAction).ToList();
+        return Injections.DataManager.GetExcelSheet<Emote>()!
+            .Where(e => e.IsUnlocked())
+            .Select(GetExecutableAction)
+            .ToList();
     }
 
     public void Execute(uint actionId, ActionPayload? payload) {

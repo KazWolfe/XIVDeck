@@ -43,8 +43,6 @@ public class SerializableGameClass {
 
     [JsonProperty("parentClass")] public int ParentClass { get; set; }
 
-    [JsonProperty("hasGearset")] public bool HasGearset { get; set; }
-
     public SerializableGameClass(int id) {
         this.Id = id;
         var classJob = ClassSheet.GetRow((uint) id);

@@ -13,7 +13,6 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.Collection)]
 public class CollectionStrategy : IActionStrategy {
-    private static readonly GameStateCache GameStateCache = XIVDeckPlugin.Instance.GameStateCache;
     private static readonly ExcelSheet<McGuffin> Sheet = Injections.DataManager.Excel.GetSheet<McGuffin>()!;
 
     private static ExecutableAction GetExecutableAction(McGuffin mcguffin) {
@@ -40,8 +39,6 @@ public class CollectionStrategy : IActionStrategy {
     }
 
     public List<ExecutableAction> GetAllowedItems() {
-        GameStateCache.Refresh();
-
         return Sheet.Where(m => m.IsUnlocked())
             .Select(GetExecutableAction)
             .ToList();

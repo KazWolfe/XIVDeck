@@ -18,7 +18,6 @@ export type FFXIVClass = {
     iconData: string,
     
     parentClass: number,
-    hasGearset: boolean
 }
 
 export type StateMessage = {

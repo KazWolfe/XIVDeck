@@ -13,8 +13,6 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.FashionAccessory)]
 public class OrnamentStrategy : IActionStrategy {
-    private static readonly GameStateCache GameStateCache = XIVDeckPlugin.Instance.GameStateCache;
-
     private static ExecutableAction GetExecutableAction(Ornament ornament) {
         return new ExecutableAction {
             ActionId = (int) ornament.RowId,
@@ -29,10 +27,11 @@ public class OrnamentStrategy : IActionStrategy {
         return Injections.DataManager.Excel.GetSheet<Ornament>()!.GetRow(id);
     }
         
-    public List<ExecutableAction> GetAllowedItems() {
-        GameStateCache.Refresh();
-            
-        return GameStateCache.UnlockedOrnaments!.Select(GetExecutableAction).ToList();
+    public List<ExecutableAction>? GetAllowedItems() {
+        return Injections.DataManager.GetExcelSheet<Ornament>()!
+            .Where(o => o.IsUnlocked())
+            .Select(GetExecutableAction)
+            .ToList();
     }
 
     public ExecutableAction? GetExecutableActionById(uint actionId) {

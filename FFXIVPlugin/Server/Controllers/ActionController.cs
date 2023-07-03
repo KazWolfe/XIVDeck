@@ -20,8 +20,6 @@ namespace XIVDeck.FFXIVPlugin.Server.Controllers;
 public class ActionController : WebApiController {
     [Route(HttpVerbs.Get, "/")]
     public Dictionary<HotbarSlotType, List<ExecutableAction>> GetActions() {
-        XIVDeckPlugin.Instance.GameStateCache.Refresh();
-
         Dictionary<HotbarSlotType, List<ExecutableAction>> actions = new();
 
         foreach (var (type, strategy) in XIVDeckPlugin.Instance.ActionDispatcher.GetStrategies()) {
@@ -40,8 +38,8 @@ public class ActionController : WebApiController {
             throw HttpException.NotFound(string.Format(UIStrings.ActionController_UnknownActionTypeError, type));
         }
 
-        var actions = this.GetActions();
-        return actions[slotType];
+        var strategy = XIVDeckPlugin.Instance.ActionDispatcher.GetStrategyForType(slotType);
+        return strategy.GetAllowedItems() ?? new List<ExecutableAction>();
     }
 
     [Route(HttpVerbs.Get, "/{type}/{id}")]

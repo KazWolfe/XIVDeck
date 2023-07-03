@@ -15,8 +15,6 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.Mount)]
 public class MountStrategy : IActionStrategy {
-    private readonly GameStateCache _gameStateCache = XIVDeckPlugin.Instance.GameStateCache;
-
     private static ExecutableAction GetExecutableAction(Mount mount) {
         return new ExecutableAction {
             ActionId = (int) mount.RowId,
@@ -32,9 +30,10 @@ public class MountStrategy : IActionStrategy {
     }
         
     public List<ExecutableAction> GetAllowedItems() {
-        this._gameStateCache.Refresh();
-
-        return this._gameStateCache.UnlockedMounts!.Select(GetExecutableAction).ToList();
+        return Injections.DataManager.GetExcelSheet<Mount>()!
+            .Where(m => m.IsUnlocked())
+            .Select(GetExecutableAction)
+            .ToList();
     }
 
     public void Execute(uint actionId, ActionPayload? _) {

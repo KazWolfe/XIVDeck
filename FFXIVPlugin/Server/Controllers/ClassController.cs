@@ -9,6 +9,7 @@ using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Game.Chat;
+using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 using XIVDeck.FFXIVPlugin.Server.Types;
@@ -17,8 +18,6 @@ namespace XIVDeck.FFXIVPlugin.Server.Controllers;
 
 [ApiController("/classes")]
 public class ClassController : WebApiController {
-    private readonly GameStateCache _gameStateCache = XIVDeckPlugin.Instance.GameStateCache;
-
     [Route(HttpVerbs.Get, "/")]
     public List<SerializableGameClass> GetClasses() {
         return SerializableGameClass.GetCache();
@@ -26,13 +25,12 @@ public class ClassController : WebApiController {
 
     [Route(HttpVerbs.Get, "/available")]
     public List<SerializableGameClass> GetAvailableClasses() {
-        this._gameStateCache.Refresh();
-
-        var availableClasses = this._gameStateCache.Gearsets!
+        var availableClasses = GearsetManager.GetGearsets()
             .Select(gearset => (int) gearset.ClassJob)
             .ToList();
-
-        return SerializableGameClass.GetCache().Where(gameClass => availableClasses.Contains(gameClass.Id)).ToList();
+        
+        return SerializableGameClass.GetCache()
+            .Where(gameClass => availableClasses.Contains(gameClass.Id)).ToList();
     }
 
     [Route(HttpVerbs.Get, "/{id}")]
@@ -55,14 +53,13 @@ public class ClassController : WebApiController {
             throw HttpException.NotFound(string.Format(UIStrings.ClassController_InvalidClassIdError, id));
 
         GameUtils.ResetAFKTimer();
-        this._gameStateCache.Refresh();
 
         while (true) {
-            foreach (var gearset in this._gameStateCache.Gearsets!) {
+            foreach (var gearset in GearsetManager.GetGearsets()) {
                 if (gearset.ClassJob != id) continue;
 
                 Injections.Framework.RunOnFrameworkThread(delegate {
-                    var command = $"/gs change {gearset.Slot}";
+                    var command = $"/gs change {gearset.Slot + 1}";
                     PluginLog.Debug($"Would send command: {command}");
                     ChatHelper.GetInstance().SendSanitizedChatMessage(command);
                 });
