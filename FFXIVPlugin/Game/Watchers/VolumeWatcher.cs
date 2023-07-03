@@ -9,7 +9,7 @@ using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 namespace XIVDeck.FFXIVPlugin.Game.Watchers; 
 
 public class VolumeWatcher : IDisposable {
-    public static readonly Dictionary<SoundChannel, (string Level, string MuteState)> Channels = new() {
+    private static readonly Dictionary<SoundChannel, (string Level, string MuteState)> Channels = new() {
         {SoundChannel.Master, ("SoundMaster", "IsSndMaster")},
         {SoundChannel.BackgroundMusic, ("SoundBgm", "IsSndBgm")},
         {SoundChannel.SoundEffects, ("SoundSe", "IsSndSe")},
@@ -99,18 +99,18 @@ public class VolumeWatcher : IDisposable {
     }
 
     private static uint GetVolumeRaw(SoundChannel channel) {
-        return GameConfig.System.GetUInt(Channels[channel].Level);
+        return Injections.GameConfig.System.GetUInt(Channels[channel].Level);
     }
 
     private static bool IsMutedRaw(SoundChannel channel) {
-        return GameConfig.System.GetBool(Channels[channel].MuteState);
+        return Injections.GameConfig.System.GetBool(Channels[channel].MuteState);
     }
 
     private static void SetVolume(SoundChannel channel, uint level) {
-        GameConfig.System.Set(Channels[channel].Level, level);
+        Injections.GameConfig.System.Set(Channels[channel].Level, level);
     }
 
     private static void SetMute(SoundChannel channel, bool muted) {
-        GameConfig.System.Set(Channels[channel].MuteState, muted);
+        Injections.GameConfig.System.Set(Channels[channel].MuteState, muted);
     }
 }

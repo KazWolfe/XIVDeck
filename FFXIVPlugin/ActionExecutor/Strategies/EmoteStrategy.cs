@@ -10,6 +10,7 @@ using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Game.Chat;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
+using XIVDeck.FFXIVPlugin.Utils.Game;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
@@ -73,7 +74,7 @@ public class EmoteStrategy : IActionStrategy {
 
         PluginLog.Debug($"Executing command: {textCommand.Command}");
         Injections.Framework.RunOnFrameworkThread(delegate {
-            using var _ = logMode != null ? GameConfig.UiConfig.TemporarySet("EmoteTextType", logMode.Value) : null;
+            using var _ = logMode != null ? Injections.GameConfig.UiConfig.TemporarySet("EmoteTextType", logMode.Value) : null;
             ChatHelper.GetInstance().SendSanitizedChatMessage(textCommand.Command);
         });
     }
