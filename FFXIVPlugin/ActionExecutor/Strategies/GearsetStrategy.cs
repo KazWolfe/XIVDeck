@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Logging;
-using Dalamud.Memory;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using XIVDeck.FFXIVPlugin.ActionExecutor.Payloads;
 using XIVDeck.FFXIVPlugin.Base;
-using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Game.Chat;
 using XIVDeck.FFXIVPlugin.Game.Data;
 using XIVDeck.FFXIVPlugin.Game.Managers;

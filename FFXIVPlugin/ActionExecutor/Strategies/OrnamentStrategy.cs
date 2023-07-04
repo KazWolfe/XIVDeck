@@ -27,7 +27,7 @@ public class OrnamentStrategy : IActionStrategy {
         return Injections.DataManager.Excel.GetSheet<Ornament>()!.GetRow(id);
     }
         
-    public List<ExecutableAction>? GetAllowedItems() {
+    public List<ExecutableAction> GetAllowedItems() {
         return Injections.DataManager.GetExcelSheet<Ornament>()!
             .Where(o => o.IsUnlocked())
             .Select(GetExecutableAction)
