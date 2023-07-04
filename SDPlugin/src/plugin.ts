@@ -5,10 +5,11 @@ import {
     ApplicationDidLaunchEvent,
     ApplicationDidTerminateEvent, KeyUpEvent, KeyDownEvent,
     DialPressEvent, DialRotateEvent, TouchTapEvent,
-    WillAppearEvent, WillDisappearEvent, TitleParametersDidChangeEvent
+    WillAppearEvent, WillDisappearEvent, TitleParametersDidChangeEvent, DialDownEvent, DialUpEvent
 } from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
 import {DefaultGlobalSettings, GlobalSettings} from "./util/GlobalSettings";
 import {ButtonDispatcher} from "./button/ButtonDispatcher";
+import { VersionUtils } from "./util/VersionUtils";
 
 class XIVDeckPlugin {
     sdPluginLink: SDPlugin = new Streamdeck().plugin();
@@ -31,9 +32,22 @@ class XIVDeckPlugin {
         this.sdPluginLink.on('keyDown', (ev: KeyDownEvent) => this.dispatcher.dispatch(ev));
         this.sdPluginLink.on('keyUp', (ev: KeyUpEvent) => this.dispatcher.dispatch(ev));
         this.sdPluginLink.on('dialRotate', (ev: DialRotateEvent) => this.dispatcher.dispatch(ev));
-        this.sdPluginLink.on('dialPress', (ev: DialPressEvent) => this.dispatcher.dispatch(ev));
+        this.sdPluginLink.on('dialDown', (ev: DialDownEvent) => this.dispatcher.dispatch(ev));
+        this.sdPluginLink.on('dialUp', (ev: DialUpEvent) => this.dispatcher.dispatch(ev));
         this.sdPluginLink.on('touchTap', (ev: TouchTapEvent) => this.dispatcher.dispatch(ev));
         this.sdPluginLink.on('titleParametersDidChange', (ev: TitleParametersDidChangeEvent) => this.dispatcher.dispatch(ev));
+        
+        // deprecated events
+        this.sdPluginLink.on('dialPress', (ev: DialPressEvent) => {
+            let appInfo = this.sdPluginLink.info.application as Record<string, string>;
+            if (VersionUtils.semverCompare(appInfo['version'], '6.1') >= 0) {
+                console.debug('Got deprecated event dialPress in a version that sends new events, ignoring.')
+                return;
+            }
+            
+            this.dispatcher.dispatch(ev);
+        });
+
     }
 
     handleDidReceiveGlobalSettings(event: DidReceiveGlobalSettingsEvent) {

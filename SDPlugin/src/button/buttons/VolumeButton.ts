@@ -1,5 +1,10 @@
 ﻿import { DidReceiveSettingsEvent } from "@rweich/streamdeck-events/dist/Events/Received";
-import { KeyDownEvent, TouchTapEvent, WillAppearEvent } from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
+import {
+    DialDownEvent,
+    KeyDownEvent,
+    TouchTapEvent,
+    WillAppearEvent
+} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
 import { DialPressEvent, DialRotateEvent } from "@rweich/streamdeck-events/dist/Events/Received/Plugin/Dial";
 import i18n from "../../i18n/i18n";
 import { GameNotRunningError } from "../../link/ffxivplugin/exceptions/Exceptions";
@@ -30,6 +35,7 @@ export class VolumeButton extends BaseButton {
         this._sdEventListeners.set("touchTap", this.onPress.bind(this));
         this._sdEventListeners.set("keyDown", this.onKeyDown.bind(this));
         this._sdEventListeners.set("dialPress", this.onPress.bind(this));
+        this._sdEventListeners.set("dialDown", this.onPress.bind(this));
         this._sdEventListeners.set("dialRotate", this.onDialRotate.bind(this));
 
         this.onReceivedSettings(event);
@@ -48,7 +54,7 @@ export class VolumeButton extends BaseButton {
         }));
     }
 
-    async onPress(event: DialPressEvent | TouchTapEvent): Promise<void> {
+    async onPress(event: DialPressEvent | DialDownEvent | TouchTapEvent): Promise<void> {
         // ignore dial release events specifically
         if (event instanceof DialPressEvent && !event.pressed) return;
 

@@ -9,8 +9,8 @@
     "watch": "webpack --mode development --watch --progress"
   },
   "dependencies": {
-    "@rweich/streamdeck-events": "^5.0.0",
-    "@rweich/streamdeck-ts": "^5.0.0",
+    "@rweich/streamdeck-events": "^5.0.1",
+    "@rweich/streamdeck-ts": "^5.0.1",
     "i18next": "^22.4.0"
   },
   "devDependencies": {
