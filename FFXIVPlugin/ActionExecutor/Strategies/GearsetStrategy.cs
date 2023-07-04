@@ -16,8 +16,8 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 public class GearsetStrategy : IActionStrategy {
     private static ExecutableAction GetExecutableAction(Gearset gearset) {
         return new ExecutableAction {
-            ActionId = gearset.Slot + 1,
-            ActionName = $"{gearset.Slot + 1}: {gearset.Name}",
+            ActionId = gearset.Slot,
+            ActionName = $"{gearset.Slot}: {gearset.Name}",
             IconId = 062800 + (int) gearset.ClassJob,
             HotbarSlotType = HotbarSlotType.GearSet
         };
@@ -41,7 +41,7 @@ public class GearsetStrategy : IActionStrategy {
         if (gearset == null)
             throw new ArgumentException(string.Format(UIStrings.GearsetStrategy_GearsetNotFoundError, actionSlot));
 
-        var command = $"/gearset change {gearset.Slot + 1}";
+        var command = $"/gearset change {gearset.Slot}";
 
         switch (payload) {
             case GearsetPayload {GlamourPlateId: >= 1 and <= 20} p:

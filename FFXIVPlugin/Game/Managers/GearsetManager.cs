@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Dalamud.Memory;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using XIVDeck.FFXIVPlugin.Game.Data;
 
@@ -8,9 +9,10 @@ namespace XIVDeck.FFXIVPlugin.Game.Managers;
 public static unsafe class GearsetManager {
 
     public static List<Gearset> GetGearsets() {
+        var permittedGearsets = InventoryManager.Instance()->GetPermittedGearsetCount(); // always 100 but eh.
         var gearsets = new List<Gearset>();
 
-        for (var i = 0; i < 100; i++) {
+        for (var i = 0; i < permittedGearsets; i++) {
             var gearset = GetGearset(i);
             if (gearset == null) continue;
 
@@ -27,7 +29,7 @@ public static unsafe class GearsetManager {
             return null;
 
         return new Gearset {
-            Slot = gs->ID,
+            Slot = gs->ID + 1,
             Name = MemoryHelper.ReadString(new nint(gs->Name), 47),
             ClassJob = gs->ClassJob
         };

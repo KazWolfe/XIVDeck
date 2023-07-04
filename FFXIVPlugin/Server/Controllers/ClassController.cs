@@ -59,7 +59,7 @@ public class ClassController : WebApiController {
                 if (gearset.ClassJob != id) continue;
 
                 Injections.Framework.RunOnFrameworkThread(delegate {
-                    var command = $"/gs change {gearset.Slot + 1}";
+                    var command = $"/gs change {gearset.Slot}";
                     PluginLog.Debug($"Would send command: {command}");
                     ChatHelper.GetInstance().SendSanitizedChatMessage(command);
                 });
