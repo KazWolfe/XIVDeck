@@ -104,7 +104,7 @@
         <comment>"Illegal commands" in this case mean commands that normally cannot be sent to the game and may cause damage or harm if proper care is not taken.</comment>
     </data>
   <data name="SettingsWindow_EnablePenumbraIPC" xml:space="preserve">
-        <value>Penumbra Icons verwenden</value>
+        <value>Penumbra Integration verwenden</value>
         <comment>Setting to enable integration with another app named Penumbra.</comment>
     </data>
   <data name="SettingsWindow_EnablePenumbraIPC_Help" xml:space="preserve">
@@ -137,9 +137,9 @@ Standard: Aus</value>
         <value>Listen IP: {0}</value>
     </data>
   <data name="SettingsWindow_APIPort_Help" xml:space="preserve">
-        <value>Standardport: {0}
-
-Bereich: {1}-{2}</value>
+        <value>Das Ändern dieser Einstellung löst den Willkommensbildschirm erneut aus.
+            
+Standardport: {0}, Bereich: {1}-{2}</value>
     </data>
   <data name="ForcedUpdateNag_Headline" xml:space="preserve">
         <value>Das XIVDeck Stream Deck Plugin ist veraltet und wurde deaktiviert.</value>
@@ -154,13 +154,13 @@ Bereich: {1}-{2}</value>
         <value>Bitte lade die neueste Version des Stream Deck Plugins vom XIVDeck GitHub herunter und installiere diese, um XIVDeck weiterzunutzen.</value>
     </data>
   <data name="SetupNag_Headline" xml:space="preserve">
-        <value>Ein Stream Deck hat sich nie mit dem Spiel verbunden.</value>
+        <value>Willkommen bei XIVDeck!</value>
     </data>
   <data name="SetupNag_ResolutionHelp" xml:space="preserve">
-        <value>Falls dies noch nicht getan wurde, stelle bitte sicher, dass das XIVDeck Stream Deck Plugin von GitHub heruntergeladen und installiert ist.</value>
+        <value>XIVDeck benötigt die Benutzung des Begleiters XIVDeck Stream Deck Plugin um zu funktionieren. Falls dies noch nicht getan wurde, stelle bitte sicher, dass das XIVDeck Stream Deck Plugin von GitHub heruntergeladen und installiert ist.</value>
     </data>
   <data name="SetupNag_AlreadyInstalledHelp" xml:space="preserve">
-        <value>Falls das XIVDeck Stream Deck Plugin bereits installiert ist, stelle bitte sicher, dass der Port in der Konfiguration korrekt eingestellt ist und dass mindestens eine Schaltfläche angelegt ist.</value>
+        <value>Falls das XIVDeck Stream Deck Plugin bereits installiert ist, stelle bitte sicher, dass der Port in der Konfiguration auf {0} eingestellt ist und dass mindestens eine Schaltfläche angelegt ist.</value>
     </data>
   <data name="SetupNag_CurrentPort" xml:space="preserve">
         <value>Aktueller Port: {0}</value>
@@ -169,7 +169,7 @@ Bereich: {1}-{2}</value>
         <value>Falls der Port, auf dem der Server gehostet wird, geändert werden muss, kann dies in den XIVDeck Einstellungen getan werden.</value>
     </data>
   <data name="SetupNag_DismissHelp" xml:space="preserve">
-        <value>Um diese Nachricht zu verwerfen, löse das obige Problem oder deinstalliere das XIVDeck Plugin.</value>
+        <value>Diese Nachricht wird automatisch geschlossen, sobald das Stream Deck Plugin erkannt wurde.</value>
     </data>
   <data name="CollectionStrategy_CollectionNotFoundError" xml:space="preserve">
         <value>Es gibt keine Kuriosität mit der ID {0}.</value>
@@ -294,5 +294,58 @@ Dies wird das Plugin nicht wieder aktivieren.</value>
     </data>
   <data name="MainCommandStrategy_MainCommandLocked" xml:space="preserve">
         <value>Der Hauptbefehl {0} kann zurzeit nicht verwendet werden.</value>
+    </data>
+  <data name="SetupNag_HowInstall" xml:space="preserve">
+        <value>Warte, wie installiere ich dies?</value>
+    </data>
+  <data name="SetupNag_HowInstall_Requirements" xml:space="preserve">
+        <value>Um XIVDeck zu installieren, wird ein Elgato Stream Deck und die Stream Deck Software benötigt.</value>
+    </data>
+  <data name="SetupNag_HowInstall_Steps" xml:space="preserve">
+        <value>1. Besuche die XIVDeck Downloadseite mit dem obigen Button.
+2. Lade "XIVDeck.streamDeckPlugin" runter und öffne die Datei.
+3. Wenn aufgefordert, wähle die benutzerdefinierten Aktion zu installieren.</value>
+    </data>
+  <data name="SetupNag_HowInstall_OtherInfo" xml:space="preserve">
+        <value>Die Stream Deck Anwendung kümmert sich um den Rest und setzt das Plugin mit den Standardeinstellungen auf.</value>
+    </data>
+  <data name="SetupNag_AlreadyInstalled" xml:space="preserve">
+        <value>Das Begleitplugin ist bereits installiert?</value>
+    </data>
+  <data name="SetupNag_JoinDiscord" xml:space="preserve">
+        <value>Klicke um dem Discord beizutreten!</value>
+    </data>
+  <data name="XIVDeckWebServer_RunException" xml:space="preserve">
+        <value>XIVDeck's Server ist unerwartet fehlgeschlagen und wurde deaktiviert. Bitte starte dein Spiel neu. Wenn dies weiterhin geschieht, melde bitte diesen Fehler!</value>
+    </data>
+  <data name="PortInUseNag_Title" xml:space="preserve">
+        <value>Der XIVDeck API Port wird bereits verwendet!</value>
+    </data>
+  <data name="PortInUseNag_PortIsAlreadyInUse" xml:space="preserve">
+        <value>XIVDeck hat festgestellt, dass Port {0} </value>
+    </data>
+  <data name="PortInUseNag_PortAlreadyInUse" xml:space="preserve">
+        <value>XIVDeck hat festgestellt, dass Port {0} bereits von einer anderen Anwendung verwendet wird.</value>
+    </data>
+  <data name="PortInUseNag_ResolutionInstructions" xml:space="preserve">
+        <value>Um XIVDeck verwenden zu können, muss dieser Port auf einen freien umgestellt werden. Wähle dazu bitte eine neue Port-Nummer in den XIVDeck Game Plugin-Einstellungen, und gib gleiche Portnummer in den XIVDeck Stream Deck Plugin Einstellungen ein.</value>
+    </data>
+  <data name="PortInUseNag_IgnoreForNow" xml:space="preserve">
+        <value>Vorerst ignorieren</value>
+    </data>
+  <data name="MultiboxNag_MultiboxingDetected" xml:space="preserve">
+        <value>XIVDeck hat eine weitere Instanz von Final Fantasy XIV auf dem Computer erkannt. Daher wurde es in diesem Client deaktiviert.</value>
+    </data>
+  <data name="MultiboxNag_MultiboxingIsUnsupported" xml:space="preserve">
+        <value>Multiboxing wird nicht unterstützt und es kann zu unerwartetem Verhalten kommen. Wenn dein Stream Deck nach Erhalt dieser Nachricht nicht mehr funktioniert, starte bitte alle Instanzen deines Spiel-Clients neu.</value>
+    </data>
+  <data name="MultiboxNag_SuppressWarning" xml:space="preserve">
+        <value>Diese Warnung nicht erneut anzeigen.</value>
+    </data>
+  <data name="MultiboxNag_CloseButton" xml:space="preserve">
+        <value>Schließen</value>
+    </data>
+  <data name="MultiboxNag_ChatWarning" xml:space="preserve">
+        <value>Multiboxing wurde erkannt. XIVDeck funktioniert möglicherweise nicht richtig!</value>
     </data>
 </root>
