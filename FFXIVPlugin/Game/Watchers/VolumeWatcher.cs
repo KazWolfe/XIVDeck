@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using Dalamud.Game;
+using System.Threading.Tasks;
+using Dalamud.Game.Config;
 using Dalamud.Logging;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game.Data;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 
-namespace XIVDeck.FFXIVPlugin.Game.Watchers; 
+namespace XIVDeck.FFXIVPlugin.Game.Watchers;
 
 public class VolumeWatcher : IDisposable {
     private static readonly Dictionary<SoundChannel, (string Level, string MuteState)> Channels = new() {
@@ -18,54 +20,23 @@ public class VolumeWatcher : IDisposable {
         {SoundChannel.Ambient, ("SoundEnv", "IsSndEnv")},
         {SoundChannel.Performance, ("SoundPerform", "IsSndPerform")}
     };
-    
-    // internal cache of volume states for known update
-    private readonly Dictionary<SoundChannel, (uint Level, bool Muted)> _volumeCache = new();
-    
-    // list of changes to apply
-    private readonly Dictionary<SoundChannel, (uint? RequestedLevel, bool? RequestedMute)> _enqueuedChanges = new();
-    
+
+    // cursed.
+    private static readonly Dictionary<string, SoundChannel> ReverseChannels = BuildReverseMap();
+
+    private readonly ConcurrentDictionary<SoundChannel, (uint? RequestedLevel, bool? RequestedMute)> _enqueuedChanges = new();
+    private Task? _updateTask;
+
     public VolumeWatcher() {
-        Injections.Framework.Update += this.OnGameUpdate;
+        Injections.GameConfig.System.Changed += this.OnConfigChange;
     }
 
     public void Dispose() {
-        Injections.Framework.Update -= this.OnGameUpdate;
+        Injections.GameConfig.System.Changed -= this.OnConfigChange;
 
         GC.SuppressFinalize(this);
     }
-
-    private void OnGameUpdate(Framework framework) {
-        foreach (var channel in Channels.Keys) {
-            var volumeLevel = GetVolumeRaw(channel);
-            var muted = IsMutedRaw(channel);
-
-            if (this._enqueuedChanges.TryGetValue(channel, out var enqueued)) {
-                if (enqueued.RequestedLevel != null) {
-                    volumeLevel = enqueued.RequestedLevel.Value;
-                    SetVolume(channel, volumeLevel);
-                }
-
-                if (enqueued.RequestedMute != null) {
-                    muted = enqueued.RequestedMute.Value;
-                    SetMute(channel, muted);
-                }
-
-                this._enqueuedChanges.Remove(channel);
-            }
-            
-            var result = this._volumeCache.GetValueOrDefault(channel);
-            if (result.Level == volumeLevel && result.Muted == muted) continue;
-
-            result = (volumeLevel, muted);
-            PluginLog.Verbose($"Volume update for channel {channel.ToString()}. " +
-                              $"Vol = {volumeLevel} Muted = {muted}");
-            XIVDeckPlugin.Instance.Server.BroadcastMessage(new WSVolumeUpdateMessage(channel, volumeLevel, muted));
-            
-            this._volumeCache[channel] = result;
-        }
-    }
-
+    
     public uint GetVolume(SoundChannel channel) {
         return this._enqueuedChanges.GetValueOrDefault(channel).RequestedLevel ?? GetVolumeRaw(channel);
     }
@@ -74,17 +45,34 @@ public class VolumeWatcher : IDisposable {
         return this._enqueuedChanges.GetValueOrDefault(channel).RequestedMute ?? IsMutedRaw(channel);
     }
 
+    private void OnConfigChange(object? sender, ConfigChangeEvent ev) {
+        if (!ReverseChannels.TryGetValue(ev.Option.ToString(), out var targetChannel)) return;
+
+        var channelMuted = IsMutedRaw(targetChannel);
+        var channelVolume = GetVolumeRaw(targetChannel);
+
+        var message = new WSVolumeUpdateMessage(targetChannel, channelVolume, channelMuted);
+
+        try {
+            XIVDeckPlugin.Instance.Server.BroadcastMessage(message);
+        } catch (Exception ex) {
+            PluginLog.Error(ex, "Could not dispatch volume update message!");
+        }
+    }
+
     public void EnqueueVolumeChange(SoundChannel channel, uint volume) {
         if (volume > 100) volume = 100;
 
         var change = this._enqueuedChanges.GetValueOrDefault(channel);
-        
+
         if (change.RequestedLevel != null)
             PluginLog.Warning($"Requested change to channel {channel} while one was already enqueued.\n" +
                               $"    Old: {change.RequestedLevel}  New: {volume}");
-        
+
         change.RequestedLevel = volume;
         this._enqueuedChanges[channel] = change;
+        
+        this.ScheduleUpdate();
     }
 
     public void EnqueueMute(SoundChannel channel, bool muted) {
@@ -96,6 +84,26 @@ public class VolumeWatcher : IDisposable {
 
         change.RequestedMute = muted;
         this._enqueuedChanges[channel] = change;
+        
+        this.ScheduleUpdate();
+    }
+
+    private void ScheduleUpdate() {
+        if (this._updateTask is {IsCompleted: false}) return;
+
+        this._updateTask = Injections.Framework.RunOnFrameworkThread(() => {
+            foreach (var (channel, enqueued) in this._enqueuedChanges) {
+                if (enqueued.RequestedLevel != null) {
+                    Injections.GameConfig.System.Set(Channels[channel].Level, enqueued.RequestedLevel.Value);
+                }
+
+                if (enqueued.RequestedMute != null) {
+                    Injections.GameConfig.System.Set(Channels[channel].MuteState, enqueued.RequestedMute.Value);
+                }
+            }
+            
+            this._enqueuedChanges.Clear();
+        });
     }
 
     private static uint GetVolumeRaw(SoundChannel channel) {
@@ -106,11 +114,14 @@ public class VolumeWatcher : IDisposable {
         return Injections.GameConfig.System.GetBool(Channels[channel].MuteState);
     }
 
-    private static void SetVolume(SoundChannel channel, uint level) {
-        Injections.GameConfig.System.Set(Channels[channel].Level, level);
-    }
+    private static Dictionary<string, SoundChannel> BuildReverseMap() {
+        var result = new Dictionary<string, SoundChannel>();
 
-    private static void SetMute(SoundChannel channel, bool muted) {
-        Injections.GameConfig.System.Set(Channels[channel].MuteState, muted);
+        foreach (var (channel, (levelConfig, muteConfig)) in Channels) {
+            result[levelConfig] = channel;
+            result[muteConfig] = channel;
+        }
+
+        return result;
     }
 }
