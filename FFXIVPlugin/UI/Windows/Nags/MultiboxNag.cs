@@ -54,6 +54,7 @@ public class MultiboxNag : NagWindow {
 
         if (ImGui.Checkbox(UIStrings.MultiboxNag_SuppressWarning, ref this._suppressMultiboxNag)) {
             this._pluginConfig.SuppressMultiboxNag = this._suppressMultiboxNag;
+            this._pluginConfig.Save();
         }
 
         ImGui.Spacing();

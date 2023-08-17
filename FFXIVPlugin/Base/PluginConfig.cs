@@ -58,7 +58,7 @@ public class PluginConfig : IPluginConfiguration {
     /// <summary>
     /// Suppresses nag messages related to multiboxing.
     /// </summary>
-    public bool SuppressMultiboxNag = false;
+    public bool SuppressMultiboxNag { get; set; } = false;
 
     public void Save() {
         Injections.PluginInterface.SavePluginConfig(this);
