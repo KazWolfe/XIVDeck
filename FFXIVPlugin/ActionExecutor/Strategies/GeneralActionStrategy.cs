@@ -21,12 +21,16 @@ public class GeneralActionStrategy : IActionStrategy {
         Injections.DataManager.Excel.GetSheet<GeneralAction>()!;
 
     private static ExecutableAction GetExecutableAction(GeneralAction action) {
+        var cooldownGroup = action.Action.Value?.CooldownGroup - 1;
+        if (cooldownGroup is < 0) cooldownGroup = null;
+
         return new ExecutableAction {
             ActionId = (int) action.RowId,
             ActionName = action.Name.ToString(),
             IconId = action.Icon,
             HotbarSlotType = HotbarSlotType.GeneralAction,
             SortOrder = action.UIPriority,
+            CooldownGroup = cooldownGroup
         };
     }
 

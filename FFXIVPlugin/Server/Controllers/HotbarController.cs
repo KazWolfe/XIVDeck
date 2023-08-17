@@ -2,6 +2,7 @@
 using EmbedIO;
 using EmbedIO.Routing;
 using EmbedIO.WebApi;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
@@ -27,16 +28,28 @@ public class HotbarController : WebApiController {
 
         var hotbarItem = hotbarModule->HotBar[hotbarId]->Slot[slotId];
         var iconId = HotbarManager.CalcIconForSlot(hotbarItem);
-
-        return new SerializableHotbarSlot {
+        var actionType = XIVDeckPlugin.Instance.TempSigs.GetActionTypeForHotbarSlotType(hotbarItem->CommandType);
+        
+        var serializableSlot =  new SerializableHotbarSlot {
             HotbarId = hotbarId,
             SlotId = slotId,
             IconId = iconId,
             SlotType = hotbarItem->CommandType,
             CommandId = (int) hotbarItem->CommandId,
-            IconData = IconManager.GetIconAsPngString(iconId % 1000000, iconId >= 1000000)
+            IconData = IconManager.GetIconAsPngString(iconId % 1000000, iconId >= 1000000),
         };
         
+        var cooldownGroup = ActionManager.Instance()->GetRecastGroup((int) actionType, hotbarItem->CommandId);
+        if (cooldownGroup >= 0) {
+            serializableSlot.CooldownGroup = cooldownGroup;
+        }
+
+        var additionalCooldownGroup = XIVDeckPlugin.Instance.TempSigs.GetAdditionalRecastGroup(actionType, hotbarItem->CommandId);
+        if (additionalCooldownGroup >= 0) {
+            serializableSlot.AdditionalCooldownGroup = additionalCooldownGroup;
+        }
+        
+        return serializableSlot;
     }
     
     [Route(HttpVerbs.Post, "/{hotbarId}/{slotId}/execute")]

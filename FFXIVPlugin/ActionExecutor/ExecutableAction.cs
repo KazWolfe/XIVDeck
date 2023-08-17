@@ -16,4 +16,7 @@ public class ExecutableAction {
         
     [JsonConverter(typeof(StringEnumConverter))]
     [JsonProperty("type")] public HotbarSlotType HotbarSlotType;
+
+    [JsonProperty("cooldownGroup")] 
+    public int? CooldownGroup;
 }

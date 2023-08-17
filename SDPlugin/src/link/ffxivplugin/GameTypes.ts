@@ -5,6 +5,8 @@
     category: string | null,
     iconId: number
     sortOrder?: number | null;
+    
+    cooldownGroup?: number | null | undefined;
 }
 
 export type FFXIVClass = {
@@ -55,4 +57,24 @@ export type FFXIVHotbarSlot = {
 
     iconId: number;
     iconData: string;
+    
+    cooldownGroup?: number | null | undefined;
+    additionalCooldownGroup?: number | null | undefined;
+}
+
+export type CooldownUpdate = {
+    groupId: number;
+    
+    active: boolean;
+    lastActionId: number;
+    
+    elapsedTime: number;
+    recastTime: number;
+    
+    maxCharges: number | null | undefined;
+}
+
+export type CooldownUpdateMessage = {
+    type: "cooldownUpdate",
+    data: CooldownUpdate
 }

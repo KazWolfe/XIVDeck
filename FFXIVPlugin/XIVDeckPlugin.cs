@@ -28,6 +28,8 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
     internal IXIVDeckServer Server { get; }
     internal ActionDispatcher ActionDispatcher { get; }
 
+    internal TempSigs TempSigs = new TempSigs();
+
     private DalamudPluginInterface PluginInterface { get; }
     private readonly HotbarWatcher _hotbarWatcher;
     private readonly ChatLinkWiring _chatLinkWiring;

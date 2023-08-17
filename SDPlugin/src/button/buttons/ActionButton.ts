@@ -1,7 +1,7 @@
 ﻿import { BaseButton } from "../BaseButton";
 import { KeyDownEvent, WillAppearEvent } from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
 import plugin from "../../plugin";
-import { FFXIVAction, StateMessage } from "../../link/ffxivplugin/GameTypes";
+import { CooldownUpdateMessage, FFXIVAction, StateMessage } from "../../link/ffxivplugin/GameTypes";
 import { FFXIVApi } from "../../link/ffxivplugin/FFXIVApi";
 import { DidReceiveSettingsEvent } from "@rweich/streamdeck-events/dist/Events/Received";
 
@@ -15,6 +15,8 @@ export type ActionButtonSettings = {
 
 export class ActionButton extends BaseButton {
     settings?: ActionButtonSettings;
+    
+    actionInfo?: FFXIVAction;
 
     useGameIcon: boolean = true;
 
@@ -23,6 +25,7 @@ export class ActionButton extends BaseButton {
 
         this._xivEventListeners.add(plugin.xivPluginLink.on("_ready", this.render.bind(this)));
         this._xivEventListeners.add(plugin.xivPluginLink.on("stateUpdate", this.stateUpdate.bind(this)));
+        this._xivEventListeners.add(plugin.xivPluginLink.on("cooldownUpdate", this.cooldownUpdate.bind(this)));
 
         this._sdEventListeners.set("keyDown", this.onKeyDown.bind(this));
 
@@ -56,12 +59,12 @@ export class ActionButton extends BaseButton {
             return;
         }
 
-        let actionInfo = await FFXIVApi.Action.getAction(this.settings.actionType, this.settings.actionId);
-        this.setImage(await FFXIVApi.getIcon(actionInfo.iconId));
+        this.actionInfo = await FFXIVApi.Action.getAction(this.settings.actionType, this.settings.actionId);
+        this.setImage(await FFXIVApi.getIcon(this.actionInfo.iconId));
 
         // Populate cache if it isn't already set
         if (this.settings.cache == null) {
-            this.settings.cache = actionInfo;
+            this.settings.cache = this.actionInfo;
 
             // ToDo: Remove this migration eventually
             this.settings.actionName = undefined;
@@ -69,6 +72,12 @@ export class ActionButton extends BaseButton {
 
             this.setSettings(this.settings);
         }
+    }
+
+    async cooldownUpdate(message: CooldownUpdateMessage) : Promise<void> {
+        if (message.data.groupId != this.actionInfo?.cooldownGroup) return;
+        
+        console.debug(`Got cooldown update for action ${this.actionInfo.name}!`, message.data)
     }
 
     private stateUpdate(message: StateMessage) {

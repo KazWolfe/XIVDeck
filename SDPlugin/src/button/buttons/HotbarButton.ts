@@ -2,7 +2,12 @@
 import {KeyDownEvent, WillAppearEvent} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
 import plugin from "../../plugin";
 import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
-import { HotbarUpdateMessage, StateMessage } from "../../link/ffxivplugin/GameTypes";
+import {
+    CooldownUpdateMessage,
+    FFXIVHotbarSlot,
+    HotbarUpdateMessage,
+    StateMessage
+} from "../../link/ffxivplugin/GameTypes";
 import {DidReceiveSettingsEvent} from "@rweich/streamdeck-events/dist/Events/Received";
 
 export type HotbarButtonSettings = {
@@ -14,11 +19,14 @@ export class HotbarButton extends BaseButton {
 
     settings?: HotbarButtonSettings;
     
+    hotbarSlot?: FFXIVHotbarSlot;
+    
     constructor(event: WillAppearEvent) {
         super(event.context);
         
         this._xivEventListeners.add(plugin.xivPluginLink.on("_ready", this.render.bind(this)));
         this._xivEventListeners.add(plugin.xivPluginLink.on("stateUpdate", this.stateUpdate.bind(this)));
+        this._xivEventListeners.add(plugin.xivPluginLink.on("cooldownUpdate", this.cooldownUpdate.bind(this)));
         
         this._sdEventListeners.set("keyDown", this.onKeyDown.bind(this));
         
@@ -59,6 +67,16 @@ export class HotbarButton extends BaseButton {
         }
     }
     
+    async cooldownUpdate(message: CooldownUpdateMessage) : Promise<void> {
+        if (this.hotbarSlot?.cooldownGroup == message.data.groupId) {
+            console.log(`Got cooldown update for slot ${this.hotbarSlot.hotbarId}, ${this.hotbarSlot.slotId}!`, message.data);
+        }
+        
+        if (this.hotbarSlot?.additionalCooldownGroup == message.data.groupId) {
+            console.log(`Got additional cooldown update for slot ${this.hotbarSlot.hotbarId}, ${this.hotbarSlot.slotId}!`, message.data);
+        }
+    }
+    
     async render() : Promise<void> {
         if (!plugin.xivPluginLink.isReady()) {
             return;
@@ -68,7 +86,7 @@ export class HotbarButton extends BaseButton {
             return
         }
         
-        let response = await FFXIVApi.Hotbar.getHotbarSlot(this.settings.hotbarId, this.settings.slotId);
-        this.setImage(response.iconData);
+        this.hotbarSlot = await FFXIVApi.Hotbar.getHotbarSlot(this.settings.hotbarId, this.settings.slotId);
+        this.setImage(this.hotbarSlot.iconData);
     }
 }
