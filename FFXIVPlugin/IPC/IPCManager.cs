@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Dalamud.Logging;
+using XIVDeck.FFXIVPlugin.Base;
+
 
 namespace XIVDeck.FFXIVPlugin.IPC; 
 
@@ -31,7 +32,7 @@ public class IPCManager : IDisposable {
             
             var handler = (IPluginIpcClient) Activator.CreateInstance(type, nonPublic: true)!;
 
-            PluginLog.Debug($"Registered IPC: {handler.GetType()}");
+            Injections.PluginLog.Debug($"Registered IPC: {handler.GetType()}");
             this._registeredIpcs.Add(handler);
         }
     }

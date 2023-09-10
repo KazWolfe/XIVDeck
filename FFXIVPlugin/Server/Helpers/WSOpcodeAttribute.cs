@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Dalamud.Logging;
+
 using Newtonsoft.Json;
+using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server.Messages;
 
@@ -28,7 +29,7 @@ public class WSOpcodeWiring {
 
             if (opcodeAttribute != null) {
                 this._opcodes[opcodeAttribute.Opcode] = type;
-                PluginLog.Debug($"Registered WebSocket opcode {opcodeAttribute.Opcode}");
+                Injections.PluginLog.Debug($"Registered WebSocket opcode {opcodeAttribute.Opcode}");
             }
         }
     }

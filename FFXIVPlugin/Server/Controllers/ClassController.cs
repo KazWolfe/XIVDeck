@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Dalamud.Logging;
+
 using EmbedIO;
 using EmbedIO.Routing;
 using EmbedIO.WebApi;
@@ -60,7 +60,7 @@ public class ClassController : WebApiController {
 
                 Injections.Framework.RunOnFrameworkThread(delegate {
                     var command = $"/gs change {gearset.Slot}";
-                    PluginLog.Debug($"Would send command: {command}");
+                    Injections.PluginLog.Debug($"Would send command: {command}");
                     ChatHelper.GetInstance().SendSanitizedChatMessage(command);
                 });
 
@@ -68,7 +68,7 @@ public class ClassController : WebApiController {
                 if (id != classJob.RowId) {
                     var fallbackClassJob = sheet.GetRow((uint) id)!;
 
-                    PluginLog.Information($"Used fallback {fallbackClassJob.Abbreviation} for requested {classJob.Abbreviation}");
+                    Injections.PluginLog.Information($"Used fallback {fallbackClassJob.Abbreviation} for requested {classJob.Abbreviation}");
                     ErrorNotifier.ShowError(string.Format(
                         UIStrings.ClassController_FallbackClassUsed, 
                         UIStrings.Culture.TextInfo.ToTitleCase(classJob.Name), 
@@ -81,7 +81,7 @@ public class ClassController : WebApiController {
             // fallback logic
             var parentId = classJob.ClassJobParent.Row;
             if (parentId == id || parentId == 0) {
-                PluginLog.Debug($"Couldn't find a fallback class for {classJob.Abbreviation}");
+                Injections.PluginLog.Debug($"Couldn't find a fallback class for {classJob.Abbreviation}");
                 break;
             }
 

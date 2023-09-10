@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Dalamud.Logging;
+
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
@@ -48,7 +48,7 @@ internal static class HotbarManager {
                 SafePulseBar((AddonActionBarBase*) mainBarPtr, slotId);
             }
         } else {
-            PluginLog.Debug($"Couldn't find main hotbar addon {mainBarName}!");
+            Injections.PluginLog.Debug($"Couldn't find main hotbar addon {mainBarName}!");
         }
 
         // And handle any extra visible normal hotbars
@@ -59,7 +59,7 @@ internal static class HotbarManager {
             if (actionBarPtr != nint.Zero) {
                 SafePulseBar((AddonActionBarBase*) actionBarPtr, slotId);
             } else {
-                PluginLog.Debug($"Couldn't find hotbar addon {actionBarName}");
+                Injections.PluginLog.Debug($"Couldn't find hotbar addon {actionBarName}");
             }
         }
     }

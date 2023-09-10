@@ -4,8 +4,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using Dalamud.Logging;
+
 using EmbedIO;
+using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game.Chat;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
@@ -41,7 +42,7 @@ public class XIVDeckWebServer : IXIVDeckServer {
         var listenerMode = GetListenerMode();
         var port = this._plugin.Configuration.WebSocketPort;
 
-        PluginLog.Information($"Starting EmbedIO server on port {port} with listener mode {listenerMode}");
+        Injections.PluginLog.Information($"Starting EmbedIO server on port {port} with listener mode {listenerMode}");
 
         this._host = new WebServer(o => o
             .WithUrlPrefixes(GenerateUrlPrefixes(port))
@@ -55,7 +56,7 @@ public class XIVDeckWebServer : IXIVDeckServer {
         this._host.WithModule(new AuthModule("/"));
 
         this._host.StateChanged += (_, e) => {
-            PluginLog.Debug($"EmbedIO server changed state to {e.NewState.ToString()}");
+            Injections.PluginLog.Debug($"EmbedIO server changed state to {e.NewState.ToString()}");
         };
 
         ConfigureErrorHandlers(this._host);
@@ -69,7 +70,7 @@ public class XIVDeckWebServer : IXIVDeckServer {
             } catch (SocketException ex) when (ex.ErrorCode == 10048) {
                 this.HandlePortConflict(ex);
             } catch (Exception ex) {
-                PluginLog.Error(ex, "Error during webserver run!");
+                Injections.PluginLog.Error(ex, "Error during webserver run!");
                 ErrorNotifier.ShowError(UIStrings.XIVDeckWebServer_RunException, false, true, true);
             }
         }, this._cts.Token);
@@ -80,7 +81,7 @@ public class XIVDeckWebServer : IXIVDeckServer {
         this._serverTask?.Wait();
         this._host?.Dispose();
 
-        PluginLog.Debug("Web server has been stopped.");
+        Injections.PluginLog.Debug("Web server has been stopped.");
     }
 
     public void Dispose() {
@@ -99,24 +100,24 @@ public class XIVDeckWebServer : IXIVDeckServer {
     private static HttpListenerMode GetListenerMode() {
         if (XIVDeckPlugin.Instance.Configuration.HttpListenerMode != null) {
             var mode = XIVDeckPlugin.Instance.Configuration.HttpListenerMode.Value;
-            PluginLog.Debug($"Config explicitly set HttpListenerMode to {mode}.");
+            Injections.PluginLog.Debug($"Config explicitly set HttpListenerMode to {mode}.");
             return mode;
         }
 
         // If you're wondering why this is here despite the below line doing the same thing, it's legacy just in case
         // I want to swap the default listener for a specific operating system class.
         if (Dalamud.Utility.Util.IsLinux()) {
-            PluginLog.Information("Linux environment detected; using EmbedIO listener.");
+            Injections.PluginLog.Information("Linux environment detected; using EmbedIO listener.");
             return HttpListenerMode.EmbedIO;
         }
 
-        PluginLog.Debug("HttpListenerMode not set; using EmbedIO listener.");
+        Injections.PluginLog.Debug("HttpListenerMode not set; using EmbedIO listener.");
         return HttpListenerMode.EmbedIO;
     }
 
     private static string[] GenerateUrlPrefixes(int port) {
         if (XIVDeckPlugin.Instance.Configuration.ListenOnAllInterfaces) {
-            PluginLog.Warning("XIVDeck is configured to listen on all interfaces! THIS IS A SECURITY RISK!");
+            Injections.PluginLog.Warning("XIVDeck is configured to listen on all interfaces! THIS IS A SECURITY RISK!");
             return new[] { $"http://*:${port}" };
         }
 
@@ -145,7 +146,7 @@ public class XIVDeckWebServer : IXIVDeckServer {
             }
 
             // And then fallback to unknown exceptions
-            PluginLog.Error(ex, "Unhandled exception while processing request: " +
+            Injections.PluginLog.Error(ex, "Unhandled exception while processing request: " +
                                 $"{ctx.Request.HttpMethod} {ctx.Request.Url.PathAndQuery}");
             ErrorNotifier.ShowError(ex.Message, debounce: true);
             return ExceptionHandler.Default(ctx, ex);
@@ -154,7 +155,7 @@ public class XIVDeckWebServer : IXIVDeckServer {
         server.OnHttpException = (ctx, ex) => {
             var inner = ex.DataObject as Exception ?? (HttpException) ex;
 
-            PluginLog.Warning(inner, $"Got HTTP {ex.StatusCode} while processing request: " +
+            Injections.PluginLog.Warning(inner, $"Got HTTP {ex.StatusCode} while processing request: " +
                                      $"{ctx.Request.HttpMethod} {ctx.Request.Url.PathAndQuery}");
 
             // Only show messages to users if it's a POST request (button action)
@@ -167,7 +168,7 @@ public class XIVDeckWebServer : IXIVDeckServer {
     }
 
     private void HandlePortConflict(Exception ex) {
-        PluginLog.Warning(ex, "Port was already in use!");
+        Injections.PluginLog.Warning(ex, "Port was already in use!");
 
         if (!UiUtil.IsMultiboxing()) {
             PortInUseNag.Show();

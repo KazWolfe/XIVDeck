@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dalamud.Game.Config;
-using Dalamud.Logging;
+
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game.Data;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
@@ -56,7 +56,7 @@ public class VolumeWatcher : IDisposable {
         try {
             XIVDeckPlugin.Instance.Server.BroadcastMessage(message);
         } catch (Exception ex) {
-            PluginLog.Error(ex, "Could not dispatch volume update message!");
+            Injections.PluginLog.Error(ex, "Could not dispatch volume update message!");
         }
     }
 
@@ -66,7 +66,7 @@ public class VolumeWatcher : IDisposable {
         var change = this._enqueuedChanges.GetValueOrDefault(channel);
 
         if (change.RequestedLevel != null)
-            PluginLog.Warning($"Requested change to channel {channel} while one was already enqueued.\n" +
+            Injections.PluginLog.Warning($"Requested change to channel {channel} while one was already enqueued.\n" +
                               $"    Old: {change.RequestedLevel}  New: {volume}");
 
         change.RequestedLevel = volume;
@@ -79,7 +79,7 @@ public class VolumeWatcher : IDisposable {
         var change = this._enqueuedChanges.GetValueOrDefault(channel);
 
         if (change.RequestedMute != null)
-            PluginLog.Warning($"Requested change to channel {channel} while one was already enqueued.\n" +
+            Injections.PluginLog.Warning($"Requested change to channel {channel} while one was already enqueued.\n" +
                               $"    Old: {change.RequestedMute}  New: {muted}");
 
         change.RequestedMute = muted;

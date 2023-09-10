@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dalamud.Logging;
+
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.ActionExecutor.Payloads;
@@ -71,7 +71,7 @@ public class EmoteStrategy : IActionStrategy {
             throw new ActionLockedException(string.Format(UIStrings.EmoteStrategy_EmoteLockedError, emote.Name));
         }
 
-        PluginLog.Debug($"Executing command: {textCommand.Command}");
+        Injections.PluginLog.Debug($"Executing command: {textCommand.Command}");
         Injections.Framework.RunOnFrameworkThread(delegate {
             using var _ = logMode != null ? Injections.GameConfig.UiConfig.TemporarySet("EmoteTextType", logMode.Value) : null;
             ChatHelper.GetInstance().SendSanitizedChatMessage(textCommand.Command);

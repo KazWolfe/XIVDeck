@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dalamud.Logging;
+
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using XIVDeck.FFXIVPlugin.ActionExecutor.Payloads;
 using XIVDeck.FFXIVPlugin.Base;
@@ -51,7 +51,7 @@ public class GearsetStrategy : IActionStrategy {
                 throw new ArgumentException("Glamour Plate ID must be between 1 and 20.");
         }
 
-        PluginLog.Debug($"Executing command: {command}");
+        Injections.PluginLog.Debug($"Executing command: {command}");
         Injections.Framework.RunOnFrameworkThread(delegate {
             ChatHelper.GetInstance().SendSanitizedChatMessage(command);
         });

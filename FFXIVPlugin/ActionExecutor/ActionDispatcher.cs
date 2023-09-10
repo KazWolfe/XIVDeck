@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
-using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using XIVDeck.FFXIVPlugin.Base;
 
-namespace XIVDeck.FFXIVPlugin.ActionExecutor; 
+namespace XIVDeck.FFXIVPlugin.ActionExecutor;
 
 public class ActionDispatcher {
     private Dictionary<HotbarSlotType, IActionStrategy> Strategies { get; } = new();
@@ -25,7 +25,7 @@ public class ActionDispatcher {
             var handler = Activator.CreateInstance(type) as IActionStrategy;
 
             if (handler == null) {
-                PluginLog.Error($"Could not create strategy for {Enum.GetName(slotType)}!");
+                Injections.PluginLog.Error($"Could not create strategy for {Enum.GetName(slotType)}!");
                 continue;
             }
 
@@ -33,10 +33,10 @@ public class ActionDispatcher {
             try {
                 handler.GetAllowedItems();
             } catch (Exception ex) {
-                PluginLog.Warning(ex, $"Could not populate strategy for {Enum.GetName(slotType)}!");
+                Injections.PluginLog.Warning(ex, $"Could not populate strategy for {Enum.GetName(slotType)}!");
             }
-            
-            PluginLog.Debug($"Registered strategy for {Enum.GetName(slotType)}: {handler.GetType()}");
+
+            Injections.PluginLog.Debug($"Registered strategy for {Enum.GetName(slotType)}: {handler.GetType()}");
             this.Strategies[slotType] = handler;
         }
     }

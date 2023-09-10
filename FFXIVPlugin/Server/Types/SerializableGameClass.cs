@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dalamud.Logging;
+
 using Lumina.Excel;
 using Lumina.Excel.GeneratedSheets;
 using Newtonsoft.Json;
@@ -20,7 +20,7 @@ public class SerializableGameClass {
             Cache.Add(new SerializableGameClass((int) gameClass.RowId));
         }
 
-        PluginLog.Debug($"Populated GameClassCache with {Cache.Count} entries.");
+        Injections.PluginLog.Debug($"Populated GameClassCache with {Cache.Count} entries.");
     }
 
     public static List<SerializableGameClass> GetCache() {

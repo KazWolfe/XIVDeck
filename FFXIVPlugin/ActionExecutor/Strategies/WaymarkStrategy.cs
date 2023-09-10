@@ -1,5 +1,5 @@
 ﻿using System;
-using Dalamud.Logging;
+
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
@@ -22,7 +22,7 @@ public class WaymarkStrategy : FixedCommandStrategy<FieldMarker> {
     }
 
     protected override void ExecuteInner(FieldMarker action) {
-        PluginLog.Debug($"Executing {action} ({action.Name}) directly via hotbar");
+        Injections.PluginLog.Debug($"Executing {action} ({action.Name}) directly via hotbar");
         
         Injections.Framework.RunOnFrameworkThread(delegate {
             HotbarManager.ExecuteHotbarAction(HotbarSlotType.FieldMarker, action.RowId);

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Dalamud.Logging;
+
 using Dalamud.Plugin.Ipc;
 using Dalamud.Plugin.Ipc.Exceptions;
 using XIVDeck.FFXIVPlugin.Base;
@@ -31,7 +31,7 @@ internal class PenumbraIPC : IPluginIpcClient {
         try {
             this._initializeIpc();
         } catch (Exception ex) {
-            PluginLog.Warning(ex, "Failed to initialize Penumbra IPC");
+            Injections.PluginLog.Warning(ex, "Failed to initialize Penumbra IPC");
         }
     }
 
@@ -49,7 +49,7 @@ internal class PenumbraIPC : IPluginIpcClient {
     
    private void _initializeIpc() {
        if (Injections.PluginInterface.InstalledPlugins.All(p => p.InternalName != "Penumbra")) {
-           PluginLog.Debug("Penumbra was not found, will not create IPC at this time");
+           Injections.PluginLog.Debug("Penumbra was not found, will not create IPC at this time");
            return;
        }
        
@@ -58,9 +58,9 @@ internal class PenumbraIPC : IPluginIpcClient {
 
        try {
            (var breakingVersion, this.Version) = this._penumbraApiVersionsSubscriber.InvokeFunc();
-           PluginLog.Debug($"Connected to Penumbra IPC, version {this.Version} (compat {breakingVersion}).");
+           Injections.PluginLog.Debug($"Connected to Penumbra IPC, version {this.Version} (compat {breakingVersion}).");
        } catch (IpcNotReadyError ex) {
-           PluginLog.Information(ex, "Penumbra was found but its IPC was not ready, will not enable IPC at this time");
+           Injections.PluginLog.Information(ex, "Penumbra was found but its IPC was not ready, will not enable IPC at this time");
            return;
        }
 
@@ -73,10 +73,10 @@ internal class PenumbraIPC : IPluginIpcClient {
         try {
             return this._penumbraResolveInterfaceSubscriber.InvokeFunc(path);
         } catch (IpcNotReadyError) {
-            PluginLog.Debug("Got a NotReadyError trying to call ResolveInterfacePath. Falling back to normal path");
+            Injections.PluginLog.Debug("Got a NotReadyError trying to call ResolveInterfacePath. Falling back to normal path");
             return path;
         } catch (Exception ex) {
-            PluginLog.Error(ex, "Failed to invoke Penumbra IPC, disabling!");
+            Injections.PluginLog.Error(ex, "Failed to invoke Penumbra IPC, disabling!");
             this.Enabled = false;
             
             return path;

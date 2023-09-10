@@ -1,8 +1,9 @@
 ﻿using System;
 using Dalamud.Hooking;
-using Dalamud.Logging;
+
 using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 
 // ReSharper disable InconsistentNaming - matching expected documentation things
@@ -46,24 +47,24 @@ internal unsafe class GameHooks : IDisposable {
     }
 
     private nint DetourGearsetSave(nint a1, nint a2) {
-        PluginLog.Debug("Detected a gearset update; broadcasting event.");
+        Injections.PluginLog.Debug("Detected a gearset update; broadcasting event.");
 
         try {
             XIVDeckPlugin.Instance.Server.BroadcastMessage(new WSStateUpdateMessage("GearSet"));
         } catch (Exception ex) {
-            PluginLog.Error(ex, "Gearset update notification on hook failed");
+            Injections.PluginLog.Error(ex, "Gearset update notification on hook failed");
         }
 
         return this.RGM_WriteFileHook!.Original(a1, a2);
     }
 
     private nint DetourMacroUpdate(RaptureMacroModule* self, byte needsSave, uint set) {
-        PluginLog.Debug("Detected a macro update; broadcasting event.");
+        Injections.PluginLog.Debug("Detected a macro update; broadcasting event.");
         
         try {
             XIVDeckPlugin.Instance.Server.BroadcastMessage(new WSStateUpdateMessage("Macro"));
         } catch (Exception ex) {
-            PluginLog.Error(ex, "Macro update notification on hook failed");
+            Injections.PluginLog.Error(ex, "Macro update notification on hook failed");
         }
 
         return this.MacroUpdateHook!.Original(self, needsSave, set);

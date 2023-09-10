@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dalamud.Game;
-using Dalamud.Logging;
+
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game.Managers;
@@ -56,7 +56,7 @@ public class HotbarWatcher : IDisposable {
         }
             
         if (updatedSlots.Count > 0) {
-            PluginLog.Debug("Detected a change to hotbar(s)!");
+            Injections.PluginLog.Debug("Detected a change to hotbar(s)!");
             var message = new WSStateUpdateMessage<List<MicroHotbarSlot>>("Hotbar", updatedSlots);
             XIVDeckPlugin.Instance.Server.BroadcastMessage(message);
         }

@@ -1,5 +1,5 @@
 ﻿using System;
-using Dalamud.Logging;
+
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game.Managers;
@@ -26,7 +26,7 @@ public class MarkerStrategy : FixedCommandStrategy<Marker> {
     }
 
     protected override void ExecuteInner(Marker action) {
-        PluginLog.Debug($"Executing {action} ({action.Name}) directly via hotbar");
+        Injections.PluginLog.Debug($"Executing {action} ({action.Name}) directly via hotbar");
         
         Injections.Framework.RunOnFrameworkThread(delegate {
             HotbarManager.ExecuteHotbarAction(HotbarSlotType.Marker, action.RowId);

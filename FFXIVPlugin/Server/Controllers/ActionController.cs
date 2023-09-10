@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Dalamud.Logging;
+
 using EmbedIO;
 using EmbedIO.Routing;
 using EmbedIO.WebApi;
@@ -73,7 +73,7 @@ public class ActionController : WebApiController {
             var requestBody = await this.HttpContext.GetRequestBodyAsStringAsync();
             payload = JsonConvert.DeserializeObject(requestBody, payloadType) as ActionPayload;
             
-            PluginLog.Debug($"Body: {requestBody}\nPayload: {payload}");
+            Injections.PluginLog.Debug($"Body: {requestBody}\nPayload: {payload}");
         }
 
         GameUtils.ResetAFKTimer();

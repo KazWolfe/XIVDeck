@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dalamud.Logging;
+
 using Dalamud.Plugin.Ipc;
 using XIVDeck.FFXIVPlugin.Base;
 
@@ -26,7 +26,7 @@ internal class TippyIPC : IPluginIpcClient {
         try {
             this._initializeIpc();
         } catch (Exception ex) {
-            PluginLog.Warning(ex, "Failed to initialize Tippy IPC");
+            Injections.PluginLog.Warning(ex, "Failed to initialize Tippy IPC");
         }
     }
 
@@ -43,7 +43,7 @@ internal class TippyIPC : IPluginIpcClient {
 
     private void _initializeIpc() {
         if (Injections.PluginInterface.InstalledPlugins.All(p => p.InternalName != "Tippy")) {
-            PluginLog.Debug("Tippy was not found, will not create IPC at this time");
+            Injections.PluginLog.Debug("Tippy was not found, will not create IPC at this time");
             return;
         }
         
@@ -55,13 +55,13 @@ internal class TippyIPC : IPluginIpcClient {
         this._tippyApiVersionSubscriber = versionEndpoint;
 
         if (version != 1) {
-            PluginLog.Warning($"Tippy IPC detected, but version {version} is incompatible!");
+            Injections.PluginLog.Warning($"Tippy IPC detected, but version {version} is incompatible!");
             return;
         }
         
         this._tippyRegisterTipSubscriber = Injections.PluginInterface.GetIpcSubscriber<string, bool>("Tippy.RegisterTip");
         this.Enabled = true;
-        PluginLog.Information("Enabled Tippy IPC connection!");
+        Injections.PluginLog.Information("Enabled Tippy IPC connection!");
             
         this.RegisterTips();
     }

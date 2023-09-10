@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dalamud.Logging;
+
 using Lumina.Excel;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game.Chat;
@@ -80,11 +80,11 @@ public abstract class FixedCommandStrategy<T> : IActionStrategy where T : ExcelR
         var command = this.GetCommandToCallAction(action);
 
         if (command == null) {
-            PluginLog.Warning("An ExecutableAction returned without a command. This *usually* shouldn't happen.");
+            Injections.PluginLog.Warning("An ExecutableAction returned without a command. This *usually* shouldn't happen.");
             return;
         }
 
-        PluginLog.Debug($"Executing command: {command}");
+        Injections.PluginLog.Debug($"Executing command: {command}");
         Injections.Framework.RunOnFrameworkThread(delegate {
             ChatHelper.GetInstance().SendSanitizedChatMessage(command);
         });

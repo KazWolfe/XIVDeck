@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Dalamud.Logging;
+
 using Lumina.Data.Files;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.IPC.Subscribers;
@@ -31,7 +31,7 @@ public static class IconManager {
         var texPath = GetIconPath(lang, iconId, hq, true);
 
         if (Path.IsPathRooted(texPath)) {
-            PluginLog.Verbose($"Using on-disk asset {texPath}");
+            Injections.PluginLog.Verbose($"Using on-disk asset {texPath}");
             texFile = Injections.DataManager.GameData.GetFileFromDisk<TexFile>(texPath);
         } else {
             texFile = Injections.DataManager.GetFile<TexFile>(texPath);
@@ -46,10 +46,10 @@ public static class IconManager {
         // - give up and return null
         switch (texFile) {
             case null when lang.Length > 0:
-                PluginLog.Debug($"Couldn't get lang-specific icon for {texPath}, falling back to no-lang");
+                Injections.PluginLog.Debug($"Couldn't get lang-specific icon for {texPath}, falling back to no-lang");
                 return GetIcon(string.Empty, iconId, hq, true);
             case null when highres:
-                PluginLog.Debug($"Couldn't get highres icon for {texPath}, falling back to lowres");
+                Injections.PluginLog.Debug($"Couldn't get highres icon for {texPath}, falling back to lowres");
                 return GetIcon(lang, iconId, hq);
             default:
                 return texFile;

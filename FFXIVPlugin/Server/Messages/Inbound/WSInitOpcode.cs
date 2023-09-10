@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using System.Threading.Tasks;
-using Dalamud.Logging;
+
 using EmbedIO.WebSockets;
 using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.Base;
@@ -35,7 +35,7 @@ public class WSInitOpcode : BaseInboundMessage {
             await context.WebSocket.CloseAsync(CloseStatusCode.ProtocolError,
                 "The version of the Stream Deck plugin is too old.", context.CancellationToken);
 
-            PluginLog.Warning("The currently-installed version of the XIVDeck Stream Deck plugin " +
+            Injections.PluginLog.Warning("The currently-installed version of the XIVDeck Stream Deck plugin " +
                               $"is {this.Version}, but version {Constants.MinimumSDPluginVersion} is needed.");
             ForcedUpdateNag.Show();
 
@@ -45,7 +45,7 @@ public class WSInitOpcode : BaseInboundMessage {
         var xivPluginVersion = Assembly.GetExecutingAssembly().GetName().Version!.StripRevision();
         var reply = new WSInitReplyMessage(xivPluginVersion.GetMajMinBuild(), AuthHelper.Instance.Secret);
         await context.SendMessage(reply);
-        PluginLog.Information($"XIVDeck Stream Deck Plugin ({this.Mode}) version {this.Version} has connected!");
+        Injections.PluginLog.Information($"XIVDeck Stream Deck Plugin ({this.Mode}) version {this.Version} has connected!");
 
         // version check behavior
         if (this.Mode is PluginMode.Plugin) {

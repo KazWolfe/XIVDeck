@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dalamud.Game.Text.SeStringHandling;
-using Dalamud.Logging;
+
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 
@@ -20,7 +20,7 @@ public static class ErrorNotifier {
 
     public static void ShowError(string text, bool useToast = false, bool prefix = true, bool debounce = false) {
         if (debounce && Debounce.GetValueOrDefault(text, 0) > Environment.TickCount64) {
-            PluginLog.Verbose($"ShowError fired but suppressed by debounce: {text}");
+            Injections.PluginLog.Verbose($"ShowError fired but suppressed by debounce: {text}");
             return;
         }
         

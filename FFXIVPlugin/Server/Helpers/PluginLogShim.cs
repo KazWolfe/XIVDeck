@@ -1,7 +1,7 @@
 ﻿using System;
-using Dalamud.Logging;
 using EmbedIO;
 using Swan.Logging;
+using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 
 namespace XIVDeck.FFXIVPlugin.Server.Helpers; 
@@ -23,26 +23,26 @@ public class PluginLogShim : ILogger {
 
         switch (logEvent.MessageType) {
             case LogLevel.Trace:
-                PluginLog.Debug(logEvent.Exception!, $"[EmbedIO] {logEvent.Message}");
+                Injections.PluginLog.Debug(logEvent.Exception!, $"[EmbedIO] {logEvent.Message}");
                 break;
             case LogLevel.Debug:
-                PluginLog.Debug(logEvent.Exception!, $"[EmbedIO] {logEvent.Message}");
+                Injections.PluginLog.Debug(logEvent.Exception!, $"[EmbedIO] {logEvent.Message}");
                 break;
             case LogLevel.Info:
-                PluginLog.Debug(logEvent.Exception!, $"[EmbedIO] {logEvent.Message}");
+                Injections.PluginLog.Debug(logEvent.Exception!, $"[EmbedIO] {logEvent.Message}");
                 break;
             case LogLevel.Warning:
-                PluginLog.Warning(logEvent.Exception!, $"[EmbedIO] {logEvent.Message}");
+                Injections.PluginLog.Warning(logEvent.Exception!, $"[EmbedIO] {logEvent.Message}");
                 break;
             case LogLevel.Error:
-                PluginLog.Error(logEvent.Exception!, $"[EmbedIO] {logEvent.Message}");
+                Injections.PluginLog.Error(logEvent.Exception!, $"[EmbedIO] {logEvent.Message}");
                 break;
             case LogLevel.Fatal:
-                PluginLog.Fatal(logEvent.Exception!, $"[EmbedIO] {logEvent.Message}");
+                Injections.PluginLog.Fatal(logEvent.Exception!, $"[EmbedIO] {logEvent.Message}");
                 break;
             case LogLevel.None:
             default:
-                PluginLog.Information(logEvent.Exception!, $"[EmbedIO] {logEvent.Message}");
+                Injections.PluginLog.Information(logEvent.Exception!, $"[EmbedIO] {logEvent.Message}");
                 break;
         }
     }

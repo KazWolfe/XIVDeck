@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
-using Dalamud.Logging;
+
 using XIVDeck.FFXIVPlugin.Base;
 
 namespace XIVDeck.FFXIVPlugin.UI;
@@ -65,7 +65,7 @@ public class ChatLinkWiring : IDisposable {
             // been registered. Thanks for the tip, Kami!
             Injections.PluginInterface.RemoveChatLinkHandler((uint) opcode);
                 
-            PluginLog.Debug($"Registered chat link handler for opcode {attr.Opcode}: {handler.GetType()}");
+            Injections.PluginLog.Debug($"Registered chat link handler for opcode {attr.Opcode}: {handler.GetType()}");
             Payloads[opcode] = Injections.PluginInterface.AddChatLinkHandler((uint) opcode, handler.Handle);
         }
     }

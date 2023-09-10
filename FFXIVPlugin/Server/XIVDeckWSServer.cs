@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Dalamud.Logging;
+
 using EmbedIO.WebSockets;
 using Newtonsoft.Json;
+using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 using XIVDeck.FFXIVPlugin.Server.Messages;
 using XIVDeck.FFXIVPlugin.Utils;
@@ -26,7 +27,7 @@ public class XIVDeckWSServer : WebSocketModule {
         try {
             await this._onMessage(context, buffer);
         } catch (Exception ex) {
-            PluginLog.Error(ex, "Got an exception on websocket process");
+            Injections.PluginLog.Error(ex, "Got an exception on websocket process");
         }
     }
 
@@ -35,14 +36,14 @@ public class XIVDeckWSServer : WebSocketModule {
         var message = JsonConvert.DeserializeObject<BaseInboundMessage>(rawData);
 
         if (message == null) {
-            PluginLog.Warning($"WebSocket message failed to deserialize to base: {rawData}");
+            Injections.PluginLog.Warning($"WebSocket message failed to deserialize to base: {rawData}");
             return;
         }
 
         var instance = this._wsModules.GetInstance(message.Opcode, rawData);
 
         if (instance == null) {
-            PluginLog.Warning($"WebSocket message failed to deserialize to instance: {rawData}");
+            Injections.PluginLog.Warning($"WebSocket message failed to deserialize to instance: {rawData}");
             return ;
         }
 
@@ -54,7 +55,7 @@ public class XIVDeckWSServer : WebSocketModule {
     protected override void Dispose(bool disposing) {
         base.Dispose(disposing);
         
-        PluginLog.Debug("WS server is going away!");
+        Injections.PluginLog.Debug("WS server is going away!");
         this._sendLock.Dispose();
     }
 

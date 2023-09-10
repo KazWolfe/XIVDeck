@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dalamud.Logging;
+
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel;
@@ -94,7 +94,7 @@ public class GeneralActionStrategy : IActionStrategy {
 
         var command = $"/generalaction \"{action.Name}\"";
 
-        PluginLog.Debug($"Executing command: {command}");
+        Injections.PluginLog.Debug($"Executing command: {command}");
         Injections.Framework.RunOnFrameworkThread(delegate {
             ChatHelper.GetInstance().SendSanitizedChatMessage(command);
         });
