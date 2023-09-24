@@ -106,7 +106,7 @@ public class XIVDeckWebServer : IXIVDeckServer {
 
         // If you're wondering why this is here despite the below line doing the same thing, it's legacy just in case
         // I want to swap the default listener for a specific operating system class.
-        if (Dalamud.Utility.Util.IsLinux()) {
+        if (Dalamud.Utility.Util.IsWine()) {
             Injections.PluginLog.Information("Linux environment detected; using EmbedIO listener.");
             return HttpListenerMode.EmbedIO;
         }

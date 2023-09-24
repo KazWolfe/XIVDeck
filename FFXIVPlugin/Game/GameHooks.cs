@@ -30,12 +30,13 @@ internal unsafe class GameHooks : IDisposable {
     /***** the actual class *****/
 
     internal GameHooks() {
-        SignatureHelper.Initialise(this);
+        Injections.GameInteropProvider.InitializeFromAttributes(this);
 
         this.RGM_WriteFileHook?.Enable();
 
-        var macroUpdateFPtr = RaptureMacroModule.Addresses.SetSavePendingFlag.Value;
-        this.MacroUpdateHook = Hook<MacroUpdate>.FromAddress((nint) macroUpdateFPtr, this.DetourMacroUpdate);
+        this.MacroUpdateHook = Injections.GameInteropProvider.HookFromAddress<MacroUpdate>(
+            (nint) RaptureMacroModule.MemberFunctionPointers.SetSavePendingFlag, 
+            this.DetourMacroUpdate);
         this.MacroUpdateHook.Enable();
     }
 

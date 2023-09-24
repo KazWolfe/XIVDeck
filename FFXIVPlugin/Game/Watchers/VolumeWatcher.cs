@@ -28,11 +28,11 @@ public class VolumeWatcher : IDisposable {
     private Task? _updateTask;
 
     public VolumeWatcher() {
-        Injections.GameConfig.System.Changed += this.OnConfigChange;
+        Injections.GameConfig.SystemChanged += this.OnConfigChange;
     }
 
     public void Dispose() {
-        Injections.GameConfig.System.Changed -= this.OnConfigChange;
+        Injections.GameConfig.SystemChanged -= this.OnConfigChange;
 
         GC.SuppressFinalize(this);
     }

@@ -5,6 +5,7 @@ using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.System.Memory;
 using FFXIVClientStructs.FFXIV.Client.System.String;
+using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game.Structs;
 
 namespace XIVDeck.FFXIVPlugin.Game.Chat; 
@@ -25,7 +26,7 @@ public unsafe class ChatHelper {
     }
 
     private ChatHelper() {
-        SignatureHelper.Initialise(this);
+        Injections.GameInteropProvider.InitializeFromAttributes(this);
     }
     
     [Signature(Signatures.SanitizeChatString, Fallibility = Fallibility.Fallible)]

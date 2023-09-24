@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dalamud.Game;
-
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game.Managers;
@@ -17,7 +17,7 @@ public class HotbarWatcher : IDisposable {
         Injections.Framework.Update += this.OnGameUpdate;
     }
 
-    private unsafe void OnGameUpdate(Framework framework) {
+    private unsafe void OnGameUpdate(IFramework framework) {
         var hotbarModule =
             FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->GetUiModule()->
                 GetRaptureHotbarModule();

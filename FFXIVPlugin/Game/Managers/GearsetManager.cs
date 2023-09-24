@@ -23,7 +23,7 @@ public static unsafe class GearsetManager {
     }
 
     public static Gearset? GetGearset(int index) {
-        var gs = RaptureGearsetModule.Instance()->Gearset[index];
+        var gs = RaptureGearsetModule.Instance()->GetGearset(index);
 
         if (gs == null || !gs->Flags.HasFlag(RaptureGearsetModule.GearsetFlag.Exists))
             return null;

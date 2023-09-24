@@ -14,3 +14,4 @@ tags:
   - integrations
 category_tags:
   - UI
+dalamud_api_level: 9   # TODO: Remove with DalamudPackager bump

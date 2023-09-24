@@ -24,7 +24,7 @@ internal static class DeferredChat {
         _cts = new CancellationTokenSource();
         
         Injections.Framework.RunOnTick(() => {
-            DeferredMessages.ForEach(Injections.Chat.Print);
+            DeferredMessages.ForEach(m => Injections.Chat.Print(m));
             DeferredMessages.Clear();
         }, delay: TimeSpan.FromMilliseconds(millis), cancellationToken: _cts.Token);
     }

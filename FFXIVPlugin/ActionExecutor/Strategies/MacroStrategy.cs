@@ -11,8 +11,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 [ActionStrategy(HotbarSlotType.Macro)]
 public class MacroStrategy : IActionStrategy {
     private static unsafe RaptureMacroModule.Macro* GetMacro(bool shared, int id) {
-        var macroPage = shared ? &RaptureMacroModule.Instance->Shared : &RaptureMacroModule.Instance->Individual;
-        return (*macroPage)[id];
+        return RaptureMacroModule.Instance()->GetMacro(shared ? 1u : 0u, (uint)id);
     }
 
     public unsafe ExecutableAction GetExecutableActionById(uint actionId) {
@@ -41,12 +40,12 @@ public class MacroStrategy : IActionStrategy {
         var macro = GetMacro(isSharedMacro, macroNumber);
 
         // Safety check to make sure we aren't triggering an empty macro
-        if (RaptureMacroModule.Instance->GetLineCount(macro) == 0) {
+        if (RaptureMacroModule.Instance()->GetLineCount(macro) == 0) {
             throw new IllegalGameStateException(UIStrings.MacroStrategy_MacroEmptyError);
         }
 
         Injections.PluginLog.Debug($"Executing macro number {macroNumber}");
-        Injections.Framework.RunOnFrameworkThread(delegate { RaptureShellModule.Instance->ExecuteMacro(macro); });
+        Injections.Framework.RunOnFrameworkThread(delegate { RaptureShellModule.Instance()->ExecuteMacro(macro); });
     }
 
     public unsafe int GetIconId(uint item) {

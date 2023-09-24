@@ -15,15 +15,16 @@ namespace XIVDeck.FFXIVPlugin.Base;
 [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
 public class Injections {
     [PluginService] public static DalamudPluginInterface PluginInterface { get; private set; }
-    [PluginService] public static ChatGui Chat { get; private set; }
+    [PluginService] public static IChatGui Chat { get; private set; }
     [PluginService] public static IClientState ClientState { get; private set; }
     [PluginService] public static ICommandManager CommandManager { get; private set; }
-    [PluginService] public static Condition Condition { get; private set; }
+    [PluginService] public static ICondition Condition { get; private set; }
     [PluginService] public static IDataManager DataManager { get; private set; }
-    [PluginService] public static Framework Framework { get; private set; }
+    [PluginService] public static IFramework Framework { get; private set; }
     [PluginService] public static IGameConfig GameConfig { get; private set; }
     [PluginService] public static IGameGui GameGui { get; private set; }
     [PluginService] public static ISigScanner SigScanner { get; private set; }
-    [PluginService] public static ToastGui Toasts { get; private set; }    
+    [PluginService] public static IToastGui Toasts { get; private set; }    
     [PluginService] public static IPluginLog PluginLog { get; private set; }
+    [PluginService] public static IGameInteropProvider GameInteropProvider { get; private set; }
 }
