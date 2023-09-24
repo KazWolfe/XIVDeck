@@ -9,6 +9,7 @@ using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game.Chat;
+using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
@@ -88,15 +89,14 @@ public class GeneralActionStrategy : IActionStrategy {
                 action.Name));
         }
 
+        // Advanced Materia Melding auto-replacement
         if (actionId == 12 && UIState.Instance()->IsUnlockLinkUnlocked(12)) {
             action = GetActionById(13)!;
         }
-
-        var command = $"/generalaction \"{action.Name}\"";
-
-        Injections.PluginLog.Debug($"Executing command: {command}");
+        
+        Injections.PluginLog.Debug($"Executing hotbar slot: GeneralAction#{action.RowId} ({action.Name})");
         Injections.Framework.RunOnFrameworkThread(delegate {
-            ChatHelper.GetInstance().SendSanitizedChatMessage(command);
+            HotbarManager.ExecuteHotbarAction(HotbarSlotType.GeneralAction, action.RowId);
         });
     }
 

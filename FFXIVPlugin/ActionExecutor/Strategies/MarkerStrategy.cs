@@ -12,8 +12,6 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 public class MarkerStrategy : FixedCommandStrategy<Marker> {
     
     protected override int GetIconForAction(Marker action) => action.Icon;
-
-    protected override string GetCommandToCallAction(Marker action) => throw new NotSupportedException();
     
     protected override ExecutableAction BuildExecutableAction(Marker action) {
         return new ExecutableAction {

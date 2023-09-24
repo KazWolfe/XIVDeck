@@ -13,7 +13,6 @@ public abstract class FixedCommandStrategy<T> : IActionStrategy where T : ExcelR
     private readonly List<ExecutableAction> _actionCache = new();
     
     protected abstract int GetIconForAction(T action);
-    protected abstract string? GetCommandToCallAction(T action);
     protected abstract ExecutableAction? BuildExecutableAction(T action);
 
     protected virtual IEnumerable<uint> GetIllegalActionIDs() => Array.Empty<uint>();
@@ -73,22 +72,7 @@ public abstract class FixedCommandStrategy<T> : IActionStrategy where T : ExcelR
         this.ExecuteInner(action);
     }
 
-    protected virtual void ExecuteInner(T action) {
-        // The default implementation for ExecuteInner will use GCTCA to grab a command and then run it. This is
-        // probably a bit of an OOP code smell, but I'm far too lazy to redo this properly.
-        
-        var command = this.GetCommandToCallAction(action);
-
-        if (command == null) {
-            Injections.PluginLog.Warning("An ExecutableAction returned without a command. This *usually* shouldn't happen.");
-            return;
-        }
-
-        Injections.PluginLog.Debug($"Executing command: {command}");
-        Injections.Framework.RunOnFrameworkThread(delegate {
-            ChatHelper.GetInstance().SendSanitizedChatMessage(command);
-        });
-    }
+    protected abstract void ExecuteInner(T action);
 
     public int GetIconId(uint actionId) {
         var action = GetActionById(actionId);

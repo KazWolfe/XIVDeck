@@ -8,6 +8,7 @@ using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Game.Chat;
+using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils;
 
@@ -46,12 +47,10 @@ public class MountStrategy : IActionStrategy {
         if (!mount.IsUnlocked()) {
             throw new ActionLockedException(string.Format(UIStrings.MountStrategy_MountLockedError, mount.Singular.ToTitleCase()));
         }
-            
-        var command = $"/mount \"{mount.Singular}\"";
-            
-        Injections.PluginLog.Debug($"Executing command: {command}");
+        
+        Injections.PluginLog.Debug($"Executing hotbar slot: Mount#{actionId} ({mount.Singular.ToTitleCase()})");
         Injections.Framework.RunOnFrameworkThread(delegate {
-            ChatHelper.GetInstance().SendSanitizedChatMessage(command);
+            HotbarManager.ExecuteHotbarAction(HotbarSlotType.Mount, actionId);
         });
     }
         

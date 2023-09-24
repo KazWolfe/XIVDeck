@@ -8,6 +8,7 @@ using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Game.Chat;
+using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils;
 
@@ -52,11 +53,9 @@ public class MinionStrategy : IActionStrategy {
             throw new ActionLockedException(string.Format(UIStrings.MinionStrategy_MinionLockedError, minion.Singular.ToTitleCase()));
         }
             
-        var command = $"/minion \"{minion.Singular}\"";
-            
-        Injections.PluginLog.Debug($"Executing command: {command}");
+        Injections.PluginLog.Debug($"Executing hotbar slot: Minion#{actionId} ({minion.Singular.ToTitleCase()})");
         Injections.Framework.RunOnFrameworkThread(delegate {
-            ChatHelper.GetInstance().SendSanitizedChatMessage(command);
+            HotbarManager.ExecuteHotbarAction(HotbarSlotType.Minion, actionId);
         });
     }
 

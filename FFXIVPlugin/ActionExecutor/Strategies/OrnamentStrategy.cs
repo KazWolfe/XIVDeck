@@ -7,7 +7,9 @@ using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Game.Chat;
+using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
+using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
@@ -50,10 +52,9 @@ public class OrnamentStrategy : IActionStrategy {
             throw new ActionLockedException(string.Format(UIStrings.OrnamentStrategy_OrnamentLockedError, ornament.Singular));
         }
             
-        var command = $"/fashion \"{ornament.Singular}\"";
-        Injections.PluginLog.Debug($"Executing command: {command}");
+        Injections.PluginLog.Debug($"Executing hotbar slot: FashionAccessory#{ornament.RowId} ({ornament.Singular.ToTitleCase()})");
         Injections.Framework.RunOnFrameworkThread(delegate {
-            ChatHelper.GetInstance().SendSanitizedChatMessage(command);
+            HotbarManager.ExecuteHotbarAction(HotbarSlotType.FashionAccessory, ornament.RowId);
         });
     }
 
