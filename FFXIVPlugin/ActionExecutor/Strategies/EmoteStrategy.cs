@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.ActionExecutor.Payloads;
@@ -9,6 +9,7 @@ using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Game.Chat;
+using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils.Game;
 
@@ -59,22 +60,15 @@ public class EmoteStrategy : IActionStrategy {
         if (emote == null) {
             throw new ActionNotFoundException(HotbarSlotType.Emote, actionId);
         }
-
-        var textCommand = emote.TextCommand.Value;
-
-        if (textCommand == null) {
-            throw new KeyNotFoundException(string.Format(UIStrings.EmoteStrategy_EmoteDoesntHaveCommandError,
-                emote.Name));
-        }
-
+        
         if (!emote.IsUnlocked()) {
             throw new ActionLockedException(string.Format(UIStrings.EmoteStrategy_EmoteLockedError, emote.Name));
         }
 
-        Injections.PluginLog.Debug($"Executing command: {textCommand.Command}");
+        Injections.PluginLog.Debug($"Executing emote {emote.Name} (ID {actionId})");
         Injections.Framework.RunOnFrameworkThread(delegate {
             using var _ = logMode != null ? Injections.GameConfig.UiConfig.TemporarySet("EmoteTextType", logMode.Value) : null;
-            ChatHelper.GetInstance().SendSanitizedChatMessage(textCommand.Command);
+            HotbarManager.ExecuteHotbarAction(HotbarSlotType.Emote, actionId);
         });
     }
 
