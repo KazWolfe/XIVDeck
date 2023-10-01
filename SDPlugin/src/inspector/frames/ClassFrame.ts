@@ -5,6 +5,7 @@ import {StringUtils} from "../../util/StringUtils";
 import {PIUtils} from "../../util/PIUtils";
 import {FFXIVApi} from "../../link/ffxivplugin/FFXIVApi";
 import i18n from "../../i18n/i18n";
+import {FFXIVClass} from "../../link/ffxivplugin/GameTypes";
 
 export class ClassFrame extends BaseFrame<ClassButtonSettings> {
     classSelector: HTMLSelectElement;
@@ -37,6 +38,7 @@ export class ClassFrame extends BaseFrame<ClassButtonSettings> {
         this.classSelector.onchange = this._onClassUpdate.bind(this);
 
         this.domParent.append(sdItem);
+        this.domParent.append(this._renderHelpText());
     }
     
     async populateClasses(): Promise<void> {
@@ -104,12 +106,29 @@ export class ClassFrame extends BaseFrame<ClassButtonSettings> {
         }) 
     }
     
+    private _renderHelpText(): HTMLElement {
+        let parentElement = document.createElement("div");
+        parentElement.className = "sdpi-item";
+        
+        let element = document.createElement("details");
+        element.className = "sdpi-item message question"
+        
+        element.innerHTML = `
+             <summary>${i18n.t('frames:class.help.title')}</summary>
+             <p>${i18n.t('frames:class.help.body')}</p>
+        `
+        
+        parentElement.append(element);
+        
+        return parentElement;
+    }
+    
     private _onClassUpdate(_: Event): void {
         let selected = this.classSelector.value;
         
         if (selected === "default") {
-            console.warn("Default value was somehow selected, aborting update.")
-            return
+            console.warn("Default value was somehow selected, aborting update.");
+            return;
         }
         
         this.selected = parseInt(selected);

@@ -1,22 +1,41 @@
 ﻿import i18n from "../i18n/i18n";
 
 export class PIUtils {
+    
+    static generateErrorDom(headline: string, body: HTMLElement | null | string) : HTMLElement {
+        let headlineSpan = document.createElement("span");
+        headlineSpan.innerText = headline;
+        headlineSpan.style['color'] = 'orangered';
+        
+        if (body == null) {
+            headlineSpan.className = "message caution";
+            return headlineSpan;
+        }
+        
+        let errorElement = document.createElement("details");
+        errorElement.className = "message caution";
+        
+        let summary = document.createElement("summary");
+        summary.append(headlineSpan, ` ${i18n.t("common:connError.clickMore")}`); 
+        
+        errorElement.append(summary, body);
+        
+        return errorElement;
+    }
+    
     static generateConnectionErrorDom(): HTMLElement {
-        let element: HTMLElement = document.createElement("details")
-        element.className = "message caution"
-
-        element.innerHTML = `
-            <summary><span style="color: orangered">${i18n.t("common:connError.headline")}</span> ${i18n.t("common:connError.clickMore")}</summary>
-                <p>${i18n.t("common:connError.checkFor")}</p>
-                <ul>
-                    <li>${i18n.t("common:connError.checkGameRunning")}</li>
-                    <li>${i18n.t("common:connError.checkPluginInstalled")}</li>
-                    <li>${i18n.t("common:connError.checkSettingsCorrect")}</li>
-                </ul>
+        let errorDetails = document.createElement("div");
+        errorDetails.innerHTML = `
+            <p>${i18n.t("common:connError.checkFor")}</p>
+            <ul>
+                <li>${i18n.t("common:connError.checkGameRunning")}</li>
+                <li>${i18n.t("common:connError.checkPluginInstalled")}</li>
+                <li>${i18n.t("common:connError.checkSettingsCorrect")}</li>
+            </ul>
             <p>${i18n.t("common:connError.resolveSteps")}</p>
         `
-
-        return element;
+        
+        return this.generateErrorDom(i18n.t("common:connError.headline"), errorDetails);
     }
     
     static createPILabeledElement(label: string, formElement: HTMLElement): HTMLElement {

@@ -17,7 +17,11 @@
   "class": {
     "default": "Select class...",
     "class": "Class",
-    "unknown": "Unknown"
+    "unknown": "Unknown",
+    "help": {
+      "title": "Classes Help",
+      "body": "When this button is pressed, XIVDeck will switch to the first gearset matching the selected class. Classes without a gearset will not be displayed or usable."
+    }
   },
   "action": {
     "type": "Type",
