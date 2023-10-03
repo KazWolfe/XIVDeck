@@ -12,10 +12,10 @@ namespace XIVDeck.FFXIVPlugin.Server.Controllers;
 public class IconController : WebApiController {
     
     [Route(HttpVerbs.Get, "/{iconId}")]
-    public async Task GetIcon(int iconId, [QueryField] bool hq = false) {
+    public async Task GetIcon(int iconId) {
         this.HttpContext.Response.ContentType = "image/png";
         
-        var icon = IconManager.GetIcon("", iconId, hq, true);
+        var icon = IconManager.GetIcon("", iconId, true);
 
         if (icon == null)
             throw HttpException.NotFound($"Icon {iconId} was not found.");

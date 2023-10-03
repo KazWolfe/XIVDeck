@@ -39,13 +39,11 @@ internal static class HotbarManager {
         
         // Handle the main hotbar, which is a bit interesting as it can behave oddly at times.
         var mainBarName = isCrossHotbar ? "_ActionCross" : "_ActionBar";
-        var mainBarPtr = Injections.GameGui.GetAddonByName(mainBarName);
+        var mainBar = (AddonActionBarBase*) Injections.GameGui.GetAddonByName(mainBarName);
 
-        if (mainBarPtr != nint.Zero) {
-            var activeHotbarId = *(byte*) (mainBarPtr + 0x23C); // offset to RaptureHotbarId
-
-            if (activeHotbarId == hotbarId) {
-                SafePulseBar((AddonActionBarBase*) mainBarPtr, slotId);
+        if (mainBar != null) {
+            if (mainBar->RaptureHotbarId == hotbarId) {
+                SafePulseBar(mainBar, slotId);
             }
         } else {
             Injections.PluginLog.Debug($"Couldn't find main hotbar addon {mainBarName}!");
@@ -54,10 +52,10 @@ internal static class HotbarManager {
         // And handle any extra visible normal hotbars
         if (!isCrossHotbar) {
             var actionBarName = $"_ActionBar{hotbarId:00}";
-            var actionBarPtr = Injections.GameGui.GetAddonByName(actionBarName);
+            var actionBar = (AddonActionBarBase*) Injections.GameGui.GetAddonByName(actionBarName);
 
-            if (actionBarPtr != nint.Zero) {
-                SafePulseBar((AddonActionBarBase*) actionBarPtr, slotId);
+            if (actionBar != null) {
+                SafePulseBar(actionBar, slotId);
             } else {
                 Injections.PluginLog.Debug($"Couldn't find hotbar addon {actionBarName}");
             }

@@ -12,9 +12,16 @@ namespace XIVDeck.FFXIVPlugin.Game.Managers;
 public static class IconManager {
     private const string IconFileFormat = "ui/icon/{0:D3}000/{1}{2:D6}{3}.tex";
 
-    private static string GetIconPath(string lang, int iconId, bool hq = false, bool highres = false, bool forceOriginal = false) {
+    private static string GetIconPath(string lang, int iconId, bool highres = false, bool forceOriginal = false) {
+        var useHqIcon = false;
+        
+        if (iconId > 1_000_000) {
+            useHqIcon = true;
+            iconId -= 1_000_000;
+        }
+        
         var path = string.Format(IconFileFormat, 
-            iconId / 1000, (hq ? "hq/" : "") + lang, iconId, highres ? "_hr1" : "");
+            iconId / 1000, (useHqIcon ? "hq/" : "") + lang, iconId, highres ? "_hr1" : "");
 
         if (PenumbraIPC.Instance is {Enabled: true} && !forceOriginal && XIVDeckPlugin.Instance.Configuration.UsePenumbraIPC)
             path = PenumbraIPC.Instance.ResolvePenumbraPath(path);
@@ -22,13 +29,13 @@ public static class IconManager {
         return path;
     }
 
-    public static TexFile? GetIcon(string lang, int iconId, bool hq = false, bool highres = false) {
+    public static TexFile? GetIcon(string lang, int iconId, bool highres = false) {
         TexFile? texFile;
         
         if (lang.Length > 0 && !lang.EndsWith("/"))
             lang += "/";
         
-        var texPath = GetIconPath(lang, iconId, hq, true);
+        var texPath = GetIconPath(lang, iconId, true);
 
         if (Path.IsPathRooted(texPath)) {
             Injections.PluginLog.Verbose($"Using on-disk asset {texPath}");
@@ -47,17 +54,17 @@ public static class IconManager {
         switch (texFile) {
             case null when lang.Length > 0:
                 Injections.PluginLog.Debug($"Couldn't get lang-specific icon for {texPath}, falling back to no-lang");
-                return GetIcon(string.Empty, iconId, hq, true);
+                return GetIcon(string.Empty, iconId, true);
             case null when highres:
                 Injections.PluginLog.Debug($"Couldn't get highres icon for {texPath}, falling back to lowres");
-                return GetIcon(lang, iconId, hq);
+                return GetIcon(lang, iconId);
             default:
                 return texFile;
         }
     }
     
-    public static string GetIconAsPngString(int iconId, bool hq = false) {
-        var icon = GetIcon("", iconId, hq, true) ?? GetIcon("", 0, hq, true)!;
+    public static string GetIconAsPngString(int iconId) {
+        var icon = GetIcon("", iconId, true) ?? GetIcon("", 0, true)!;
 
         return "data:image/png;base64," + Convert.ToBase64String(icon.GetImage().ConvertToPng());
     }
