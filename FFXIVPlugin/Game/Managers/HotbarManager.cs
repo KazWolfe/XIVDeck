@@ -100,7 +100,7 @@ internal static class HotbarManager {
         // Take in default values, just in case GetSlotAppearance fails for some reason
         var acType = slot->IconTypeB;
         var acId = slot->IconB;
-        ushort actionCost = slot->UNK_0xCA;
+        ushort actionCost = slot->CostType;
         
         RaptureHotbarModule.GetSlotAppearance(&acType, &acId, &actionCost, hotbarModule, slot);
 

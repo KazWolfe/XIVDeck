@@ -6,21 +6,20 @@ using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
-using XIVDeck.FFXIVPlugin.Game.Chat;
 using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
-[ActionStrategy(HotbarSlotType.FashionAccessory)]
+[ActionStrategy(HotbarSlotType.Ornament)]
 public class OrnamentStrategy : IActionStrategy {
     private static ExecutableAction GetExecutableAction(Ornament ornament) {
         return new ExecutableAction {
             ActionId = (int) ornament.RowId,
             ActionName = ornament.Singular.ToString(),
             IconId = ornament.Icon,
-            HotbarSlotType = HotbarSlotType.FashionAccessory,
+            HotbarSlotType = HotbarSlotType.Ornament,
             SortOrder = ornament.Order
         };
     }
@@ -45,16 +44,16 @@ public class OrnamentStrategy : IActionStrategy {
         var ornament = GetOrnamentById(actionId);
 
         if (ornament == null) {
-            throw new ActionNotFoundException(HotbarSlotType.FashionAccessory, actionId);
+            throw new ActionNotFoundException(HotbarSlotType.Ornament, actionId);
         }
 
         if (!ornament.IsUnlocked()) {
             throw new ActionLockedException(string.Format(UIStrings.OrnamentStrategy_OrnamentLockedError, ornament.Singular));
         }
             
-        Injections.PluginLog.Debug($"Executing hotbar slot: FashionAccessory#{ornament.RowId} ({ornament.Singular.ToTitleCase()})");
+        Injections.PluginLog.Debug($"Executing hotbar slot: Ornament#{ornament.RowId} ({ornament.Singular.ToTitleCase()})");
         Injections.Framework.RunOnFrameworkThread(delegate {
-            HotbarManager.ExecuteHotbarAction(HotbarSlotType.FashionAccessory, ornament.RowId);
+            HotbarManager.ExecuteHotbarAction(HotbarSlotType.Ornament, ornament.RowId);
         });
     }
 

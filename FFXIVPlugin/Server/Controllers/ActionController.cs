@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using EmbedIO;
@@ -18,15 +19,29 @@ namespace XIVDeck.FFXIVPlugin.Server.Controllers;
 
 [ApiController("/action")]
 public class ActionController : WebApiController {
+    /// <summary>
+    /// A lookup table of aliases for certain action types. Used for cases where an action type may have changed
+    /// names as a result of CS updates or similar.
+    /// </summary>
+    private static readonly Dictionary<string, HotbarSlotType> ActionTypeAliases = new() {
+        { "Minion", HotbarSlotType.Companion },
+        { "FashionAccessory", HotbarSlotType.Ornament }
+    };
+
+    private static readonly Dictionary<HotbarSlotType, string> SlotTypeNames = ActionTypeAliases.Reverse()
+        .ToDictionary(v => v.Value, k => k.Key);
+    
     [Route(HttpVerbs.Get, "/")]
-    public Dictionary<HotbarSlotType, List<ExecutableAction>> GetActions() {
-        Dictionary<HotbarSlotType, List<ExecutableAction>> actions = new();
+    public Dictionary<string, List<ExecutableAction>> GetActions() {
+        Dictionary<string, List<ExecutableAction>> actions = new();
 
         foreach (var (type, strategy) in XIVDeckPlugin.Instance.ActionDispatcher.GetStrategies()) {
             var allowedItems = strategy.GetAllowedItems();
             if (allowedItems == null || allowedItems.Count == 0) continue;
 
-            actions[type] = allowedItems;
+            var typeName = SlotTypeNames.GetValueOrDefault(type, type.ToString());
+
+            actions[typeName] = allowedItems;
         }
 
         return actions;
@@ -34,7 +49,7 @@ public class ActionController : WebApiController {
 
     [Route(HttpVerbs.Get, "/{type}")]
     public List<ExecutableAction> GetActionsByType(string type) {
-        if (!Enum.TryParse<HotbarSlotType>(type, out var slotType)) {
+        if (!TryGetSlotTypeByName(type, out var slotType)) {
             throw HttpException.NotFound(string.Format(UIStrings.ActionController_UnknownActionTypeError, type));
         }
 
@@ -44,7 +59,7 @@ public class ActionController : WebApiController {
 
     [Route(HttpVerbs.Get, "/{type}/{id}")]
     public ExecutableAction GetAction(string type, int id) {
-        if (!Enum.TryParse<HotbarSlotType>(type, out var slotType)) {
+        if (!TryGetSlotTypeByName(type, out var slotType)) {
             throw HttpException.NotFound(string.Format(UIStrings.ActionController_UnknownActionTypeError, type));
         }
 
@@ -59,7 +74,7 @@ public class ActionController : WebApiController {
 
     [Route(HttpVerbs.Post, "/{type}/{id}/execute")]
     public async Task ExecuteAction(string type, int id) {
-        if (!Enum.TryParse<HotbarSlotType>(type, out var slotType))
+        if (!TryGetSlotTypeByName(type, out var slotType))
             throw HttpException.NotFound(string.Format(UIStrings.ActionController_UnknownActionTypeError, type));
 
         if (!Injections.ClientState.IsLoggedIn)
@@ -78,5 +93,9 @@ public class ActionController : WebApiController {
 
         GameUtils.ResetAFKTimer();
         strategy.Execute((uint) id, payload);
+    }
+
+    private static bool TryGetSlotTypeByName(string typeName, out HotbarSlotType slotType) {
+        return ActionTypeAliases.TryGetValue(typeName, out slotType) || Enum.TryParse(typeName, out slotType);
     }
 }

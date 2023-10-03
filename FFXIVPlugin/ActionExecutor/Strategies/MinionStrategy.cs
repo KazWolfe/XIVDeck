@@ -7,21 +7,20 @@ using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
-using XIVDeck.FFXIVPlugin.Game.Chat;
 using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
-[ActionStrategy(HotbarSlotType.Minion)]
+[ActionStrategy(HotbarSlotType.Companion)]
 public class MinionStrategy : IActionStrategy {
     private static ExecutableAction GetExecutableAction(Companion minion) {
         return new ExecutableAction {
             ActionId = (int) minion.RowId,
             ActionName = minion.Singular.ToString(),
             IconId = minion.Icon,
-            HotbarSlotType = HotbarSlotType.Minion,
+            HotbarSlotType = HotbarSlotType.Companion,
             SortOrder = minion.Order
         };
     }
@@ -55,7 +54,7 @@ public class MinionStrategy : IActionStrategy {
             
         Injections.PluginLog.Debug($"Executing hotbar slot: Minion#{actionId} ({minion.Singular.ToTitleCase()})");
         Injections.Framework.RunOnFrameworkThread(delegate {
-            HotbarManager.ExecuteHotbarAction(HotbarSlotType.Minion, actionId);
+            HotbarManager.ExecuteHotbarAction(HotbarSlotType.Companion, actionId);
         });
     }
 

@@ -25,10 +25,10 @@ public class HotbarWatcher : IDisposable {
         List<MicroHotbarSlot> updatedSlots = new();
 
         for (var hotbarId = 0; hotbarId < 17; hotbarId++) {
-            var hotbar = hotbarModule->HotBar[hotbarId];
+            ref var hotbar = ref hotbarModule->HotBarsSpan[hotbarId];
                 
             for (var slotId = 0; slotId < 16; slotId++) {
-                var gameSlot = hotbar->Slot[slotId];
+                var gameSlot = hotbar.GetHotbarSlot((uint) slotId);
                 var cachedSlot = this._hotbarCache[hotbarId, slotId];
 
                 // We calculate IconB first so that we know what "appearance" the slot has. This allows us to optimize
