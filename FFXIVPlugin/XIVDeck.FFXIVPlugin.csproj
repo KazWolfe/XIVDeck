@@ -58,7 +58,7 @@
         <PackageReference Include="EmbedIO" Version="3.5.2" />
 
         <!-- Dalamud things -->
-        <PackageReference Include="DalamudPackager" Version="2.1.11" GeneratePathProperty="false" />
+        <PackageReference Include="DalamudPackager" Version="2.1.12" GeneratePathProperty="false" />
         <Reference Include="FFXIVClientStructs">
             <HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
             <Private>false</Private>
