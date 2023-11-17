@@ -5,8 +5,8 @@ using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.System.Memory;
 using FFXIVClientStructs.FFXIV.Client.System.String;
+using FFXIVClientStructs.FFXIV.Client.UI;
 using XIVDeck.FFXIVPlugin.Base;
-using XIVDeck.FFXIVPlugin.Game.Structs;
 
 namespace XIVDeck.FFXIVPlugin.Game.Chat; 
 
@@ -34,51 +34,53 @@ public unsafe class ChatHelper {
 
     // UIModule, message, unused, byte
     [Signature(Signatures.SendChatMessage, Fallibility = Fallibility.Fallible)]
-    private readonly delegate* unmanaged<nint, nint, nint, byte, void> _processChatBoxEntry = null!;
+    private readonly delegate* unmanaged<UIModule*, Utf8String*, nint, byte, void> _processChatBoxEntry = null!;
+    
+    /// <summary>
+    /// Calls the chat message handler akin to sending a message in a chat box. Handles both stripping newlines as well
+    /// as calling the native game text sanitization engine, and includes command protections.
+    /// </summary>
+    /// <param name="text">A normal string to pass to the chat message handler.</param>
+    /// <param name="commandOnly">Check that this message is a command (and starts with /).</param>
+    public void SendSanitizedChatMessage(string text, bool commandOnly = true) {
+        if (commandOnly && !text.StartsWith("/")) {
+            throw new ArgumentException(@"The specified message message does not start with a slash while in command-only mode.", nameof(text));
+        }
 
-    private string SanitizeString(string input) {
-        var uString = Utf8String.FromString(input);
+        text = text.ReplaceLineEndings(" ");
 
-        this._sanitizeChatString(uString, 0x27F, nint.Zero);
-        var output = uString->ToString();
-
-        uString->Dtor();
-        IMemorySpace.Free(uString);
-
-        return output;
+        var utfMessage = Utf8String.FromString(text);
+        this.SanitizeString(utfMessage);
+        
+        this.SendChatMessage(utfMessage);
+        
+        utfMessage->Dtor(true);
     }
 
-    private void SendChatMessage(string message) {
+    /// <summary>
+    /// Sanitize a Utf8String* in-place.
+    /// </summary>
+    /// <param name="utfString">A pointer to the string to sanitize.</param>
+    private void SanitizeString(Utf8String* utfString) {
+        if (this._sanitizeChatString == null) {
+            throw new InvalidOperationException("Could not find the signature for SanitizeString!");
+        }
+
+        this._sanitizeChatString(utfString, 0x27F, nint.Zero);
+    }
+
+    private void SendChatMessage(Utf8String* utfMessage) {
         if (this._processChatBoxEntry == null) {
             throw new InvalidOperationException("Could not find the signature for SendChatMessage!");
         }
 
-        var messageBytes = Encoding.UTF8.GetBytes(message);
-
-        switch (messageBytes.Length) {
+        switch (utfMessage->Length) {
             case 0:
-                throw new ArgumentException(@"Message cannot be empty", nameof(message));
+                throw new ArgumentException(@"Message cannot be empty", nameof(utfMessage));
             case > 500:
-                throw new ArgumentException(@"Message cannot exceed 500 byte limit", nameof(message));
+                throw new ArgumentException(@"Message cannot exceed 500 byte limit", nameof(utfMessage));
         }
-
-        var payloadMem = Marshal.AllocHGlobal(400);
-        Marshal.StructureToPtr(new ChatPayload(messageBytes), payloadMem, false);
-
-        this._processChatBoxEntry((nint) Framework.Instance()->GetUiModule(), payloadMem, nint.Zero, 0);
-
-        Marshal.FreeHGlobal(payloadMem);
-    }
-    
-    public void SendSanitizedChatMessage(string text, bool commandOnly = true) {
-        if (commandOnly && !text.StartsWith("/")) {
-            throw new ArgumentException("The specified message message does not start with a slash while in command-only mode.");
-        }
-            
-        // sanitization rules
-        text = text.Replace("\n", " ");
-        text = this.SanitizeString(text);
-            
-        this.SendChatMessage(text);
+        
+        this._processChatBoxEntry(Framework.Instance()->GetUiModule(), utfMessage, nint.Zero, 0);
     }
 }
