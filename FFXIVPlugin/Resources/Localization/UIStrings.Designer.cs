@@ -726,6 +726,24 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ignore for now.
+        /// </summary>
+        internal static string SetupNag_BypassButton {
+            get {
+                return ResourceManager.GetString("SetupNag_BypassButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Don&apos;t care? Hold CTRL to bypass this dialog!.
+        /// </summary>
+        internal static string SetupNag_BypassHint {
+            get {
+                return ResourceManager.GetString("SetupNag_BypassHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current port: {0}.
         /// </summary>
         internal static string SetupNag_CurrentPort {
@@ -796,6 +814,15 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         internal static string SetupNag_JoinDiscord {
             get {
                 return ResourceManager.GetString("SetupNag_JoinDiscord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This message will return on every game launch!.
+        /// </summary>
+        internal static string SetupNag_MessageWillReturn {
+            get {
+                return ResourceManager.GetString("SetupNag_MessageWillReturn", resourceCulture);
             }
         }
         
