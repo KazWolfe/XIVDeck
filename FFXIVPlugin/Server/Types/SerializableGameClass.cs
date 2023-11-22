@@ -54,7 +54,7 @@ public class SerializableGameClass {
         this.Name = classJob.Name.ToString();
         this.Abbreviation = classJob.Abbreviation.ToString();
         this.CategoryName = (classJob.UIPriority / 10) switch {
-            // This is *really* hacky, but eh.
+            // This is a bit hacky, but eh. This should work until SE breaks their own UI.
             0 => AddonTextLoc.JobCategory_Tank,
             1 => AddonTextLoc.JobCategory_Healer,
             2 => AddonTextLoc.JobCategory_MeleeDPS,
