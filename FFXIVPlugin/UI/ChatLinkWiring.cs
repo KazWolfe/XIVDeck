@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
-
 using XIVDeck.FFXIVPlugin.Base;
 
 namespace XIVDeck.FFXIVPlugin.UI;

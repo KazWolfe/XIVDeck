@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Client.UI.Shell;
 using XIVDeck.FFXIVPlugin.Base;

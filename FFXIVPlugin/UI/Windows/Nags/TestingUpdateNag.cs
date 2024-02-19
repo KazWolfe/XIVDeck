@@ -1,5 +1,4 @@
-﻿using Dalamud.Interface;
-using Dalamud.Interface.Colors;
+﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility;
 using ImGuiNET;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
@@ -9,7 +8,7 @@ namespace XIVDeck.FFXIVPlugin.UI.Windows.Nags;
 
 public class TestingUpdateNag : NagWindow {
     private static TestingUpdateNag? _instance;
-    private static bool _dismissed = false;
+    private static bool _dismissed;
 
     internal static void Show() {
         if (_dismissed) return;

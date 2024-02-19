@@ -1,8 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Dalamud.Game;
-using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Game.Gui;
-using Dalamud.Game.Gui.Toast;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Lumina.Excel;
 using XIVDeck.FFXIVPlugin.Base;
-using XIVDeck.FFXIVPlugin.Game.Chat;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor;

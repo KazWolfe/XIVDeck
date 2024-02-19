@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;

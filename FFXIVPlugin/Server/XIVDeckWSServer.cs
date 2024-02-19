@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-
 using EmbedIO.WebSockets;
 using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.Base;

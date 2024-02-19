@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dalamud.Game.Text.SeStringHandling;
-
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 

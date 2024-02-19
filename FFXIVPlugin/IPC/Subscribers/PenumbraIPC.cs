@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-
 using Dalamud.Plugin.Ipc;
 using Dalamud.Plugin.Ipc.Exceptions;
 using XIVDeck.FFXIVPlugin.Base;

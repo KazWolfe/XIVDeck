@@ -1,9 +1,6 @@
-﻿using System;
-
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+﻿using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game.Managers;
-
 using Marker = XIVDeck.FFXIVPlugin.Game.Data.Marker;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 

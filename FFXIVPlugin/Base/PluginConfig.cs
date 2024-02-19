@@ -1,5 +1,4 @@
-﻿#nullable enable
-using System;
+﻿using System;
 using Dalamud.Configuration;
 using EmbedIO;
 using Newtonsoft.Json;

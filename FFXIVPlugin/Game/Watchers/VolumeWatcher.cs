@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dalamud.Game.Config;
-
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game.Data;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;

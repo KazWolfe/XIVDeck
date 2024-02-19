@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;

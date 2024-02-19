@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using System.Threading.Tasks;
-
 using EmbedIO.WebSockets;
 using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.Base;

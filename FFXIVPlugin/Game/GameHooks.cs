@@ -1,6 +1,5 @@
 ﻿using System;
 using Dalamud.Hooking;
-
 using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using XIVDeck.FFXIVPlugin.Base;

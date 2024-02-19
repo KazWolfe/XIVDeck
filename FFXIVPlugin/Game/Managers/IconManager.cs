@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-
 using Lumina.Data.Files;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.IPC.Subscribers;

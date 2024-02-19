@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Runtime.InteropServices;
-using System.Text;
 using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
-using FFXIVClientStructs.FFXIV.Client.System.Memory;
 using FFXIVClientStructs.FFXIV.Client.System.String;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using XIVDeck.FFXIVPlugin.Base;

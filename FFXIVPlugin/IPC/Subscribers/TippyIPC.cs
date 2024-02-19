@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Dalamud.Plugin.Ipc;
 using XIVDeck.FFXIVPlugin.Base;
 
@@ -48,8 +47,6 @@ internal class TippyIPC : IPluginIpcClient {
         }
         
         var versionEndpoint = Injections.PluginInterface.GetIpcSubscriber<int>("Tippy.APIVersion");
-        
-        // this line may explode with an exception, but that should be fine as we'd normally catch that higher up./
         var version = versionEndpoint.InvokeFunc();
        
         this._tippyApiVersionSubscriber = versionEndpoint;

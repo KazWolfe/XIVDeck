@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Security.Principal;
 using System.Threading.Tasks;
-
 using EmbedIO;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Resources.Localization;

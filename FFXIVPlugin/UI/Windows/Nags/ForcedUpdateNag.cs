@@ -1,5 +1,6 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
+using Dalamud.Utility;
 using ImGuiNET;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils;
@@ -43,7 +44,7 @@ public class ForcedUpdateNag : NagWindow {
         }
         ImGui.SameLine();
         if (ImGui.Button(UIStrings.ForcedUpdateNag_SupportButton)) {
-            Dalamud.Utility.Util.OpenLink(Constants.GoatPlaceDiscord);
+            Util.OpenLink(Constants.GoatPlaceDiscord);
         }
         ImGuiComponents.HelpMarker(UIStrings.ForcedUpdateNag_BypassInstructions);
     }

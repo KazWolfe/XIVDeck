@@ -4,8 +4,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-
+using Dalamud.Utility;
 using EmbedIO;
+using Swan.Logging;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game.Chat;
@@ -30,7 +31,7 @@ public class XIVDeckWebServer : IXIVDeckServer {
     private XIVDeckWSServer? _wsServer;
 
     public XIVDeckWebServer(XIVDeckPlugin plugin) {
-        Swan.Logging.Logger.RegisterLogger(this._logShim);
+        Logger.RegisterLogger(this._logShim);
         this._plugin = plugin;
     }
 
@@ -87,7 +88,7 @@ public class XIVDeckWebServer : IXIVDeckServer {
     public void Dispose() {
         this.StopServer();
 
-        Swan.Logging.Logger.UnregisterLogger(this._logShim);
+        Logger.UnregisterLogger(this._logShim);
         this._logShim.Dispose();
 
         GC.SuppressFinalize(this);
@@ -106,7 +107,7 @@ public class XIVDeckWebServer : IXIVDeckServer {
 
         // If you're wondering why this is here despite the below line doing the same thing, it's legacy just in case
         // I want to swap the default listener for a specific operating system class.
-        if (Dalamud.Utility.Util.IsWine()) {
+        if (Util.IsWine()) {
             Injections.PluginLog.Information("Linux environment detected; using EmbedIO listener.");
             return HttpListenerMode.EmbedIO;
         }

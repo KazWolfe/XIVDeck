@@ -1,7 +1,6 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using Lumina.Excel.GeneratedSheets;
-using Swan;
 using XIVDeck.FFXIVPlugin.Base;
 
 namespace XIVDeck.FFXIVPlugin.Game;

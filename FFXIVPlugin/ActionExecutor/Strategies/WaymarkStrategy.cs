@@ -1,6 +1,4 @@
-﻿using System;
-
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+﻿using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game.Managers;

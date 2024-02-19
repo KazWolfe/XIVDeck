@@ -159,9 +159,6 @@
   <data name="SetupNag_ResolutionHelp" xml:space="preserve">
         <value>まだインストールしていない場合は、GitHubから付属の XIVDeck Stream Deck プラグインをダウンロードしてインストールしてください。</value>
     </data>
-  <data name="SetupNag_AlreadyInstalledHelp" xml:space="preserve">
-        <value>XIVDeck Stream Deck プラグインが既にインストールされている場合、設定からポートが正しく設定されていることを確認してください。また、少なくとも1つのボタンを作成してください。</value>
-    </data>
   <data name="SetupNag_CurrentPort" xml:space="preserve">
         <value>現在のポート: {0}</value>
     </data>

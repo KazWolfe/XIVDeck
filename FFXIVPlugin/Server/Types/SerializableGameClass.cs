@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using Lumina.Excel;
 using Lumina.Excel.GeneratedSheets;
 using Newtonsoft.Json;
