@@ -11,7 +11,7 @@ using XIVDeck.FFXIVPlugin.Resources.Localization;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
 
-[ActionStrategy(HotbarSlotType.Collection)]
+[ActionStrategy(HotbarSlotType.McGuffin)]
 public class CollectionStrategy : IActionStrategy {
     private static readonly ExcelSheet<McGuffin> Sheet = Injections.DataManager.Excel.GetSheet<McGuffin>()!;
 
@@ -23,7 +23,7 @@ public class CollectionStrategy : IActionStrategy {
             ActionName = uiData.Name.ToString(), 
             IconId = (int) uiData.Icon,
             Category = null,
-            HotbarSlotType = HotbarSlotType.Collection,
+            HotbarSlotType = HotbarSlotType.McGuffin,
             SortOrder = uiData.Order
         };
     }
@@ -52,7 +52,7 @@ public class CollectionStrategy : IActionStrategy {
         }
             
         Injections.Framework.RunOnFrameworkThread(delegate {
-            HotbarManager.ExecuteHotbarAction(HotbarSlotType.Collection, actionId);
+            HotbarManager.ExecuteHotbarAction(HotbarSlotType.McGuffin, actionId);
         });
     }
 

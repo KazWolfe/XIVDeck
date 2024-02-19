@@ -12,7 +12,6 @@
         <Copyright>(c) 2023, KazWolfe. Licensed under AGPL-3.0.</Copyright>
         <IsPackable>false</IsPackable>
         <NeutralLanguage>en</NeutralLanguage>
-        <Nullable>enable</Nullable>
         <PackageLicenseExpression>AGPL-3.0</PackageLicenseExpression>
     </PropertyGroup>
 
@@ -36,11 +35,7 @@
     </PropertyGroup>
     <PropertyGroup Label="Feature">
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    </PropertyGroup>
-
-    <!-- Anonymize and shorten build paths for release -->
-    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-        <PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))=S:\</PathMap>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <PropertyGroup>
