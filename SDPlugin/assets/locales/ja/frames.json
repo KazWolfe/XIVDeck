@@ -17,7 +17,11 @@
   "class": {
     "default": "クラスを選択...",
     "class": "クラス",
-    "unknown": "不明"
+    "unknown": "不明",
+    "help": {
+      "title": "",
+      "body": ""
+    }
   },
   "action": {
     "type": "タイプ",

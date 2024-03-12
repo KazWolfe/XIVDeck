@@ -17,7 +17,11 @@
   "class": {
     "default": "Klasse auswählen...",
     "class": "Klasse",
-    "unknown": "Unbekannt"
+    "unknown": "Unbekannt",
+    "help": {
+      "title": "",
+      "body": ""
+    }
   },
   "action": {
     "type": "Typ",

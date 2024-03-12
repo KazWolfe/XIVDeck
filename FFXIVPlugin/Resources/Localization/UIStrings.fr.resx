@@ -347,4 +347,13 @@ Cela ne réactivera pas le plugin.</value>
   <data name="MultiboxNag_ChatWarning" xml:space="preserve">
         <value>Multiboxing détecté. XIVDeck pourrait ne pas fonctionner correctement !</value>
     </data>
+  <data name="SetupNag_MessageWillReturn" xml:space="preserve">
+        <value>Ce message reviendra à chaque lancement du jeu!</value>
+    </data>
+  <data name="SetupNag_BypassButton" xml:space="preserve">
+        <value>Ignorer pour le moment</value>
+    </data>
+  <data name="SetupNag_BypassHint" xml:space="preserve">
+        <value>Pas intéressé ? Maintenez CTRL pour passer cette boîte de dialogue !</value>
+    </data>
 </root>
