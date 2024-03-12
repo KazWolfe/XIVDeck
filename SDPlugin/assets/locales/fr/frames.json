@@ -17,7 +17,11 @@
   "class": {
     "default": "Sélectionner la classe...",
     "class": "Classe",
-    "unknown": "Inconnu"
+    "unknown": "Inconnu",
+    "help": {
+      "title": "Aide sur les classes",
+      "body": "Lorsque ce bouton est pressé, XIVDeck prendra la première tenue correspondant à la classe choisie. Les classes sans tenues ne seront pas considérées comme utilisables."
+    }
   },
   "action": {
     "type": "Type",
