@@ -1,5 +1,8 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Threading.Tasks;
+using Dalamud.Interface.ImGuiNotification;
+using Dalamud.Interface.Internal.Notifications;
 using EmbedIO.WebSockets;
 using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.Base;
@@ -51,10 +54,37 @@ public class WSInitOpcode : BaseInboundMessage {
             if (Injections.PluginInterface is {IsTesting: true, IsDev: false} && sdPluginVersion < xivPluginVersion) {
                 TestingUpdateNag.Show(); 
             } else if (sdPluginVersion < xivPluginVersion) {
-                DeferredChat.SendOrDeferMessage(VersionUtils.GenerateUpdateNagString(xivPluginVersion));
+                var n = Injections.NotificationManager.AddNotification(new Notification
+                {
+                    Title = "Plugin Update Available",
+                    Content = $"Version {sdPluginVersion} of the XIVDeck Stream Deck Plugin is currently outdated. " +
+                              $"Some features may not be available or work properly.\n\nClick this notification to " +
+                              $"go to the version {xivPluginVersion} download page.",
+                    Type = NotificationType.Warning,
+                    Minimized = false,
+                    RespectUiHidden = false,
+                    InitialDuration = TimeSpan.FromSeconds(20),
+                });
+
+                n.Click += _ =>
+                {
+                    UiUtil.OpenXIVDeckGitHub($"/releases/tag/v{VersionUtils.GetCurrentMajMinBuild()}");
+                };
+
             } else if (sdPluginVersion > xivPluginVersion) {
-                var errorString = ErrorNotifier.BuildPrefixedString(UIStrings.WSInitOpcode_GamePluginOutdated);
-                DeferredChat.SendOrDeferMessage(errorString);
+                var n = Injections.NotificationManager.AddNotification(new Notification
+                {
+                    Title = "Plugin Update Available",
+                    Content = UIStrings.WSInitOpcode_GamePluginOutdated,
+                    Type = NotificationType.Warning,
+                    Minimized = false,
+                    RespectUiHidden = false,
+                    InitialDuration = TimeSpan.FromSeconds(20),
+                });
+
+                n.Click += _ => {
+                    Injections.PluginInterface.OpenPluginInstaller();
+                };
             }
         }
 

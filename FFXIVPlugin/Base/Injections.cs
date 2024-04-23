@@ -20,6 +20,7 @@ public class Injections {
     [PluginService] public static IFramework Framework { get; private set; }
     [PluginService] public static IGameConfig GameConfig { get; private set; }
     [PluginService] public static IGameGui GameGui { get; private set; }
+    [PluginService] public static INotificationManager NotificationManager { get; private set; }
     [PluginService] public static ISigScanner SigScanner { get; private set; }
     [PluginService] public static IToastGui Toasts { get; private set; }    
     [PluginService] public static IPluginLog PluginLog { get; private set; }
