@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game.Chat;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
+using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 using XIVDeck.FFXIVPlugin.UI.Windows;
@@ -52,14 +53,12 @@ public class WSInitOpcode : BaseInboundMessage {
         // version check behavior
         if (this.Mode is PluginMode.Plugin) {
             if (Injections.PluginInterface is {IsTesting: true, IsDev: false} && sdPluginVersion < xivPluginVersion) {
-                TestingUpdateNag.Show(); 
+                TestingUpdateNag.Show();
             } else if (sdPluginVersion < xivPluginVersion) {
                 var n = Injections.NotificationManager.AddNotification(new Notification
                 {
-                    Title = "Plugin Update Available",
-                    Content = $"Version {sdPluginVersion} of the XIVDeck Stream Deck Plugin is currently outdated. " +
-                              $"Some features may not be available or work properly.\n\nClick this notification to " +
-                              $"go to the version {xivPluginVersion} download page.",
+                    Title = UIStrings.WSInitOpcode_PluginUpdateAvailableNotificationTitle,
+                    Content = string.Format(UIStrings.WSInitOpcode_SDPluginUpdateNotificationBody, sdPluginVersion, xivPluginVersion),
                     Type = NotificationType.Warning,
                     Minimized = false,
                     RespectUiHidden = false,
@@ -74,7 +73,7 @@ public class WSInitOpcode : BaseInboundMessage {
             } else if (sdPluginVersion > xivPluginVersion) {
                 var n = Injections.NotificationManager.AddNotification(new Notification
                 {
-                    Title = "Plugin Update Available",
+                    Title = UIStrings.WSInitOpcode_PluginUpdateAvailableNotificationTitle,
                     Content = UIStrings.WSInitOpcode_GamePluginOutdated,
                     Type = NotificationType.Warning,
                     Minimized = false,

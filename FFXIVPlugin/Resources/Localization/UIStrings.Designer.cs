@@ -944,6 +944,37 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Plugin Update Available.
+        /// </summary>
+        internal static string WSInitOpcode_PluginUpdateAvailableNotificationTitle {
+            get {
+                return ResourceManager.GetString("WSInitOpcode_PluginUpdateAvailableNotificationTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Some features may not be available or work properly.
+        ///
+        ///Click this notification to .
+        /// </summary>
+        internal static string WSInitOpcode_SDPluginUpdateBody {
+            get {
+                return ResourceManager.GetString("WSInitOpcode_SDPluginUpdateBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version {0} of the XIVDeck Stream Deck Plugin is currently outdated. Some features may not be available or work properly.
+        ///
+        ///Click this notification to go to the version {1} download page..
+        /// </summary>
+        internal static string WSInitOpcode_SDPluginUpdateNotificationBody {
+            get {
+                return ResourceManager.GetString("WSInitOpcode_SDPluginUpdateNotificationBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thank you for installing the Stream Deck plugin. XIVDeck is now ready to go!.
         /// </summary>
         internal static string WSInitOpcode_ThanksForInstall {
