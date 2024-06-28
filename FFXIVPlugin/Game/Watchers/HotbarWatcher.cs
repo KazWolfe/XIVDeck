@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 using XIVDeck.FFXIVPlugin.Server.Types;
 
-namespace XIVDeck.FFXIVPlugin.Game.Watchers; 
+namespace XIVDeck.FFXIVPlugin.Game.Watchers;
 
 public class HotbarWatcher : IDisposable {
-    private readonly HotBarSlot[,] _hotbarCache = new HotBarSlot[17,16];
+    private readonly HotbarSlot[,] _hotbarCache = new HotbarSlot[17,16];
 
     public HotbarWatcher() {
         Injections.Framework.Update += this.OnGameUpdate;
@@ -19,42 +19,42 @@ public class HotbarWatcher : IDisposable {
 
     private unsafe void OnGameUpdate(IFramework framework) {
         var hotbarModule =
-            Framework.Instance()->GetUiModule()->
+            Framework.Instance()->GetUIModule()->
                 GetRaptureHotbarModule();
-        
+
         List<MicroHotbarSlot> updatedSlots = new();
 
         for (var hotbarId = 0; hotbarId < 17; hotbarId++) {
-            ref var hotbar = ref hotbarModule->HotBarsSpan[hotbarId];
-                
+            ref var hotbar = ref hotbarModule->Hotbars[hotbarId];
+
             for (var slotId = 0; slotId < 16; slotId++) {
                 var gameSlot = hotbar.GetHotbarSlot((uint) slotId);
                 var cachedSlot = this._hotbarCache[hotbarId, slotId];
 
                 // We calculate IconB first so that we know what "appearance" the slot has. This allows us to optimize
-                // icon lookups, as they're the more expensive of the two calls. If IconB hasn't changed, the icon 
+                // icon lookups, as they're the more expensive of the two calls. If IconB hasn't changed, the icon
                 // itself wouldn't have changed either.
-                HotbarManager.CalcBForSlot(gameSlot, out var calculatedBType, out var calculatedBId);
+                HotbarManager.CalcBForSlot(gameSlot, out var calcApparentType, out var calcApparentId);
 
                 if (gameSlot->CommandId == cachedSlot.CommandId &&
                     gameSlot->CommandType == cachedSlot.CommandType &&
-                    calculatedBType == cachedSlot.IconTypeB &&
-                    calculatedBId == cachedSlot.IconB) continue;
-                
-                var calculatedIcon = gameSlot->GetIconIdForSlot(calculatedBType, calculatedBId);
-                if (calculatedIcon == cachedSlot.Icon) continue;
+                    calcApparentType == cachedSlot.ApparentSlotType &&
+                    calcApparentId == cachedSlot.ApparentActionId) continue;
+
+                var calculatedIcon = (uint)gameSlot->GetIconIdForSlot(calcApparentType, calcApparentId);
+                if (calculatedIcon == cachedSlot.IconId) continue;
 
                 updatedSlots.Add(new MicroHotbarSlot(hotbarId, slotId));
-                this._hotbarCache[hotbarId, slotId] = new HotBarSlot {
+                this._hotbarCache[hotbarId, slotId] = new HotbarSlot {
                     CommandId = gameSlot->CommandId,
-                    Icon = calculatedIcon,
+                    IconId = calculatedIcon,
                     CommandType = gameSlot->CommandType,
-                    IconTypeB = calculatedBType,
-                    IconB = calculatedBId
+                    ApparentSlotType = calcApparentType,
+                    ApparentActionId = calcApparentId
                 };
             }
         }
-            
+
         if (updatedSlots.Count > 0) {
             Injections.PluginLog.Debug("Detected a change to hotbar(s)!");
             var message = new WSStateUpdateMessage<List<MicroHotbarSlot>>("Hotbar", updatedSlots);
@@ -64,7 +64,7 @@ public class HotbarWatcher : IDisposable {
 
     public void Dispose() {
         Injections.Framework.Update -= this.OnGameUpdate;
-            
+
         GC.SuppressFinalize(this);
     }
 }

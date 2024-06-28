@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 using XIVDeck.FFXIVPlugin.ActionExecutor.Payloads;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game.Chat;
 using XIVDeck.FFXIVPlugin.Game.Data;
 using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
+
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
@@ -58,7 +59,7 @@ public class GearsetStrategy : IActionStrategy {
 
     public int GetIconId(uint slot) {
         var gearset = GearsetManager.GetGearset((int) slot - 1);
-        
+
         if (gearset == null) return 0;
         return 062800 + (int) gearset.ClassJob;
     }

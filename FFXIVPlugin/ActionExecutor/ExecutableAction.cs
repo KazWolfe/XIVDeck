@@ -1,9 +1,9 @@
 ﻿using System;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace XIVDeck.FFXIVPlugin.ActionExecutor; 
+namespace XIVDeck.FFXIVPlugin.ActionExecutor;
 
 [Serializable]
 public class ExecutableAction {
@@ -13,7 +13,7 @@ public class ExecutableAction {
     [JsonProperty("sortOrder")] public int? SortOrder;
 
     [JsonProperty("category")] public string? Category; // optional, send-only. used for grouping where available
-        
+
     [JsonConverter(typeof(StringEnumConverter))]
     [JsonProperty("type")] public HotbarSlotType HotbarSlotType;
 }

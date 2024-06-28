@@ -3,7 +3,7 @@
         <Product>XIVDeck Game Plugin</Product>
         <Authors>Kaz Wolfe</Authors>
         <Company>Blacksite Technologies</Company>
-        <Version>0.3.18</Version>
+        <Version>0.3.19</Version>
 
         <AssemblyName>XIVDeck.FFXIVPlugin</AssemblyName>
         <AssemblyVersion>$(Version)</AssemblyVersion>
@@ -56,7 +56,7 @@
         <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" PrivateAssets="all" />
 
         <!-- Dalamud things -->
-        <PackageReference Include="DalamudPackager" Version="2.1.12" GeneratePathProperty="false" />
+        <PackageReference Include="DalamudPackager" Version="2.1.13" GeneratePathProperty="false" />
         <Reference Include="FFXIVClientStructs">
             <HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
             <Private>false</Private>

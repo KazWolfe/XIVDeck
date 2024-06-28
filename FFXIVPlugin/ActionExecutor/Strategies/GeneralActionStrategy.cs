@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 using Lumina.Excel;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
@@ -91,7 +91,7 @@ public class GeneralActionStrategy : IActionStrategy {
         if (actionId == 12 && UIState.Instance()->IsUnlockLinkUnlocked(12)) {
             action = GetActionById(13)!;
         }
-        
+
         Injections.PluginLog.Debug($"Executing hotbar slot: GeneralAction#{action.RowId} ({action.Name})");
         Injections.Framework.RunOnFrameworkThread(delegate {
             HotbarManager.ExecuteHotbarAction(HotbarSlotType.GeneralAction, action.RowId);

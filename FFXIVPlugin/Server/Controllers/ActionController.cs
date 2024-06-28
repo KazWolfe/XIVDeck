@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using EmbedIO;
 using EmbedIO.Routing;
 using EmbedIO.WebApi;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.ActionExecutor;
 using XIVDeck.FFXIVPlugin.Base;
@@ -29,7 +29,7 @@ public class ActionController : WebApiController {
 
     private static readonly Dictionary<HotbarSlotType, string> SlotTypeNames = ActionTypeAliases.Reverse()
         .ToDictionary(v => v.Value, k => k.Key);
-    
+
     [Route(HttpVerbs.Get, "/")]
     public Dictionary<string, List<ExecutableAction>> GetActions() {
         Dictionary<string, List<ExecutableAction>> actions = new();
@@ -78,7 +78,7 @@ public class ActionController : WebApiController {
 
         if (!Injections.ClientState.IsLoggedIn)
             throw new PlayerNotLoggedInException();
-        
+
         var strategy = XIVDeckPlugin.Instance.ActionDispatcher.GetStrategyForType(slotType);
         var payloadType = strategy.GetPayloadType();
 
@@ -86,7 +86,7 @@ public class ActionController : WebApiController {
         if (payloadType != null) {
             var requestBody = await this.HttpContext.GetRequestBodyAsStringAsync();
             payload = JsonConvert.DeserializeObject(requestBody, payloadType) as ActionPayload;
-            
+
             Injections.PluginLog.Debug($"Body: {requestBody}\nPayload: {payload}");
         }
 

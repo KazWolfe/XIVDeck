@@ -17,7 +17,7 @@ namespace XIVDeck.FFXIVPlugin.Server.Controllers;
 public class HotbarController : WebApiController {
     [Route(HttpVerbs.Get, "/{hotbarId}/{slotId}")]
     public unsafe SerializableHotbarSlot GetHotbarSlot(int hotbarId, int slotId) {
-        var hotbarModule = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule();
+        var hotbarModule = Framework.Instance()->GetUIModule()->GetRaptureHotbarModule();
 
         try {
             SafetyCheckHotbar(hotbarId, slotId);
@@ -25,7 +25,7 @@ public class HotbarController : WebApiController {
             throw HttpException.BadRequest(ex.Message);
         }
 
-        var hotbarItem = hotbarModule->HotBarsSpan[hotbarId].GetHotbarSlot((uint) slotId);
+        var hotbarItem = hotbarModule->Hotbars[hotbarId].GetHotbarSlot((uint) slotId);
         var iconId = HotbarManager.CalcIconForSlot(hotbarItem);
 
         return new SerializableHotbarSlot {
@@ -36,29 +36,29 @@ public class HotbarController : WebApiController {
             CommandId = (int) hotbarItem->CommandId,
             IconData = IconManager.GetIconAsPngString(iconId)
         };
-        
+
     }
-    
+
     [Route(HttpVerbs.Post, "/{hotbarId}/{slotId}/execute")]
     public unsafe void TriggerHotbarSlot(int hotbarId, int slotId) {
         try {
             SafetyCheckHotbar(hotbarId, slotId);
-        } catch (ArgumentException ex) { 
+        } catch (ArgumentException ex) {
             throw HttpException.BadRequest(UIStrings.HotbarController_InvalidHotbarOrSlotError, ex);
         }
-        
+
         // this really should not be here as it's mixing the controller with business logic, but it can't really be
         // put anywhere else either.
         if (!Injections.ClientState.IsLoggedIn)
             throw new PlayerNotLoggedInException();
-        
+
         GameUtils.ResetAFKTimer();
-        
+
         // Trigger the hotbar event on the next Framework tick, and also in the Framework (game main) thread.
         // For whatever reason, the game *really* doesn't like when a user casts a Weaponskill or Ability from a
         // non-game thread (as would be the case for API calls). Why this works normally for Spells and other
-        // actions will forever be a mystery. 
-        Injections.Framework.RunOnFrameworkThread(delegate { 
+        // actions will forever be a mystery.
+        Injections.Framework.RunOnFrameworkThread(delegate {
             HotbarManager.PulseHotbarSlot(hotbarId, slotId);
             Framework.Instance()->UIModule->GetRaptureHotbarModule()->ExecuteSlotById((uint) hotbarId, (uint) slotId);
         });

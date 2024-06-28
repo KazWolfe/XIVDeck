@@ -2,12 +2,10 @@
 using System.Reflection;
 using System.Threading.Tasks;
 using Dalamud.Interface.ImGuiNotification;
-using Dalamud.Interface.Internal.Notifications;
 using EmbedIO.WebSockets;
 using Newtonsoft.Json;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game.Chat;
-using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Server.Helpers;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
@@ -82,7 +80,7 @@ public class WSInitOpcode : BaseInboundMessage {
                 });
 
                 n.Click += _ => {
-                    Injections.PluginInterface.OpenPluginInstaller();
+                    Injections.PluginInterface.OpenPluginInstallerTo(searchText: Injections.PluginInterface.InternalName);
                 };
             }
         }

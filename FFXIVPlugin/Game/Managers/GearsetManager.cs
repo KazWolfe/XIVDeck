@@ -4,7 +4,7 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using XIVDeck.FFXIVPlugin.Game.Data;
 
-namespace XIVDeck.FFXIVPlugin.Game.Managers; 
+namespace XIVDeck.FFXIVPlugin.Game.Managers;
 
 public static unsafe class GearsetManager {
 
@@ -29,8 +29,8 @@ public static unsafe class GearsetManager {
             return null;
 
         return new Gearset {
-            Slot = gs->ID + 1,
-            Name = MemoryHelper.ReadString(new nint(gs->Name), 47),
+            Slot = gs->Id + 1,
+            Name = gs->NameString,
             ClassJob = gs->ClassJob
         };
     }

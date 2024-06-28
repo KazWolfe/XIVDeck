@@ -1,9 +1,9 @@
-﻿using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+﻿using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game.Managers;
 
-namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
+namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.ExtraCommand)]
 public class ExtraCommandStrategy : FixedCommandStrategy<ExtraCommand> {

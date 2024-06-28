@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
@@ -10,7 +10,7 @@ using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils;
 
-namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
+namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.Mount)]
 public class MountStrategy : IActionStrategy {
@@ -23,11 +23,11 @@ public class MountStrategy : IActionStrategy {
             SortOrder = (mount.UIPriority << 8) + mount.Order
         };
     }
-        
+
     private static Mount? GetMountById(uint id) {
         return Injections.DataManager.Excel.GetSheet<Mount>()!.GetRow(id);
     }
-        
+
     public List<ExecutableAction> GetAllowedItems() {
         return Injections.DataManager.GetExcelSheet<Mount>()!
             .Where(m => m.IsUnlocked())
@@ -41,17 +41,17 @@ public class MountStrategy : IActionStrategy {
         if (mount == null) {
             throw new ArgumentNullException(nameof(actionId), string.Format(UIStrings.MountStrategy_MountNotFoundError, actionId));
         }
-            
+
         if (!mount.IsUnlocked()) {
             throw new ActionLockedException(string.Format(UIStrings.MountStrategy_MountLockedError, mount.Singular.ToTitleCase()));
         }
-        
+
         Injections.PluginLog.Debug($"Executing hotbar slot: Mount#{actionId} ({mount.Singular.ToTitleCase()})");
         Injections.Framework.RunOnFrameworkThread(delegate {
             HotbarManager.ExecuteHotbarAction(HotbarSlotType.Mount, actionId);
         });
     }
-        
+
     public ExecutableAction? GetExecutableActionById(uint actionId) {
         var action = GetMountById(actionId);
         return action == null ? null : GetExecutableAction(action);

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.ActionExecutor.Payloads;
 using XIVDeck.FFXIVPlugin.Base;
@@ -58,7 +58,7 @@ public class EmoteStrategy : IActionStrategy {
         if (emote == null) {
             throw new ActionNotFoundException(HotbarSlotType.Emote, actionId);
         }
-        
+
         if (!emote.IsUnlocked()) {
             throw new ActionLockedException(string.Format(UIStrings.EmoteStrategy_EmoteLockedError, emote.Name));
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
+using System.Collections.Generic;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Client.UI.Shell;
 using XIVDeck.FFXIVPlugin.Base;
@@ -14,11 +15,11 @@ public class MacroStrategy : IActionStrategy {
     }
 
     public unsafe ExecutableAction GetExecutableActionById(uint actionId) {
-        var macro = GetMacro((actionId / 100 > 0), (int) actionId % 100);
+        var macro = GetMacro((actionId / 100 > 0), (int)actionId % 100);
 
         // Macros are weird, inasmuch as they can't be null. Something will always exist, even if empty.
         return new ExecutableAction {
-            ActionId = (int) actionId,
+            ActionId = (int)actionId,
             ActionName = macro->Name.ToString(),
             Category = null,
             HotbarSlotType = HotbarSlotType.Macro,
@@ -35,7 +36,7 @@ public class MacroStrategy : IActionStrategy {
         }
 
         var isSharedMacro = actionId / 100 == 1;
-        var macroNumber = (int) actionId % 100;
+        var macroNumber = (int)actionId % 100;
         var macro = GetMacro(isSharedMacro, macroNumber);
 
         // Safety check to make sure we aren't triggering an empty macro
@@ -52,8 +53,8 @@ public class MacroStrategy : IActionStrategy {
             return this.GetAdjustedIconId(item);
         }
 
-        var macro = GetMacro((item / 100 > 0), ((int) item % 100));
-        return (int) macro->IconId;
+        var macro = GetMacro((item / 100 > 0), ((int)item % 100));
+        return (int)macro->IconId;
     }
 
     private int GetAdjustedIconId(uint item) {
@@ -64,11 +65,11 @@ public class MacroStrategy : IActionStrategy {
             // It's terrifying that creating a virtual hotbar slot is probably the easiest way to get a macro icon ID,
             // but here we are.
 
-            var slot = new HotBarSlot();
+            var slot = new HotbarSlot();
             slot.Set(HotbarSlotType.Macro, (macroPage << 8) + macroId);
-            slot.LoadIconFromSlotB();
+            slot.LoadIconId();
 
-            return slot.Icon;
+            return (int)slot.IconId;
         }).Result;
     }
 }

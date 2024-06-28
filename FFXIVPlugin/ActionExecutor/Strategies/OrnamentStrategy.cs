@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
@@ -9,7 +9,7 @@ using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils;
 
-namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
+namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.Ornament)]
 public class OrnamentStrategy : IActionStrategy {
@@ -22,11 +22,11 @@ public class OrnamentStrategy : IActionStrategy {
             SortOrder = ornament.Order
         };
     }
-        
+
     private static Ornament? GetOrnamentById(uint id) {
         return Injections.DataManager.Excel.GetSheet<Ornament>()!.GetRow(id);
     }
-        
+
     public List<ExecutableAction> GetAllowedItems() {
         return Injections.DataManager.GetExcelSheet<Ornament>()!
             .Where(o => o.IsUnlocked())
@@ -49,7 +49,7 @@ public class OrnamentStrategy : IActionStrategy {
         if (!ornament.IsUnlocked()) {
             throw new ActionLockedException(string.Format(UIStrings.OrnamentStrategy_OrnamentLockedError, ornament.Singular));
         }
-            
+
         Injections.PluginLog.Debug($"Executing hotbar slot: Ornament#{ornament.RowId} ({ornament.Singular.ToTitleCase()})");
         Injections.Framework.RunOnFrameworkThread(delegate {
             HotbarManager.ExecuteHotbarAction(HotbarSlotType.Ornament, ornament.RowId);

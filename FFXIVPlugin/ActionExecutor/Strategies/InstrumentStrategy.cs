@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Game.ClientState.Conditions;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 using Lumina.Excel;
 using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
@@ -11,7 +11,7 @@ using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 
-namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
+namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.PerformanceInstrument)]
 public class InstrumentStrategy : IActionStrategy {
@@ -30,7 +30,7 @@ public class InstrumentStrategy : IActionStrategy {
     private static Perform? GetActionById(uint id) {
         return PerformSheet.GetRow(id);
     }
-    
+
     private static unsafe bool IsPerformUnlocked() {
         return UIState.Instance()->IsUnlockLinkUnlocked(255);
     }
@@ -48,11 +48,11 @@ public class InstrumentStrategy : IActionStrategy {
         // intentionally not checking for Bard here; the game will take care of that for us (and display a better
         // error than we normally can). It's legal for a perform to be on a non-Bard hotbar, so I'm not concerned
         // about this.
-            
+
         if (!IsPerformUnlocked()) {
             throw new ActionLockedException(UIStrings.InstrumentStrategy_PerformanceLockedError);
         }
-            
+
         if (Injections.Condition[ConditionFlag.Performing]) {
             throw new IllegalGameStateException(UIStrings.InstrumentStrategy_CurrentlyPerformingError);
         }
@@ -62,7 +62,7 @@ public class InstrumentStrategy : IActionStrategy {
         if (instrument == null) {
             throw new ArgumentOutOfRangeException(nameof(actionId), string.Format(UIStrings.InstrumentStrategy_InstrumentNotFoundError, actionId));
         }
-            
+
         Injections.Framework.RunOnFrameworkThread(delegate {
             HotbarManager.ExecuteHotbarAction(HotbarSlotType.PerformanceInstrument, actionId);
         });

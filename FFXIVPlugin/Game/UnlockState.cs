@@ -6,7 +6,7 @@ using XIVDeck.FFXIVPlugin.Base;
 namespace XIVDeck.FFXIVPlugin.Game;
 
 public static unsafe class UnlockState {
-    
+
     /// <summary>
     /// Tests if a specific emote is unlocked. A reimplementation of the in-game method, without the unnecessary EXD
     /// call, as Lumina already has everything we need. Also handles GC and non-executable emote edge cases.
@@ -16,7 +16,7 @@ public static unsafe class UnlockState {
     internal static bool IsUnlocked(this Emote emote) {
         // Work around showing emotes if nobody is logged in.
         if (!Injections.ClientState.IsLoggedIn) return false;
-        
+
         if (emote.EmoteCategory.Row == 0 || emote.Order == 0) return false;
 
         switch (emote.RowId) {
@@ -32,7 +32,7 @@ public static unsafe class UnlockState {
     internal static bool IsUnlocked(this Mount mount) {
         return PlayerState.Instance()->IsMountUnlocked(mount.RowId);
     }
-    
+
     internal static bool IsUnlocked(this Companion minion) {
         return UIState.Instance()->IsCompanionUnlocked(minion.RowId);
     }
@@ -46,6 +46,6 @@ public static unsafe class UnlockState {
     }
 
     internal static bool IsUnlocked(this MainCommand mainCommand) {
-        return Framework.Instance()->GetUiModule()->IsMainCommandUnlocked(mainCommand.RowId);
+        return Framework.Instance()->GetUIModule()->IsMainCommandUnlocked(mainCommand.RowId);
     }
 }

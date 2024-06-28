@@ -8,8 +8,9 @@ using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 
-namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies; 
+namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.McGuffin)]
 public class CollectionStrategy : IActionStrategy {
@@ -17,10 +18,10 @@ public class CollectionStrategy : IActionStrategy {
 
     private static ExecutableAction GetExecutableAction(McGuffin mcguffin) {
         var uiData = mcguffin.UIData.Value!;
-            
+
         return new ExecutableAction {
-            ActionId = (int) mcguffin.RowId, 
-            ActionName = uiData.Name.ToString(), 
+            ActionId = (int) mcguffin.RowId,
+            ActionName = uiData.Name.ToString(),
             IconId = (int) uiData.Icon,
             Category = null,
             HotbarSlotType = HotbarSlotType.McGuffin,
@@ -50,7 +51,7 @@ public class CollectionStrategy : IActionStrategy {
         if (mcguffin == null) {
             throw new ArgumentOutOfRangeException(nameof(actionId), string.Format(UIStrings.CollectionStrategy_CollectionNotFoundError, actionId));
         }
-            
+
         Injections.Framework.RunOnFrameworkThread(delegate {
             HotbarManager.ExecuteHotbarAction(HotbarSlotType.McGuffin, actionId);
         });

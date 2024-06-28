@@ -4,8 +4,9 @@ using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using XIVDeck.FFXIVPlugin.Base;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 
-namespace XIVDeck.FFXIVPlugin.Game.Managers; 
+namespace XIVDeck.FFXIVPlugin.Game.Managers;
 
 internal static class HotbarManager {
     public static bool IsCrossHotbar(int hotbarId) {
@@ -18,9 +19,9 @@ internal static class HotbarManager {
     }
 
     public static unsafe void ExecuteHotbarAction(HotbarSlotType commandType, uint commandId) {
-        var hotbarModulePtr = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule();
+        var hotbarModulePtr = Framework.Instance()->GetUIModule()->GetRaptureHotbarModule();
 
-        var slot = new HotBarSlot {
+        var slot = new HotbarSlot {
             CommandType = commandType,
             CommandId = commandId
         };
@@ -28,14 +29,14 @@ internal static class HotbarManager {
         var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(slot));
         Marshal.StructureToPtr(slot, ptr, false);
 
-        hotbarModulePtr->ExecuteSlot((HotBarSlot*) ptr);
+        hotbarModulePtr->ExecuteSlot((HotbarSlot*) ptr);
 
         Marshal.FreeHGlobal(ptr);
     }
 
     public static unsafe void PulseHotbarSlot(int hotbarId, int slotId) {
         var isCrossHotbar = IsCrossHotbar(hotbarId);
-        
+
         // Handle the main hotbar, which is a bit interesting as it can behave oddly at times.
         var mainBarName = isCrossHotbar ? "_ActionCross" : "_ActionBar";
         var mainBar = (AddonActionBarBase*) Injections.GameGui.GetAddonByName(mainBarName);
@@ -60,8 +61,8 @@ internal static class HotbarManager {
             }
         }
     }
-    
-    public static unsafe int CalcIconForSlot(HotBarSlot* slot) {
+
+    public static unsafe int CalcIconForSlot(HotbarSlot* slot) {
         if (slot->CommandType == HotbarSlotType.Empty) {
             return 0;
         }
@@ -83,22 +84,22 @@ internal static class HotbarManager {
         actionBar->PulseActionBarSlot(slotId);
     }
 
-    public static unsafe void CalcBForSlot(HotBarSlot* slot, out HotbarSlotType actionType, out uint actionId) {
+    public static unsafe void CalcBForSlot(HotbarSlot* slot, out HotbarSlotType actionType, out uint actionId) {
         // short circuit, just a micro-optimization.
         if (slot->CommandType == 0 && slot->CommandId == 0) {
             actionType = HotbarSlotType.Empty;
             actionId = 0;
-            
+
             return;
         }
 
-        var hotbarModule = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule();
+        var hotbarModule = Framework.Instance()->GetUIModule()->GetRaptureHotbarModule();
 
         // Take in default values, just in case GetSlotAppearance fails for some reason
-        var acType = slot->IconTypeB;
-        var acId = slot->IconB;
+        var acType = slot->ApparentSlotType;
+        var acId = slot->ApparentActionId;
         ushort actionCost = slot->CostType;
-        
+
         RaptureHotbarModule.GetSlotAppearance(&acType, &acId, &actionCost, hotbarModule, slot);
 
         actionType = acType;
