@@ -28,12 +28,12 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
     internal IXIVDeckServer Server { get; }
     internal ActionDispatcher ActionDispatcher { get; }
 
-    private DalamudPluginInterface PluginInterface { get; }
+    private IDalamudPluginInterface PluginInterface { get; }
     private readonly HotbarWatcher _hotbarWatcher;
     private readonly ChatLinkWiring _chatLinkWiring;
     private readonly IPCManager _ipcManager;
 
-    public XIVDeckPlugin(DalamudPluginInterface pluginInterface) {
+    public XIVDeckPlugin(IDalamudPluginInterface pluginInterface) {
         pluginInterface.Create<Injections>();
 
         Instance = this;
@@ -80,7 +80,7 @@ public sealed class XIVDeckPlugin : IDalamudPlugin {
         this.PluginInterface.LanguageChanged -= this.UpdateLang;
         this.PluginInterface.UiBuilder.OpenConfigUi -= this.DrawConfigUI;
         this.PluginInterface.UiBuilder.Draw -= this.WindowSystem.Draw;
-        
+
         // setting to null here is okay as this will only be called on plugin teardown.
         // Nothing should *ever* run past this point.
         Instance = null!;
