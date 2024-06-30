@@ -1,7 +1,13 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
-using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
+using Companion = Lumina.Excel.GeneratedSheets.Companion;
+using Emote = Lumina.Excel.GeneratedSheets.Emote;
+using MainCommand = Lumina.Excel.GeneratedSheets.MainCommand;
+using McGuffin = Lumina.Excel.GeneratedSheets.McGuffin;
+using Mount = Lumina.Excel.GeneratedSheets.Mount;
+using Ornament = Lumina.Excel.GeneratedSheets.Ornament;
+using Glasses = XIVDeck.FFXIVPlugin.Game.Data.Glasses;
 
 namespace XIVDeck.FFXIVPlugin.Game;
 
@@ -47,5 +53,9 @@ public static unsafe class UnlockState {
 
     internal static bool IsUnlocked(this MainCommand mainCommand) {
         return Framework.Instance()->GetUIModule()->IsMainCommandUnlocked(mainCommand.RowId);
+    }
+
+    internal static bool IsUnlocked(this Glasses glasses) {
+        return PlayerState.Instance()->IsGlassesUnlocked((ushort)glasses.RowId);
     }
 }

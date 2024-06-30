@@ -1,12 +1,13 @@
-{ 
-  "Collection": "Collection",
+{
   "Emote": "Emote",
   "ExtraCommand": "Extra Command",
   "GearSet": "Gear Set",
   "GeneralAction": "General Action",
+  "Glasses": "Facewear",
   "PerformanceInstrument": "Performance Instrument",
   "MainCommand":  "Main Command",
   "Marker": "Marker",
+  "McGuffin": "Collection",
   "Minion": "Minion",
   "Mount": "Mount",
   "FashionAccessory": "Fashion Accessory",

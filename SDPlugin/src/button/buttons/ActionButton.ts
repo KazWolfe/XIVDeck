@@ -56,6 +56,13 @@ export class ActionButton extends BaseButton {
             return;
         }
 
+        // Migration again.
+        // TODO: Remove eventually.
+        if (this.settings.actionType == "Collection") {
+            this.settings.actionType = "McGuffin";
+            this.setSettings(this.settings);
+        }
+
         let actionInfo = await FFXIVApi.Action.getAction(this.settings.actionType, this.settings.actionId);
         this.setImage(await FFXIVApi.getIcon(actionInfo.iconId));
 
@@ -69,6 +76,7 @@ export class ActionButton extends BaseButton {
 
             this.setSettings(this.settings);
         }
+
     }
 
     private stateUpdate(message: StateMessage) {
