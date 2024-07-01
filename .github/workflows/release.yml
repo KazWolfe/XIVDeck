@@ -11,7 +11,7 @@ jobs:
 
     permissions:
       id-token: write
-      contents: read
+      contents: write
       attestations: write
 
     steps:
@@ -55,7 +55,7 @@ jobs:
     
     permissions:
       id-token: write
-      contents: read
+      contents: write
       attestations: write
 
     defaults:
