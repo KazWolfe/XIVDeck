@@ -356,4 +356,17 @@ Cela ne réactivera pas le plugin.</value>
   <data name="SetupNag_BypassHint" xml:space="preserve">
         <value>Pas intéressé ? Maintenez CTRL pour passer cette boîte de dialogue !</value>
     </data>
+  <data name="WSInitOpcode_PluginUpdateAvailableNotificationTitle" xml:space="preserve">
+        <value>Mise à jour du plugin disponible</value>
+    </data>
+  <data name="WSInitOpcode_SDPluginUpdateBody" xml:space="preserve">
+        <value>Certaines fonctionnalités peuvent ne pas être disponibles ou fonctionner correctement.
+
+Cliquez sur cette notification pour </value>
+    </data>
+  <data name="WSInitOpcode_SDPluginUpdateNotificationBody" xml:space="preserve">
+        <value>La version {0} du plugin XIVDeck Stream Deck est obsolète. Certaines fonctionnalités peuvent ne pas être disponibles ou fonctionner correctement.
+
+Cliquez sur cette notification pour aller à la page de téléchargement de la version {1}.</value>
+    </data>
 </root>
