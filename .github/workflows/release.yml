@@ -3,11 +3,17 @@
 on:
   release:
     types: [published]
-    
+
 jobs:
   build-ffxivplugin:
     name: Build XIVDeck FFXIV Plugin
     runs-on: windows-latest
+
+    permissions:
+      id-token: write
+      contents: read
+      attestations: write
+
     steps:
       - uses: actions/checkout@v3
         with:
@@ -30,6 +36,13 @@ jobs:
         run: |
           $fileHashInfo = Get-FileHash .\FFXIVPlugin\bin\Release\XIVDeck.FFXIVPlugin\latest.zip;
           Write-Output "Hash of XIVDeck.FFXIVPlugin: $($fileHashInfo.Hash)";
+      - name: Attest Build
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: |
+            .\FFXIVPlugin\bin\Release\XIVDeck.FFXIVPlugin.dll
+            .\FFXIVPlugin\bin\Release\**\XIVDeck.FFXIVPlugin.*.dll
+            .\FFXIVPlugin\bin\Release\XIVDeck.FFXIVPlugin\latest.zip
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
@@ -40,10 +53,15 @@ jobs:
     name: Build XIVDeck Stream Deck Plugin
     runs-on: ubuntu-latest
     
-    defaults: 
+    permissions:
+      id-token: write
+      contents: read
+      attestations: write
+
+    defaults:
       run:
         working-directory: ./SDPlugin
-    
+
     steps:
       - uses: actions/checkout@v3
       - name: Install Dependencies
@@ -58,6 +76,10 @@ jobs:
         run: (cd dist && zip -r dev.wolf.xivdeck.streamDeckPlugin dev.wolf.xivdeck.sdPlugin)
       - name: Report Build Hash
         run: echo "[Build Audit] $(sha256sum dist/dev.wolf.xivdeck.streamDeckPlugin)"
+      - name: Attest Build
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: ./SDPlugin/dist/dev.wolf.xivdeck.streamDeckPlugin
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
@@ -72,4 +94,3 @@ jobs:
           asset_path: ./SDPlugin/dist/dev.wolf.xivdeck.streamDeckPlugin
           asset_name: XIVDeck.streamDeckPlugin
           asset_content_type: application/zip
-          
