@@ -17,8 +17,8 @@ project to become a "cheat" application, nor do I want to encourage users to use
 way that would give users a material advantage over non-XIVDeck users. Things added to this
 project should, broadly, make "utility hotbars" unnecessary to the average player.
 2. **Keep the user experience pleasant and easy.**  
-Everyone has a different idea of what entails a "pleasant user experience." Mine is based on the
-idea that this plugin "just works." Icons show up automatically, users don't need to do any 
+Everyone has a different idea of what entails a pleasant user experience. Mine is based on the
+idea that this plugin just works. Icons show up automatically, users don't need to do any 
 notable maintenance, and everything stays synchronized to the game. Where possible, please
 preserve this intent with your suggestions and pull requests. Things that are highly technical,
 require maintenance or upkeep, or otherwise can be unpleasant/burdenful to use should be avoided.

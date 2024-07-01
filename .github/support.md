@@ -1,7 +1,7 @@
 ﻿# Getting XIVDeck Support
 
 XIVDeck offers support to its users through a few different mechanisms. Depending on what is needed, certain
-support options may be more helpful/faster than others. 
+support options may be more helpful/faster than others.
 
 ### GitHub Issues
 
@@ -11,11 +11,11 @@ If you've found a bug or want to suggest a feature to me, GitHub issues are a gr
 ticket that I will get to... eventually. GitHub Issues allow me to quickly find and reference various things,
 and are therefore my preferred mechanism to receive these types of reports.
 
-### Goat Place Discord
+### XIVLauncher Discord
 
 **Great For:** Technical Support
 
-I am available for live support in the [Goat Place Discord](https://discord.gg/3NMcUV5). Simply ask your
+I am available for live support in the [XIVLauncher Discord](https://discord.gg/holdshift). Simply ask your
 question in the appropriate channel:
 
 * Submit any bug reports or general use questions to the `#plugin-issues-help` Discord channel.
