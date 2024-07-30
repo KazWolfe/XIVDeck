@@ -13,12 +13,12 @@ import i18n from "./i18n/i18n";
 class XIVDeckInspector {
     sdPluginLink: SDInspector = new Streamdeck().propertyinspector();
     xivPluginLink: FFXIVPluginLink = new FFXIVPluginLink(this.sdPluginLink);
-    
+
     // state for this inspector
     uuid: string = "";
     dispatcher: PIDispatcher = new PIDispatcher();
     globalInspector!: GlobalFrame;
-    
+
     constructor() {
         console.log("XIVDeck Property Inspector loaded!", this);
 
@@ -29,8 +29,13 @@ class XIVDeckInspector {
 
             // localization work
             let aInfo = this.sdPluginLink.info.application as Record<string, string>;
-            i18n.changeLanguage(aInfo.language);
-            console.debug(`Language set to ${aInfo.language}`)
+            let language = aInfo["language"] || "en";
+            i18n.changeLanguage(language, (err, t) => {
+                if (err) {
+                    this.sdPluginLink.logMessage(`Error loading language ${language}: ${err}`);
+                }
+            });
+            console.debug(`Language set to ${language}`);
             PIUtils.localizeDomTree();
 
             // load version into DOM (hacky)
@@ -39,7 +44,7 @@ class XIVDeckInspector {
             if (rtVersion) {
                 rtVersion.innerText = pInfo.version;
             }
-            
+
             this.globalInspector = new GlobalFrame();
             this.sdPluginLink.on('didReceiveGlobalSettings', (ev: DidReceiveGlobalSettingsEvent) => this.handleDidReceiveGlobalSettings(ev));
             this.sdPluginLink.on('didReceiveSettings', (ev: DidReceiveSettingsEvent) => this.handleDidReceiveSettings(ev));
@@ -50,37 +55,37 @@ class XIVDeckInspector {
     handleDidReceiveGlobalSettings(event: DidReceiveGlobalSettingsEvent) {
         let globalSettings = {...DefaultGlobalSettings, ...(event.settings as GlobalSettings)};
         this.globalInspector.loadSettings(globalSettings);
-        
+
         this._initializeXIVLinkWS(globalSettings)
     }
-    
+
     handleDidReceiveSettings(event: DidReceiveSettingsEvent) {
         this.dispatcher.handleReceivedSettings(event);
     }
-    
+
     private _initializeXIVLinkWS(globalSettings: GlobalSettings) {
         if (globalSettings.ws.hostname) this.xivPluginLink.hostname = globalSettings.ws.hostname;
         this.xivPluginLink.port = globalSettings.ws.port;
-        
+
         // The PI can't actually determine if the game is alive or not, so we'll force it to think it is.
         this.xivPluginLink.isGameAlive = true;
-        
+
         this.xivPluginLink.on("_wsClosed", () => {
             let errElement = document.getElementById("errorDisplay")!;
             errElement.setAttribute("style", "");
             errElement.append(PIUtils.generateConnectionErrorDom());
         });
-        
+
         this.xivPluginLink.on("initReply", (data: FFXIVInitReply) => {
             let verElement = document.getElementById("xivdeck-game-version");
             if (verElement) {
                 verElement.innerText = data.version;
             }
         });
-        
+
         this.xivPluginLink.connect(false);
     }
-    
+
 }
 
 

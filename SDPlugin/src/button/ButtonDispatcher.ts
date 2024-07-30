@@ -15,15 +15,15 @@ import {InteractiveEvent} from "../util/SDEvent";
 
 export class ButtonDispatcher {
     private _contextCache: Map<string, BaseButton> = new Map<string, BaseButton>();
-    
+
     constructor() {
         FFXIVPluginLink.instance.on("stateUpdate", this._globalStateUpdate.bind(this));
     }
-    
+
     private _constructButton(event: WillAppearEvent): BaseButton {
         let button: BaseButton;
 
-        switch (event.action) {
+        switch (event.action.toLowerCase()) {
             case "dev.wolf.xivdeck.sdplugin.actions.sendcommand":
                 button = new CommandButton(event);
                 break;
@@ -51,19 +51,19 @@ export class ButtonDispatcher {
         // can usually be ignored, but useful every now and then
         return button;
     }
-    
+
     private _destructButton(context: string) {
         let button = this._contextCache.get(context);
-        
+
         if (button == null) {
             console.debug(`Couldn't delete button with context ${context} as it doesnt exist in cache.`)
             return
         }
-        
+
         button.cleanup();
         this._contextCache.delete(context);
     }
-    
+
     private async _globalStateUpdate(event: StateMessage) {
         switch (event.type) {
             case "DEBUG_ClearIcons":
@@ -78,7 +78,7 @@ export class ButtonDispatcher {
                 break;
         }
     }
-    
+
     public dispatch(event: InteractiveEvent) {
         let button = this._contextCache.get(event.context);
 
@@ -90,7 +90,7 @@ export class ButtonDispatcher {
         button.dispatch(event)
             .catch((e) => {
                 button!.showAlert();
-                
+
                 if (e instanceof GameNotRunningError) {
                     console.warn("Could not process event as the game is not running.", event)
                 } else {
@@ -99,14 +99,14 @@ export class ButtonDispatcher {
                 }
             });
     }
-    
+
     handleWillAppear(event: WillAppearEvent): void {
         // bust the icon cache for test/debug purposes
         // plugin.sdPluginLink.setImage("", event.context);
-        
+
         this._constructButton(event);
     }
-    
+
     handleReceivedSettings(event: DidReceiveSettingsEvent) {
         let button = this._contextCache.get(event.context);
 
@@ -116,7 +116,7 @@ export class ButtonDispatcher {
 
         button.onReceivedSettings(event);
     }
-    
+
     handleWillDisappear(event: WillDisappearEvent) {
         // delete the context cache entry as it's no longer necessary
         this._destructButton(event.context);
