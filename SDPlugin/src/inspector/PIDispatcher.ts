@@ -10,13 +10,13 @@ import {VolumeFrame} from "./frames/VolumeFrame";
 
 export class PIDispatcher {
     public piFrame?: BaseFrame<unknown>;
-    
+
     constructor() { }
-    
+
     initialize() {
         let actionType = piInstance.sdPluginLink.actionInfo?.action;
 
-        switch (actionType) {
+        switch (actionType?.toLowerCase()) {
             case "dev.wolf.xivdeck.sdplugin.actions.sendcommand":
                 this.piFrame = new CommandFrame();
                 break;
@@ -42,10 +42,10 @@ export class PIDispatcher {
         this.piFrame.renderHTML();
         this.piFrame.loadSettings(piInstance.sdPluginLink.actionInfo?.settings);
     }
-    
+
     handleReceivedSettings(event: DidReceiveSettingsEvent) {
         if (this.piFrame == null) return;
-        
+
         this.piFrame.loadSettings(event.settings)
     }
 }
