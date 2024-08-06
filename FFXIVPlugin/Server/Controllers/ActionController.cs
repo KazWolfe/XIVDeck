@@ -35,6 +35,9 @@ public class ActionController : WebApiController {
         Dictionary<string, List<ExecutableAction>> actions = new();
 
         foreach (var (type, strategy) in XIVDeckPlugin.Instance.ActionDispatcher.GetStrategies()) {
+            // hack, we don't want to list macros here. they're slow and annoying.
+            if (type is HotbarSlotType.Macro) continue;
+
             var allowedItems = strategy.GetAllowedItems();
             if (allowedItems == null || allowedItems.Count == 0) continue;
 

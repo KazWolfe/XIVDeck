@@ -1,5 +1,8 @@
-﻿using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
+﻿using System;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Client.UI.Shell;
 using XIVDeck.FFXIVPlugin.Base;
@@ -17,18 +20,33 @@ public class MacroStrategy : IActionStrategy {
     public unsafe ExecutableAction GetExecutableActionById(uint actionId) {
         var macro = GetMacro((actionId / 100 > 0), (int)actionId % 100);
 
+        _ = TryGetMacroName(
+            ref Unsafe.AsRef<RaptureMacroModule.Macro>(macro),
+            (int)actionId % 100,
+            (actionId / 100 > 0),
+            out var macroName
+        );
+
         // Macros are weird, inasmuch as they can't be null. Something will always exist, even if empty.
         return new ExecutableAction {
             ActionId = (int)actionId,
-            ActionName = macro->Name.ToString(),
+            ActionName = macroName,
             Category = null,
             HotbarSlotType = HotbarSlotType.Macro,
             IconId = this.GetIconId(actionId)
         };
     }
 
-    // Macros will always return null, as they're selected on the client side and we don't get a say.
-    public List<ExecutableAction>? GetAllowedItems() => null;
+    public unsafe List<ExecutableAction> GetAllowedItems() {
+        var items = new List<ExecutableAction>();
+
+        if (Injections.ClientState.LocalPlayer != null)
+            items.AddRange(this.GetValidMacrosFromCollection(RaptureMacroModule.Instance()->Individual, 0));
+
+        items.AddRange(this.GetValidMacrosFromCollection(RaptureMacroModule.Instance()->Shared, 1));
+
+        return items;
+    }
 
     public unsafe void Execute(uint actionId, ActionPayload? _) {
         if (actionId > 199) {
@@ -61,7 +79,7 @@ public class MacroStrategy : IActionStrategy {
         var macroPage = item / 100;
         var macroId = item % 100;
 
-        return Injections.Framework.RunOnTick(() => {
+        return Injections.Framework.RunOnFrameworkThread(() => {
             // It's terrifying that creating a virtual hotbar slot is probably the easiest way to get a macro icon ID,
             // but here we are.
 
@@ -71,5 +89,44 @@ public class MacroStrategy : IActionStrategy {
 
             return (int)slot.IconId;
         }).Result;
+    }
+
+    private List<ExecutableAction> GetValidMacrosFromCollection(Span<RaptureMacroModule.Macro> span, int pageId) {
+        var result = new List<ExecutableAction>();
+
+        for (var i = 0; i < span.Length; i++) {
+            ref var macro = ref span[i];
+
+            var macroId = (100 * pageId) + i;
+            var macroIconId = (int)macro.IconId;
+            var wasMacroNamed = TryGetMacroName(ref macro, i, pageId == 1, out var macroName);
+
+            if (!wasMacroNamed && macroIconId == 0) continue;
+
+            result.Add(new ExecutableAction {
+                ActionId = macroId,
+                ActionName = macroName,
+                HotbarSlotType = HotbarSlotType.Macro,
+                IconId = macroIconId,  // intentionally not resolving the proper icon id here. it's very slow.
+            });
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Checks if the macro is named, and returns the name.
+    /// </summary>
+    /// <param name="macro">A pointer to the macro to check.</param>
+    /// <param name="id">The ID of the macro for name generation purposes.</param>
+    /// <param name="isShared">The share state of the macro for name generation purposes.</param>
+    /// <param name="name">An out var containing the determined name of the macro.</param>
+    /// <returns>Returns true if the macro was named, false if a generic name was used.</returns>
+    private static unsafe bool TryGetMacroName(ref RaptureMacroModule.Macro macro, int id, bool isShared, out string name) {
+        name = macro.Name.ToString();
+        if (!name.IsNullOrEmpty()) return true;
+
+        name = isShared ? $"Shared Macro {id}" : $"Individual Macro {id}";
+        return false;
     }
 }
