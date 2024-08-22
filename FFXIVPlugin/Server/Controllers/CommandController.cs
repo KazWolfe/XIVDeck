@@ -13,7 +13,6 @@ namespace XIVDeck.FFXIVPlugin.Server.Controllers;
 
 [ApiController("/command")]
 public class CommandController : WebApiController {
-    
     [Route(HttpVerbs.Post, "/")]
     public void ExecuteCommand([NJsonData] SerializableTextCommand command) {
         if (!Injections.ClientState.IsLoggedIn)
@@ -23,15 +22,13 @@ public class CommandController : WebApiController {
             throw HttpException.BadRequest(UIStrings.CommandController_MissingCommandError);
 
         // only allow use of commands here for safety purposes (validating chat is hard)
-        if (!command.Command.StartsWith("/") && command.SafeMode)
+        if (!command.Command.StartsWith('/') && command.SafeMode)
             throw HttpException.BadRequest(UIStrings.CommandController_NotCommandError);
-            
+
         GameUtils.ResetAFKTimer();
-        
+
         Injections.Framework.RunOnFrameworkThread(delegate {
-            ChatHelper.GetInstance().SendSanitizedChatMessage(command.Command, command.SafeMode);
+            ChatHelper.SendSanitizedChatMessage(command.Command, command.SafeMode);
         });
     }
 }
-
-

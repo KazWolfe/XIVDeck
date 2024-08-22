@@ -25,9 +25,9 @@ public class ClassController : WebApiController {
     [Route(HttpVerbs.Get, "/available")]
     public List<SerializableGameClass> GetAvailableClasses() {
         var availableClasses = GearsetManager.GetGearsets()
-            .Select(gearset => (int) gearset.ClassJob)
+            .Select(gearset => (int)gearset.ClassJob)
             .ToList();
-        
+
         return SerializableGameClass.GetCache()
             .Where(gameClass => availableClasses.Contains(gameClass.Id)).ToList();
     }
@@ -44,9 +44,9 @@ public class ClassController : WebApiController {
 
         if (!Injections.ClientState.IsLoggedIn)
             throw new PlayerNotLoggedInException();
-        
+
         var sheet = Injections.DataManager.Excel.GetSheet<ClassJob>();
-        var classJob = sheet!.GetRow((uint) id);
+        var classJob = sheet!.GetRow((uint)id);
 
         if (classJob == null)
             throw HttpException.NotFound(string.Format(UIStrings.ClassController_InvalidClassIdError, id));
@@ -60,17 +60,18 @@ public class ClassController : WebApiController {
                 Injections.Framework.RunOnFrameworkThread(delegate {
                     var command = $"/gs change {gearset.Slot}";
                     Injections.PluginLog.Debug($"Would send command: {command}");
-                    ChatHelper.GetInstance().SendSanitizedChatMessage(command);
+                    ChatHelper.SendSanitizedChatMessage(command);
                 });
 
                 // notify the user on fallback
                 if (id != classJob.RowId) {
-                    var fallbackClassJob = sheet.GetRow((uint) id)!;
+                    var fallbackClassJob = sheet.GetRow((uint)id)!;
 
-                    Injections.PluginLog.Information($"Used fallback {fallbackClassJob.Abbreviation} for requested {classJob.Abbreviation}");
+                    Injections.PluginLog.Information(
+                        $"Used fallback {fallbackClassJob.Abbreviation} for requested {classJob.Abbreviation}");
                     ErrorNotifier.ShowError(string.Format(
-                        UIStrings.ClassController_FallbackClassUsed, 
-                        UIStrings.Culture.TextInfo.ToTitleCase(classJob.Name), 
+                        UIStrings.ClassController_FallbackClassUsed,
+                        UIStrings.Culture.TextInfo.ToTitleCase(classJob.Name),
                         UIStrings.Culture.TextInfo.ToTitleCase(fallbackClassJob.Name)), true);
                 }
 
@@ -84,11 +85,12 @@ public class ClassController : WebApiController {
                 break;
             }
 
-            id = (int) parentId;
+            id = (int)parentId;
         }
 
         throw HttpException.BadRequest(
-            string.Format(UIStrings.ClassController_NoGearsetForClassError, 
+            string.Format(
+                UIStrings.ClassController_NoGearsetForClassError,
                 UIStrings.Culture.TextInfo.ToTitleCase(classJob.Name)));
     }
 }

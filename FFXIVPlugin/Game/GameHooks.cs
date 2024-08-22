@@ -1,6 +1,5 @@
 ﻿using System;
 using Dalamud.Hooking;
-using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
@@ -11,42 +10,33 @@ using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
 namespace XIVDeck.FFXIVPlugin.Game;
 
 internal unsafe class GameHooks : IDisposable {
-    private static class Signatures {
-        // todo: this is *way* too broad. this game is very write-happy when it comes to gearset updates.
-        internal const string SaveGearset = "48 89 5C 24 ?? 48 89 74 24 ?? 57 48 83 EC 30 48 8B F2 48 8B F9 33 D2";
-    }
-
-    /***** hooks *****/
-    private delegate nint RaptureGearsetModule_WriteFile(nint a1, nint a2);
-
-    private delegate nint MacroUpdate(RaptureMacroModule* self, byte needsSave, uint set);
-
-    [Signature(Signatures.SaveGearset, DetourName = nameof(DetourGearsetSave))]
-    private Hook<RaptureGearsetModule_WriteFile>? RGM_WriteFileHook { get; init; }
-
-    private readonly Hook<MacroUpdate>? MacroUpdateHook;
-
-    /***** the actual class *****/
+    private readonly Hook<RaptureGearsetModule.Delegates.WriteFile>? GearsetUpdateHook;
+    private readonly Hook<RaptureMacroModule.Delegates.SetSavePendingFlag>? MacroUpdateHook;
 
     internal GameHooks() {
         Injections.GameInteropProvider.InitializeFromAttributes(this);
 
-        this.RGM_WriteFileHook?.Enable();
+        this.GearsetUpdateHook =
+            Injections.GameInteropProvider.HookFromAddress<RaptureGearsetModule.Delegates.WriteFile>(
+                (nint)RaptureGearsetModule.StaticVirtualTablePointer->WriteFile,
+                this.DetourGearsetSave);
+        this.GearsetUpdateHook?.Enable();
 
-        this.MacroUpdateHook = Injections.GameInteropProvider.HookFromAddress<MacroUpdate>(
-            (nint) RaptureMacroModule.MemberFunctionPointers.SetSavePendingFlag, 
-            this.DetourMacroUpdate);
+        this.MacroUpdateHook = Injections.GameInteropProvider
+            .HookFromAddress<RaptureMacroModule.Delegates.SetSavePendingFlag>(
+                (nint)RaptureMacroModule.MemberFunctionPointers.SetSavePendingFlag,
+                this.DetourMacroUpdate);
         this.MacroUpdateHook.Enable();
     }
 
     public void Dispose() {
-        this.RGM_WriteFileHook?.Dispose();
+        this.GearsetUpdateHook?.Dispose();
         this.MacroUpdateHook?.Dispose();
 
         GC.SuppressFinalize(this);
     }
 
-    private nint DetourGearsetSave(nint a1, nint a2) {
+    private uint DetourGearsetSave(RaptureGearsetModule* self, byte* ptr, uint length) {
         Injections.PluginLog.Debug("Detected a gearset update; broadcasting event.");
 
         try {
@@ -55,18 +45,18 @@ internal unsafe class GameHooks : IDisposable {
             Injections.PluginLog.Error(ex, "Gearset update notification on hook failed");
         }
 
-        return this.RGM_WriteFileHook!.Original(a1, a2);
+        return this.GearsetUpdateHook!.Original(self, ptr, length);
     }
 
-    private nint DetourMacroUpdate(RaptureMacroModule* self, byte needsSave, uint set) {
+    private void DetourMacroUpdate(RaptureMacroModule* self, bool needsSave, uint set) {
         Injections.PluginLog.Debug("Detected a macro update; broadcasting event.");
-        
+
         try {
             XIVDeckPlugin.Instance.Server.BroadcastMessage(new WSStateUpdateMessage("Macro"));
         } catch (Exception ex) {
             Injections.PluginLog.Error(ex, "Macro update notification on hook failed");
         }
 
-        return this.MacroUpdateHook!.Original(self, needsSave, set);
+        this.MacroUpdateHook!.Original(self, needsSave, set);
     }
 }

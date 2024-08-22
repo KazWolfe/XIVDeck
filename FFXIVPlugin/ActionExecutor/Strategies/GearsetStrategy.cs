@@ -18,13 +18,13 @@ public class GearsetStrategy : IActionStrategy {
         return new ExecutableAction {
             ActionId = gearset.Slot,
             ActionName = $"{gearset.Slot}: {gearset.Name}",
-            IconId = 062800 + (int) gearset.ClassJob,
+            IconId = 062800 + (int)gearset.ClassJob,
             HotbarSlotType = HotbarSlotType.GearSet
         };
     }
 
     public ExecutableAction? GetExecutableActionById(uint slotId) {
-        var gearset = GearsetManager.GetGearset((int) slotId - 1);
+        var gearset = GearsetManager.GetGearset((int)slotId - 1);
 
         return gearset == null ? null : GetExecutableAction(gearset);
     }
@@ -36,7 +36,7 @@ public class GearsetStrategy : IActionStrategy {
     }
 
     public void Execute(uint actionSlot, ActionPayload? payload) {
-        var gearset = GearsetManager.GetGearset((int) actionSlot - 1);
+        var gearset = GearsetManager.GetGearset((int)actionSlot - 1);
 
         if (gearset == null)
             throw new ArgumentException(string.Format(UIStrings.GearsetStrategy_GearsetNotFoundError, actionSlot));
@@ -44,24 +44,22 @@ public class GearsetStrategy : IActionStrategy {
         var command = $"/gearset change {gearset.Slot}";
 
         switch (payload) {
-            case GearsetPayload {GlamourPlateId: >= 1 and <= 20} p:
+            case GearsetPayload { GlamourPlateId: >= 1 and <= 20 } p:
                 command += $" {p.GlamourPlateId}";
                 break;
-            case GearsetPayload {GlamourPlateId: not null}:
+            case GearsetPayload { GlamourPlateId: not null }:
                 throw new ArgumentException("Glamour Plate ID must be between 1 and 20.");
         }
 
         Injections.PluginLog.Debug($"Executing command: {command}");
-        Injections.Framework.RunOnFrameworkThread(delegate {
-            ChatHelper.GetInstance().SendSanitizedChatMessage(command);
-        });
+        Injections.Framework.RunOnFrameworkThread(() => { ChatHelper.SendSanitizedChatMessage(command); });
     }
 
     public int GetIconId(uint slot) {
-        var gearset = GearsetManager.GetGearset((int) slot - 1);
+        var gearset = GearsetManager.GetGearset((int)slot - 1);
 
         if (gearset == null) return 0;
-        return 062800 + (int) gearset.ClassJob;
+        return 062800 + (int)gearset.ClassJob;
     }
 
     public Type GetPayloadType() => typeof(GearsetPayload);

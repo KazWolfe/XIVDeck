@@ -1,4 +1,4 @@
-﻿using System.Dynamic;
+﻿using System.Collections.Generic;
 using EmbedIO;
 using EmbedIO.Routing;
 using EmbedIO.WebApi;
@@ -11,15 +11,13 @@ namespace XIVDeck.FFXIVPlugin.Server.Controllers;
 public class DiagnosticsController : WebApiController {
 
     [Route(HttpVerbs.Get, "/")]
-    public dynamic GetDiagnosticsReport() {
-        dynamic report = new ExpandoObject();
-        
-        report.Status = "online";
-        report.Version = VersionUtils.GetCurrentMajMinBuild();
-        report.ApiKey = AuthHelper.Instance.Secret;
-        report.Configuration = XIVDeckPlugin.Instance.Configuration;
-        
-        return report;
+    public Dictionary<string, object?> GetDiagnosticsReport() {
+        return new Dictionary<string, object?> {
+            ["Status"] = "online",
+            ["Version"] = VersionUtils.GetCurrentMajMinBuild(),
+            ["ApiKey"] = AuthHelper.Instance.Secret,
+            ["Configuration"] = XIVDeckPlugin.Instance.Configuration
+        };
     }
 
     [Route(HttpVerbs.Get, "/hello")]
