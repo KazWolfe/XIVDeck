@@ -103,18 +103,7 @@
         <value>DANGER : MODE SÉCURISÉ DÉSACTIVÉ ! Vous risquez d'envoyer des commandes illégales depuis votre Stream Deck vers le jeu.</value>
         <comment>"Illegal commands" in this case mean commands that normally cannot be sent to the game and may cause damage or harm if proper care is not taken.</comment>
     </data>
-  <data name="SettingsWindow_EnablePenumbraIPC" xml:space="preserve">
-        <value>Activer l'intégration avec Penumbra</value>
-        <comment>Setting to enable integration with another app named Penumbra.</comment>
-    </data>
-  <data name="SettingsWindow_EnablePenumbraIPC_Help" xml:space="preserve">
-        <value>Lorsqu'elle est activée, cette fonctionnalité tentera d'afficher les icônes provenant de Penumbra sur le Stream Deck. Notez que Penumbra doit être installé pour que cela fonctionne.
-
-Si désactivé, les icônes par défaut du jeu seront utilisées à la place.
-
-Par défaut : Désactivé</value>
-    </data>
-  <data name="SettingsWindow_ExperimentalSettings" xml:space="preserve">
+    <data name="SettingsWindow_ExperimentalSettings" xml:space="preserve">
         <value>Fonctionnalités expérimentales</value>
         <comment>Header for configuration window section.</comment>
     </data>

@@ -14,7 +14,7 @@ public class SettingsWindow : Window {
     public const string WindowKey = "###xivDeckSettingsWindow";
 
     private static SettingsWindow? _instance;
-    
+
     internal static SettingsWindow GetOrCreate() {
         if (_instance == null) {
             _instance = new SettingsWindow();
@@ -29,13 +29,12 @@ public class SettingsWindow : Window {
     // settings
     private int _websocketPort;
     private bool _safeMode = true;
-    private bool _usePenumbraIPC;
     private bool _useMIconIcons;
     private bool _listenOnAllInterfaces;
 
     public SettingsWindow(bool forceMainWindow = true) :
         base(WindowKey, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoCollapse, forceMainWindow) {
-        
+
         this.SizeCondition = ImGuiCond.FirstUseEver;
         this.SizeConstraints = new WindowSizeConstraints {
             MinimumSize = new Vector2(350, 250),
@@ -50,9 +49,6 @@ public class SettingsWindow : Window {
         this._safeMode = this._plugin.Configuration.SafeMode;
 
         this._listenOnAllInterfaces = this._plugin.Configuration.ListenOnAllInterfaces;
-        
-        // setting flags
-        this._usePenumbraIPC = this._plugin.Configuration.UsePenumbraIPC;
 
         // experimental flags
         this._useMIconIcons = this._plugin.Configuration.UseMIconIcons;
@@ -62,7 +58,7 @@ public class SettingsWindow : Window {
         var windowSize = ImGui.GetContentRegionAvail();
 
         var pbs = ImGuiHelpers.GetButtonSize("placeholder");
-        
+
         ImGui.BeginChild("SettingsPane", windowSize with {Y = windowSize.Y - pbs.Y - 6});
 
         if (!this._safeMode) {
@@ -97,12 +93,10 @@ public class SettingsWindow : Window {
         }
 
         ImGui.Spacing();
-        ImGui.Checkbox(UIStrings.SettingsWindow_EnablePenumbraIPC, ref this._usePenumbraIPC);
-        ImGuiComponents.HelpMarker(UIStrings.SettingsWindow_EnablePenumbraIPC_Help);
-        
+
         ImGui.Checkbox(UIStrings.SettingsWindow_Experiment_MIcon, ref this._useMIconIcons);
         ImGuiComponents.HelpMarker(UIStrings.SettingsWindow_UseMIcon_Help);
-        
+
         ImGui.Dummy(new Vector2(0, 10));
 
         ImGui.EndChild();
@@ -111,7 +105,7 @@ public class SettingsWindow : Window {
         ImGui.Separator();
 
         if (ImGui.Button(UIStrings.SettingsWindow_GitHubLink)) UiUtil.OpenXIVDeckGitHub();
-        
+
 #if DEBUG
         ImGui.SameLine();
         if (ImGui.Button("Debug")) {
@@ -133,16 +127,15 @@ public class SettingsWindow : Window {
         if (this._websocketPort != this._plugin.Configuration.WebSocketPort) {
             this._plugin.Configuration.WebSocketPort = this._websocketPort;
             this._plugin.Configuration.HasLinkedStreamDeckPlugin = false;
-            
+
             NagWindow.CloseAllNags();
             SetupNag.Show();
         }
 
-        this._plugin.Configuration.UsePenumbraIPC = this._usePenumbraIPC;
         this._plugin.Configuration.UseMIconIcons = this._useMIconIcons;
 
         this._plugin.Configuration.ListenOnAllInterfaces = this._listenOnAllInterfaces;
-        
+
         this._plugin.Configuration.Save();
 
         // initialize regardless of change(s) so that we can easily restart the server when necessary

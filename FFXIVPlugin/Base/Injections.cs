@@ -25,4 +25,5 @@ public class Injections {
     [PluginService] public static IToastGui Toasts { get; private set; }
     [PluginService] public static IPluginLog PluginLog { get; private set; }
     [PluginService] public static IGameInteropProvider GameInteropProvider { get; private set; }
+    [PluginService] public static ITextureSubstitutionProvider TextureSubstitutionProvider { get; private set; }
 }

@@ -104,17 +104,6 @@
         <value>DANGER: SAFE MODE DISABLED! You may be able to send illegal commands from your Stream Deck to the game.</value>
         <comment>"Illegal commands" in this case mean commands that normally cannot be sent to the game and may cause damage or harm if proper care is not taken.</comment>
     </data>
-    <data name="SettingsWindow_EnablePenumbraIPC" xml:space="preserve">
-        <value>Enable Penumbra Integration</value>
-        <comment>Setting to enable integration with another app named Penumbra.</comment>
-    </data>
-    <data name="SettingsWindow_EnablePenumbraIPC_Help" xml:space="preserve">
-        <value>When enabled, this feature will attempt to display icons from Penumbra on the Stream Deck. Note that Penumbra must be installed for this setting to have any effect.
-
-If disabled, original game icons will be used instead.
-
-Default: Off</value>
-    </data>
     <data name="SettingsWindow_ExperimentalSettings" xml:space="preserve">
         <value>Experimental Settings</value>
         <comment>Header for configuration window section.</comment>

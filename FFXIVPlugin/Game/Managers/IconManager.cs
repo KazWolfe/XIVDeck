@@ -5,7 +5,7 @@ using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.IPC.Subscribers;
 using XIVDeck.FFXIVPlugin.Utils;
 
-namespace XIVDeck.FFXIVPlugin.Game.Managers; 
+namespace XIVDeck.FFXIVPlugin.Game.Managers;
 
 // borrowed from https://github.com/Caraxi/RemindMe/blob/master/IconManager.cs
 public static class IconManager {
@@ -13,27 +13,24 @@ public static class IconManager {
 
     private static string GetIconPath(string lang, int iconId, bool highres = false, bool forceOriginal = false) {
         var useHqIcon = false;
-        
+
         if (iconId > 1_000_000) {
             useHqIcon = true;
             iconId -= 1_000_000;
         }
-        
-        var path = string.Format(IconFileFormat, 
+
+        var path = string.Format(IconFileFormat,
             iconId / 1000, (useHqIcon ? "hq/" : "") + lang, iconId, highres ? "_hr1" : "");
 
-        if (PenumbraIPC.Instance is {Enabled: true} && !forceOriginal && XIVDeckPlugin.Instance.Configuration.UsePenumbraIPC)
-            path = PenumbraIPC.Instance.ResolvePenumbraPath(path);
-
-        return path;
+        return Injections.TextureSubstitutionProvider.GetSubstitutedPath(path);
     }
 
     public static TexFile? GetIcon(string lang, int iconId, bool highres = false) {
         TexFile? texFile;
-        
-        if (lang.Length > 0 && !lang.EndsWith("/"))
+
+        if (lang.Length > 0 && !lang.EndsWith('/'))
             lang += "/";
-        
+
         var texPath = GetIconPath(lang, iconId, true);
 
         if (Path.IsPathRooted(texPath)) {
@@ -61,7 +58,7 @@ public static class IconManager {
                 return texFile;
         }
     }
-    
+
     public static string GetIconAsPngString(int iconId) {
         var icon = GetIcon("", iconId, true) ?? GetIcon("", 0, true)!;
 

@@ -103,18 +103,7 @@
         <value>WARNUNG: SICHERER MODUS DEAKTIVIERT! Du kannst möglicherweise verbotene oder ungültige Befehle von deinem Stream Deck an das Spiel senden.</value>
         <comment>"Illegal commands" in this case mean commands that normally cannot be sent to the game and may cause damage or harm if proper care is not taken.</comment>
     </data>
-  <data name="SettingsWindow_EnablePenumbraIPC" xml:space="preserve">
-        <value>Penumbra Integration verwenden</value>
-        <comment>Setting to enable integration with another app named Penumbra.</comment>
-    </data>
-  <data name="SettingsWindow_EnablePenumbraIPC_Help" xml:space="preserve">
-        <value>Wenn aktiviert, wird versucht, Icons von Penumbra auf dem Stream Deck anzuzeigen. Beachte, dass Penumbra installiert sein muss, damit diese Einstellung eine Wirkung hat.
-
-Wenn deaktiviert, werden stattdessen originale Spielsymbole verwendet.
-
-Standard: Aus</value>
-    </data>
-  <data name="SettingsWindow_ExperimentalSettings" xml:space="preserve">
+    <data name="SettingsWindow_ExperimentalSettings" xml:space="preserve">
         <value>Experimentelle Einstellungen</value>
         <comment>Header for configuration window section.</comment>
     </data>

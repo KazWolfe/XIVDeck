@@ -603,28 +603,6 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enable Penumbra Integration.
-        /// </summary>
-        internal static string SettingsWindow_EnablePenumbraIPC {
-            get {
-                return ResourceManager.GetString("SettingsWindow_EnablePenumbraIPC", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to When enabled, this feature will attempt to display icons from Penumbra on the Stream Deck. Note that Penumbra must be installed for this setting to have any effect.
-        ///
-        ///If disabled, original game icons will be used instead.
-        ///
-        ///Default: Off.
-        /// </summary>
-        internal static string SettingsWindow_EnablePenumbraIPC_Help {
-            get {
-                return ResourceManager.GetString("SettingsWindow_EnablePenumbraIPC_Help", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Use /micon Icons.
         /// </summary>
         internal static string SettingsWindow_Experiment_MIcon {

@@ -103,18 +103,7 @@
         <value>危険: セーフモードが無効になりました! Stream Deck からゲームに不正なコマンドを送信できる可能性があります。</value>
         <comment>"Illegal commands" in this case mean commands that normally cannot be sent to the game and may cause damage or harm if proper care is not taken.</comment>
     </data>
-  <data name="SettingsWindow_EnablePenumbraIPC" xml:space="preserve">
-        <value>Penumbra のアイコンを使用する</value>
-        <comment>Setting to enable integration with another app named Penumbra.</comment>
-    </data>
-  <data name="SettingsWindow_EnablePenumbraIPC_Help" xml:space="preserve">
-        <value>この機能を有効にすると、 Stream Deck にPenumbraのアイコンを表示しようとします。 この設定を有効にするには、Penumbraをインストールする必要があります。
-
-無効にすると、代わりにオリジナルのゲームアイコンが使用されます。
-
-デフォルト: 無効</value>
-    </data>
-  <data name="SettingsWindow_ExperimentalSettings" xml:space="preserve">
+    <data name="SettingsWindow_ExperimentalSettings" xml:space="preserve">
         <value>実験的な設定</value>
         <comment>Header for configuration window section.</comment>
     </data>
