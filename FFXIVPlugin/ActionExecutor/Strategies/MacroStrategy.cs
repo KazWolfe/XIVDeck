@@ -122,7 +122,7 @@ public class MacroStrategy : IActionStrategy {
     /// <param name="isShared">The share state of the macro for name generation purposes.</param>
     /// <param name="name">An out var containing the determined name of the macro.</param>
     /// <returns>Returns true if the macro was named, false if a generic name was used.</returns>
-    private static unsafe bool TryGetMacroName(ref RaptureMacroModule.Macro macro, int id, bool isShared, out string name) {
+    private static bool TryGetMacroName(ref RaptureMacroModule.Macro macro, int id, bool isShared, out string name) {
         name = macro.Name.ToString();
         if (!name.IsNullOrEmpty()) return true;
 

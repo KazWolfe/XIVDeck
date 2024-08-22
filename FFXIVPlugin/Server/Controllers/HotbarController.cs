@@ -52,7 +52,7 @@ public class HotbarController : WebApiController {
         if (!Injections.ClientState.IsLoggedIn)
             throw new PlayerNotLoggedInException();
 
-        GameUtils.ResetAFKTimer();
+        GameUtils.SendDummyInput();
 
         // Trigger the hotbar event on the next Framework tick, and also in the Framework (game main) thread.
         // For whatever reason, the game *really* doesn't like when a user casts a Weaponskill or Ability from a

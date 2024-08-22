@@ -93,7 +93,7 @@ public class ActionController : WebApiController {
             Injections.PluginLog.Debug($"Body: {requestBody}\nPayload: {payload}");
         }
 
-        GameUtils.ResetAFKTimer();
+        GameUtils.SendDummyInput();
         strategy.Execute((uint) id, payload);
     }
 

@@ -51,7 +51,7 @@ public class ClassController : WebApiController {
         if (classJob == null)
             throw HttpException.NotFound(string.Format(UIStrings.ClassController_InvalidClassIdError, id));
 
-        GameUtils.ResetAFKTimer();
+        GameUtils.SendDummyInput();
 
         while (true) {
             foreach (var gearset in GearsetManager.GetGearsets()) {

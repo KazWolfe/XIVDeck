@@ -2,7 +2,6 @@
 using System.IO;
 using Lumina.Data.Files;
 using XIVDeck.FFXIVPlugin.Base;
-using XIVDeck.FFXIVPlugin.IPC.Subscribers;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.Game.Managers;
@@ -11,7 +10,7 @@ namespace XIVDeck.FFXIVPlugin.Game.Managers;
 public static class IconManager {
     private const string IconFileFormat = "ui/icon/{0:D3}000/{1}{2:D6}{3}.tex";
 
-    private static string GetIconPath(string lang, int iconId, bool highres = false, bool forceOriginal = false) {
+    private static string GetIconPath(string lang, int iconId, bool highres = false) {
         var useHqIcon = false;
 
         if (iconId > 1_000_000) {
