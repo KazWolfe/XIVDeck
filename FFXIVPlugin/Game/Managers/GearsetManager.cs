@@ -21,9 +21,24 @@ public static unsafe class GearsetManager {
         return gearsets;
     }
 
+    /// <summary>
+    /// Gets a gearset by its loaded index (passing to GetGearset). If a negative ID is passed, return the current
+    /// gearset.
+    /// </summary>
+    /// <param name="index">The ID of the gearset to retrieve.</param>
+    /// <returns>Returns a gearset if one is found.</returns>
     public static Gearset? GetGearset(int index) {
-        var gs = RaptureGearsetModule.Instance()->GetGearset(index);
+        var gearsetModule = RaptureGearsetModule.Instance();
 
+        if (index < 0)
+            index = gearsetModule->CurrentGearsetIndex;
+
+        if (!gearsetModule->IsValidGearset(index))
+            return null;
+
+        var gs = gearsetModule->GetGearset(index);
+
+        // technically not needed, but let's be strict anyways.
         if (gs == null || !gs->Flags.HasFlag(RaptureGearsetModule.GearsetFlag.Exists))
             return null;
 
