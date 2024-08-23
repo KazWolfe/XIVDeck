@@ -34,13 +34,6 @@ public class PluginConfig : IPluginConfiguration {
     public int WebSocketPort { get; set; } = 37984;
 
     /// <summary>
-    /// Configure XIVDeck to listen to all available interfaces, rather than just localhost.
-    ///
-    /// This setting is config file only, as it introduces security concerns.
-    /// </summary>
-    public bool ListenOnAllInterfaces { get; set; } = false;
-
-    /// <summary>
     /// Set the HTTP Listener Mode used by EmbedIO.
     ///
     /// Internal configuration setting for now.

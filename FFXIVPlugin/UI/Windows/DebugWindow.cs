@@ -30,9 +30,8 @@ public class DebugWindow : Window {
 
         return _instance;
     }
-    
+
     // secret configs
-    private bool _listenOnAllInterfaces;
     private int _httpListenerMode;
 
     private DebugWindow() : base(WindowKey) {
@@ -42,8 +41,6 @@ public class DebugWindow : Window {
 
     public override void PreDraw() {
         base.PreDraw();
-        
-        this._listenOnAllInterfaces = XIVDeckPlugin.Instance.Configuration.ListenOnAllInterfaces;
 
         var listenerMode = XIVDeckPlugin.Instance.Configuration.HttpListenerMode;
         this._httpListenerMode = listenerMode != null ? (int) listenerMode.Value + 1 : 0;
@@ -51,7 +48,7 @@ public class DebugWindow : Window {
 
     public override void Draw() {
         ImGui.Text("Hello, world! Enjoying your time behind the curtain?");
-        
+
         ImGui.Text("---Diagnostic Commands ---");
         ImGui.Indent();
 
@@ -69,17 +66,12 @@ public class DebugWindow : Window {
             var packet = new WSInitReplyMessage(xivPluginVersion.GetMajMinBuild(), AuthHelper.Instance.Secret);
             XIVDeckPlugin.Instance.Server.BroadcastMessage(packet);
         }
-        
+
         ImGui.Unindent();
         ImGui.Spacing();
-        
+
         ImGui.Text("--- Server Control ---");
         ImGui.Indent();
-
-        if (ImGui.Checkbox(UIStrings.SettingsWindow_ListenOnNetwork, ref this._listenOnAllInterfaces)) {
-            XIVDeckPlugin.Instance.Configuration.ListenOnAllInterfaces = this._listenOnAllInterfaces;
-            XIVDeckPlugin.Instance.Configuration.Save();
-        }
 
         var listenerModes = new List<string> {"Default"};
         listenerModes.AddRange(Enum.GetNames<HttpListenerMode>());
@@ -102,12 +94,12 @@ public class DebugWindow : Window {
         if (ImGui.Button("(Re)Start Server")) {
             XIVDeckPlugin.Instance.InitializeWebServer();
         }
-        
+
         ImGui.Unindent();
         ImGui.Spacing();
         ImGui.Text("--- Localization ---");
         ImGui.Indent();
-        
+
         if (ImGui.Button("Pseudo-localize")) {
             UIStrings.Culture = new CultureInfo("qps-ploc");
         }
@@ -116,7 +108,7 @@ public class DebugWindow : Window {
         ImGui.Spacing();
         ImGui.Text("--- Nag Windows ---");
         ImGui.Indent();
-        
+
         if (ImGui.Button("Reset Nags")) {
             NagWindow.CloseAllNags();
         }
@@ -126,7 +118,7 @@ public class DebugWindow : Window {
         if (ImGui.Button("Open Setup Nag")) SetupNag.Show();
         ImGui.SameLine();
         if (ImGui.Button("Open Testing Update Nag")) TestingUpdateNag.Show();
-        
+
         ImGui.Unindent();
     }
 }

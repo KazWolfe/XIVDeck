@@ -117,17 +117,12 @@ public class XIVDeckWebServer : IXIVDeckServer {
     }
 
     private static string[] GenerateUrlPrefixes(int port) {
-        if (XIVDeckPlugin.Instance.Configuration.ListenOnAllInterfaces) {
-            Injections.PluginLog.Warning("XIVDeck is configured to listen on all interfaces! THIS IS A SECURITY RISK!");
-            return new[] { $"http://*:${port}" };
-        }
-
         var prefixes = new List<string> {$"http://localhost:{port}"};
 
         // Add in explicit URL prefixes for v4 (and v6) because HttpListener just doesn't let us grab all traffic on an interface.
         if (NetworkUtil.HostSupportsLocalIPv4()) prefixes.Add($"http://127.0.0.1:{port}");
         if (NetworkUtil.HostSupportsLocalIPv6()) prefixes.Add($"http://[::1]:{port}");
-        
+
         return prefixes.ToArray();
     }
 
