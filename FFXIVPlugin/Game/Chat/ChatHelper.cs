@@ -39,7 +39,14 @@ public static unsafe class ChatHelper {
                 throw new ArgumentException(@"Message cannot exceed 500 byte limit", nameof(utfMessage));
         }
 
+        // necessary for user feedback
+        // TODO: sub this in for the clientstructs field whenever it becomes a thing
+        var showCommandErrors = (byte*) ((nint)RaptureShellModule.Instance() + 0x2AD);
+        *showCommandErrors = 1;
+
         RaptureShellModule.Instance()->ShellCommandModule.ExecuteCommandInner(
             utfMessage, Framework.Instance()->GetUIModule());
+
+        *showCommandErrors = 0;
     }
 }
