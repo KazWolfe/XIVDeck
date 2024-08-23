@@ -37,7 +37,7 @@ public class WSInitOpcode : BaseInboundMessage {
                 "The version of the Stream Deck plugin is too old.", context.CancellationToken);
 
             Injections.PluginLog.Warning("The currently-installed version of the XIVDeck Stream Deck plugin " +
-                              $"is {this.Version}, but version {Constants.MinimumSDPluginVersion} is needed.");
+                                         $"is {this.Version}, but version {Constants.MinimumSDPluginVersion} is needed.");
             ForcedUpdateNag.Show();
 
             return;
@@ -46,31 +46,27 @@ public class WSInitOpcode : BaseInboundMessage {
         var xivPluginVersion = Assembly.GetExecutingAssembly().GetName().Version!.StripRevision();
         var reply = new WSInitReplyMessage(xivPluginVersion.GetMajMinBuild(), AuthHelper.Instance.Secret);
         await context.SendMessage(reply);
-        Injections.PluginLog.Information($"XIVDeck Stream Deck Plugin ({this.Mode}) version {this.Version} has connected!");
+        Injections.PluginLog.Information(
+            $"XIVDeck Stream Deck Plugin ({this.Mode}) version {this.Version} has connected!");
 
         // version check behavior
-        if (this.Mode is PluginMode.Plugin) {
-            if (Injections.PluginInterface is {IsTesting: true, IsDev: false} && sdPluginVersion < xivPluginVersion) {
+        if (Injections.PluginInterface is { IsDev: false } && this.Mode is PluginMode.Plugin) {
+            if (Injections.PluginInterface is { IsTesting: true } && sdPluginVersion < xivPluginVersion) {
                 TestingUpdateNag.Show();
             } else if (sdPluginVersion < xivPluginVersion) {
-                var n = Injections.NotificationManager.AddNotification(new Notification
-                {
+                var n = Injections.NotificationManager.AddNotification(new Notification {
                     Title = UIStrings.WSInitOpcode_PluginUpdateAvailableNotificationTitle,
-                    Content = string.Format(UIStrings.WSInitOpcode_SDPluginUpdateNotificationBody, sdPluginVersion, xivPluginVersion),
+                    Content = string.Format(UIStrings.WSInitOpcode_SDPluginUpdateNotificationBody, sdPluginVersion,
+                        xivPluginVersion),
                     Type = NotificationType.Warning,
                     Minimized = false,
                     RespectUiHidden = false,
                     InitialDuration = TimeSpan.FromSeconds(20),
                 });
 
-                n.Click += _ =>
-                {
-                    UiUtil.OpenXIVDeckGitHub($"/releases/tag/v{VersionUtils.GetCurrentMajMinBuild()}");
-                };
-
+                n.Click += _ => { UiUtil.OpenXIVDeckGitHub($"/releases/tag/v{VersionUtils.GetCurrentMajMinBuild()}"); };
             } else if (sdPluginVersion > xivPluginVersion) {
-                var n = Injections.NotificationManager.AddNotification(new Notification
-                {
+                var n = Injections.NotificationManager.AddNotification(new Notification {
                     Title = UIStrings.WSInitOpcode_PluginUpdateAvailableNotificationTitle,
                     Content = UIStrings.WSInitOpcode_GamePluginOutdated,
                     Type = NotificationType.Warning,
@@ -80,7 +76,8 @@ public class WSInitOpcode : BaseInboundMessage {
                 });
 
                 n.Click += _ => {
-                    Injections.PluginInterface.OpenPluginInstallerTo(searchText: Injections.PluginInterface.InternalName);
+                    Injections.PluginInterface.OpenPluginInstallerTo(
+                        searchText: Injections.PluginInterface.InternalName);
                 };
             }
         }

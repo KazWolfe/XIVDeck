@@ -3,7 +3,7 @@
         <Product>XIVDeck Game Plugin</Product>
         <Authors>Kaz Wolfe</Authors>
         <Company>Blacksite Technologies</Company>
-        <Version>0.3.20</Version>
+        <Version>0.3.21</Version>
 
         <AssemblyName>XIVDeck.FFXIVPlugin</AssemblyName>
         <AssemblyVersion>$(Version)</AssemblyVersion>
@@ -18,7 +18,7 @@
     <PropertyGroup Label="Target">
         <PlatformTarget>x64</PlatformTarget>
         <TargetFramework>net8.0-windows</TargetFramework>
-        <LangVersion>11</LangVersion>
+        <LangVersion>latest</LangVersion>
         <Platforms>AnyCPU</Platforms>
         <Configurations>Debug;Release</Configurations>
     </PropertyGroup>
