@@ -52,7 +52,7 @@ public class GearsetStrategy : IActionStrategy {
         }
 
         Injections.PluginLog.Debug($"Executing command: {command}");
-        Injections.Framework.RunOnFrameworkThread(() => { ChatHelper.SendSanitizedChatMessage(command); });
+        Injections.Framework.RunOnFrameworkThread(() => { ChatHelper.GetInstance().SendSanitizedChatMessage(command); });
     }
 
     public int GetIconId(uint slot) {

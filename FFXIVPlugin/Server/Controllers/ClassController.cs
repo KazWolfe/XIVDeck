@@ -60,7 +60,7 @@ public class ClassController : WebApiController {
                 Injections.Framework.RunOnFrameworkThread(delegate {
                     var command = $"/gs change {gearset.Slot}";
                     Injections.PluginLog.Debug($"Would send command: {command}");
-                    ChatHelper.SendSanitizedChatMessage(command);
+                    ChatHelper.GetInstance().SendSanitizedChatMessage(command);
                 });
 
                 // notify the user on fallback

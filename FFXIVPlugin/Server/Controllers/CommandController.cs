@@ -28,7 +28,7 @@ public class CommandController : WebApiController {
         GameUtils.SendDummyInput();
 
         Injections.Framework.RunOnFrameworkThread(delegate {
-            ChatHelper.SendSanitizedChatMessage(command.Command, command.SafeMode);
+            ChatHelper.GetInstance().SendSanitizedChatMessage(command.Command, command.SafeMode);
         });
     }
 }
