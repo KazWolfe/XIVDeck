@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
+using JetBrains.Annotations;
 using XIVDeck.FFXIVPlugin.Base;
 using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 
@@ -51,6 +52,7 @@ public class ActionDispatcher {
 }
 
 [AttributeUsage(AttributeTargets.Class)]
+[MeansImplicitUse]
 public class ActionStrategyAttribute : Attribute {
     public readonly HotbarSlotType HotbarSlotType;
 

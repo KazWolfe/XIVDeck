@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Product>XIVDeck Game Plugin</Product>
         <Authors>Kaz Wolfe</Authors>
@@ -54,6 +54,7 @@
 
         <!-- Code tooling -->
         <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" PrivateAssets="all" />
+        <PackageReference Include="JetBrains.Annotations" Version="2024.2.0" ExcludeAssets="runtime" />
 
         <!-- Dalamud things -->
         <PackageReference Include="DalamudPackager" Version="2.1.13" GeneratePathProperty="false" />
@@ -85,6 +86,10 @@
             <HintPath>$(DalamudLibPath)Lumina.Excel.dll</HintPath>
             <Private>false</Private>
         </Reference>
+        <Reference Include="Serilog">
+            <HintPath>$(DalamudLibPath)Serilog.dll</HintPath>
+            <Private>false</Private>
+        </Reference>
     </ItemGroup>
 
     <ItemGroup>
@@ -93,6 +98,9 @@
             <Visible>false</Visible>
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+
+        <EmbeddedResource Include="./LICENSE" LogicalName="LICENSE.txt" />
+        <EmbeddedResource Include="../SDPlugin/assets/images/icon@2x.png" LogicalName="icon.png" />
     </ItemGroup>
 
     <!-- Localization -->
