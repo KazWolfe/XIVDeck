@@ -1,6 +1,5 @@
 ﻿using System;
 using EmbedIO;
-using Serilog.Events;
 using Swan.Logging;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;

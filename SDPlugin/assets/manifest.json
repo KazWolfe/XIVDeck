@@ -1,4 +1,5 @@
 ﻿{
+  "$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
   "Actions": [
     {
       "Icon": "assets/images/sidebar/chat",
@@ -61,7 +62,7 @@
           "TitleAlignment": "bottom",
           "FontSize": "16"
         }
-      ], 
+      ],
       "Tooltip": "Switch to a specific class/job",
       "UUID": "dev.wolf.xivdeck.sdplugin.actions.SwitchClass"
     },
