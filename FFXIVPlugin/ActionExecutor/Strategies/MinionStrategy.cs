@@ -25,11 +25,11 @@ public class MinionStrategy : IActionStrategy {
     }
 
     private static Companion? GetMinionById(uint id) {
-        return Injections.DataManager.Excel.GetSheet<Companion>()!.GetRow(id);
+        return Injections.DataManager.Excel.GetSheet<Companion>().GetRow(id);
     }
 
     public List<ExecutableAction> GetAllowedItems() {
-        return Injections.DataManager.GetExcelSheet<Companion>()!
+        return Injections.DataManager.GetExcelSheet<Companion>()
             .Where(c => c.IsUnlocked())
             .Select(GetExecutableAction)
             .ToList();

@@ -17,7 +17,7 @@ public abstract class FixedCommandStrategy<T> : IActionStrategy where T : struct
 
     private static T? GetActionById(uint id) {
         // should never be null, T is inherently handled by Lumina
-        return Injections.DataManager.Excel.GetSheet<T>()!.GetRowOrDefault(id);
+        return Injections.DataManager.Excel.GetSheet<T>().GetRowOrDefault(id);
     }
 
     public List<ExecutableAction> GetAllowedItems() {
@@ -27,7 +27,7 @@ public abstract class FixedCommandStrategy<T> : IActionStrategy where T : struct
             return this._actionCache;
         }
 
-        var sheet = Injections.DataManager.Excel.GetSheet<T>()!;
+        var sheet = Injections.DataManager.Excel.GetSheet<T>();
 
         if (sheet == null) {
             throw new NullReferenceException(string.Format(UIStrings.FixedCommandStrategy_SheetNotFoundError, typeof(T).Name));

@@ -24,11 +24,11 @@ public class OrnamentStrategy : IActionStrategy {
     }
 
     private static Ornament? GetOrnamentById(uint id) {
-        return Injections.DataManager.Excel.GetSheet<Ornament>()!.GetRow(id);
+        return Injections.DataManager.Excel.GetSheet<Ornament>().GetRow(id);
     }
 
     public List<ExecutableAction> GetAllowedItems() {
-        return Injections.DataManager.GetExcelSheet<Ornament>()!
+        return Injections.DataManager.GetExcelSheet<Ornament>()
             .Where(o => o.IsUnlocked())
             .Select(GetExecutableAction)
             .ToList();

@@ -27,7 +27,7 @@ public class EmoteStrategy : IActionStrategy {
     }
 
     private static Emote? GetEmoteById(uint id) {
-        return Injections.DataManager.Excel.GetSheet<Emote>()!.GetRow(id);
+        return Injections.DataManager.Excel.GetSheet<Emote>().GetRow(id);
     }
 
     public ExecutableAction? GetExecutableActionById(uint slotId) {
@@ -37,7 +37,7 @@ public class EmoteStrategy : IActionStrategy {
     }
 
     public List<ExecutableAction> GetAllowedItems() {
-        return Injections.DataManager.GetExcelSheet<Emote>()!
+        return Injections.DataManager.GetExcelSheet<Emote>()
             .Where(e => e.IsUnlocked())
             .Select(GetExecutableAction)
             .ToList();

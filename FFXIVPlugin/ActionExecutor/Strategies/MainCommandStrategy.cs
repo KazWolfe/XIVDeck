@@ -14,14 +14,14 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.MainCommand)]
 public class MainCommandStrategy : IActionStrategy {
-    private static readonly ExcelSheet<MainCommand> MainCommands = Injections.DataManager.GetExcelSheet<MainCommand>()!;
+    private static readonly ExcelSheet<MainCommand> MainCommands = Injections.DataManager.GetExcelSheet<MainCommand>();
 
     private static ExecutableAction GetExecutableAction(MainCommand mainCommand) {
         return new ExecutableAction {
             ActionId = (int) mainCommand.RowId,
             ActionName = mainCommand.Name.ToString(),
             IconId = mainCommand.Icon,
-            Category = mainCommand.MainCommandCategory.Value!.Name.ToString(),
+            Category = mainCommand.MainCommandCategory.Value.Name.ToString(),
             HotbarSlotType = HotbarSlotType.MainCommand
         };
     }
@@ -53,7 +53,7 @@ public class MainCommandStrategy : IActionStrategy {
     }
 
     public ExecutableAction? GetExecutableActionById(uint actionId) {
-        var action = Injections.DataManager.Excel.GetSheet<MainCommand>()!.GetRowOrDefault(actionId);
+        var action = Injections.DataManager.Excel.GetSheet<MainCommand>().GetRowOrDefault(actionId);
         return action == null ? null : GetExecutableAction(action.Value);
     }
 }

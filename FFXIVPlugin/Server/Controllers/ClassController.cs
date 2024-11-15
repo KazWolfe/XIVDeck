@@ -65,7 +65,7 @@ public class ClassController : WebApiController {
 
                 // notify the user on fallback
                 if (id != classJob.Value.RowId) {
-                    var fallbackClassJob = sheet.GetRow((uint)id)!;
+                    var fallbackClassJob = sheet.GetRow((uint)id);
 
                     Injections.PluginLog.Information(
                         $"Used fallback {fallbackClassJob.Abbreviation} for requested {classJob.Value.Abbreviation}");

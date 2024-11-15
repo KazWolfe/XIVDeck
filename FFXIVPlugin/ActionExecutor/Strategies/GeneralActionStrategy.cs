@@ -17,7 +17,7 @@ public class GeneralActionStrategy : IActionStrategy {
     private List<uint> _illegalActionCache = new();
 
     private static readonly ExcelSheet<GeneralAction> ActionSheet =
-        Injections.DataManager.Excel.GetSheet<GeneralAction>()!;
+        Injections.DataManager.Excel.GetSheet<GeneralAction>();
 
     private static ExecutableAction GetExecutableAction(GeneralAction action) {
         return new ExecutableAction {

@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using Lumina.Text;
 using Lumina.Text.ReadOnly;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 

@@ -25,11 +25,11 @@ public class MountStrategy : IActionStrategy {
     }
 
     private static Mount? GetMountById(uint id) {
-        return Injections.DataManager.Excel.GetSheet<Mount>()!.GetRow(id);
+        return Injections.DataManager.Excel.GetSheet<Mount>().GetRow(id);
     }
 
     public List<ExecutableAction> GetAllowedItems() {
-        return Injections.DataManager.GetExcelSheet<Mount>()!
+        return Injections.DataManager.GetExcelSheet<Mount>()
             .Where(m => m.IsUnlocked())
             .Select(GetExecutableAction)
             .ToList();

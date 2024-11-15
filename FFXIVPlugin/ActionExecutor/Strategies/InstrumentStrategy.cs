@@ -15,7 +15,7 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.PerformanceInstrument)]
 public class InstrumentStrategy : IActionStrategy {
-    private static readonly ExcelSheet<Perform> PerformSheet = Injections.DataManager.Excel.GetSheet<Perform>()!;
+    private static readonly ExcelSheet<Perform> PerformSheet = Injections.DataManager.Excel.GetSheet<Perform>();
 
     private static ExecutableAction GetExecutableAction(Perform instrument) {
         return new ExecutableAction {

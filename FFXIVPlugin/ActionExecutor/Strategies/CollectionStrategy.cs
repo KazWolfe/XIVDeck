@@ -13,10 +13,10 @@ namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.McGuffin)]
 public class CollectionStrategy : IActionStrategy {
-    private static readonly ExcelSheet<McGuffin> Sheet = Injections.DataManager.Excel.GetSheet<McGuffin>()!;
+    private static readonly ExcelSheet<McGuffin> Sheet = Injections.DataManager.Excel.GetSheet<McGuffin>();
 
     private static ExecutableAction GetExecutableAction(McGuffin mcguffin) {
-        var uiData = mcguffin.UIData.Value!;
+        var uiData = mcguffin.UIData.Value;
 
         return new ExecutableAction {
             ActionId = (int) mcguffin.RowId,
