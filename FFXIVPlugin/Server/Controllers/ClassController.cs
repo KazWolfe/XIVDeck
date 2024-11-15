@@ -3,7 +3,7 @@ using System.Linq;
 using EmbedIO;
 using EmbedIO.Routing;
 using EmbedIO.WebApi;
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
@@ -46,7 +46,7 @@ public class ClassController : WebApiController {
             throw new PlayerNotLoggedInException();
 
         var sheet = Injections.DataManager.Excel.GetSheet<ClassJob>();
-        var classJob = sheet!.GetRow((uint)id);
+        var classJob = sheet.GetRowOrDefault((uint)id);
 
         if (classJob == null)
             throw HttpException.NotFound(string.Format(UIStrings.ClassController_InvalidClassIdError, id));
@@ -64,24 +64,24 @@ public class ClassController : WebApiController {
                 });
 
                 // notify the user on fallback
-                if (id != classJob.RowId) {
+                if (id != classJob.Value.RowId) {
                     var fallbackClassJob = sheet.GetRow((uint)id)!;
 
                     Injections.PluginLog.Information(
-                        $"Used fallback {fallbackClassJob.Abbreviation} for requested {classJob.Abbreviation}");
+                        $"Used fallback {fallbackClassJob.Abbreviation} for requested {classJob.Value.Abbreviation}");
                     ErrorNotifier.ShowError(string.Format(
                         UIStrings.ClassController_FallbackClassUsed,
-                        UIStrings.Culture.TextInfo.ToTitleCase(classJob.Name),
-                        UIStrings.Culture.TextInfo.ToTitleCase(fallbackClassJob.Name)), true);
+                        UIStrings.Culture.TextInfo.ToTitleCase(classJob.Value.Name.ExtractText()),
+                        UIStrings.Culture.TextInfo.ToTitleCase(fallbackClassJob.Name.ExtractText())), true);
                 }
 
                 return;
             }
 
             // fallback logic
-            var parentId = classJob.ClassJobParent.Row;
+            var parentId = classJob.Value.ClassJobParent.RowId;
             if (parentId == id || parentId == 0) {
-                Injections.PluginLog.Debug($"Couldn't find a fallback class for {classJob.Abbreviation}");
+                Injections.PluginLog.Debug($"Couldn't find a fallback class for {classJob.Value.Abbreviation}");
                 break;
             }
 
@@ -91,6 +91,6 @@ public class ClassController : WebApiController {
         throw HttpException.BadRequest(
             string.Format(
                 UIStrings.ClassController_NoGearsetForClassError,
-                UIStrings.Culture.TextInfo.ToTitleCase(classJob.Name)));
+                UIStrings.Culture.TextInfo.ToTitleCase(classJob.Value.Name.ExtractText())));
     }
 }

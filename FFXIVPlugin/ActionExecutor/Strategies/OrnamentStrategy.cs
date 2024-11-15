@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
@@ -36,7 +36,7 @@ public class OrnamentStrategy : IActionStrategy {
 
     public ExecutableAction? GetExecutableActionById(uint actionId) {
         var action = GetOrnamentById(actionId);
-        return action == null ? null : GetExecutableAction(action);
+        return action == null ? null : GetExecutableAction(action.Value);
     }
 
     public void Execute(uint actionId, ActionPayload? _) {
@@ -46,13 +46,13 @@ public class OrnamentStrategy : IActionStrategy {
             throw new ActionNotFoundException(HotbarSlotType.Ornament, actionId);
         }
 
-        if (!ornament.IsUnlocked()) {
-            throw new ActionLockedException(string.Format(UIStrings.OrnamentStrategy_OrnamentLockedError, ornament.Singular));
+        if (!ornament.Value.IsUnlocked()) {
+            throw new ActionLockedException(string.Format(UIStrings.OrnamentStrategy_OrnamentLockedError, ornament.Value.Singular));
         }
 
-        Injections.PluginLog.Debug($"Executing hotbar slot: Ornament#{ornament.RowId} ({ornament.Singular.ToTitleCase()})");
+        Injections.PluginLog.Debug($"Executing hotbar slot: Ornament#{ornament.Value.RowId} ({ornament.Value.Singular.ToTitleCase()})");
         Injections.Framework.RunOnFrameworkThread(delegate {
-            HotbarManager.ExecuteHotbarAction(HotbarSlotType.Ornament, ornament.RowId);
+            HotbarManager.ExecuteHotbarAction(HotbarSlotType.Ornament, ornament.Value.RowId);
         });
     }
 

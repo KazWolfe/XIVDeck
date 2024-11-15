@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Lumina.Excel;
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Game.Managers;
@@ -35,7 +35,7 @@ public class CollectionStrategy : IActionStrategy {
     public ExecutableAction? GetExecutableActionById(uint actionId) {
         var mcguffin = GetMcGuffinById(actionId);
 
-        return mcguffin == null ? null : GetExecutableAction(mcguffin);
+        return mcguffin == null ? null : GetExecutableAction(mcguffin.Value);
     }
 
     public List<ExecutableAction> GetAllowedItems() {
@@ -57,7 +57,7 @@ public class CollectionStrategy : IActionStrategy {
     }
 
     public int GetIconId(uint item) {
-        return (int) (GetMcGuffinById(item)?.UIData.Value?.Icon ?? 0);
+        return (int) (GetMcGuffinById(item)?.UIData.ValueNullable?.Icon ?? 0);
 
     }
 }

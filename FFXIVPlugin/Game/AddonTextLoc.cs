@@ -1,29 +1,26 @@
 ﻿using System;
 using Dalamud.Utility;
 using Lumina.Excel;
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
 using XIVDeck.FFXIVPlugin.Base;
 
 // ReSharper disable InconsistentNaming - resource file
 
-namespace XIVDeck.FFXIVPlugin.Game; 
+namespace XIVDeck.FFXIVPlugin.Game;
 
 /// <summary>
 /// Class which provides easy access to translated localizations direct from game addons.
 /// </summary>
 public static class AddonTextLoc {
-    private static readonly ExcelSheet<Addon>? AddonTextSheet = Injections.DataManager.GetExcelSheet<Addon>();
+    private static readonly ExcelSheet<Addon> AddonTextSheet = Injections.DataManager.GetExcelSheet<Addon>();
 
     public static string GetStringFromRowNumber(int rowId, string? fallback = null) {
-        if (AddonTextSheet == null) 
-            return fallback ?? throw new NullReferenceException("Failed to load Addon sheet from Lumina");
-
-        var row = AddonTextSheet.GetRow((uint) rowId);
+        var row = AddonTextSheet.GetRowOrDefault((uint) rowId);
 
         if (row == null)
             return fallback ?? throw new ArgumentOutOfRangeException(nameof(rowId), @$"Couldn't find Addon text row {rowId}");
 
-        return row.Text.ToDalamudString().ToString();
+        return row.Value.Text.ToDalamudString().ToString();
     }
 
     public static string JobCategory_Tank => GetStringFromRowNumber(1082, "Tank");

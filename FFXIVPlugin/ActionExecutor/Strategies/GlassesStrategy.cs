@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Lumina.Excel.Sheets;
 using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
-using XIVDeck.FFXIVPlugin.Game.Data;
 using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Utils;
 
@@ -19,17 +19,17 @@ public class GlassesStrategy : IActionStrategy {
             ActionName = glasses.Name.ToString(),
             IconId = glasses.Icon,
             HotbarSlotType = HotbarSlotType.Glasses,
-            Category = glasses.Style?.Value?.Name.ToString() ?? "Unknown",
-            SortOrder = (int)(((glasses.Style?.Value?.Order ?? 0) << sizeof(ushort)) + glasses.RowId),
+            Category = glasses.Style.ValueNullable?.Name.ToString() ?? "Unknown",
+            SortOrder = (int)(((glasses.Style.ValueNullable?.Order ?? 0) << sizeof(ushort)) + glasses.RowId),
         };
     }
 
     private static Glasses? GetGlassesById(uint id) {
-        return Injections.DataManager.Excel.GetSheet<Glasses>()?.GetRow(id);
+        return Injections.DataManager.Excel.GetSheet<Glasses>().GetRowOrDefault(id);
     }
 
     public List<ExecutableAction> GetAllowedItems() {
-        return Injections.DataManager.GetExcelSheet<Glasses>()!
+        return Injections.DataManager.GetExcelSheet<Glasses>()
             .Where(g => g.IsUnlocked())
             .Select(GetExecutableAction)
             .ToList();
@@ -37,7 +37,7 @@ public class GlassesStrategy : IActionStrategy {
 
     public ExecutableAction? GetExecutableActionById(uint actionId) {
         var action = GetGlassesById(actionId);
-        return action == null ? null : GetExecutableAction(action);
+        return action == null ? null : GetExecutableAction(action.Value);
     }
 
     public void Execute(uint actionId, ActionPayload? _) {
@@ -47,13 +47,13 @@ public class GlassesStrategy : IActionStrategy {
             throw new ActionNotFoundException(HotbarSlotType.Glasses, actionId);
         }
 
-        if (!glasses.IsUnlocked()) {
-            throw new ActionLockedException($"The {glasses.Name} aren't unlocked and therefore can't be used");
+        if (!glasses.Value.IsUnlocked()) {
+            throw new ActionLockedException($"The {glasses.Value.Name} aren't unlocked and therefore can't be used");
         }
 
-        Injections.PluginLog.Debug($"Executing hotbar slot: Glasses#{glasses.RowId} ({glasses.Name.ToTitleCase()})");
+        Injections.PluginLog.Debug($"Executing hotbar slot: Glasses#{glasses.Value.RowId} ({glasses.Value.Name.ToTitleCase()})");
         Injections.Framework.RunOnFrameworkThread(delegate {
-            HotbarManager.ExecuteHotbarAction(HotbarSlotType.Glasses, glasses.RowId);
+            HotbarManager.ExecuteHotbarAction(HotbarSlotType.Glasses, glasses.Value.RowId);
         });
     }
 

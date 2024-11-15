@@ -1,13 +1,7 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
+using Lumina.Excel.Sheets;
 using XIVDeck.FFXIVPlugin.Base;
-using Companion = Lumina.Excel.GeneratedSheets.Companion;
-using Emote = Lumina.Excel.GeneratedSheets.Emote;
-using MainCommand = Lumina.Excel.GeneratedSheets.MainCommand;
-using McGuffin = Lumina.Excel.GeneratedSheets.McGuffin;
-using Mount = Lumina.Excel.GeneratedSheets.Mount;
-using Ornament = Lumina.Excel.GeneratedSheets.Ornament;
-using Glasses = XIVDeck.FFXIVPlugin.Game.Data.Glasses;
 
 namespace XIVDeck.FFXIVPlugin.Game;
 
@@ -23,7 +17,7 @@ public static unsafe class UnlockState {
         // Work around showing emotes if nobody is logged in.
         if (!Injections.ClientState.IsLoggedIn) return false;
 
-        if (emote.EmoteCategory.Row == 0 || emote.Order == 0) return false;
+        if (emote.EmoteCategory.RowId == 0 || emote.Order == 0) return false;
 
         switch (emote.RowId) {
             case 55 when PlayerState.Instance()->GrandCompany != 1: // Maelstrom

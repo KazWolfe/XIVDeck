@@ -7,9 +7,9 @@ using XIVDeck.FFXIVPlugin.Resources.Localization;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor;
 
-public abstract class FixedCommandStrategy<T> : IActionStrategy where T : ExcelRow {
+public abstract class FixedCommandStrategy<T> : IActionStrategy where T : struct, IExcelRow<T> {
     private readonly List<ExecutableAction> _actionCache = new();
-    
+
     protected abstract int GetIconForAction(T action);
     protected abstract ExecutableAction? BuildExecutableAction(T action);
 
@@ -17,7 +17,7 @@ public abstract class FixedCommandStrategy<T> : IActionStrategy where T : ExcelR
 
     private static T? GetActionById(uint id) {
         // should never be null, T is inherently handled by Lumina
-        return Injections.DataManager.Excel.GetSheet<T>()!.GetRow(id);
+        return Injections.DataManager.Excel.GetSheet<T>()!.GetRowOrDefault(id);
     }
 
     public List<ExecutableAction> GetAllowedItems() {
@@ -39,7 +39,7 @@ public abstract class FixedCommandStrategy<T> : IActionStrategy where T : ExcelR
             if (this.GetIllegalActionIDs().Contains(row.RowId)) continue;
 
             var action = this.BuildExecutableAction(row);
-            
+
             if (action == null || string.IsNullOrEmpty(action.ActionName)) continue;
 
             this._actionCache.Add(action);
@@ -67,7 +67,7 @@ public abstract class FixedCommandStrategy<T> : IActionStrategy where T : ExcelR
         }
 
         // shenanigans, but allows us to ignore the entire text command processing chain if necessary
-        this.ExecuteInner(action);
+        this.ExecuteInner(action.Value);
     }
 
     protected abstract void ExecuteInner(T action);
@@ -75,6 +75,6 @@ public abstract class FixedCommandStrategy<T> : IActionStrategy where T : ExcelR
     public int GetIconId(uint actionId) {
         var action = GetActionById(actionId);
 
-        return action == null ? 0 : this.GetIconForAction(action);
+        return action == null ? 0 : this.GetIconForAction(action.Value);
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Lumina.Excel.Sheets;
 using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
-using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
@@ -37,7 +37,7 @@ public class MinionStrategy : IActionStrategy {
 
     public ExecutableAction? GetExecutableActionById(uint actionId) {
         var action = GetMinionById(actionId);
-        return action == null ? null : GetExecutableAction(action);
+        return action == null ? null : GetExecutableAction(action.Value);
     }
 
     public void Execute(uint actionId, ActionPayload? _) {
@@ -47,11 +47,11 @@ public class MinionStrategy : IActionStrategy {
             throw new ArgumentNullException(nameof(actionId), string.Format(UIStrings.MinionStrategy_MinionNotFoundError, actionId));
         }
 
-        if (!minion.IsUnlocked()) {
-            throw new ActionLockedException(string.Format(UIStrings.MinionStrategy_MinionLockedError, minion.Singular.ToTitleCase()));
+        if (!minion.Value.IsUnlocked()) {
+            throw new ActionLockedException(string.Format(UIStrings.MinionStrategy_MinionLockedError, minion.Value.Singular.ToTitleCase()));
         }
 
-        Injections.PluginLog.Debug($"Executing hotbar slot: Minion#{actionId} ({minion.Singular.ToTitleCase()})");
+        Injections.PluginLog.Debug($"Executing hotbar slot: Minion#{actionId} ({minion.Value.Singular.ToTitleCase()})");
         Injections.Framework.RunOnFrameworkThread(delegate {
             HotbarManager.ExecuteHotbarAction(HotbarSlotType.Companion, actionId);
         });

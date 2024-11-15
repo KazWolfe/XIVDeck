@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Lumina.Excel.Sheets;
 using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
-using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
@@ -42,11 +42,11 @@ public class MountStrategy : IActionStrategy {
             throw new ArgumentNullException(nameof(actionId), string.Format(UIStrings.MountStrategy_MountNotFoundError, actionId));
         }
 
-        if (!mount.IsUnlocked()) {
-            throw new ActionLockedException(string.Format(UIStrings.MountStrategy_MountLockedError, mount.Singular.ToTitleCase()));
+        if (!mount.Value.IsUnlocked()) {
+            throw new ActionLockedException(string.Format(UIStrings.MountStrategy_MountLockedError, mount.Value.Singular.ToTitleCase()));
         }
 
-        Injections.PluginLog.Debug($"Executing hotbar slot: Mount#{actionId} ({mount.Singular.ToTitleCase()})");
+        Injections.PluginLog.Debug($"Executing hotbar slot: Mount#{actionId} ({mount.Value.Singular.ToTitleCase()})");
         Injections.Framework.RunOnFrameworkThread(delegate {
             HotbarManager.ExecuteHotbarAction(HotbarSlotType.Mount, actionId);
         });
@@ -54,7 +54,7 @@ public class MountStrategy : IActionStrategy {
 
     public ExecutableAction? GetExecutableActionById(uint actionId) {
         var action = GetMountById(actionId);
-        return action == null ? null : GetExecutableAction(action);
+        return action == null ? null : GetExecutableAction(action.Value);
     }
 
     public int GetIconId(uint item) {

@@ -18,7 +18,7 @@ public unsafe class ChatHelper {
     }
 
     private static class Signatures {
-        internal const string ProcessChatBoxEntry = "48 89 5C 24 ?? 57 48 83 EC 20 48 8B FA 48 8B D9 45 84 C9";
+        internal const string ProcessChatBoxEntry = "48 89 5C 24 ?? 48 89 74 24 ?? 57 48 83 EC ?? 48 8B F2 48 8B F9 45 84 C9";
     }
 
     private ChatHelper() {

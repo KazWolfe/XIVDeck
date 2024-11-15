@@ -1,5 +1,5 @@
-﻿using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
-using Lumina.Excel.GeneratedSheets;
+﻿using Lumina.Excel.Sheets;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game.Managers;
 

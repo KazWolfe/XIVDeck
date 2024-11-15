@@ -5,7 +5,7 @@ using Dalamud.Game.ClientState.Conditions;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 using Lumina.Excel;
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game.Managers;
@@ -37,7 +37,7 @@ public class InstrumentStrategy : IActionStrategy {
 
     public ExecutableAction? GetExecutableActionById(uint actionId) {
         var action = GetActionById(actionId);
-        return action == null ? null : GetExecutableAction(action);
+        return action == null ? null : GetExecutableAction(action.Value);
     }
 
     public List<ExecutableAction>? GetAllowedItems() {

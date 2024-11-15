@@ -4,7 +4,7 @@ using System.Linq;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 using Lumina.Excel;
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game;
@@ -27,13 +27,13 @@ public class MainCommandStrategy : IActionStrategy {
     }
 
     public unsafe void Execute(uint actionId, ActionPayload? _) {
-        var mainCommand = MainCommands.GetRow(actionId);
+        var mainCommand = MainCommands.GetRowOrDefault(actionId);
 
-        if (mainCommand == null || mainCommand.Category == 0)
+        if (mainCommand == null || mainCommand.Value.Category == 0)
             throw new InvalidOperationException(string.Format(UIStrings.MainCommandStrategy_ActionInvalidError, actionId));
 
-        if (!mainCommand.IsUnlocked())
-            throw new ActionLockedException(string.Format(UIStrings.MainCommandStrategy_MainCommandLocked, mainCommand.Name));
+        if (!mainCommand.Value.IsUnlocked())
+            throw new ActionLockedException(string.Format(UIStrings.MainCommandStrategy_MainCommandLocked, mainCommand.Value.Name));
 
         Injections.Framework.RunOnFrameworkThread(delegate {
             Framework.Instance()->GetUIModule()->ExecuteMainCommand(actionId);
@@ -41,7 +41,7 @@ public class MainCommandStrategy : IActionStrategy {
     }
 
     public int GetIconId(uint actionId) {
-        return MainCommands.GetRow(actionId)?.Icon ?? 0;
+        return MainCommands.GetRowOrDefault(actionId)?.Icon ?? 0;
     }
 
     public List<ExecutableAction> GetAllowedItems() {
@@ -53,8 +53,7 @@ public class MainCommandStrategy : IActionStrategy {
     }
 
     public ExecutableAction? GetExecutableActionById(uint actionId) {
-        var action = Injections.DataManager.Excel.GetSheet<MainCommand>()!.GetRow(actionId);
-        return action == null ? null : GetExecutableAction(action);
+        var action = Injections.DataManager.Excel.GetSheet<MainCommand>()!.GetRowOrDefault(actionId);
+        return action == null ? null : GetExecutableAction(action.Value);
     }
-
 }

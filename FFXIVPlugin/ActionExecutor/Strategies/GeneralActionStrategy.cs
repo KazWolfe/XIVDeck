@@ -4,7 +4,7 @@ using System.Linq;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 using Lumina.Excel;
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game.Managers;
@@ -67,7 +67,7 @@ public class GeneralActionStrategy : IActionStrategy {
             action = GetActionById(13)!;
         }
 
-        return GetExecutableAction(action);
+        return GetExecutableAction(action.Value);
     }
 
     public unsafe void Execute(uint actionId, ActionPayload? _) {
@@ -79,12 +79,12 @@ public class GeneralActionStrategy : IActionStrategy {
 
         if (this.GetIllegalActionIDs().Contains(actionId)) {
             throw new ArgumentOutOfRangeException(nameof(actionId),
-                string.Format(UIStrings.GeneralActionStrategy_ActionIllegalError, action.Name, actionId));
+                string.Format(UIStrings.GeneralActionStrategy_ActionIllegalError, action.Value.Name, actionId));
         }
 
-        if (action.UnlockLink != 0 && !UIState.Instance()->IsUnlockLinkUnlocked(action.UnlockLink)) {
+        if (action.Value.UnlockLink != 0 && !UIState.Instance()->IsUnlockLinkUnlocked(action.Value.UnlockLink)) {
             throw new ActionLockedException(string.Format(UIStrings.GeneralActionStrategy_ActionLockedError,
-                action.Name));
+                action.Value.Name));
         }
 
         // Advanced Materia Melding auto-replacement
@@ -92,9 +92,9 @@ public class GeneralActionStrategy : IActionStrategy {
             action = GetActionById(13)!;
         }
 
-        Injections.PluginLog.Debug($"Executing hotbar slot: GeneralAction#{action.RowId} ({action.Name})");
+        Injections.PluginLog.Debug($"Executing hotbar slot: GeneralAction#{action.Value.RowId} ({action.Value.Name})");
         Injections.Framework.RunOnFrameworkThread(delegate {
-            HotbarManager.ExecuteHotbarAction(HotbarSlotType.GeneralAction, action.RowId);
+            HotbarManager.ExecuteHotbarAction(HotbarSlotType.GeneralAction, action.Value.RowId);
         });
     }
 

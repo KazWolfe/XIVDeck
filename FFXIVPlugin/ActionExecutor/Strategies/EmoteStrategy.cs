@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Lumina.Excel.Sheets;
 using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
-using Lumina.Excel.GeneratedSheets;
 using XIVDeck.FFXIVPlugin.ActionExecutor.Payloads;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Exceptions;
@@ -20,7 +20,7 @@ public class EmoteStrategy : IActionStrategy {
             ActionId = (int) emote.RowId,
             ActionName = emote.Name.ToString(),
             IconId = emote.Icon,
-            Category = emote.EmoteCategory.Value?.Name.ToString() ?? null,
+            Category = emote.EmoteCategory.ValueNullable?.Name.ToString() ?? null,
             HotbarSlotType = HotbarSlotType.Emote,
             SortOrder = emote.Order
         };
@@ -33,7 +33,7 @@ public class EmoteStrategy : IActionStrategy {
     public ExecutableAction? GetExecutableActionById(uint slotId) {
         var emote = GetEmoteById(slotId);
 
-        return emote == null ? null : GetExecutableAction(emote);
+        return emote == null ? null : GetExecutableAction(emote.Value);
     }
 
     public List<ExecutableAction> GetAllowedItems() {
@@ -59,11 +59,11 @@ public class EmoteStrategy : IActionStrategy {
             throw new ActionNotFoundException(HotbarSlotType.Emote, actionId);
         }
 
-        if (!emote.IsUnlocked()) {
-            throw new ActionLockedException(string.Format(UIStrings.EmoteStrategy_EmoteLockedError, emote.Name));
+        if (!emote.Value.IsUnlocked()) {
+            throw new ActionLockedException(string.Format(UIStrings.EmoteStrategy_EmoteLockedError, emote.Value.Name));
         }
 
-        Injections.PluginLog.Debug($"Executing emote {emote.Name} (ID {actionId})");
+        Injections.PluginLog.Debug($"Executing emote {emote.Value.Name} (ID {actionId})");
         Injections.Framework.RunOnFrameworkThread(delegate {
             using var _ = logMode != null ? Injections.GameConfig.UiConfig.TemporarySet("EmoteTextType", logMode.Value) : null;
             HotbarManager.ExecuteHotbarAction(HotbarSlotType.Emote, actionId);

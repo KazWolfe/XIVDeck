@@ -1,7 +1,7 @@
-﻿using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
+﻿using Lumina.Excel.Sheets;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Game.Managers;
-using Marker = XIVDeck.FFXIVPlugin.Game.Data.Marker;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
