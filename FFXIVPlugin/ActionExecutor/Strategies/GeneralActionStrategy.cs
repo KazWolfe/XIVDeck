@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 using Lumina.Excel;
@@ -21,7 +22,7 @@ public class GeneralActionStrategy : IActionStrategy {
 
     private static ExecutableAction GetExecutableAction(GeneralAction action) {
         return new ExecutableAction {
-            ActionId = (int) action.RowId,
+            ActionId = (int)action.RowId,
             ActionName = action.Name.ToString(),
             IconId = action.Icon,
             HotbarSlotType = HotbarSlotType.GeneralAction,
@@ -30,7 +31,7 @@ public class GeneralActionStrategy : IActionStrategy {
     }
 
     private static GeneralAction? GetActionById(uint actionId) {
-        return ActionSheet.GetRow(actionId);
+        return ActionSheet.GetRowOrDefault(actionId);
     }
 
     private IEnumerable<uint> GetIllegalActionIDs() {
@@ -38,20 +39,16 @@ public class GeneralActionStrategy : IActionStrategy {
             return this._illegalActionCache;
         }
 
-        var illegalActions = new List<uint> {
+        var illegalActions = ActionSheet
+            .Where(action => action.UIPriority == 0 || action.Name.ExtractText().IsNullOrEmpty())
+            .Select(a => a.RowId)
+            .ToList();
+
+        illegalActions.AddRange([
             13, // Advanced Materia Melding - automatically injected on use of Materia Melding
             29, // Sort Pet Hotbar (Normal) - contextual
-            30 // Sort Pet Hotbar (Cross)  - contextual
-        };
-
-        foreach (var action in ActionSheet) {
-            if (illegalActions.Contains(action.RowId)) continue;
-
-            // empty or non-ui actions are considered illegal
-            if (action.UIPriority == 0 || action.Name.ToString() == "") {
-                illegalActions.Add(action.RowId);
-            }
-        }
+            30  // Sort Pet Hotbar (Cross)  - contextual
+        ]);
 
         this._illegalActionCache = illegalActions;
         return illegalActions;

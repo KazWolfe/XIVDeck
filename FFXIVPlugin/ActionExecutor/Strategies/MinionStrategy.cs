@@ -25,7 +25,7 @@ public class MinionStrategy : IActionStrategy {
     }
 
     private static Companion? GetMinionById(uint id) {
-        return Injections.DataManager.Excel.GetSheet<Companion>().GetRow(id);
+        return Injections.DataManager.Excel.GetSheet<Companion>().GetRowOrDefault(id);
     }
 
     public List<ExecutableAction> GetAllowedItems() {

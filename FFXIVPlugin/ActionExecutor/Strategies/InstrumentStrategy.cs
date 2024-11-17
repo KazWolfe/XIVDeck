@@ -28,7 +28,7 @@ public class InstrumentStrategy : IActionStrategy {
     }
 
     private static Perform? GetActionById(uint id) {
-        return PerformSheet.GetRow(id);
+        return PerformSheet.GetRowOrDefault(id);
     }
 
     private static unsafe bool IsPerformUnlocked() {

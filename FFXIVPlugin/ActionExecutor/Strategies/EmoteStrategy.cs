@@ -27,7 +27,7 @@ public class EmoteStrategy : IActionStrategy {
     }
 
     private static Emote? GetEmoteById(uint id) {
-        return Injections.DataManager.Excel.GetSheet<Emote>().GetRow(id);
+        return Injections.DataManager.Excel.GetSheet<Emote>().GetRowOrDefault(id);
     }
 
     public ExecutableAction? GetExecutableActionById(uint slotId) {

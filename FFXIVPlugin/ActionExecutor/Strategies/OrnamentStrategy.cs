@@ -24,7 +24,7 @@ public class OrnamentStrategy : IActionStrategy {
     }
 
     private static Ornament? GetOrnamentById(uint id) {
-        return Injections.DataManager.Excel.GetSheet<Ornament>().GetRow(id);
+        return Injections.DataManager.Excel.GetSheet<Ornament>().GetRowOrDefault(id);
     }
 
     public List<ExecutableAction> GetAllowedItems() {

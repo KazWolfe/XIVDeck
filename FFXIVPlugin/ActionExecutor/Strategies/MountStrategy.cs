@@ -25,7 +25,7 @@ public class MountStrategy : IActionStrategy {
     }
 
     private static Mount? GetMountById(uint id) {
-        return Injections.DataManager.Excel.GetSheet<Mount>().GetRow(id);
+        return Injections.DataManager.Excel.GetSheet<Mount>().GetRowOrDefault(id);
     }
 
     public List<ExecutableAction> GetAllowedItems() {

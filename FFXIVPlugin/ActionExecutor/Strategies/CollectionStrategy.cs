@@ -29,7 +29,7 @@ public class CollectionStrategy : IActionStrategy {
     }
 
     private static McGuffin? GetMcGuffinById(uint id) {
-        return Sheet.GetRow(id);
+        return Sheet.GetRowOrDefault(id);
     }
 
     public ExecutableAction? GetExecutableActionById(uint actionId) {
