@@ -1,9 +1,6 @@
 ﻿using System;
-using Dalamud.Utility.Signatures;
-using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.System.String;
 using FFXIVClientStructs.FFXIV.Client.UI;
-using XIVDeck.FFXIVPlugin.Base;
 
 namespace XIVDeck.FFXIVPlugin.Game.Chat;
 
@@ -16,18 +13,6 @@ public unsafe class ChatHelper {
     public static ChatHelper GetInstance() {
         return _instance ??= new ChatHelper();
     }
-
-    private static class Signatures {
-        internal const string ProcessChatBoxEntry = "48 89 5C 24 ?? 48 89 74 24 ?? 57 48 83 EC ?? 48 8B F2 48 8B F9 45 84 C9";
-    }
-
-    private ChatHelper() {
-        Injections.GameInteropProvider.InitializeFromAttributes(this);
-    }
-
-    // UIModule, message, unused, byte
-    [Signature(Signatures.ProcessChatBoxEntry, Fallibility = Fallibility.Fallible)]
-    private readonly delegate* unmanaged<UIModule*, Utf8String*, nint, byte, void> _processChatBoxEntry = null!;
 
     /// <summary>
     /// Calls the chat message handler akin to sending a message in a chat box. Handles both stripping newlines as well
@@ -51,10 +36,6 @@ public unsafe class ChatHelper {
     }
 
     private void SendChatMessage(Utf8String* utfMessage) {
-        if (this._processChatBoxEntry == null) {
-            throw new InvalidOperationException("Could not find the signature for SendChatMessage!");
-        }
-
         switch (utfMessage->Length) {
             case 0:
                 throw new ArgumentException(@"Message cannot be empty", nameof(utfMessage));
@@ -62,6 +43,6 @@ public unsafe class ChatHelper {
                 throw new ArgumentException(@"Message cannot exceed 500 byte limit", nameof(utfMessage));
         }
 
-        this._processChatBoxEntry(Framework.Instance()->GetUIModule(), utfMessage, nint.Zero, 0);
+        UIModule.Instance()->ProcessChatBoxEntry(utfMessage, nint.Zero, false);
     }
 }
