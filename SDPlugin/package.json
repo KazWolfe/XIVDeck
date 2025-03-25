@@ -1,6 +1,6 @@
 {
   "name": "@kazwolfe/xivdeck-sdplugin",
-  "version": "0.3.22",
+  "version": "0.3.23",
   "private": true,
   "license": "MPL",
   "scripts": {
@@ -11,17 +11,17 @@
   "dependencies": {
     "@rweich/streamdeck-events": "^6.1.0",
     "@rweich/streamdeck-ts": "^6.0.0",
-    "i18next": "^23.11.5"
+    "i18next": "^24.2.3"
   },
   "devDependencies": {
     "@alienfast/i18next-loader": "^2.0.2",
     "@types/node": "*",
-    "copy-webpack-plugin": "^12.0.2",
+    "copy-webpack-plugin": "^13.0.0",
     "source-map-loader": "^5.0.0",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5",
     "webpack": "^5.92.0",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^6.0.1"
   }
 }
