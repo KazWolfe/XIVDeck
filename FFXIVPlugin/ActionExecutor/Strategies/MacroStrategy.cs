@@ -40,7 +40,7 @@ public class MacroStrategy : IActionStrategy {
     public unsafe List<ExecutableAction> GetAllowedItems() {
         var items = new List<ExecutableAction>();
 
-        if (Injections.ClientState.LocalPlayer != null)
+        if (Injections.ClientState.IsLoggedIn)
             items.AddRange(this.GetValidMacrosFromCollection(RaptureMacroModule.Instance()->Individual, 0));
 
         items.AddRange(this.GetValidMacrosFromCollection(RaptureMacroModule.Instance()->Shared, 1));

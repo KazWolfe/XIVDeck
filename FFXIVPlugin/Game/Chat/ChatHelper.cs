@@ -28,7 +28,7 @@ public unsafe class ChatHelper {
         text = text.ReplaceLineEndings(" ");
 
         var utfMessage = Utf8String.FromString(text);
-        utfMessage->SanitizeString(0x27F, (Utf8String*)nint.Zero);
+        utfMessage->SanitizeString((AllowedEntities)0x27F);
 
         this.SendChatMessage(utfMessage);
 

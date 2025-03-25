@@ -21,9 +21,9 @@ public class InstrumentStrategy : IActionStrategy {
         return new ExecutableAction {
             ActionId = (int) instrument.RowId,
             ActionName = instrument.Instrument.ToString(),
-            IconId = instrument.Order,
+            IconId = instrument.Icon,
             HotbarSlotType = HotbarSlotType.PerformanceInstrument,
-            SortOrder = instrument.Order
+            SortOrder = instrument.Icon
         };
     }
 
@@ -69,6 +69,6 @@ public class InstrumentStrategy : IActionStrategy {
     }
 
     public int GetIconId(uint actionId) {
-        return GetActionById(actionId)?.Order ?? 0;
+        return GetActionById(actionId)?.Icon ?? 0;
     }
 }
