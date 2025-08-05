@@ -30,6 +30,7 @@
     <ItemGroup>
         <!-- Image conversion to extract PNGs from Lumina -->
         <PackageReference Include="SixLabors.ImageSharp" Version="3.1.11" />
+        <PackageReference Include="BCnEncoder.Net.ImageSharp" Version="1.1.2" />
 
         <!-- Webserver and socketing -->
         <PackageReference Include="EmbedIO" Version="3.5.2" />

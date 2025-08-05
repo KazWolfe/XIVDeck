@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.IO;
 using Lumina.Data.Files;
 using XIVDeck.FFXIVPlugin.Base;
@@ -56,11 +57,5 @@ public static class IconManager {
             default:
                 return texFile;
         }
-    }
-
-    public static string GetIconAsPngString(int iconId) {
-        var icon = GetIcon("", iconId, true) ?? GetIcon("", 0, true)!;
-
-        return "data:image/png;base64," + Convert.ToBase64String(icon.GetImage().ConvertToPng());
     }
 }

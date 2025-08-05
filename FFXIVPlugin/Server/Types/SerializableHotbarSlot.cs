@@ -14,10 +14,6 @@ public class SerializableHotbarSlot {
     [JsonProperty("commandId")] public int CommandId;
 
     [JsonProperty("iconId")] public int IconId;
-
-    // Legacy decision to keep this as its own thing. Really, the sdPlugin should be using the normal icon fetch
-    // methods, but maintaining this is fine for now.
-    [JsonProperty("iconData")] public string IconData = default!;
 }
 
 public record MicroHotbarSlot(int HotbarId, int SlotId) {

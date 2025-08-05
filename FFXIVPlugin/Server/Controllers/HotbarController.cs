@@ -34,7 +34,6 @@ public class HotbarController : WebApiController {
             IconId = iconId,
             SlotType = hotbarItem->CommandType,
             CommandId = (int) hotbarItem->CommandId,
-            IconData = IconManager.GetIconAsPngString(iconId)
         };
 
     }
