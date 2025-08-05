@@ -13,7 +13,7 @@ public enum LinkCode {
 }
 
 public interface IChatLinkHandler {
-    public void Handle(uint opcode, SeString clickedString);
+    public void Handle(Guid commandId, SeString payload);
 }
 
 
@@ -26,7 +26,6 @@ public class ChatLinkHandlerAttribute : Attribute {
     }
 }
 
-
 /**
  * This is *absolutely totally overkill* in every way, shape, and form, but exists to serve a "purpose".
  *
@@ -34,14 +33,15 @@ public class ChatLinkHandlerAttribute : Attribute {
  * attribute to be handled. Autowiring using this pattern just keeps me from having to register a bunch of different
  * types.
  */
+
 public class ChatLinkWiring : IDisposable {
     private static readonly Dictionary<LinkCode, DalamudLinkPayload> Payloads = new();
-    
+
     public static DalamudLinkPayload GetPayload(LinkCode linkCode) {
         if (!Payloads.ContainsKey(linkCode)) {
             throw new ArgumentException($"No handler is registered for Link Code {linkCode.ToString()}");
         }
-        
+
         return Payloads[linkCode];
     }
 
@@ -52,27 +52,27 @@ public class ChatLinkWiring : IDisposable {
             if (!type.GetInterfaces().Contains(typeof(IChatLinkHandler))) {
                 continue;
             }
-            
+
             var attr = type.GetCustomAttribute<ChatLinkHandlerAttribute>();
             if (attr == null) continue;
-            
+
             var opcode = attr.Opcode;
 
             var handler = (IChatLinkHandler) Activator.CreateInstance(type)!;
-            
+
             // Mitigates an issue where registering a chat link can sometimes throw an exception that it's already
             // been registered. Thanks for the tip, Kami!
-            Injections.PluginInterface.RemoveChatLinkHandler((uint) opcode);
-                
+            Injections.Chat.RemoveChatLinkHandler();
+
             Injections.PluginLog.Debug($"Registered chat link handler for opcode {attr.Opcode}: {handler.GetType()}");
-            Payloads[opcode] = Injections.PluginInterface.AddChatLinkHandler((uint) opcode, handler.Handle);
+            Payloads[opcode] = Injections.Chat.AddChatLinkHandler(handler.Handle);
         }
     }
 
     public void Dispose() {
-        foreach (var (code, _) in Payloads) {
-            Injections.PluginInterface.RemoveChatLinkHandler((uint) code);
-            Payloads.Remove(code);
+        foreach (var (opcode, dObject) in Payloads) {
+            Injections.Chat.RemoveChatLinkHandler(dObject.CommandId);
+            Payloads.Remove(opcode);
         }
 
         GC.SuppressFinalize(this);

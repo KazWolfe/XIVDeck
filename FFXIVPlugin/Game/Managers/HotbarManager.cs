@@ -39,7 +39,7 @@ internal static class HotbarManager {
 
         // Handle the main hotbar, which is a bit interesting as it can behave oddly at times.
         var mainBarName = isCrossHotbar ? "_ActionCross" : "_ActionBar";
-        var mainBar = (AddonActionBarBase*) Injections.GameGui.GetAddonByName(mainBarName);
+        var mainBar = (AddonActionBarBase*) Injections.GameGui.GetAddonByName(mainBarName).Address;
 
         if (mainBar != null) {
             if (mainBar->RaptureHotbarId == hotbarId) {
@@ -52,7 +52,7 @@ internal static class HotbarManager {
         // And handle any extra visible normal hotbars
         if (!isCrossHotbar) {
             var actionBarName = $"_ActionBar{hotbarId:00}";
-            var actionBar = (AddonActionBarBase*) Injections.GameGui.GetAddonByName(actionBarName);
+            var actionBar = (AddonActionBarBase*) Injections.GameGui.GetAddonByName(actionBarName).Address;
 
             if (actionBar != null) {
                 SafePulseBar(actionBar, slotId);

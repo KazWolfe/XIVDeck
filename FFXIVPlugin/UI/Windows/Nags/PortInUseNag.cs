@@ -1,5 +1,5 @@
-﻿using Dalamud.Interface.Colors;
-using ImGuiNET;
+﻿using Dalamud.Bindings.ImGui;
+using Dalamud.Interface.Colors;
 using XIVDeck.FFXIVPlugin.Base;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 

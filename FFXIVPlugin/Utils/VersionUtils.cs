@@ -23,9 +23,9 @@ public static class VersionUtils {
 
     public static SeString GenerateUpdateNagString(Version xivPluginVersion) {
         // This method is terrible and ugly and I hate it, but is basically necessary because string interpolation with
-        // SeStrings is *absolute total pain*. I tried to make it localization friendly but that's not particularly 
+        // SeStrings is *absolute total pain*. I tried to make it localization friendly but that's not particularly
         // easy, sadly.
-        
+
         var versionText = xivPluginVersion.GetMajMinBuild();
         var versionHighlight = new SeStringBuilder()
             .Add(ChatLinkWiring.GetPayload(LinkCode.GetGithubReleaseLink))

@@ -1,14 +1,14 @@
 ﻿using System.Numerics;
+using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Windowing;
-using ImGuiNET;
 using XIVDeck.FFXIVPlugin.UI.Windows.Nags;
 
 namespace XIVDeck.FFXIVPlugin.UI.Windows;
 
 public abstract class NagWindow : Window {
     internal static void CloseAllNags() {
-        ForcedUpdateNag.Hide(); 
+        ForcedUpdateNag.Hide();
         SetupNag.Hide();
         PortInUseNag.Hide();
         TestingUpdateNag.Hide();

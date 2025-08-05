@@ -1,11 +1,11 @@
-﻿using Dalamud.Interface.Colors;
+﻿using Dalamud.Bindings.ImGui;
+using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Utility;
-using ImGuiNET;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils;
 
-namespace XIVDeck.FFXIVPlugin.UI.Windows.Nags; 
+namespace XIVDeck.FFXIVPlugin.UI.Windows.Nags;
 
 public class ForcedUpdateNag : NagWindow {
     private static ForcedUpdateNag? _instance;
@@ -23,22 +23,22 @@ public class ForcedUpdateNag : NagWindow {
     private string _versionString = VersionUtils.GetCurrentMajMinBuild();
 
     public ForcedUpdateNag() : base("sdPluginVeryOutdated", 350) { }
-    
+
     protected override void _internalDraw() {
         ImGui.TextColored(ImGuiColors.DalamudRed, UIStrings.ForcedUpdateNag_Headline);
-        
+
         ImGui.Separator();
-        
+
         ImGui.Text(UIStrings.ForcedUpdateNag_ProblemDescription);
         ImGui.Text(UIStrings.ForcedUpdateNag_SupportInfo);
-        
+
         if (ImGui.GetIO().KeyCtrl) {
             if (ImGui.Button(UIStrings.ForcedUpdateNag_BypassButton)) {
                 Hide();
             }
             return;
         }
-        
+
         if (ImGui.Button(UIStrings.Nag_OpenGithubDownloadButton)) {
             UiUtil.OpenXIVDeckGitHub($"/releases/tag/v{this._versionString}");
         }
