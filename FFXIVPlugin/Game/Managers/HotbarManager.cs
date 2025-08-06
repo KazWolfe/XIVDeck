@@ -50,7 +50,7 @@ internal static class HotbarManager {
         }
 
         // And handle any extra visible normal hotbars
-        if (!isCrossHotbar) {
+        if (!isCrossHotbar && hotbarId != 0) {
             var actionBarName = $"_ActionBar{hotbarId:00}";
             var actionBar = (AddonActionBarBase*) Injections.GameGui.GetAddonByName(actionBarName).Address;
 

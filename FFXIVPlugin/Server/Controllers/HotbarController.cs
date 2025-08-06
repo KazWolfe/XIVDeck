@@ -25,7 +25,7 @@ public class HotbarController : WebApiController {
             throw HttpException.BadRequest(ex.Message);
         }
 
-        var hotbarItem = hotbarModule->Hotbars[hotbarId].GetHotbarSlot((uint) slotId);
+        var hotbarItem = hotbarModule->GetSlotById((uint)hotbarId, (uint)slotId);
         var iconId = HotbarManager.CalcIconForSlot(hotbarItem);
 
         return new SerializableHotbarSlot {
