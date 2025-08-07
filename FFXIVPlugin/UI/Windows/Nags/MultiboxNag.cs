@@ -6,7 +6,7 @@ using XIVDeck.FFXIVPlugin.Resources.Localization;
 
 namespace XIVDeck.FFXIVPlugin.UI.Windows.Nags;
 
-public class MultiboxNag : NagWindow {
+public class MultiboxNag() : NagWindow("multiboxWarning", 350) {
     private static MultiboxNag? _instance;
 
     internal static void Show() {
@@ -27,16 +27,11 @@ public class MultiboxNag : NagWindow {
         _instance.IsOpen = false;
     }
 
-    private readonly PluginConfig _pluginConfig;
-
+    private readonly PluginConfig _pluginConfig = XIVDeckPlugin.Instance.Configuration;
     private bool _suppressMultiboxNag;
 
-    private MultiboxNag() : base("multiboxWarning", 350) {
-        this._pluginConfig = XIVDeckPlugin.Instance.Configuration;
-    }
-
     public override void PreDraw() {
-        this._suppressMultiboxNag = XIVDeckPlugin.Instance.Configuration.SuppressMultiboxNag;
+        this._suppressMultiboxNag = this._pluginConfig.SuppressMultiboxNag;
     }
 
     protected override void _internalDraw() {

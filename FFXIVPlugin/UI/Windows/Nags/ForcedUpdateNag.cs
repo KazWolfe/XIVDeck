@@ -7,7 +7,7 @@ using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.UI.Windows.Nags;
 
-public class ForcedUpdateNag : NagWindow {
+public class ForcedUpdateNag() : NagWindow("sdPluginVeryOutdated", 350) {
     private static ForcedUpdateNag? _instance;
 
     internal static void Show() {
@@ -20,9 +20,7 @@ public class ForcedUpdateNag : NagWindow {
         _instance.IsOpen = false;
     }
 
-    private string _versionString = VersionUtils.GetCurrentMajMinBuild();
-
-    public ForcedUpdateNag() : base("sdPluginVeryOutdated", 350) { }
+    private readonly string _versionString = VersionUtils.GetCurrentMajMinBuild();
 
     protected override void _internalDraw() {
         ImGui.TextColored(ImGuiColors.DalamudRed, UIStrings.ForcedUpdateNag_Headline);

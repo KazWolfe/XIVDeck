@@ -8,7 +8,7 @@ using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.UI.Windows.Nags;
 
-public class SetupNag : NagWindow {
+public class SetupNag() : NagWindow("sdPluginNotInstalled", 400) {
     private static SetupNag? _instance;
 
     internal static void Show() {
@@ -20,8 +20,6 @@ public class SetupNag : NagWindow {
         if (_instance == null) return;
         _instance.IsOpen = false;
     }
-
-    public SetupNag() : base("sdPluginNotInstalled", 400) { }
 
     protected override void _internalDraw() {
         ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);

@@ -6,7 +6,7 @@ using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.UI.Windows.Nags;
 
-public class TestingUpdateNag : NagWindow {
+public class TestingUpdateNag() : NagWindow("sdPluginTestVersionMismatch", 400) {
     private static TestingUpdateNag? _instance;
     private static bool _dismissed;
 
@@ -21,8 +21,6 @@ public class TestingUpdateNag : NagWindow {
         if (_instance == null) return;
         _instance.IsOpen = false;
     }
-
-    public TestingUpdateNag() : base("sdPluginTestVersionMismatch", 400) { }
 
     protected override void _internalDraw() {
         var currentVersion = VersionUtils.GetCurrentMajMinBuild();

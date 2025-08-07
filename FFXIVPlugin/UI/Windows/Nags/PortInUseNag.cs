@@ -6,7 +6,7 @@ using XIVDeck.FFXIVPlugin.Resources.Localization;
 namespace XIVDeck.FFXIVPlugin.UI.Windows.Nags;
 
 // Unused for now, but may come back for some purpose in the future.
-public class PortInUseNag : NagWindow {
+public class PortInUseNag() : NagWindow("sdPortInUse", 350) {
     private static PortInUseNag? _instance;
 
     internal static void Show() {
@@ -19,11 +19,7 @@ public class PortInUseNag : NagWindow {
         _instance.IsOpen = false;
     }
 
-    private readonly PluginConfig _pluginConfig;
-
-    private PortInUseNag() : base("sdPortInUse", 350) {
-        this._pluginConfig = XIVDeckPlugin.Instance.Configuration;
-    }
+    private readonly PluginConfig _pluginConfig = XIVDeckPlugin.Instance.Configuration;
 
     protected override void _internalDraw() {
         ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);

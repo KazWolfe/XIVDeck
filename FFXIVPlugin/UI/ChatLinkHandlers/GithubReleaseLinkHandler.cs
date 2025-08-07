@@ -6,7 +6,7 @@ namespace XIVDeck.FFXIVPlugin.UI.ChatLinkHandlers;
 
 [ChatLinkHandler(LinkCode.GetGithubReleaseLink)]
 public class GithubReleaseLinkHandler : IChatLinkHandler {
-    public void Handle(Guid commandId, SeString payload) {
+    public void Handle(uint commandId, SeString payload) {
         UiUtil.OpenXIVDeckGitHub($"/releases/tag/v{VersionUtils.GetCurrentMajMinBuild()}");
     }
 }

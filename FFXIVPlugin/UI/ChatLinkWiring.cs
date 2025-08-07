@@ -13,17 +13,13 @@ public enum LinkCode {
 }
 
 public interface IChatLinkHandler {
-    public void Handle(Guid commandId, SeString payload);
+    public void Handle(uint commandId, SeString payload);
 }
 
 
 [AttributeUsage(AttributeTargets.Class)]
-public class ChatLinkHandlerAttribute : Attribute {
-    public readonly LinkCode Opcode;
-
-    public ChatLinkHandlerAttribute(LinkCode opcode) {
-        this.Opcode = opcode;
-    }
+public class ChatLinkHandlerAttribute(LinkCode opcode) : Attribute {
+    public readonly LinkCode Opcode = opcode;
 }
 
 /**
@@ -65,7 +61,7 @@ public class ChatLinkWiring : IDisposable {
             Injections.Chat.RemoveChatLinkHandler();
 
             Injections.PluginLog.Debug($"Registered chat link handler for opcode {attr.Opcode}: {handler.GetType()}");
-            Payloads[opcode] = Injections.Chat.AddChatLinkHandler(handler.Handle);
+            Payloads[opcode] = Injections.Chat.AddChatLinkHandler((uint)opcode, handler.Handle);
         }
     }
 
