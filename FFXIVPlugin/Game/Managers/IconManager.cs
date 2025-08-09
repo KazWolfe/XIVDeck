@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.IO;
+﻿using System.IO;
 using Lumina.Data.Files;
 using XIVDeck.FFXIVPlugin.Base;
-using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.Game.Managers;
 

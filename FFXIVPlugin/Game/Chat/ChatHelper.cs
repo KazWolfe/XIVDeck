@@ -43,6 +43,6 @@ public unsafe class ChatHelper {
                 throw new ArgumentException(@"Message cannot exceed 500 byte limit", nameof(utfMessage));
         }
 
-        UIModule.Instance()->ProcessChatBoxEntry(utfMessage, nint.Zero, false);
+        UIModule.Instance()->ProcessChatBoxEntry(utfMessage, nint.Zero);
     }
 }

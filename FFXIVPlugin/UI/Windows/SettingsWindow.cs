@@ -71,7 +71,7 @@ public class SettingsWindow : Window {
 
         ImGui.PushItemWidth(80);
 
-        if (ImGui.InputInt(UIStrings.SettingsWindow_APIPort, ref this._websocketPort, 0)) {
+        if (ImGui.InputInt(UIStrings.SettingsWindow_APIPort, ref this._websocketPort)) {
             if (this._websocketPort < 1024) this._websocketPort = 1024;
             if (this._websocketPort > 59999) this._websocketPort = 59999;
         }
