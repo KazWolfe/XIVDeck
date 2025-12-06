@@ -16,7 +16,7 @@
   "devDependencies": {
     "@alienfast/i18next-loader": "^2.0.2",
     "@types/node": "*",
-    "copy-webpack-plugin": "^13.0.0",
+    "copy-webpack-plugin": "^13.0.1",
     "source-map-loader": "^5.0.0",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",

@@ -1,5 +1,5 @@
-const manifest = require('../../assets/manifest.json');
+const manifest = require('../../assets/manifest.jsonc');
 
 module.exports = {
-    manifestNs: manifest.PluginUUID,
+    manifestNs: manifest.UUID,
 };

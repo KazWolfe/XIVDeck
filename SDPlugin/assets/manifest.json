@@ -8,11 +8,11 @@
         {
           "Image": "assets/images/defaults/chat",
           "TitleAlignment": "bottom",
-          "FontSize": "12"
+          "FontSize": 12
         }
       ],
       "Tooltip": "Execute a Text Command in game",
-      "UUID": "dev.wolf.xivdeck.sdplugin.actions.SendCommand"
+      "UUID": "dev.wolf.xivdeck.sdplugin.actions.sendcommand"
     },
     {
       "Icon": "assets/images/sidebar/hotbar",
@@ -21,11 +21,11 @@
         {
           "Image": "assets/images/defaults/hotbar",
           "TitleAlignment": "bottom",
-          "FontSize": "12"
+          "FontSize": 12
         }
       ],
       "Tooltip": "Press a specific hotbar button defined in the game",
-      "UUID": "dev.wolf.xivdeck.sdplugin.actions.ExecHotbar"
+      "UUID": "dev.wolf.xivdeck.sdplugin.actions.exechotbar"
     },
     {
       "Icon": "assets/images/sidebar/action",
@@ -34,11 +34,11 @@
         {
           "Image": "assets/images/defaults/action",
           "TitleAlignment": "bottom",
-          "FontSize": "12"
+          "FontSize": 12
         }
       ],
       "Tooltip": "Trigger a specific action (mount, minion, etc.) in-game",
-      "UUID": "dev.wolf.xivdeck.sdplugin.actions.ExecAction"
+      "UUID": "dev.wolf.xivdeck.sdplugin.actions.execaction"
     },
     {
       "Icon": "assets/images/sidebar/macro",
@@ -47,11 +47,11 @@
         {
           "Image": "assets/images/defaults/macro",
           "TitleAlignment": "bottom",
-          "FontSize": "12"
+          "FontSize": 12
         }
       ],
       "Tooltip": "Run a User Macro (Individual or Shared) in-game",
-      "UUID": "dev.wolf.xivdeck.sdplugin.actions.ExecMacro"
+      "UUID": "dev.wolf.xivdeck.sdplugin.actions.execmacro"
     },
     {
       "Icon": "assets/images/sidebar/gearset",
@@ -60,11 +60,11 @@
         {
           "Image": "assets/images/defaults/gearset",
           "TitleAlignment": "bottom",
-          "FontSize": "16"
+          "FontSize": 16
         }
       ],
       "Tooltip": "Switch to a specific class/job",
-      "UUID": "dev.wolf.xivdeck.sdplugin.actions.SwitchClass"
+      "UUID": "dev.wolf.xivdeck.sdplugin.actions.switchclass"
     },
     {
       "Icon": "assets/images/sidebar/volume",
@@ -73,12 +73,12 @@
         {
           "Image": "assets/images/states/volume/unmuted",
           "TitleAlignment": "top",
-          "FontSize": "12"
+          "FontSize": 12
         },
         {
           "Image": "assets/images/states/volume/muted",
           "TitleAlignment": "top",
-          "FontSize": "12"
+          "FontSize": 12
         }
       ],
       "Controllers": [ "Keypad", "Encoder" ],
@@ -92,10 +92,10 @@
       },
       "DisableAutomaticStates": true,
       "Tooltip": "Set the volume for a specific audio channel in game.",
-      "UUID": "dev.wolf.xivdeck.sdplugin.actions.Volume"
+      "UUID": "dev.wolf.xivdeck.sdplugin.actions.volume"
     }
   ],
-  "PluginUUID": "dev.wolf.xivdeck",
+  "UUID": "dev.wolf.xivdeck",
   "Category": "XIVDeck",
   "CategoryIcon": "assets/images/category",
   "SDKVersion": 2,
@@ -106,7 +106,7 @@
   "Name": "XIVDeck",
   "Icon": "assets/images/icon",
   "URL": "https://wolf.dev/",
-  "Version": "{{ PLUGIN_VERSION }}",
+  "Version": "1.0.0.0",
   "OS": [
     {
       "Platform": "windows",
@@ -118,7 +118,7 @@
     }
   ],
   "Software": {
-    "MinimumVersion": "5.0"
+    "MinimumVersion": "6.4"
   },
   "ApplicationsToMonitor": {
     "windows": [
@@ -126,6 +126,9 @@
     ],
     "mac": [
       "dezent.XIV-on-Mac"
+    ],
+    "linux": [
+      "ffxiv_dx11.exe"
     ]
   }
 }
