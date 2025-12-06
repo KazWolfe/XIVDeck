@@ -9,16 +9,14 @@ import {PropertyInspector} from "@rweich/streamdeck-ts";
 export class FFXIVPluginLink {
     public static instance: FFXIVPluginLink;
 
-    // static so that event registrations can survive re-initialization
-    static eventManager: EventEmitter = new EventEmitter();
-
     // settings
     public hostname: string = "127.0.0.1";
     public port: number = 37984;
     public isGameAlive: boolean = false;
     public apiKey: string = "";
-    
+
     // internal state
+    private eventManager: EventEmitter = new EventEmitter();
     private _websocket: WebSocket | null = null;
     private _plugin: AbstractStreamdeckConnector;
     private _doConnectionRetries: boolean = true;
@@ -38,22 +36,24 @@ export class FFXIVPluginLink {
     }
 
     public async send(payload: FFXIVOpcode): Promise<unknown> {
-        if (!this.isGameAlive || !this._websocket) {
+        if (!this.isReady()) {
             return Promise.reject(new GameNotRunningError());
         }
 
-        return this._websocket.send(JSON.stringify(payload));
+        return this._websocket!.send(JSON.stringify(payload));
     }
 
     public connect(doRetry: boolean = true): void {
         // if the game currently isn't alive, there's nothing for us to do.
         if (!this.isGameAlive) {
             console.warn("[XIVDeck - FFXIVLink] Attempted websocket connection while game should be dead.");
+            this._plugin.logMessage("[WARN][FFXIVLink] Attempted websocket connection while game should be dead.");
             return;
         }
 
         if (this._websocket != null) {
             console.warn("[XIVDeck - FFXIVLink] A connect was called with an already-existing websocket!");
+            this._plugin.logMessage("[WARN][FFXIVLink] A connect was called with an already-existing websocket!");
             return;
         }
 
@@ -69,17 +69,15 @@ export class FFXIVPluginLink {
 
             this.send(new InitOpcode(pInfo.version, (isInspector ? "Inspector" : "Plugin")));
             this.emit("_wsOpened", null);
-
-            this.isGameAlive = true;
         };
 
         this._websocket.onmessage = this._onWSMessage.bind(this);
         this._websocket.onclose = this._onWSClose.bind(this);
     }
-    
+
     private _onInitReceive(data: FFXIVInitReply) {
         this.apiKey = data.apiKey;
-        
+
         this.emit("_ready", null)
     }
 
@@ -100,10 +98,15 @@ export class FFXIVPluginLink {
         console.debug("[XIVDeck - FFXIVPluginLink] Connection to WebSocket server lost!");
         this.emit("_wsClosed", {});
         this._websocket = null;
-        
-        if (!this._doConnectionRetries || !this.isGameAlive) return;
+
+        if (!this._doConnectionRetries || !this.isGameAlive) {
+            this._plugin.logMessage("Not attempting reconnect: game is dead or retries disabled.");
+            console.warn("Not attempting reconnect: game is dead or retries disabled.");
+            return;
+        }
 
         if (event.code == 1002 || event.code == 1008) {
+            this._plugin.logMessage(`[ERROR] The WebSocket server requested we not retry connection (code ${event.code})`);
             console.warn(`The WebSocket server requested we not retry connection`, event);
             return;
         }
@@ -116,17 +119,19 @@ export class FFXIVPluginLink {
     /**
      * Immediately close the websocket, disabling further attempts at connection retry.
      */
-    public close(): void {
+    public shutdown(): void {
+        this._plugin.logMessage("Immediate websocket close requested.");
         this._doConnectionRetries = false;
 
         if (this._websocket != null) {
-            this._websocket.close();
+            this._websocket.close(1000, "SDPlugin shutting down.");
             this._websocket = null;
         }
     }
 
     public gracefulClose(): void {
-        this._websocket?.close();
+        this._plugin.logMessage("Graceful websocket close requested.");
+        this._websocket?.close(1000, "Graceful shutdown/restart of socket.");
     }
 
     public isReady(): boolean {
@@ -134,10 +139,10 @@ export class FFXIVPluginLink {
     }
 
     public on(name: string, fn: Function): Function | undefined {
-        return FFXIVPluginLink.eventManager.on(name, fn);
+        return this.eventManager.on(name, fn);
     }
 
     private emit(name: string, data: any): void {
-        FFXIVPluginLink.eventManager.emit(name, data);
+        this.eventManager.emit(name, data);
     }
 }
