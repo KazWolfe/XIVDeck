@@ -19,7 +19,7 @@ public class EmoteStrategy : IActionStrategy {
         return new ExecutableAction {
             ActionId = (int) emote.RowId,
             ActionName = emote.Name.ToString(),
-            IconId = emote.Icon,
+            IconId = (int)emote.Icon,
             Category = emote.EmoteCategory.ValueNullable?.Name.ToString() ?? null,
             HotbarSlotType = HotbarSlotType.Emote,
             SortOrder = emote.Order
@@ -71,7 +71,7 @@ public class EmoteStrategy : IActionStrategy {
     }
 
     public int GetIconId(uint item) {
-        return GetEmoteById(item)?.Icon ?? 0;
+        return (int?)GetEmoteById(item)?.Icon ?? 0;
     }
 
     public Type GetPayloadType() {
