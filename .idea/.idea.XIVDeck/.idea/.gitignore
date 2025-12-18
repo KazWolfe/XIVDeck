@@ -1,13 +1,19 @@
 ﻿# Default ignored files
 /shelf/
 /workspace.xml
+
 # Rider ignored files
 /projectSettingsUpdater.xml
 /modules.xml
 /contentModel.xml
 /.idea.XIVDeck.iml
+
 # Editor-based HTTP Client requests
 /httpRequests/
+
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+
+# Github Copilot persisted session migrations, see: https://github.com/microsoft/copilot-intellij-feedback/issues/712#issuecomment-3322062215
+copilot.data.migration.*.xml
