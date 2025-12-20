@@ -29,11 +29,11 @@ const config = (environment: unknown, options: { mode: string; env: unknown }): 
                         context: path.resolve(__dirname, 'assets'),
                         to: path.resolve(__dirname, 'dist', `${pluginNs}.sdPlugin`, 'manifest.json'),
                         transform: (content) => {
-                            const contentString = new TextDecoder('utf-8').decode(content);
+                            const contentString = new TextDecoder('utf-8').decode(content)
+                                .replaceAll("assets/", "");
+
                             const manifest = JSON.parse(contentString);
-
                             manifest.Version = pluginVersion;
-
                             return Buffer.from(JSON.stringify(manifest, null, 2), 'utf-8');
                         }
                     },
