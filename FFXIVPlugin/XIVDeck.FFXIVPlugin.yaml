@@ -1,5 +1,5 @@
 ﻿name: XIVDeck
-author: Kaz Wolfe
+author: KazWolfe
 punchline: Turn your Elgato Stream Deck into a hotbar!
 description: |-
   This plugin allows players to use an Elgato Stream Deck as a virtual utility hot bar. Actions are called directly, meaning there is no need to set up awkward keybinds, custom macros, or any other settings.

@@ -99,7 +99,7 @@
   "Category": "XIVDeck",
   "CategoryIcon": "assets/images/category",
   "SDKVersion": 2,
-  "Author": "Kaz Wolfe",
+  "Author": "KazWolfe",
   "CodePath": "plugin.html",
   "PropertyInspectorPath": "propertyInspector.html",
   "Description": "Integrate with Final Fantasy XIV for a mogtastic experience in-game!",

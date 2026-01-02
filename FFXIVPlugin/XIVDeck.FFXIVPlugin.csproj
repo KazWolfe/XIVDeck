@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Dalamud.NET.Sdk/14.0.1">
     <PropertyGroup>
         <Product>XIVDeck Game Plugin</Product>
-        <Authors>Kaz Wolfe</Authors>
+        <Authors>KazWolfe</Authors>
         <Company>Blacksite Technologies</Company>
-        <Version>0.4.2</Version>
+        <Version>0.4.3</Version>
 
         <AssemblyName>XIVDeck.FFXIVPlugin</AssemblyName>
         <AssemblyVersion>$(Version)</AssemblyVersion>
