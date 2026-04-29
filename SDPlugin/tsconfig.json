@@ -12,7 +12,7 @@
     "noImplicitThis": true,
     "alwaysStrict": true,
     "noImplicitReturns": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "sourceMap": true,
