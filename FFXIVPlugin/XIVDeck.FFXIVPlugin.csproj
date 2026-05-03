@@ -3,7 +3,7 @@
         <Product>XIVDeck Game Plugin</Product>
         <Authors>KazWolfe</Authors>
         <Company>Blacksite Technologies</Company>
-        <Version>0.4.4</Version>
+        <Version>0.4.5</Version>
 
         <AssemblyName>XIVDeck.FFXIVPlugin</AssemblyName>
         <AssemblyVersion>$(Version)</AssemblyVersion>
