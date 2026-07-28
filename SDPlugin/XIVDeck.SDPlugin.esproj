@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.VisualStudio.JavaScript.SDK/1.0.1695036">
+﻿<Project Sdk="Microsoft.VisualStudio.JavaScript.SDK/1.0.6578810">
 	<PropertyGroup>
 		<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
 		<TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
@@ -9,13 +9,13 @@
 	<PropertyGroup>
 		<JavaScriptTestRoot>test/</JavaScriptTestRoot>
 		<JavaScriptTestFramework>Jest</JavaScriptTestFramework>
-		<BuildCommand>yarn build</BuildCommand>
-		<ProductionBuildCommand>yarn build-release</ProductionBuildCommand>
+		<BuildCommand>pnpm run build</BuildCommand>
+		<ProductionBuildCommand>pnpm run build-release</ProductionBuildCommand>
 		<BuildOutputFolder>dist/</BuildOutputFolder>
 	</PropertyGroup>
 	<ItemGroup>
 		<Script Include="src/**;build/**" Exclude="*.esproj;**/node_modules/**" />
 		<None Include="assets/**" />
-		<None Include="LICENSE;package.json;tsconfig.json;webpack.config.ts" />
+		<None Include="LICENSE;package.json;pnpm-workspace.yaml;tsconfig.json;vite.config.ts;webpack.config.ts" />
 	</ItemGroup>
 </Project>

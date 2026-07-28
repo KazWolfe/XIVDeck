@@ -1,0 +1,15 @@
+{
+  "Emote": "Emote",
+  "ExtraCommand": "Extra Command",
+  "GearSet": "Gear Set",
+  "GeneralAction": "General Action",
+  "Glasses": "Facewear",
+  "PerformanceInstrument": "Performance Instrument",
+  "MainCommand": "Main Command",
+  "Marker": "Marker",
+  "McGuffin": "Collection",
+  "Companion": "Minion",
+  "Mount": "Mount",
+  "Ornament": "Fashion Accessory",
+  "FieldMarker": "Waymark"
+}

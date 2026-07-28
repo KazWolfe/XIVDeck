@@ -1,0 +1,56 @@
+{
+  "App": {
+    "actionHeader": "Aktionskonfiguration",
+    "pluginHeader": "Pluginkonfiguration",
+    "buildVersion": "Build Version:",
+    "runtimeVersion": "Runtime Version:",
+    "gamePluginVersion": "Spielplugin Version:"
+  },
+  "CommandFrame": {
+    "command": "Befehl"
+  },
+  "HotbarFrame": {
+    "hotbar": "Kommandomenü",
+    "placeholder": "Kommandomenü auswählen...",
+    "standardGroup": "Standard-Kommandomenüs",
+    "crossGroup": "Kreuz-Kommandomenüs",
+    "standard": "Kommandomenü {{id}}",
+    "cross": "Kreuz-Kommandomenü {{id}}",
+    "slot": "Slot"
+  },
+  "ClassFrame": {
+    "class": "Klasse",
+    "placeholder": "Klasse auswählen...",
+    "help": {
+      "title": "",
+      "body": ""
+    }
+  },
+  "ExecActionFrame": {
+    "type": "Typ",
+    "typePlaceholder": "Aktionstyp auswählen...",
+    "action": "Aktion",
+    "actionPlaceholder": "Aktion auswählen..."
+  },
+  "EmoteSubsettings": {
+    "logSettings": "Chat Log-Einstellung",
+    "default": "Spiel-Standardeinstellungen verwenden",
+    "always": "Immer Chat-Log-Nachricht anzeigen",
+    "never": "Niemals Chat-Log-Nachricht anzeigen"
+  },
+  "GearsetSubsettings": {
+    "overridePlate": "Überschreibe Projektionsplatten",
+    "plateId": "Projektionsplatten-Nummer"
+  },
+  "MacroFrame": {
+    "type": "Makrotyp",
+    "individual": "Individuell",
+    "shared": "Geteilt",
+    "number": "Makronummer"
+  },
+  "VolumeFrame": {
+    "channel": "Soundkategorie",
+    "placeholder": "Wähle eine Kategorie...",
+    "step": "Regelungsschritt"
+  }
+}

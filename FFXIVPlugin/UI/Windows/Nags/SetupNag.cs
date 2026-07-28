@@ -3,23 +3,22 @@ using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Utility;
+using XIVDeck.FFXIVPlugin.Config;
+using XIVDeck.FFXIVPlugin.IoC;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
+using XIVDeck.FFXIVPlugin.RpcServer;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.UI.Windows.Nags;
 
-public class SetupNag() : NagWindow("sdPluginNotInstalled", 400) {
-    private static SetupNag? _instance;
+[Service(ServiceFlags.Transient)]
+public class SetupNag(UIManager uiManager, PluginConfig pluginConfig, TransportManager transportManager)
+    : NagWindow(uiManager, "sdPluginNotInstalled", 400) {
 
-    internal static void Show() {
-        _instance ??= new SetupNag();
-        _instance.IsOpen = true;
-    }
-
-    internal static void Hide() {
-        if (_instance == null) return;
-        _instance.IsOpen = false;
-    }
+    private int? WebSocketPortToAdvertise =>
+        transportManager.RunningTransportType == TransportType.WebSocket
+            ? ((WebSocketTransportConfig) pluginConfig.GetTransport(TransportType.WebSocket)).Port
+            : null;
 
     protected override void _internalDraw() {
         ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
@@ -30,7 +29,7 @@ public class SetupNag() : NagWindow("sdPluginNotInstalled", 400) {
 
         ImGui.Text(UIStrings.SetupNag_ResolutionHelp);
 
-        if (ImGui.Button(UIStrings.Nag_OpenGithubDownloadButton)) {
+        if (ImGui.Button(UIStrings.Common_OpenGitHubDownloadButton)) {
             UiUtil.OpenXIVDeckGitHub($"/releases/tag/v{VersionUtils.GetCurrentMajMinBuild()}");
         }
 
@@ -53,13 +52,19 @@ public class SetupNag() : NagWindow("sdPluginNotInstalled", 400) {
         if (ImGui.CollapsingHeader(UIStrings.SetupNag_AlreadyInstalled)) {
             ImGui.Indent(10);
 
-            ImGui.Text(string.Format(UIStrings.SetupNag_AlreadyInstalledHelp,
-                XIVDeckPlugin.Instance.Configuration.WebSocketPort));
+            ImGui.Text(UIStrings.SetupNag_AlreadyInstalled_Checklist);
 
-            ImGui.Text(UIStrings.SetupNag_PortChangeHelp);
+            if (this.WebSocketPortToAdvertise is {} port) {
+                ImGui.Spacing();
+                ImGui.TextColored(ImGuiColors.DalamudYellow,
+                    string.Format(UIStrings.SetupNag_AlreadyInstalled_WebSocketHelp, port));
+            }
 
-            if (ImGui.Button(UIStrings.Nag_OpenSettingsButton)) {
-                XIVDeckPlugin.Instance.DrawConfigUI();
+            ImGui.Spacing();
+            ImGui.Text(UIStrings.SetupNag_AlreadyInstalled_ChangeConnectionHelp);
+
+            if (ImGui.Button(UIStrings.Common_OpenSettingsButton)) {
+                this.UiManager.ShowOrFocus<SettingsWindow>();
             }
 
             ImGui.Unindent(10);
@@ -69,7 +74,7 @@ public class SetupNag() : NagWindow("sdPluginNotInstalled", 400) {
         ImGui.TextColored(ImGuiColors.DalamudGrey, UIStrings.SetupNag_DismissHelp);
 
         ImGui.AlignTextToFramePadding();
-        ImGui.TextColored(ImGuiColors.DalamudGrey, UIStrings.ForcedUpdateNag_SupportInfo);
+        ImGui.TextColored(ImGuiColors.DalamudGrey, UIStrings.Common_SupportInfo);
         ImGui.SameLine();
         if (ImGuiComponents.IconButton(FontAwesomeIcon.Headset)) {
             Util.OpenLink(Constants.GoatPlaceDiscord);
@@ -78,7 +83,7 @@ public class SetupNag() : NagWindow("sdPluginNotInstalled", 400) {
 
         if (ImGui.GetIO().KeyCtrl) {
             if (ImGui.Button(UIStrings.SetupNag_BypassButton)) {
-                Hide();
+                this.IsOpen = false;
             }
             ImGuiComponents.HelpMarker(UIStrings.SetupNag_MessageWillReturn);
         } else {

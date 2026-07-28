@@ -10,7 +10,7 @@ public static class StringUtil {
     }
 
     public static string ToTitleCase(this ReadOnlySeString seString) {
-        return ToTitleCase(seString.ToString());
+        return ToTitleCase(seString.ExtractText(), UIStrings.Culture);
     }
 
     public static string ToTitleCase(this string str, CultureInfo culture) {

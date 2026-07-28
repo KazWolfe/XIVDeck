@@ -1,0 +1,56 @@
+{
+  "App": {
+    "actionHeader": "Configuration de l'Action",
+    "pluginHeader": "Configuration du Plugin",
+    "buildVersion": "Version de build :",
+    "runtimeVersion": "Version du Runtime :",
+    "gamePluginVersion": "Version du Plugin en Jeu :"
+  },
+  "CommandFrame": {
+    "command": "Commande"
+  },
+  "HotbarFrame": {
+    "hotbar": "Barre de raccourcis",
+    "placeholder": "Sélectionnez la barre de raccourci...",
+    "standardGroup": "Barres de raccourcis standards",
+    "crossGroup": "Croix de raccourcis",
+    "standard": "Barre de raccourcis {{id}}",
+    "cross": "Croix de raccourcis {{id}}",
+    "slot": "Emplacement"
+  },
+  "ClassFrame": {
+    "class": "Classe",
+    "placeholder": "Sélectionner la classe...",
+    "help": {
+      "title": "Aide sur les classes",
+      "body": "Lorsque ce bouton est pressé, XIVDeck prendra la première tenue correspondant à la classe choisie. Les classes sans tenues ne seront pas considérées comme utilisables."
+    }
+  },
+  "ExecActionFrame": {
+    "type": "Type",
+    "typePlaceholder": "Sélectionnez le type d'action...",
+    "action": "Action",
+    "actionPlaceholder": "Sélectionnez l'action..."
+  },
+  "EmoteSubsettings": {
+    "logSettings": "Paramètres de fenêtre de log",
+    "default": "Utiliser les paramètres par défaut du jeu",
+    "always": "Toujours afficher les messages de la fenêtre de log",
+    "never": "Ne jamais afficher les messages de la fenêtre de log"
+  },
+  "GearsetSubsettings": {
+    "overridePlate": "Supplanter la planche mirage",
+    "plateId": "ID de la planche"
+  },
+  "MacroFrame": {
+    "type": "Type de Macro",
+    "individual": "Personnage",
+    "shared": "Communes",
+    "number": "Numéro de Macro"
+  },
+  "VolumeFrame": {
+    "channel": "Canal",
+    "placeholder": "Sélectionner un canal...",
+    "step": "Unités par pas"
+  }
+}

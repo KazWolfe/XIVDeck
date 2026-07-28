@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "ES2022",
     "module": "commonjs",
     "declaration": false,
     "strict": true,
@@ -21,7 +21,9 @@
     "resolveJsonModule": true,
   },
   "exclude": [
-    "lib/streamdeck-events",
-    "lib/streamdeck-ts"
+    "build",
+
+    // PI is handled separately.
+    "src/pi"
   ]
 }

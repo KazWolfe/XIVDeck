@@ -21,70 +21,49 @@
         <value>XIVDeck</value>
         <comment>Product name. Do not change.</comment>
     </data>
-  <data name="StreamDeck" xml:space="preserve">
-        <value>Stream Deck</value>
-        <comment>Product name. Do not change.</comment>
-    </data>
-  <data name="XIVDeck_Title" xml:space="preserve">
+  <data name="XIVDeckPlugin_Name" xml:space="preserve">
         <value>XIVDeck Game Plugin</value>
         <comment>The proper title of the Dalamud plugin.</comment>
     </data>
-  <data name="Exceptions_PlayerNotLoggedIn" xml:space="preserve">
+  <data name="PlayerNotLoggedInException_Message" xml:space="preserve">
         <value>プレイヤーはゲームにログインしていません。</value>
         <comment>Shown when a user attempts to trigger a Stream Deck button without being logged in to the game.</comment>
     </data>
-  <data name="Exceptions_ActionLocked" xml:space="preserve">
+  <data name="ActionLockedException_Message" xml:space="preserve">
         <value>{0} ID {1} は解放されていないため使用できません。</value>
     </data>
-  <data name="Exceptions_ActionNotFound" xml:space="preserve">
+  <data name="ActionNotFoundException_Message" xml:space="preserve">
         <value>ID {0} の {1} が見つかりませんでした。</value>
     </data>
-  <data name="CommandController_MissingCommandError" xml:space="preserve">
+  <data name="MissingCommandException_Message" xml:space="preserve">
         <value>実行するコマンドを指定してください。</value>
     </data>
-  <data name="CommandController_NotCommandError" xml:space="preserve">
+  <data name="UnsafeCommandException_Message" xml:space="preserve">
         <value>コマンドはスラッシュで始める必要があります。</value>
     </data>
-  <data name="ActionController_UnknownActionTypeError" xml:space="preserve">
+  <data name="ActionTypeNotFoundException_Message" xml:space="preserve">
         <value>タイプ {0} の登録アクションが見つかりませんでした。</value>
     </data>
-  <data name="ClassController_ClassLessThan1Error" xml:space="preserve">
+  <data name="ClassJobService_ClassLessThan1Error" xml:space="preserve">
         <value>ID が 1 未満のクラスに切り替えることはできません。</value>
     </data>
-  <data name="ClassController_InvalidClassIdError" xml:space="preserve">
+  <data name="ClassJobService_InvalidClassIdError" xml:space="preserve">
         <value>ID {0} のクラスは存在しません！</value>
     </data>
-  <data name="ClassController_NoGearsetForClassError" xml:space="preserve">
+  <data name="ClassJobService_NoGearsetForClassError" xml:space="preserve">
         <value>このクラスのギアセットがないため、 {0} に切り替えることができませんでした。ギアセットを作成してから再度お試し下さい。</value>
     </data>
-  <data name="HotbarController_InvalidHotbarIdError" xml:space="preserve">
+  <data name="HotbarService_InvalidHotbarIdError" xml:space="preserve">
         <value>ホットバーIDは0〜17の間でなければなりません</value>
     </data>
-  <data name="HotbarController_NormalHotbarInvalidSlotError" xml:space="preserve">
+  <data name="HotbarService_NormalHotbarInvalidSlotError" xml:space="preserve">
         <value>ホットバー IDが10未満の場合、スロット ID は 0 から 11 の間でなければなりません</value>
     </data>
-  <data name="HotbarController_CrossHotbarInvalidSlotError" xml:space="preserve">
+  <data name="HotbarService_CrossHotbarInvalidSlotError" xml:space="preserve">
         <value>ホットバー IDが10 以上の場合、スロット ID は 0 から 15 の間でなければなりません</value>
-    </data>
-  <data name="HotbarController_InvalidHotbarOrSlotError" xml:space="preserve">
-        <value>無効なホットバーまたはスロットがトリガーされました。</value>
-    </data>
-  <data name="AuthModule_BadAPIKeyError" xml:space="preserve">
-        <value>API キーが存在しないか無効です。</value>
-    </data>
-  <data name="WSOpcodeWiring_UnknownOpcodeError" xml:space="preserve">
-        <value>Opcode {0} のメッセージが存在しません。</value>
-    </data>
-  <data name="EmoteStrategy_EmoteDoesntHaveCommandError" xml:space="preserve">
-        <value>エモート "{0}" に関連付けられたテキストコマンドがありません</value>
     </data>
   <data name="EmoteStrategy_EmoteLockedError" xml:space="preserve">
         <value>エモート "{0}" は解放されていないため、使用できません。</value>
-    </data>
-  <data name="ExtraCommandStrategy_NoCommandError" xml:space="preserve">
-        <value>エクストラコマンド {0} にはコマンドが存在しません。このバグを報告してください！</value>
-        <comment>This error message is shown when the command to use an "Extra Command" is not found. Because management of extra commands is done manually, additional instructions have been added for the user to report a bug to the developer.
-        </comment>
     </data>
   <data name="FixedCommandStrategy_ActionNotFoundError" xml:space="preserve">
         <value>ID {0} を持つタイプ {1} のアクションは存在しません。</value>
@@ -102,14 +81,6 @@
   <data name="SettingsWindow_SafeModeDisabledWarning" xml:space="preserve">
         <value>危険: セーフモードが無効になりました! Stream Deck からゲームに不正なコマンドを送信できる可能性があります。</value>
         <comment>"Illegal commands" in this case mean commands that normally cannot be sent to the game and may cause damage or harm if proper care is not taken.</comment>
-    </data>
-    <data name="SettingsWindow_ExperimentalSettings" xml:space="preserve">
-        <value>実験的な設定</value>
-        <comment>Header for configuration window section.</comment>
-    </data>
-  <data name="SettingsWindow_Experiment_MIcon" xml:space="preserve">
-        <value>/micon のアイコンを使用</value>
-        <comment>/micon is a game-provided command. It can be left as-is.</comment>
     </data>
   <data name="SettingsWindow_GitHubLink" xml:space="preserve">
         <value>XIVDeck GitHub</value>
@@ -130,16 +101,16 @@
 
 範囲: {1}-{2}</value>
     </data>
-  <data name="ForcedUpdateNag_Headline" xml:space="preserve">
+  <data name="UpdateNotifier_ForcedUpdate_Headline" xml:space="preserve">
         <value>XIVDeck Stream Deck プラグインは致命的に古いため、無効になっています。</value>
     </data>
-  <data name="Nag_OpenGithubDownloadButton" xml:space="preserve">
+  <data name="Common_OpenGitHubDownloadButton" xml:space="preserve">
         <value>XIVDeckのダウンロードページを開く</value>
     </data>
-  <data name="Nag_OpenSettingsButton" xml:space="preserve">
+  <data name="Common_OpenSettingsButton" xml:space="preserve">
         <value>XIVDeck 設定を開く</value>
     </data>
-  <data name="ForcedUpdateNag_ProblemDescription" xml:space="preserve">
+  <data name="UpdateNotifier_ForcedUpdate_ProblemDescription" xml:space="preserve">
         <value>引き続き XIVDeck を使用するには、 XIVDeck GitHubから最新版の Stream Deck プラグインをダウンロードし、インストールしてください。</value>
     </data>
   <data name="SetupNag_Headline" xml:space="preserve">
@@ -147,15 +118,6 @@
     </data>
   <data name="SetupNag_ResolutionHelp" xml:space="preserve">
         <value>まだインストールしていない場合は、GitHubから付属の XIVDeck Stream Deck プラグインをダウンロードしてインストールしてください。</value>
-    </data>
-  <data name="SetupNag_AlreadyInstalledHelp" xml:space="preserve">
-        <value>XIVDeck Stream Deck プラグインが既にインストールされている場合、設定からポートが正しく設定されていることを確認してください。また、少なくとも1つのボタンを作成してください。</value>
-    </data>
-  <data name="SetupNag_CurrentPort" xml:space="preserve">
-        <value>現在のポート: {0}</value>
-    </data>
-  <data name="SetupNag_PortChangeHelp" xml:space="preserve">
-        <value>サーバーがホストしているポートを変更する必要がある場合は、 XIVDeck の設定から変更できます。</value>
     </data>
   <data name="SetupNag_DismissHelp" xml:space="preserve">
         <value>このメッセージを消すには、上記の問題を解決するか、 XIVDeck プラグインをアンインストールしてください。</value>
@@ -206,24 +168,10 @@
   <data name="OrnamentStrategy_OrnamentLockedError" xml:space="preserve">
         <value>ファッションアクセサリー "{0}" は解放されていないため、使用できません。</value>
     </data>
-  <data name="ErrorHandler_ErrorPrefix" xml:space="preserve">
-        <value>{0} - エラー</value>
-    </data>
-  <data name="TickScheduler_ExceptionHandler" xml:space="preserve">
-        <value>タスクの実行中に問題が発生しました: {0}: {1}</value>
-        <comment>"Task" may be substituted for "job" in this case. This string will display when a background job fails to execute.</comment>
-    </data>
-  <data name="GameClass_NotFoundError" xml:space="preserve">
+  <data name="GameClassFactory_NotFoundError" xml:space="preserve">
         <value>ID {0} のクラスは存在しません。</value>
     </data>
-  <data name="GameClass_UncategorizedError" xml:space="preserve">
-        <value>クラスID {0} のジョブカテゴリが認識できません。このバグを報告してください！</value>
-        <comment>Shown when plugin data is invalid and requires an update from the developer.</comment>
-    </data>
-  <data name="WSInitOpcode_ThanksForInstall" xml:space="preserve">
-        <value>Stream Deck プラグインをインストールしていただきありがとうございます。XIVDeck を利用する準備ができました！</value>
-    </data>
-  <data name="ClassController_FallbackClassUsed" xml:space="preserve">
+  <data name="ClassJobService_FallbackClassUsed" xml:space="preserve">
         <value>{0} のギアセットが見つかりませんでした。代わりに {1} のギアセットが使用されました。</value>
     </data>
   <data name="SettingsWindow_XIVDeckPortOpen" xml:space="preserve">
@@ -232,49 +180,30 @@
   <data name="SettingsWindow_ListenOnNetwork" xml:space="preserve">
         <value>すべてのインタフェースで待ち受ける</value>
     </data>
-  <data name="SettingsWindow_UseMIcon_Help" xml:space="preserve">
-        <value>このオプションが有効な場合、Stream Deck はマクロ内の /micon コマンドをによるアイコンを優先します。 無効にすると、 Stream Deck は指定されたドロップダウンから選択されたマクロアイコンでのみ表示します。
-
-デフォルト: OFF</value>
-    </data>
-  <data name="TestingUpdateNag_Headline" xml:space="preserve">
+  <data name="UpdateNotifier_TestingUpdate_Headline" xml:space="preserve">
         <value>警告：XIVDeckのバージョンが一致しません</value>
     </data>
-  <data name="TestingUpdateNag_MismatchDetectedText" xml:space="preserve">
+  <data name="UpdateNotifier_TestingUpdate_MismatchDetectedText" xml:space="preserve">
         <value>インストールされているStreamDeckプラグインと、ゲーム内プラグインのバージョンが一致していません。
 一部の機能が正常に動作しない可能性があります。</value>
     </data>
-  <data name="TestingUpdateNag_PleaseTestProperly" xml:space="preserve">
+  <data name="UpdateNotifier_TestingUpdate_PleaseTestProperly" xml:space="preserve">
         <value>XIVDeckを適切に利用するためは、正しいバージョンのStreamDeckプラグインを使用する必要があります。
 以下のボタンから、StreamDeckプラグインをダウンロードしてください。</value>
     </data>
-  <data name="TestingUpdateNag_DismissHelp" xml:space="preserve">
-        <value>このメッセージを消した場合でも、テストモードが有効で、バージョンの不一致が検出されると再び表示されます。</value>
-    </data>
-  <data name="TestingUpdateNag_IgnoreButton" xml:space="preserve">
+  <data name="UpdateNotifier_TestingUpdate_IgnoreButton" xml:space="preserve">
         <value>今は無視する</value>
     </data>
-  <data name="TestingUpdateNag_DownloadButton" xml:space="preserve">
+  <data name="UpdateNotifier_TestingUpdate_DownloadButton" xml:space="preserve">
         <value>{0}をダウンロード</value>
     </data>
-  <data name="WSInitOpcode_GamePluginOutdated" xml:space="preserve">
-        <value>インストールされているXIVDeck StreamDeck プラグインのバージョンは、ゲームプラグインよりも新しいバージョンです。Dalamudプラグインインストーラから更新をインストールしてください。</value>
-    </data>
-  <data name="ForcedUpdateNag_SupportInfo" xml:space="preserve">
+  <data name="Common_SupportInfo" xml:space="preserve">
         <value>動かない？Discordを起動して、XIV Luncherのサーバーを見に行ってください！</value>
     </data>
-  <data name="ForcedUpdateNag_SupportButton" xml:space="preserve">
+  <data name="UpdateNotifier_ForcedUpdate_SupportButton" xml:space="preserve">
         <value>Discordを開く</value>
     </data>
-  <data name="ForcedUpdateNag_BypassInstructions" xml:space="preserve">
-        <value>このエラーを一時的に無視するには、Ctrlキーを押したままにしてください。
-この操作では、プラグインは再有効化されません。</value>
-    </data>
-  <data name="ForcedUpdateNag_BypassButton" xml:space="preserve">
-        <comment>Shown when the user is given the option to temporarily ignore the update error.</comment>
-        <value>今は無視する</value>
-    </data>
-  <data name="PortInUseNag_IgnoreForNow" xml:space="preserve">
+  <data name="Common_IgnoreForNowButton" xml:space="preserve">
         <value>今は無視する</value>
     </data>
 </root>

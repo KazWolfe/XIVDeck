@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="100%" height="100%" viewBox="0 0 80 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <style>
+            .cost-text {
+                font-family: Roboto, "Segoe UI", "Yu Gothic UI", "Helvetica Neue", Arial, sans-serif;
+                font-weight: 700;
+                font-size: 20px;
+            }
+            .charge-count-text {
+                font-family: Bahnschrift, "Segoe UI", "Yu Gothic UI", "Helvetica Neue", Arial, sans-serif;
+                font-weight: 900;
+                font-stretch: expanded;
+                font-size: 30px;
+            }
+        </style>
+
+        <filter id="GlowBlur" filterUnits="userSpaceOnUse" x="-10" y="-10" width="100" height="100">
+            <feGaussianBlur stdDeviation="1.75"/>
+        </filter>
+
+        <filter id="ShadowBlur" filterUnits="userSpaceOnUse" x="-10" y="-10" width="100" height="100">
+            <feGaussianBlur stdDeviation="3"/>
+        </filter>
+
+        <mask id="RecastTimerMask" maskUnits="userSpaceOnUse" x="0" y="0" width="80" height="80">
+            <path id="RecastTimerMaskPath" fill="#ffffff" fill-rule="evenodd" d=""/>
+        </mask>
+
+        <mask id="RecastTimerWedgeMask" maskUnits="userSpaceOnUse" x="0" y="0" width="80" height="80">
+            <path id="RecastTimerWedgeMaskPath" fill="#ffffff" fill-rule="evenodd" d=""/>
+        </mask>
+    </defs>
+
+    <image id="Icon" x="0" y="0" width="80" height="80" xlink:href=""/>
+
+    <g id="Timers">
+        <g id="RecastTimer" display="none">
+            <rect x="0" y="0" width="80" height="80" fill="#000000" fill-opacity="0.6" style="mix-blend-mode:multiply" mask="url(#RecastTimerMask)"/>
+            <g mask="url(#RecastTimerWedgeMask)">
+                <path id="RecastTimerEdgeGlow" fill="none" stroke="#ffffff" stroke-width="3" filter="url(#GlowBlur)" d=""/>
+            </g>
+            <path id="RecastTimerEdgeCrisp" fill="none" stroke="#ffffff" stroke-width="1" d=""/>
+        </g>
+
+        <g id="RechargeTimerDonut" display="none">
+            <circle cx="40" cy="40" r="32" fill="none" stroke="#ff8c1a" stroke-width="7" stroke-linecap="round"
+                    stroke-dasharray="201.062" stroke-dashoffset="201.062" transform="rotate(-90 40 40)" filter="url(#GlowBlur)"/>
+            <circle cx="40" cy="40" r="32" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"
+                    stroke-dasharray="201.062" stroke-dashoffset="201.062" transform="rotate(-90 40 40)"/>
+        </g>
+
+        <g id="RechargeTimerSweep" display="none">
+            <path id="RechargeTimerSweepFill" fill="#ffffff" fill-opacity="0.2" d=""/>
+            <g id="RechargeTimerSweepStart">
+                <line x1="40" y1="40" x2="40" y2="-20" stroke="#ffffff" stroke-width="4" stroke-linecap="round" filter="url(#GlowBlur)"/>
+                <line x1="40" y1="40" x2="40" y2="-20" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+            </g>
+            <g id="RechargeTimerSweepEdge">
+                <line x1="40" y1="40" x2="40" y2="-20" stroke="#ffffff" stroke-width="4" stroke-linecap="round" filter="url(#GlowBlur)"/>
+                <line x1="40" y1="40" x2="40" y2="-20" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+            </g>
+        </g>
+    </g>
+
+    <g id="ComboHighlight" display="none">
+        <rect x="0" y="0" width="80" height="80" fill="none" stroke="#ffa71e" stroke-width="4" stroke-dasharray="8,4"/>
+    </g>
+
+    <g id="CostText">
+        <g id="LeftCost" display="none">
+            <text id="LeftCostText" class="cost-text" x="2" y="76" text-anchor="start" fill="#ffffff" stroke="#000000" stroke-width="1" paint-order="stroke" stroke-linejoin="round">0</text>
+        </g>
+
+        <g id="RightCost" display="none">
+            <text id="RightCostText" class="cost-text" x="78" y="76" text-anchor="end" fill="#ffffff" stroke="#000000" stroke-width="1" paint-order="stroke" stroke-linejoin="round">0</text>
+        </g>
+    </g>
+
+    <g id="ChargeCount" display="none">
+        <text id="ChargeCountShadow" class="charge-count-text" x="74" y="73" text-anchor="end" fill="#c94900" stroke="#c94900" stroke-width="4" filter="url(#ShadowBlur)">0</text>
+        <text id="ChargeCountText" class="charge-count-text" x="74" y="73" text-anchor="end" fill="#ffffff" stroke="#c94900" stroke-width="0" paint-order="stroke" stroke-linejoin="round">0</text>
+    </g>
+
+    <g id="ChargeCountZero" display="none">
+        <text class="charge-count-text" x="74" y="73" text-anchor="end" fill="#6F1D0B" stroke="#6F1D0B" stroke-width="4" filter="url(#ShadowBlur)">0</text>
+        <text class="charge-count-text" x="74" y="73" text-anchor="end" fill="#DE454A" stroke="#6F1D0B" stroke-width="0" paint-order="stroke" stroke-linejoin="round">0</text>
+    </g>
+
+    <g id="TypeIcon" display="none" transform="translate(60,2)">
+        <!-- no icon -->
+    </g>
+</svg>

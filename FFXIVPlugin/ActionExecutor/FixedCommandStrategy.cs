@@ -1,33 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using Lumina.Excel;
-using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.ActionExecutor.Payloads;
+using XIVDeck.FFXIVPlugin.Exceptions;
+using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
+using ActionAppearance = XIVDeck.FFXIVPlugin.Contract.ActionAppearance;
+using HotbarSlotType = FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule.HotbarSlotType;
+using XIVDeck.FFXIVPlugin.Contract;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor;
 
 public abstract class FixedCommandStrategy<T> : IActionStrategy where T : struct, IExcelRow<T> {
-    private readonly List<ExecutableAction> _actionCache = new();
+    private readonly List<ActionEntry> _actionCache = [];
 
-    protected abstract int GetIconForAction(T action);
-    protected abstract ExecutableAction? BuildExecutableAction(T action);
+    private readonly IDataManager _dataManager;
+    private readonly ActionAppearanceResolver _appearanceResolver;
+
+    protected HotbarSlotType SlotType { get; }
+
+    protected FixedCommandStrategy(IDataManager dataManager, ActionAppearanceResolver appearanceResolver) {
+        this._dataManager = dataManager;
+        this._appearanceResolver = appearanceResolver;
+
+        this.SlotType = this.GetType().GetCustomAttribute<ActionStrategyAttribute>()?.HotbarSlotType ??
+                        throw new InvalidOperationException($"{this.GetType().Name} is missing [ActionStrategy].");
+    }
+
+    protected abstract ActionEntry? BuildExecutableAction(T action);
 
     protected virtual IEnumerable<uint> GetIllegalActionIDs() => Array.Empty<uint>();
 
-    private static T? GetActionById(uint id) {
+    private T? GetActionById(uint id) {
         // should never be null, T is inherently handled by Lumina
-        return Injections.DataManager.Excel.GetSheet<T>().GetRowOrDefault(id);
+        return this._dataManager.Excel.GetSheet<T>().GetRowOrDefault(id);
     }
 
-    public List<ExecutableAction> GetAllowedItems() {
+    public List<ActionEntry> GetSelectableActions() {
         if (this._actionCache.Count > 0) {
             // this is (relatively) safe as general actions shouldn't (can't) be added midway through the game.
-            // so let's just cache them and return whenever this is called just to save a tiiiny amount of memory
+            // so let's just cache them and return whenever this is called just to save a tiiiny amount of runtime
             return this._actionCache;
         }
 
-        var sheet = Injections.DataManager.Excel.GetSheet<T>();
+        var sheet = this._dataManager.Excel.GetSheet<T>();
 
         if (sheet == null) {
             throw new NullReferenceException(string.Format(UIStrings.FixedCommandStrategy_SheetNotFoundError, typeof(T).Name));
@@ -40,7 +60,7 @@ public abstract class FixedCommandStrategy<T> : IActionStrategy where T : struct
 
             var action = this.BuildExecutableAction(row);
 
-            if (action == null || string.IsNullOrEmpty(action.ActionName)) continue;
+            if (action == null || string.IsNullOrEmpty(action.Name)) continue;
 
             this._actionCache.Add(action);
         }
@@ -48,33 +68,27 @@ public abstract class FixedCommandStrategy<T> : IActionStrategy where T : struct
         return this._actionCache;
     }
 
-    public ExecutableAction? GetExecutableActionById(uint actionId) {
-        // logic here is interesting, but basically comes down to that we only will ever want allowed items from
-        // this type.
-
-        return this.GetAllowedItems().Find(ac => ac.ActionId == actionId);
+    public ActionEntry? GetActionEntryById(uint actionId) {
+        return this.GetSelectableActions().Find(ac => ac.Id == actionId);
     }
 
-    public void Execute(uint actionId, ActionPayload? _) {
+    public async Task Execute(uint actionId, ActionPayload? _) {
         if (this.GetIllegalActionIDs().Contains(actionId))
-            throw new ArgumentException(string.Format(UIStrings.FixedCommandStrategy_IllegalActionError, actionId));
+            throw new ActionInvalidException(string.Format(UIStrings.FixedCommandStrategy_IllegalActionError, actionId));
 
-        var action = GetActionById(actionId);
+        var action = this.GetActionById(actionId);
 
         if (action == null) {
-            throw new ArgumentNullException(nameof(actionId),
+            throw new ActionNotFoundException(
                 string.Format(UIStrings.FixedCommandStrategy_ActionNotFoundError, typeof(T), actionId));
         }
 
         // shenanigans, but allows us to ignore the entire text command processing chain if necessary
-        this.ExecuteInner(action.Value);
+        await this.ExecuteInner(action.Value);
     }
 
-    protected abstract void ExecuteInner(T action);
+    protected abstract Task ExecuteInner(T action);
 
-    public int GetIconId(uint actionId) {
-        var action = GetActionById(actionId);
-
-        return action == null ? 0 : this.GetIconForAction(action.Value);
-    }
+    public Task<ActionAppearance> GetAppearance(uint actionId) =>
+        this._appearanceResolver.GetActionAppearance(this.SlotType, actionId);
 }

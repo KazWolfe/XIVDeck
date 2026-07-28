@@ -1,9 +1,9 @@
-﻿<Project Sdk="Dalamud.NET.Sdk/15.0.0">
+<Project Sdk="Dalamud.NET.Sdk/15.0.0">
     <PropertyGroup>
         <Product>XIVDeck Game Plugin</Product>
         <Authors>KazWolfe</Authors>
         <Company>Blacksite Technologies</Company>
-        <Version>0.4.5</Version>
+        <Version>0.5.0</Version>
 
         <AssemblyName>XIVDeck.FFXIVPlugin</AssemblyName>
         <AssemblyVersion>$(Version)</AssemblyVersion>
@@ -13,6 +13,7 @@
         <IsPackable>false</IsPackable>
         <NeutralLanguage>en</NeutralLanguage>
         <PackageLicenseExpression>AGPL-3.0</PackageLicenseExpression>
+        <SatelliteResourceLanguages>en;de;fr;ja;qps-ploc</SatelliteResourceLanguages>
     </PropertyGroup>
 
     <PropertyGroup Label="Target">
@@ -21,6 +22,9 @@
     <PropertyGroup Label="Build">
         <AppendPlatformToOutputPath>false</AppendPlatformToOutputPath>
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+
+        <!-- StreamJsonRPC compat -->
+        <EnableWindowsTargeting>true</EnableWindowsTargeting>
     </PropertyGroup>
     <PropertyGroup Label="Feature">
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -29,14 +33,19 @@
 
     <ItemGroup>
         <!-- Image conversion to extract PNGs from Lumina -->
-        <PackageReference Include="SixLabors.ImageSharp" Version="3.1.11" />
-        <PackageReference Include="BCnEncoder.Net.ImageSharp" Version="1.1.2" />
+        <PackageReference Include="StbImageWriteSharp" Version="1.16.7" />
+        <PackageReference Include="BCnEncoder.Net" Version="2.3.0" />
+
+        <!-- IoC -->
+        <PackageReference Include="Autofac" Version="9.3.1" />
 
         <!-- Webserver and socketing -->
-        <PackageReference Include="EmbedIO" Version="3.5.2" />
+        <PackageReference Include="StreamJsonRpc" Version="2.25.29" />
+        <PackageReference Include="Nerdbank.MessagePack" Version="1.2.4" />
 
         <!-- Code tooling -->
-        <PackageReference Include="JetBrains.Annotations" Version="2024.2.0" ExcludeAssets="runtime" />
+        <PackageReference Include="JetBrains.Annotations" Version="2026.2.0" ExcludeAssets="runtime" />
+        <PackageReference Update="DotNet.ReproducibleBuilds" Version="2.0.5" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,29 +1,31 @@
-﻿using Lumina.Excel.Sheets;
+﻿using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
+using Lumina.Excel.Sheets;
+using Serilog;
 using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
-using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Game.Managers;
+using XIVDeck.FFXIVPlugin.Contract;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.Marker)]
-public class MarkerStrategy : FixedCommandStrategy<Marker> {
+public class MarkerStrategy(IDataManager dataManager, IFramework framework, ILogger log,
+    ActionAppearanceResolver appearanceResolver) : FixedCommandStrategy<Marker>(dataManager, appearanceResolver) {
 
-    protected override int GetIconForAction(Marker action) => action.Icon;
-
-    protected override ExecutableAction BuildExecutableAction(Marker action) {
-        return new ExecutableAction {
-            ActionId = (int) action.RowId,
-            ActionName = action.Name.ToString(),
-            IconId = this.GetIconForAction(action),
-            HotbarSlotType = HotbarSlotType.Marker,
+    protected override ActionEntry BuildExecutableAction(Marker action) {
+        return new ActionEntry {
+            Id = (int) action.RowId,
+            Name = action.Name.ToString(),
+            Type = HotbarSlotType.Marker,
             SortOrder = action.SortOrder,
         };
     }
 
-    protected override void ExecuteInner(Marker action) {
-        Injections.PluginLog.Debug($"Executing {action} ({action.Name}) directly via hotbar");
+    protected override async Task ExecuteInner(Marker action) {
+        log.Debug("Executing Marker#{ActionId} ({ActionName}) directly via hotbar", action.RowId, action.Name.ExtractText());
 
-        Injections.Framework.RunOnFrameworkThread(delegate {
+        await framework.RunOnFrameworkThread(delegate {
             HotbarManager.ExecuteHotbarAction(HotbarSlotType.Marker, action.RowId);
         });
     }

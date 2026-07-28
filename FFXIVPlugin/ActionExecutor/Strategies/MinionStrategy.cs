@@ -1,63 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using Dalamud.Plugin.Services;
 using Lumina.Excel.Sheets;
+using Serilog;
 using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
-using XIVDeck.FFXIVPlugin.Base;
-using XIVDeck.FFXIVPlugin.Exceptions;
-using XIVDeck.FFXIVPlugin.Game;
-using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils;
+using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Contract;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.Companion)]
-public class MinionStrategy : IActionStrategy {
-    private static ExecutableAction GetExecutableAction(Companion minion) {
-        return new ExecutableAction {
-            ActionId = (int) minion.RowId,
-            ActionName = minion.Singular.ToString(),
-            IconId = minion.Icon,
-            HotbarSlotType = HotbarSlotType.Companion,
+public class MinionStrategy(IDataManager dataManager, ILogger pluginLog, IFramework framework, IUnlockState unlockState,
+    ActionAppearanceResolver appearanceResolver)
+    : UnlockableActionStrategy<Companion>(dataManager, framework, pluginLog, appearanceResolver) {
+    protected override ActionEntry BuildActionEntry(Companion minion) {
+        return new ActionEntry {
+            Id = (int) minion.RowId,
+            Name = minion.Singular.ToString(),
+            Type = HotbarSlotType.Companion,
             SortOrder = minion.Order
         };
     }
 
-    private static Companion? GetMinionById(uint id) {
-        return Injections.DataManager.Excel.GetSheet<Companion>().GetRowOrDefault(id);
-    }
+    protected override bool IsUnlocked(Companion minion) => unlockState.IsCompanionUnlocked(minion);
 
-    public List<ExecutableAction> GetAllowedItems() {
-        return Injections.DataManager.GetExcelSheet<Companion>()
-            .Where(c => c.IsUnlocked())
-            .Select(GetExecutableAction)
-            .ToList();
-    }
+    protected override string GetNotFoundMessage(uint actionId) =>
+        string.Format(UIStrings.MinionStrategy_MinionNotFoundError, actionId);
 
-    public ExecutableAction? GetExecutableActionById(uint actionId) {
-        var action = GetMinionById(actionId);
-        return action == null ? null : GetExecutableAction(action.Value);
-    }
-
-    public void Execute(uint actionId, ActionPayload? _) {
-        var minion = GetMinionById(actionId);
-
-        if (minion == null) {
-            throw new ArgumentNullException(nameof(actionId), string.Format(UIStrings.MinionStrategy_MinionNotFoundError, actionId));
-        }
-
-        if (!minion.Value.IsUnlocked()) {
-            throw new ActionLockedException(string.Format(UIStrings.MinionStrategy_MinionLockedError, minion.Value.Singular.ToTitleCase()));
-        }
-
-        Injections.PluginLog.Debug($"Executing hotbar slot: Minion#{actionId} ({minion.Value.Singular.ToTitleCase()})");
-        Injections.Framework.RunOnFrameworkThread(delegate {
-            HotbarManager.ExecuteHotbarAction(HotbarSlotType.Companion, actionId);
-        });
-    }
-
-    public int GetIconId(uint item) {
-        return GetMinionById(item)?.Icon ?? 0;
-    }
+    protected override string GetLockedMessage(Companion minion) =>
+        string.Format(UIStrings.MinionStrategy_MinionLockedError, minion.Singular.ToTitleCase());
 }

@@ -1,0 +1,30 @@
+{
+  "Master": {
+    "full": "Ṁàšţéŕ Ṽôļûɱé",
+    "short": "Ṁàšţéŕ"
+  },
+  "BackgroundMusic": {
+    "full": "ßàçķĝŕôûñð Ṁûšîç",
+    "short": "ßĜṀ"
+  },
+  "SoundEffects": {
+    "full": "Šôûñð Éƒƒéçţš",
+    "short": "ŠƑẊ"
+  },
+  "Voice": {
+    "full": "Ṽôîçé",
+    "short": "Ṽôîçé"
+  },
+  "System": {
+    "full": "Šýšţéɱ Šôûñðš",
+    "short": "Šýš"
+  },
+  "Ambient": {
+    "full": "Àɱƀîéñţ Šôûñðš",
+    "short": "Àɱƀ"
+  },
+  "Performance": {
+    "full": "Þéŕƒôŕɱàñçé",
+    "short": "ßàŕð"
+  }
+}

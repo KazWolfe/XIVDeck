@@ -1,59 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
-using Lumina.Excel;
 using Lumina.Excel.Sheets;
-using XIVDeck.FFXIVPlugin.Base;
-using XIVDeck.FFXIVPlugin.Exceptions;
-using XIVDeck.FFXIVPlugin.Game;
+using Serilog;
+using XIVDeck.FFXIVPlugin.ActionExecutor.Payloads;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
+using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Contract;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.MainCommand)]
-public class MainCommandStrategy : IActionStrategy {
-    private static readonly ExcelSheet<MainCommand> MainCommands = Injections.DataManager.GetExcelSheet<MainCommand>();
-
-    private static ExecutableAction GetExecutableAction(MainCommand mainCommand) {
-        return new ExecutableAction {
-            ActionId = (int) mainCommand.RowId,
-            ActionName = mainCommand.Name.ToString(),
-            IconId = mainCommand.Icon,
-            Category = mainCommand.MainCommandCategory.Value.Name.ToString(),
-            HotbarSlotType = HotbarSlotType.MainCommand
+public class MainCommandStrategy(IDataManager dataManager, ILogger pluginLog, IFramework framework,
+    ActionAppearanceResolver appearanceResolver)
+    : UnlockableActionStrategy<MainCommand>(dataManager, framework, pluginLog, appearanceResolver) {
+    protected override ActionEntry BuildActionEntry(MainCommand mainCommand) {
+        return new ActionEntry {
+            Id = (int) mainCommand.RowId,
+            Name = mainCommand.Name.ExtractText(),
+            Category = mainCommand.MainCommandCategory.Value.Name.ExtractText(),
+            Type = HotbarSlotType.MainCommand
         };
     }
 
-    public unsafe void Execute(uint actionId, ActionPayload? _) {
-        var mainCommand = MainCommands.GetRowOrDefault(actionId);
-
-        if (mainCommand == null || mainCommand.Value.Category == 0)
-            throw new InvalidOperationException(string.Format(UIStrings.MainCommandStrategy_ActionInvalidError, actionId));
-
-        if (!mainCommand.Value.IsUnlocked())
-            throw new ActionLockedException(string.Format(UIStrings.MainCommandStrategy_MainCommandLocked, mainCommand.Value.Name));
-
-        Injections.Framework.RunOnFrameworkThread(delegate {
-            Framework.Instance()->GetUIModule()->ExecuteMainCommand(actionId);
-        });
+    protected override unsafe bool IsUnlocked(MainCommand mainCommand) {
+        return mainCommand.Category != 0 &&
+               Framework.Instance()->GetUIModule()->IsMainCommandUnlocked(mainCommand.RowId);
     }
 
-    public int GetIconId(uint actionId) {
-        return MainCommands.GetRowOrDefault(actionId)?.Icon ?? 0;
+    protected override string? GetInvalidReason(MainCommand mainCommand) {
+        return mainCommand.Category == 0
+            ? string.Format(UIStrings.MainCommandStrategy_ActionInvalidError, mainCommand.RowId)
+            : null;
     }
 
-    public List<ExecutableAction> GetAllowedItems() {
-        return MainCommands
-            .Where(r => r.Category != 0)
-            .Where(r => r.IsUnlocked())
-            .Select(GetExecutableAction)
-            .ToList();
+    protected override string GetLockedMessage(MainCommand mainCommand) {
+        return string.Format(UIStrings.MainCommandStrategy_MainCommandLocked, mainCommand.Name);
     }
 
-    public ExecutableAction? GetExecutableActionById(uint actionId) {
-        var action = Injections.DataManager.Excel.GetSheet<MainCommand>().GetRowOrDefault(actionId);
-        return action == null ? null : GetExecutableAction(action.Value);
+    protected override unsafe void ExecuteOnFramework(MainCommand mainCommand, ActionPayload? payload) {
+        Framework.Instance()->GetUIModule()->ExecuteMainCommand(mainCommand.RowId);
     }
 }

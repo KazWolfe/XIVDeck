@@ -1,28 +1,43 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using XIVDeck.FFXIVPlugin.ActionExecutor.Payloads;
+using ActionAppearance = XIVDeck.FFXIVPlugin.Contract.ActionAppearance;
+using XIVDeck.FFXIVPlugin.Contract;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor;
 
 public interface IActionStrategy {
-    /**
-     * Execute an event with the given Action ID, depending on the strategy for this action type.
-     */
-    public void Execute(uint actionId, ActionPayload? options = null);
+    /// <summary>
+    /// Executes the specified action ID for this strategy.
+    /// </summary>
+    /// <param name="actionId">The ID to execute.</param>
+    /// <param name="options">Any custom parameters to include.</param>
+    /// <returns>Async task.</returns>
+    public Task Execute(uint actionId, ActionPayload? options = null);
 
-    /**
-     * Get the Icon ID used for a specific action type
-     */
-    public int GetIconId(uint actionId);
+    /// <summary>
+    /// Get an action entry for UI purposes. Ignores lock checks.
+    /// </summary>
+    /// <param name="actionId">The ID to retrieve.</param>
+    /// <returns>Action Entry for UI.</returns>
+    public ActionEntry? GetActionEntryById(uint actionId);
 
-    /**
-     * Get a specific action regardless of unlock state by ID
-     */
-    public ExecutableAction? GetExecutableActionById(uint actionId);
+    /// <summary>
+    /// List all actions that should be displayed to the user via UI.
+    /// </summary>
+    public List<ActionEntry> GetSelectableActions();
 
-    /**
-     * Get a dynamic list of items allowed by this strategy.
-     */
-    public List<ExecutableAction>? GetAllowedItems();
+    /// <summary>
+    /// Get the hotbar slot appearance of a given action ID.
+    /// </summary>
+    /// <param name="actionId">The ID to look up.</param>
+    /// <returns>Async task with action appearance.</returns>
+    public Task<ActionAppearance> GetAppearance(uint actionId);
 
+    /// <summary>
+    /// The type used by <see cref="Execute"/>, if necessary. Used for resolving and type-casting.
+    /// </summary>
+    /// <returns>The type to expect options in.</returns>
     public Type? GetPayloadType() => null;
 }

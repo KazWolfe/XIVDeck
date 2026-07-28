@@ -1,91 +1,129 @@
-﻿import {FFXIVPluginLink} from "./link/ffxivplugin/FFXIVPluginLink";
-import {Streamdeck, Plugin as SDPlugin} from "@rweich/streamdeck-ts";
-import {DidReceiveGlobalSettingsEvent, DidReceiveSettingsEvent} from "@rweich/streamdeck-events/dist/Events/Received";
-import {
-    ApplicationDidLaunchEvent,
-    ApplicationDidTerminateEvent, KeyUpEvent, KeyDownEvent,
-    DialPressEvent, DialRotateEvent, TouchTapEvent,
-    WillAppearEvent, WillDisappearEvent, TitleParametersDidChangeEvent, DialDownEvent, DialUpEvent
-} from "@rweich/streamdeck-events/dist/Events/Received/Plugin";
-import {DefaultGlobalSettings, GlobalSettings} from "./util/GlobalSettings";
-import {ButtonDispatcher} from "./button/ButtonDispatcher";
-import {VersionUtils} from "./util/VersionUtils";
-import {ObjectUtils} from "./util/ObjectUtils";
+﻿import streamDeck from "@elgato/streamdeck";
 
-class XIVDeckPlugin {
-    sdPluginLink: SDPlugin = new Streamdeck().plugin();
-    xivPluginLink: FFXIVPluginLink = new FFXIVPluginLink(this.sdPluginLink);
+import "./settings/migrations/GlobalSettingsMigrations";
+import "./settings/migrations/HotbarSettingsMigrations";
+import "./settings/migrations/CommandSettingsMigrations";
+import "./settings/migrations/ExecActionSettingsMigrations";
+import "./settings/migrations/MacroSettingsMigrations";
+import "./settings/migrations/ClassSettingsMigrations";
+import "./settings/migrations/VolumeSettingsMigrations";
 
-    private dispatcher: ButtonDispatcher = new ButtonDispatcher();
+import {SettingsGateway} from "./settings/SettingsGateway";
+import {DEFAULT_TRANSPORT_ID, GlobalSettings} from "./settings/GlobalSettings";
+import {GlobalSettingsStore} from "./settings/GlobalSettingsProvider";
+import {XivDeckClient} from "./rpc/XivDeckClient";
+import {ClientRegistry} from "./rpc/ClientProvider";
+import {makeTransportResolver, transportsEqual} from "./rpc/TransportDiscovery";
+import {ControlDispatcher} from "./control/ControlDispatcher";
+import i18n from "./i18n/i18n";
+import {registerGlobalPiCommand} from "./rpc/GlobalPiCommands";
+import {pushToPropertyInspector} from "./rpc/PiPush";
+import {ConnectionInfo} from "./rpc/messages/ConnectionInfo";
+import {ProcessWatcher} from "./util/ProcessWatcher";
+import {EventEmitter} from "./util/EventEmitter";
 
-    constructor() {
-        this.sdPluginLink.on('didReceiveGlobalSettings', (ev: DidReceiveGlobalSettingsEvent) => this.handleDidReceiveGlobalSettings(ev));
+const FFXIV_PROCESS_NAME = "ffxiv_dx11.exe";
 
-        this.sdPluginLink.on('applicationDidLaunch', (ev: ApplicationDidLaunchEvent) => this.handleApplicationDidLaunch(ev));
-        this.sdPluginLink.on('applicationDidTerminate', (ev: ApplicationDidTerminateEvent) => this.handleApplicationDidTerminate(ev));
+async function main(): Promise<void> {
+    EventEmitter.onListenerError = (event, err) => {
+        streamDeck.logger.error(`Listener for "${String(event)}" failed:`, err);
+    };
 
-        // button lifecycle
-        this.sdPluginLink.on('willAppear', (ev: WillAppearEvent) => this.dispatcher.handleWillAppear(ev));
-        this.sdPluginLink.on('willDisappear', (ev: WillDisappearEvent) => this.dispatcher.handleWillDisappear(ev));
-        this.sdPluginLink.on('didReceiveSettings', (ev: DidReceiveSettingsEvent) => this.dispatcher.handleReceivedSettings(ev));
+    const clients = new ClientRegistry();
+    const client = new XivDeckClient();
+    clients.addClient(DEFAULT_TRANSPORT_ID, client);
 
-        // button interactivity events
-        this.sdPluginLink.on('keyDown', (ev: KeyDownEvent) => this.dispatcher.dispatch(ev));
-        this.sdPluginLink.on('keyUp', (ev: KeyUpEvent) => this.dispatcher.dispatch(ev));
-        this.sdPluginLink.on('dialRotate', (ev: DialRotateEvent) => this.dispatcher.dispatch(ev));
-        this.sdPluginLink.on('dialDown', (ev: DialDownEvent) => this.dispatcher.dispatch(ev));
-        this.sdPluginLink.on('dialUp', (ev: DialUpEvent) => this.dispatcher.dispatch(ev));
-        this.sdPluginLink.on('touchTap', (ev: TouchTapEvent) => this.dispatcher.dispatch(ev));
-        this.sdPluginLink.on('titleParametersDidChange', (ev: TitleParametersDidChangeEvent) => this.dispatcher.dispatch(ev));
+    const globalSettings = new GlobalSettingsStore();
+    const dispatcher = new ControlDispatcher(clients, globalSettings);
+    dispatcher.initialize();
 
-        // deprecated events
-        this.sdPluginLink.on('dialPress', (ev: DialPressEvent) => {
-            let appInfo = this.sdPluginLink.info.application as Record<string, string>;
-            if (VersionUtils.semverCompare(appInfo['version'], '6.1') >= 0) {
-                console.debug('Got deprecated event dialPress in a version that sends new events, ignoring.');
-                return;
-            }
+    const processWatcher = new ProcessWatcher(FFXIV_PROCESS_NAME);
 
-            this.dispatcher.dispatch(ev);
-        });
+    const getConnectionInfo = (): ConnectionInfo => ({
+        gameVersion: client.gameVersion ?? null,
+        transport: client.isReady() ? client.transportLabel ?? null : null,
+        gameDetected: processWatcher.isRunning(),
+    });
 
+    const broadcastConnectionState = () =>
+        void pushToPropertyInspector("connectionStateChanged", getConnectionInfo());
+
+    client.on("_ready", () => {
+        processWatcher.suspend();
+        void dispatcher.refreshAll();
+        broadcastConnectionState();
+    });
+    client.on("_closed", () => {
+        processWatcher.resume();
+        void dispatcher.refreshAll();
+        broadcastConnectionState();
+    });
+
+    registerGlobalPiCommand("getConnectionInfo", () => getConnectionInfo());
+
+    const connect = () => {
+        const current = globalSettings.getSettings();
+        return client.connect(makeTransportResolver(current.transports, current.chosenTransport));
+    };
+
+    // NOTE: We need to bring this up ASAP, since everything else depends on our link back to the SD being operational.
+    await streamDeck.connect();
+
+    await i18n.changeLanguage(streamDeck.info.application.language);
+
+    const raw = await streamDeck.settings.getGlobalSettings<GlobalSettings>();
+    const loaded = SettingsGateway.load<GlobalSettings>("global", raw);
+    if (loaded !== raw) {
+        await streamDeck.settings.setGlobalSettings(loaded);
     }
+    globalSettings.update(loaded);
 
-    handleDidReceiveGlobalSettings(event: DidReceiveGlobalSettingsEvent) {
-        this.sdPluginLink.logMessage(`Received global settings: ${JSON.stringify(event.settings)}`);
-
-        let globalSettings = ObjectUtils.deepMerge(DefaultGlobalSettings, (event.settings as GlobalSettings) || {});
-        if (globalSettings.ws.hostname) this.xivPluginLink.hostname = globalSettings.ws.hostname;
-        this.xivPluginLink.port = globalSettings.ws.port;
-
-        this.sdPluginLink.logMessage(`FINAL PAYLOAD: ${JSON.stringify(globalSettings)}`);
-
-        if (this.xivPluginLink.isReady()) {
-            // will automatically reconnect, so long as the game is still alive.
-            this.xivPluginLink.gracefulClose();
-        } else {
-            this.xivPluginLink.connect(true);
+    streamDeck.settings.onDidReceiveGlobalSettings<GlobalSettings>(async ev => {
+        const migrated = SettingsGateway.load<GlobalSettings>("global", ev.settings);
+        if (migrated !== ev.settings) {
+            await streamDeck.settings.setGlobalSettings(migrated);
         }
-    }
 
-    handleApplicationDidLaunch(ev: ApplicationDidLaunchEvent) {
-        this.sdPluginLink.logMessage(`Received launch notification for process: ${ev.application}`);
+        const previous = globalSettings.getSettings();
+        globalSettings.update(migrated);
 
-        // on launch, mark the game as alive and request global settings to force connect.
-        this.xivPluginLink.isGameAlive = true;
-        this.sdPluginLink.getGlobalSettings(this.sdPluginLink.pluginUUID!);
-    }
+        // only reconnect if the transport configuration actually changed
+        if (!transportsEqual(previous.transports, migrated.transports) || previous.chosenTransport !== migrated.chosenTransport) {
+            client.shutdown();
 
-    handleApplicationDidTerminate(ev: ApplicationDidTerminateEvent) {
-        this.sdPluginLink.logMessage(`Received shutdown notification for process: ${ev.application}`);
+            if (processWatcher.isRunning()) await connect();
+        }
+    });
 
-        // Mark the game as dead, and stop retries.
-        this.xivPluginLink.isGameAlive = false;
-        this.xivPluginLink.shutdown();
-    }
+    processWatcher.on("launched", () => {
+        streamDeck.logger.info(`Detected process launch: ${FFXIV_PROCESS_NAME}`);
+        void connect();
+        broadcastConnectionState();
+    });
+
+    processWatcher.on("terminated", () => {
+        streamDeck.logger.info(`Detected process termination: ${FFXIV_PROCESS_NAME}`);
+        client.shutdown();
+        broadcastConnectionState();
+    });
+
+    processWatcher.on("error", err => {
+        streamDeck.logger.warn(`Failed to check for process ${FFXIV_PROCESS_NAME}:`, err);
+    });
+
+    streamDeck.system.onApplicationDidLaunch(ev => {
+        streamDeck.logger.debug(`Stream Deck reported application launch: ${ev.application}`);
+        processWatcher.nudge();
+    });
+    streamDeck.system.onApplicationDidTerminate(ev => {
+        streamDeck.logger.debug(`Stream Deck reported application termination: ${ev.application}`);
+        processWatcher.nudge();
+    });
+
+    processWatcher.start();
 }
 
-const plugin = new XIVDeckPlugin();
-
-(<any>window).sdPlugin = plugin;
-export default plugin;
+main().catch(err => {
+    console.error("[plugin] Fatal error during startup:", err);
+    process.exitCode = 1;
+});

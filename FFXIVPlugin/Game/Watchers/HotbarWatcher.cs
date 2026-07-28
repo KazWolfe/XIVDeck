@@ -1,70 +1,136 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
+using Serilog;
 using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
-using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.Contract;
 using XIVDeck.FFXIVPlugin.Game.Managers;
-using XIVDeck.FFXIVPlugin.Server.Messages.Outbound;
-using XIVDeck.FFXIVPlugin.Server.Types;
+using XIVDeck.FFXIVPlugin.IoC;
 
 namespace XIVDeck.FFXIVPlugin.Game.Watchers;
 
+[Service(ServiceFlags.Singleton)]
 public class HotbarWatcher : IDisposable {
-    private readonly HotbarSlot[,] _hotbarCache = new HotbarSlot[17,16];
+    private readonly record struct SlotSnapshot(
+        HotbarSlotType CommandType,
+        uint CommandId,
+        HotbarSlotType ApparentType,
+        uint ApparentId);
 
-    public HotbarWatcher() {
-        Injections.Framework.Update += this.OnGameUpdate;
+    private readonly ILogger _log;
+    private readonly IFramework _framework;
+
+    private readonly Lock _registrationLock = new();
+    private readonly List<Registration> _registrations = [];
+
+    private IReadOnlyDictionary<HotbarSlotRef, Registration[]> _watched =
+        new Dictionary<HotbarSlotRef, Registration[]>();
+
+    private readonly Dictionary<HotbarSlotRef, SlotSnapshot> _baselines = new();
+    private IReadOnlyDictionary<HotbarSlotRef, Registration[]>? _baselinesFor;
+
+    public HotbarWatcher(ILogger log, IFramework framework) {
+        this._log = log;
+        this._framework = framework;
+        this._framework.Update += this.OnGameUpdate;
+    }
+
+    public Registration Register(Action<IReadOnlyList<HotbarSlotRef>> onChanged) {
+        var registration = new Registration(this, onChanged);
+
+        lock (this._registrationLock) {
+            this._registrations.Add(registration);
+        }
+
+        return registration;
+    }
+
+    private void Update(Registration registration, IReadOnlySet<HotbarSlotRef>? slots) {
+        lock (this._registrationLock) {
+            if (slots == null) {
+                this._registrations.Remove(registration);
+            } else {
+                registration.Slots = slots;
+            }
+
+            var watched = this._registrations
+                .SelectMany(r => r.Slots, (r, slot) => (Slot: slot, Registration: r))
+                .GroupBy(e => e.Slot, e => e.Registration)
+                .ToDictionary(g => g.Key, g => g.ToArray());
+
+            Volatile.Write(ref this._watched, watched);
+        }
     }
 
     private unsafe void OnGameUpdate(IFramework framework) {
-        var hotbarModule =
-            Framework.Instance()->GetUIModule()->
-                GetRaptureHotbarModule();
+        var watched = Volatile.Read(ref this._watched);
 
-        List<MicroHotbarSlot> updatedSlots = new();
+        if (!ReferenceEquals(watched, this._baselinesFor)) {
+            foreach (var slot in this._baselines.Keys.Where(slot => !watched.ContainsKey(slot)).ToList()) {
+                this._baselines.Remove(slot);
+            }
 
-        for (var hotbarId = 0; hotbarId < 17; hotbarId++) {
-            ref var hotbar = ref hotbarModule->Hotbars[hotbarId];
+            this._baselinesFor = watched;
+        }
 
-            for (var slotId = 0; slotId < 16; slotId++) {
-                var gameSlot = hotbar.GetHotbarSlot((uint) slotId);
-                var cachedSlot = this._hotbarCache[hotbarId, slotId];
+        if (watched.Count == 0) return;
 
-                // We calculate IconB first so that we know what "appearance" the slot has. This allows us to optimize
-                // icon lookups, as they're the more expensive of the two calls. If IconB hasn't changed, the icon
-                // itself wouldn't have changed either.
-                HotbarManager.CalcBForSlot(gameSlot, out var calcApparentType, out var calcApparentId);
+        Dictionary<Registration, List<HotbarSlotRef>>? changes = null;
 
-                if (gameSlot->CommandId == cachedSlot.CommandId &&
-                    gameSlot->CommandType == cachedSlot.CommandType &&
-                    calcApparentType == cachedSlot.ApparentSlotType &&
-                    calcApparentId == cachedSlot.ApparentActionId) continue;
+        foreach (var (slot, registrations) in watched) {
+            var gameSlot = HotbarManager.GetSlotByIdFixed((uint)slot.HotbarId, (uint)slot.SlotId);
+            HotbarManager.ResolveApparentAction(gameSlot, out var apparentType, out var apparentId);
+            var current = new SlotSnapshot(gameSlot->CommandType, gameSlot->CommandId, apparentType, apparentId);
 
-                var calculatedIcon = (uint)gameSlot->GetIconIdForSlot(calcApparentType, calcApparentId);
-                if (calculatedIcon == cachedSlot.IconId) continue;
+            if (!this._baselines.TryGetValue(slot, out var previous)) {
+                this._baselines[slot] = current;
+                continue;
+            }
 
-                updatedSlots.Add(new MicroHotbarSlot(hotbarId, slotId));
-                this._hotbarCache[hotbarId, slotId] = new HotbarSlot {
-                    CommandId = gameSlot->CommandId,
-                    IconId = calculatedIcon,
-                    CommandType = gameSlot->CommandType,
-                    ApparentSlotType = calcApparentType,
-                    ApparentActionId = calcApparentId
-                };
+            if (current == previous) continue;
+            this._baselines[slot] = current;
+
+            changes ??= new Dictionary<Registration, List<HotbarSlotRef>>();
+            foreach (var registration in registrations) {
+                if (!changes.TryGetValue(registration, out var list)) changes[registration] = list = [];
+                list.Add(slot);
             }
         }
 
-        if (updatedSlots.Count > 0) {
-            Injections.PluginLog.Debug("Detected a change to hotbar(s)!");
-            var message = new WSStateUpdateMessage<List<MicroHotbarSlot>>("Hotbar", updatedSlots);
-            XIVDeckPlugin.Instance.Server.BroadcastMessage(message);
+        if (changes == null) return;
+
+        foreach (var (registration, slots) in changes) {
+            try {
+                registration.OnChanged(slots);
+            } catch (Exception ex) {
+                this._log.Error(ex, "Hotbar watcher callback failed");
+            }
         }
     }
 
     public void Dispose() {
-        Injections.Framework.Update -= this.OnGameUpdate;
+        this._framework.Update -= this.OnGameUpdate;
+    }
 
-        GC.SuppressFinalize(this);
+    public sealed class Registration : IDisposable {
+        private readonly HotbarWatcher _watcher;
+        internal readonly Action<IReadOnlyList<HotbarSlotRef>> OnChanged;
+        internal IReadOnlySet<HotbarSlotRef> Slots = new HashSet<HotbarSlotRef>();
+
+        internal Registration(HotbarWatcher watcher, Action<IReadOnlyList<HotbarSlotRef>> onChanged) {
+            this._watcher = watcher;
+            this.OnChanged = onChanged;
+        }
+
+        public void SetSlots(IEnumerable<HotbarSlotRef> slots) {
+            this._watcher.Update(this, slots.ToHashSet());
+        }
+
+        public void Dispose() {
+            this._watcher.Update(this, null);
+        }
     }
 }

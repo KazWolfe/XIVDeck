@@ -60,918 +60,7 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No registered action of type {0} was found..
-        /// </summary>
-        internal static string ActionController_UnknownActionTypeError {
-            get {
-                return ResourceManager.GetString("ActionController_UnknownActionTypeError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to API key missing or invalid..
-        /// </summary>
-        internal static string AuthModule_BadAPIKeyError {
-            get {
-                return ResourceManager.GetString("AuthModule_BadAPIKeyError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot switch to a class with ID less than 1..
-        /// </summary>
-        internal static string ClassController_ClassLessThan1Error {
-            get {
-                return ResourceManager.GetString("ClassController_ClassLessThan1Error", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No gearset was found for {0}, so your gearset for {1} was used instead..
-        /// </summary>
-        internal static string ClassController_FallbackClassUsed {
-            get {
-                return ResourceManager.GetString("ClassController_FallbackClassUsed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A class with ID {0} does not exist!.
-        /// </summary>
-        internal static string ClassController_InvalidClassIdError {
-            get {
-                return ResourceManager.GetString("ClassController_InvalidClassIdError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Couldn&apos;t switch to {0} because you don&apos;t have a gearset for this class. Create one and try again..
-        /// </summary>
-        internal static string ClassController_NoGearsetForClassError {
-            get {
-                return ResourceManager.GetString("ClassController_NoGearsetForClassError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No Collection with ID {0} exists..
-        /// </summary>
-        internal static string CollectionStrategy_CollectionNotFoundError {
-            get {
-                return ResourceManager.GetString("CollectionStrategy_CollectionNotFoundError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A command to run must be specified..
-        /// </summary>
-        internal static string CommandController_MissingCommandError {
-            get {
-                return ResourceManager.GetString("CommandController_MissingCommandError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Commands must start with a slash..
-        /// </summary>
-        internal static string CommandController_NotCommandError {
-            get {
-                return ResourceManager.GetString("CommandController_NotCommandError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The emote &quot;{0}&quot; does not have an associated text command..
-        /// </summary>
-        internal static string EmoteStrategy_EmoteDoesntHaveCommandError {
-            get {
-                return ResourceManager.GetString("EmoteStrategy_EmoteDoesntHaveCommandError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The emote &quot;{0}&quot; isn&apos;t unlocked and therefore can&apos;t be used..
-        /// </summary>
-        internal static string EmoteStrategy_EmoteLockedError {
-            get {
-                return ResourceManager.GetString("EmoteStrategy_EmoteLockedError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} - ERROR.
-        /// </summary>
-        internal static string ErrorHandler_ErrorPrefix {
-            get {
-                return ResourceManager.GetString("ErrorHandler_ErrorPrefix", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The {0} ID {1} has not been unlocked and cannot be used..
-        /// </summary>
-        internal static string Exceptions_ActionLocked {
-            get {
-                return ResourceManager.GetString("Exceptions_ActionLocked", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No {0} with ID {1} was found..
-        /// </summary>
-        internal static string Exceptions_ActionNotFound {
-            get {
-                return ResourceManager.GetString("Exceptions_ActionNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A player is not logged in to the game..
-        /// </summary>
-        internal static string Exceptions_PlayerNotLoggedIn {
-            get {
-                return ResourceManager.GetString("Exceptions_PlayerNotLoggedIn", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No command exists for Extra Command {0}. REPORT THIS BUG!.
-        /// </summary>
-        internal static string ExtraCommandStrategy_NoCommandError {
-            get {
-                return ResourceManager.GetString("ExtraCommandStrategy_NoCommandError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to An action of type {0} with ID {1} does not exist..
-        /// </summary>
-        internal static string FixedCommandStrategy_ActionNotFoundError {
-            get {
-                return ResourceManager.GetString("FixedCommandStrategy_ActionNotFoundError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The action with ID {0} is marked as illegal and cannot be used..
-        /// </summary>
-        internal static string FixedCommandStrategy_IllegalActionError {
-            get {
-                return ResourceManager.GetString("FixedCommandStrategy_IllegalActionError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A sheet of type {0} does not exist..
-        /// </summary>
-        internal static string FixedCommandStrategy_SheetNotFoundError {
-            get {
-                return ResourceManager.GetString("FixedCommandStrategy_SheetNotFoundError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ignore For Now.
-        /// </summary>
-        internal static string ForcedUpdateNag_BypassButton {
-            get {
-                return ResourceManager.GetString("ForcedUpdateNag_BypassButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To ignore this error temporarily, hold CTRL.
-        ///This will not re-enable the plugin..
-        /// </summary>
-        internal static string ForcedUpdateNag_BypassInstructions {
-            get {
-                return ResourceManager.GetString("ForcedUpdateNag_BypassInstructions", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The XIVDeck Stream Deck Plugin is out of date!.
-        /// </summary>
-        internal static string ForcedUpdateNag_Headline {
-            get {
-                return ResourceManager.GetString("ForcedUpdateNag_Headline", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The version of the XIVDeck Stream Deck Plugin currently installed is not compatible with the installed version of the Dalamud Plugin. To re-enable XIVDeck, please download and install the latest version of the Stream Deck Plugin from the button below..
-        /// </summary>
-        internal static string ForcedUpdateNag_ProblemDescription {
-            get {
-                return ResourceManager.GetString("ForcedUpdateNag_ProblemDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Open Discord.
-        /// </summary>
-        internal static string ForcedUpdateNag_SupportButton {
-            get {
-                return ResourceManager.GetString("ForcedUpdateNag_SupportButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Stuck? Visit the XIVLauncher &amp; Dalamud Discord for help!.
-        /// </summary>
-        internal static string ForcedUpdateNag_SupportInfo {
-            get {
-                return ResourceManager.GetString("ForcedUpdateNag_SupportInfo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A class with ID {0} does not exist..
-        /// </summary>
-        internal static string GameClass_NotFoundError {
-            get {
-                return ResourceManager.GetString("GameClass_NotFoundError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unrecognized job category for class ID {0}. REPORT THIS BUG!.
-        /// </summary>
-        internal static string GameClass_UncategorizedError {
-            get {
-                return ResourceManager.GetString("GameClass_UncategorizedError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No gearset exists in slot number {0}..
-        /// </summary>
-        internal static string GearsetStrategy_GearsetNotFoundError {
-            get {
-                return ResourceManager.GetString("GearsetStrategy_GearsetNotFoundError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The action &quot;{0}&quot; (ID {1}) is marked as illegal and cannot be used..
-        /// </summary>
-        internal static string GeneralActionStrategy_ActionIllegalError {
-            get {
-                return ResourceManager.GetString("GeneralActionStrategy_ActionIllegalError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The action &quot;{0}&quot; is not yet unlocked..
-        /// </summary>
-        internal static string GeneralActionStrategy_ActionLockedError {
-            get {
-                return ResourceManager.GetString("GeneralActionStrategy_ActionLockedError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to When Hotbar ID &gt;= 10, Slot ID must be between 0 and 15.
-        /// </summary>
-        internal static string HotbarController_CrossHotbarInvalidSlotError {
-            get {
-                return ResourceManager.GetString("HotbarController_CrossHotbarInvalidSlotError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Hotbar ID must be between 0 and 17.
-        /// </summary>
-        internal static string HotbarController_InvalidHotbarIdError {
-            get {
-                return ResourceManager.GetString("HotbarController_InvalidHotbarIdError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to An invalid hotbar or slot was triggered..
-        /// </summary>
-        internal static string HotbarController_InvalidHotbarOrSlotError {
-            get {
-                return ResourceManager.GetString("HotbarController_InvalidHotbarOrSlotError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to When Hotbar ID &lt; 10, Slot ID must be between 0 and 11.
-        /// </summary>
-        internal static string HotbarController_NormalHotbarInvalidSlotError {
-            get {
-                return ResourceManager.GetString("HotbarController_NormalHotbarInvalidSlotError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot switch instruments while in Performance mode..
-        /// </summary>
-        internal static string InstrumentStrategy_CurrentlyPerformingError {
-            get {
-                return ResourceManager.GetString("InstrumentStrategy_CurrentlyPerformingError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No instrument with ID {0} exists..
-        /// </summary>
-        internal static string InstrumentStrategy_InstrumentNotFoundError {
-            get {
-                return ResourceManager.GetString("InstrumentStrategy_InstrumentNotFoundError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Performance mode hasn&apos;t been unlocked yet..
-        /// </summary>
-        internal static string InstrumentStrategy_PerformanceLockedError {
-            get {
-                return ResourceManager.GetString("InstrumentStrategy_PerformanceLockedError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The specified macro is empty and cannot be used..
-        /// </summary>
-        internal static string MacroStrategy_MacroEmptyError {
-            get {
-                return ResourceManager.GetString("MacroStrategy_MacroEmptyError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Main command action ID {0} is not valid..
-        /// </summary>
-        internal static string MainCommandStrategy_ActionInvalidError {
-            get {
-                return ResourceManager.GetString("MainCommandStrategy_ActionInvalidError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The main command &quot;{0}&quot; cannot be used at this time..
-        /// </summary>
-        internal static string MainCommandStrategy_MainCommandLocked {
-            get {
-                return ResourceManager.GetString("MainCommandStrategy_MainCommandLocked", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The minion &quot;{0}&quot; isn&apos;t unlocked and therefore can&apos;t be used..
-        /// </summary>
-        internal static string MinionStrategy_MinionLockedError {
-            get {
-                return ResourceManager.GetString("MinionStrategy_MinionLockedError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No minion with ID {0} exists..
-        /// </summary>
-        internal static string MinionStrategy_MinionNotFoundError {
-            get {
-                return ResourceManager.GetString("MinionStrategy_MinionNotFoundError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The mount &quot;{0}&quot; isn&apos;t unlocked and therefore can&apos;t be used..
-        /// </summary>
-        internal static string MountStrategy_MountLockedError {
-            get {
-                return ResourceManager.GetString("MountStrategy_MountLockedError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No mount with ID {0} exists..
-        /// </summary>
-        internal static string MountStrategy_MountNotFoundError {
-            get {
-                return ResourceManager.GetString("MountStrategy_MountNotFoundError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Multiboxing has been detected. XIVDeck might not work properly!.
-        /// </summary>
-        internal static string MultiboxNag_ChatWarning {
-            get {
-                return ResourceManager.GetString("MultiboxNag_ChatWarning", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Close.
-        /// </summary>
-        internal static string MultiboxNag_CloseButton {
-            get {
-                return ResourceManager.GetString("MultiboxNag_CloseButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to XIVDeck has detected another instance of Final Fantasy XIV running on your computer. As such, it has been disabled in this client..
-        /// </summary>
-        internal static string MultiboxNag_MultiboxingDetected {
-            get {
-                return ResourceManager.GetString("MultiboxNag_MultiboxingDetected", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Multiboxing is unsupported and there may be unexpected behavior. If your Stream Deck no longer works after receiving this message, please restart all instances of your game client..
-        /// </summary>
-        internal static string MultiboxNag_MultiboxingIsUnsupported {
-            get {
-                return ResourceManager.GetString("MultiboxNag_MultiboxingIsUnsupported", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Don&apos;t show this warning again..
-        /// </summary>
-        internal static string MultiboxNag_SuppressWarning {
-            get {
-                return ResourceManager.GetString("MultiboxNag_SuppressWarning", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Open XIVDeck Download Page.
-        /// </summary>
-        internal static string Nag_OpenGithubDownloadButton {
-            get {
-                return ResourceManager.GetString("Nag_OpenGithubDownloadButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Open XIVDeck Settings.
-        /// </summary>
-        internal static string Nag_OpenSettingsButton {
-            get {
-                return ResourceManager.GetString("Nag_OpenSettingsButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The fashion accessory &quot;{0}&quot; isn&apos;t unlocked and therefore can&apos;t be used..
-        /// </summary>
-        internal static string OrnamentStrategy_OrnamentLockedError {
-            get {
-                return ResourceManager.GetString("OrnamentStrategy_OrnamentLockedError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ignore For Now.
-        /// </summary>
-        internal static string PortInUseNag_IgnoreForNow {
-            get {
-                return ResourceManager.GetString("PortInUseNag_IgnoreForNow", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to XIVDeck has detected that port {0} is already in use by another application..
-        /// </summary>
-        internal static string PortInUseNag_PortAlreadyInUse {
-            get {
-                return ResourceManager.GetString("PortInUseNag_PortAlreadyInUse", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to XIVDeck has detected that port {0} is .
-        /// </summary>
-        internal static string PortInUseNag_PortIsAlreadyInUse {
-            get {
-                return ResourceManager.GetString("PortInUseNag_PortIsAlreadyInUse", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to In order to use XIVDeck, this port must be changed to a free one. To do this, please choose a new port number in the XIVDeck Game Plugin settings, and enter that same port number in the XIVDeck Stream Deck Plugin settings..
-        /// </summary>
-        internal static string PortInUseNag_ResolutionInstructions {
-            get {
-                return ResourceManager.GetString("PortInUseNag_ResolutionInstructions", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The XIVDeck API port is already in use!.
-        /// </summary>
-        internal static string PortInUseNag_Title {
-            get {
-                return ResourceManager.GetString("PortInUseNag_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to API Port.
-        /// </summary>
-        internal static string SettingsWindow_APIPort {
-            get {
-                return ResourceManager.GetString("SettingsWindow_APIPort", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Changing this setting will re-trigger the Welcome screen.
-        ///            
-        ///Default port: {0}, Range: {1}-{2}.
-        /// </summary>
-        internal static string SettingsWindow_APIPort_Help {
-            get {
-                return ResourceManager.GetString("SettingsWindow_APIPort_Help", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Apply Settings.
-        /// </summary>
-        internal static string SettingsWindow_ApplyButton {
-            get {
-                return ResourceManager.GetString("SettingsWindow_ApplyButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Use /micon Icons.
-        /// </summary>
-        internal static string SettingsWindow_Experiment_MIcon {
-            get {
-                return ResourceManager.GetString("SettingsWindow_Experiment_MIcon", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Experimental Settings.
-        /// </summary>
-        internal static string SettingsWindow_ExperimentalSettings {
-            get {
-                return ResourceManager.GetString("SettingsWindow_ExperimentalSettings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to XIVDeck GitHub.
-        /// </summary>
-        internal static string SettingsWindow_GitHubLink {
-            get {
-                return ResourceManager.GetString("SettingsWindow_GitHubLink", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Listen IP: {0}.
-        /// </summary>
-        internal static string SettingsWindow_ListenIP {
-            get {
-                return ResourceManager.GetString("SettingsWindow_ListenIP", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Listen on All Interfaces.
-        /// </summary>
-        internal static string SettingsWindow_ListenOnNetwork {
-            get {
-                return ResourceManager.GetString("SettingsWindow_ListenOnNetwork", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to DANGER: SAFE MODE DISABLED! You may be able to send illegal commands from your Stream Deck to the game..
-        /// </summary>
-        internal static string SettingsWindow_SafeModeDisabledWarning {
-            get {
-                return ResourceManager.GetString("SettingsWindow_SafeModeDisabledWarning", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to XIVDeck Game Plugin Settings.
-        /// </summary>
-        internal static string SettingsWindow_Title {
-            get {
-                return ResourceManager.GetString("SettingsWindow_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to When this option is enabled, the Stream Deck will respect any /micon commands in macros. When disabled, the Stream Deck will only show the Macro Icon from the provided drop-down.
-        ///
-        ///Default: Off.
-        /// </summary>
-        internal static string SettingsWindow_UseMIcon_Help {
-            get {
-                return ResourceManager.GetString("SettingsWindow_UseMIcon_Help", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to XIVDeck is accessible from computers on your network!.
-        /// </summary>
-        internal static string SettingsWindow_XIVDeckPortOpen {
-            get {
-                return ResourceManager.GetString("SettingsWindow_XIVDeckPortOpen", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Already Installed the Companion Plugin?.
-        /// </summary>
-        internal static string SetupNag_AlreadyInstalled {
-            get {
-                return ResourceManager.GetString("SetupNag_AlreadyInstalled", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to If the XIVDeck Stream Deck Plugin has already been installed, please verify that the port number in the Stream Deck Plugin&apos;s configuration is set to {0}, and that you have created at least one button on your Stream Deck..
-        /// </summary>
-        internal static string SetupNag_AlreadyInstalledHelp {
-            get {
-                return ResourceManager.GetString("SetupNag_AlreadyInstalledHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ignore for now.
-        /// </summary>
-        internal static string SetupNag_BypassButton {
-            get {
-                return ResourceManager.GetString("SetupNag_BypassButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Don&apos;t care? Hold CTRL to bypass this dialog!.
-        /// </summary>
-        internal static string SetupNag_BypassHint {
-            get {
-                return ResourceManager.GetString("SetupNag_BypassHint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Current port: {0}.
-        /// </summary>
-        internal static string SetupNag_CurrentPort {
-            get {
-                return ResourceManager.GetString("SetupNag_CurrentPort", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This message will automatically be dismissed once the Stream Deck Plugin has been detected..
-        /// </summary>
-        internal static string SetupNag_DismissHelp {
-            get {
-                return ResourceManager.GetString("SetupNag_DismissHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Welcome to XIVDeck!.
-        /// </summary>
-        internal static string SetupNag_Headline {
-            get {
-                return ResourceManager.GetString("SetupNag_Headline", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Wait, how do I install this?.
-        /// </summary>
-        internal static string SetupNag_HowInstall {
-            get {
-                return ResourceManager.GetString("SetupNag_HowInstall", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The Stream Deck application will take care of the rest and set the plugin up with the default settings..
-        /// </summary>
-        internal static string SetupNag_HowInstall_OtherInfo {
-            get {
-                return ResourceManager.GetString("SetupNag_HowInstall_OtherInfo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to In order to install XIVDeck, you need an Elgato Stream Deck and the Stream Deck software..
-        /// </summary>
-        internal static string SetupNag_HowInstall_Requirements {
-            get {
-                return ResourceManager.GetString("SetupNag_HowInstall_Requirements", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 1. Visit the XIVDeck Download Page using the button above.
-        ///2. Download &quot;XIVDeck.streamDeckPlugin&quot; and open it.
-        ///3. When prompted, choose to install the custom action..
-        /// </summary>
-        internal static string SetupNag_HowInstall_Steps {
-            get {
-                return ResourceManager.GetString("SetupNag_HowInstall_Steps", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Click to join the Discord!.
-        /// </summary>
-        internal static string SetupNag_JoinDiscord {
-            get {
-                return ResourceManager.GetString("SetupNag_JoinDiscord", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This message will return on every game launch!.
-        /// </summary>
-        internal static string SetupNag_MessageWillReturn {
-            get {
-                return ResourceManager.GetString("SetupNag_MessageWillReturn", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to If you need to change the port the server is hosted on, you may do so from XIVDeck&apos;s settings..
-        /// </summary>
-        internal static string SetupNag_PortChangeHelp {
-            get {
-                return ResourceManager.GetString("SetupNag_PortChangeHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to XIVDeck requires the use of the companion XIVDeck Stream Deck plugin to be useful. If you haven&apos;t yet downloaded the companion plugin from GitHub, please do so now..
-        /// </summary>
-        internal static string SetupNag_ResolutionHelp {
-            get {
-                return ResourceManager.GetString("SetupNag_ResolutionHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Stream Deck.
-        /// </summary>
-        internal static string StreamDeck {
-            get {
-                return ResourceManager.GetString("StreamDeck", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This message may be dismissed, but will reappear so long as test mode is enabled and a version mismatch is detected..
-        /// </summary>
-        internal static string TestingUpdateNag_DismissHelp {
-            get {
-                return ResourceManager.GetString("TestingUpdateNag_DismissHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Download v{0}.
-        /// </summary>
-        internal static string TestingUpdateNag_DownloadButton {
-            get {
-                return ResourceManager.GetString("TestingUpdateNag_DownloadButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Warning: XIVDeck Testing Version Mismatch.
-        /// </summary>
-        internal static string TestingUpdateNag_Headline {
-            get {
-                return ResourceManager.GetString("TestingUpdateNag_Headline", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ignore For Now.
-        /// </summary>
-        internal static string TestingUpdateNag_IgnoreButton {
-            get {
-                return ResourceManager.GetString("TestingUpdateNag_IgnoreButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A version mismatch was detected between the currently-installed version of the Stream Deck Plugin and the Game Plugin. Certain features may not work properly..
-        /// </summary>
-        internal static string TestingUpdateNag_MismatchDetectedText {
-            get {
-                return ResourceManager.GetString("TestingUpdateNag_MismatchDetectedText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to In order to properly help test XIVDeck releases, you need to be on the correct (matching) version of the Stream Deck Plugin. Please use the below button to download the correct version of the Stream Deck Plugin for your testing build..
-        /// </summary>
-        internal static string TestingUpdateNag_PleaseTestProperly {
-            get {
-                return ResourceManager.GetString("TestingUpdateNag_PleaseTestProperly", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to There was an issue running a task: {0}: {1}.
-        /// </summary>
-        internal static string TickScheduler_ExceptionHandler {
-            get {
-                return ResourceManager.GetString("TickScheduler_ExceptionHandler", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Your version of the XIVDeck Stream Deck Plugin is out of date. Please consider installing {0} from GitHub!.
-        /// </summary>
-        internal static string VersionUtils_UpdateAlert {
-            get {
-                return ResourceManager.GetString("VersionUtils_UpdateAlert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0}version {1}.
-        /// </summary>
-        internal static string VersionUtils_UpdateAlert_Link {
-            get {
-                return ResourceManager.GetString("VersionUtils_UpdateAlert_Link", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The version of the XIVDeck Stream Deck Plugin installed is newer than the game plugin. Please install any updates from the Dalamud Plugin Installer..
-        /// </summary>
-        internal static string WSInitOpcode_GamePluginOutdated {
-            get {
-                return ResourceManager.GetString("WSInitOpcode_GamePluginOutdated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Plugin Update Available.
-        /// </summary>
-        internal static string WSInitOpcode_PluginUpdateAvailableNotificationTitle {
-            get {
-                return ResourceManager.GetString("WSInitOpcode_PluginUpdateAvailableNotificationTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Some features may not be available or work properly.
-        ///
-        ///Click this notification to .
-        /// </summary>
-        internal static string WSInitOpcode_SDPluginUpdateBody {
-            get {
-                return ResourceManager.GetString("WSInitOpcode_SDPluginUpdateBody", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Version {0} of the XIVDeck Stream Deck Plugin is currently outdated. Some features may not be available or work properly.
-        ///
-        ///Click this notification to go to the version {1} download page..
-        /// </summary>
-        internal static string WSInitOpcode_SDPluginUpdateNotificationBody {
-            get {
-                return ResourceManager.GetString("WSInitOpcode_SDPluginUpdateNotificationBody", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Thank you for installing the Stream Deck plugin. XIVDeck is now ready to go!.
-        /// </summary>
-        internal static string WSInitOpcode_ThanksForInstall {
-            get {
-                return ResourceManager.GetString("WSInitOpcode_ThanksForInstall", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No message exists with opcode {0}.
-        /// </summary>
-        internal static string WSOpcodeWiring_UnknownOpcodeError {
-            get {
-                return ResourceManager.GetString("WSOpcodeWiring_UnknownOpcodeError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to XIVDeck.
         /// </summary>
         internal static string XIVDeck {
             get {
@@ -979,21 +68,597 @@ namespace XIVDeck.FFXIVPlugin.Resources.Localization {
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized string similar to XIVDeck Game Plugin.
-        /// </summary>
-        internal static string XIVDeck_Title {
+        internal static string StreamDeck {
             get {
-                return ResourceManager.GetString("XIVDeck_Title", resourceCulture);
+                return ResourceManager.GetString("StreamDeck", resourceCulture);
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized string similar to XIVDeck&apos;s server has unexpectedly failed and has been disabled. Please restart your game. If this keeps happening, please report this bug!.
-        /// </summary>
-        internal static string XIVDeckWebServer_RunException {
+        internal static string XIVDeckPlugin_Name {
             get {
-                return ResourceManager.GetString("XIVDeckWebServer_RunException", resourceCulture);
+                return ResourceManager.GetString("XIVDeckPlugin_Name", resourceCulture);
+            }
+        }
+        
+        internal static string PlayerNotLoggedInException_Message {
+            get {
+                return ResourceManager.GetString("PlayerNotLoggedInException_Message", resourceCulture);
+            }
+        }
+        
+        internal static string ActionLockedException_Message {
+            get {
+                return ResourceManager.GetString("ActionLockedException_Message", resourceCulture);
+            }
+        }
+        
+        internal static string ActionNotFoundException_Message {
+            get {
+                return ResourceManager.GetString("ActionNotFoundException_Message", resourceCulture);
+            }
+        }
+        
+        internal static string MissingCommandException_Message {
+            get {
+                return ResourceManager.GetString("MissingCommandException_Message", resourceCulture);
+            }
+        }
+        
+        internal static string UnsafeCommandException_Message {
+            get {
+                return ResourceManager.GetString("UnsafeCommandException_Message", resourceCulture);
+            }
+        }
+        
+        internal static string ActionTypeNotFoundException_Message {
+            get {
+                return ResourceManager.GetString("ActionTypeNotFoundException_Message", resourceCulture);
+            }
+        }
+        
+        internal static string ClassJobService_ClassLessThan1Error {
+            get {
+                return ResourceManager.GetString("ClassJobService_ClassLessThan1Error", resourceCulture);
+            }
+        }
+        
+        internal static string ClassJobService_InvalidClassIdError {
+            get {
+                return ResourceManager.GetString("ClassJobService_InvalidClassIdError", resourceCulture);
+            }
+        }
+        
+        internal static string ClassJobService_NoGearsetForClassError {
+            get {
+                return ResourceManager.GetString("ClassJobService_NoGearsetForClassError", resourceCulture);
+            }
+        }
+        
+        internal static string HotbarService_InvalidHotbarIdError {
+            get {
+                return ResourceManager.GetString("HotbarService_InvalidHotbarIdError", resourceCulture);
+            }
+        }
+        
+        internal static string HotbarService_NormalHotbarInvalidSlotError {
+            get {
+                return ResourceManager.GetString("HotbarService_NormalHotbarInvalidSlotError", resourceCulture);
+            }
+        }
+        
+        internal static string HotbarService_CrossHotbarInvalidSlotError {
+            get {
+                return ResourceManager.GetString("HotbarService_CrossHotbarInvalidSlotError", resourceCulture);
+            }
+        }
+        
+        internal static string EmoteStrategy_EmoteLockedError {
+            get {
+                return ResourceManager.GetString("EmoteStrategy_EmoteLockedError", resourceCulture);
+            }
+        }
+        
+        internal static string FixedCommandStrategy_ActionNotFoundError {
+            get {
+                return ResourceManager.GetString("FixedCommandStrategy_ActionNotFoundError", resourceCulture);
+            }
+        }
+        
+        internal static string FixedCommandStrategy_IllegalActionError {
+            get {
+                return ResourceManager.GetString("FixedCommandStrategy_IllegalActionError", resourceCulture);
+            }
+        }
+        
+        internal static string FixedCommandStrategy_SheetNotFoundError {
+            get {
+                return ResourceManager.GetString("FixedCommandStrategy_SheetNotFoundError", resourceCulture);
+            }
+        }
+        
+        internal static string SettingsWindow_Title {
+            get {
+                return ResourceManager.GetString("SettingsWindow_Title", resourceCulture);
+            }
+        }
+        
+        internal static string SettingsWindow_SafeModeDisabledWarning {
+            get {
+                return ResourceManager.GetString("SettingsWindow_SafeModeDisabledWarning", resourceCulture);
+            }
+        }
+        
+        internal static string SettingsWindow_GitHubLink {
+            get {
+                return ResourceManager.GetString("SettingsWindow_GitHubLink", resourceCulture);
+            }
+        }
+        
+        internal static string SettingsWindow_ApplyButton {
+            get {
+                return ResourceManager.GetString("SettingsWindow_ApplyButton", resourceCulture);
+            }
+        }
+        
+        internal static string SettingsWindow_APIPort {
+            get {
+                return ResourceManager.GetString("SettingsWindow_APIPort", resourceCulture);
+            }
+        }
+        
+        internal static string SettingsWindow_TransportType {
+            get {
+                return ResourceManager.GetString("SettingsWindow_TransportType", resourceCulture);
+            }
+        }
+        
+        internal static string SettingsWindow_TransportType_Help {
+            get {
+                return ResourceManager.GetString("SettingsWindow_TransportType_Help", resourceCulture);
+            }
+        }
+        
+        internal static string SettingsWindow_TransportType_WebSocket {
+            get {
+                return ResourceManager.GetString("SettingsWindow_TransportType_WebSocket", resourceCulture);
+            }
+        }
+        
+        internal static string SettingsWindow_TransportType_UnixDomainSocket {
+            get {
+                return ResourceManager.GetString("SettingsWindow_TransportType_UnixDomainSocket", resourceCulture);
+            }
+        }
+        
+        internal static string SettingsWindow_TransportType_NamedPipe {
+            get {
+                return ResourceManager.GetString("SettingsWindow_TransportType_NamedPipe", resourceCulture);
+            }
+        }
+        
+        internal static string SettingsWindow_ListenIP {
+            get {
+                return ResourceManager.GetString("SettingsWindow_ListenIP", resourceCulture);
+            }
+        }
+        
+        internal static string SettingsWindow_APIPort_Help {
+            get {
+                return ResourceManager.GetString("SettingsWindow_APIPort_Help", resourceCulture);
+            }
+        }
+        
+        internal static string SettingsWindow_PipeName {
+            get {
+                return ResourceManager.GetString("SettingsWindow_PipeName", resourceCulture);
+            }
+        }
+        
+        internal static string SettingsWindow_SocketPath {
+            get {
+                return ResourceManager.GetString("SettingsWindow_SocketPath", resourceCulture);
+            }
+        }
+        
+        internal static string SettingsWindow_SocketPath_Native {
+            get {
+                return ResourceManager.GetString("SettingsWindow_SocketPath_Native", resourceCulture);
+            }
+        }
+        
+        internal static string SettingsWindow_TransportFallbackNotice {
+            get {
+                return ResourceManager.GetString("SettingsWindow_TransportFallbackNotice", resourceCulture);
+            }
+        }
+        
+        internal static string UpdateNotifier_ForcedUpdate_Headline {
+            get {
+                return ResourceManager.GetString("UpdateNotifier_ForcedUpdate_Headline", resourceCulture);
+            }
+        }
+        
+        internal static string Common_OpenGitHubDownloadButton {
+            get {
+                return ResourceManager.GetString("Common_OpenGitHubDownloadButton", resourceCulture);
+            }
+        }
+        
+        internal static string Common_OpenSettingsButton {
+            get {
+                return ResourceManager.GetString("Common_OpenSettingsButton", resourceCulture);
+            }
+        }
+        
+        internal static string TransportManager_RetryButton {
+            get {
+                return ResourceManager.GetString("TransportManager_RetryButton", resourceCulture);
+            }
+        }
+        
+        internal static string UpdateNotifier_ForcedUpdate_ProblemDescription {
+            get {
+                return ResourceManager.GetString("UpdateNotifier_ForcedUpdate_ProblemDescription", resourceCulture);
+            }
+        }
+        
+        internal static string SetupNag_Headline {
+            get {
+                return ResourceManager.GetString("SetupNag_Headline", resourceCulture);
+            }
+        }
+        
+        internal static string SetupNag_ResolutionHelp {
+            get {
+                return ResourceManager.GetString("SetupNag_ResolutionHelp", resourceCulture);
+            }
+        }
+        
+        internal static string SetupNag_AlreadyInstalled_Checklist {
+            get {
+                return ResourceManager.GetString("SetupNag_AlreadyInstalled_Checklist", resourceCulture);
+            }
+        }
+        
+        internal static string SetupNag_AlreadyInstalled_WebSocketHelp {
+            get {
+                return ResourceManager.GetString("SetupNag_AlreadyInstalled_WebSocketHelp", resourceCulture);
+            }
+        }
+        
+        internal static string SetupNag_AlreadyInstalled_ChangeConnectionHelp {
+            get {
+                return ResourceManager.GetString("SetupNag_AlreadyInstalled_ChangeConnectionHelp", resourceCulture);
+            }
+        }
+        
+        internal static string SetupNag_DismissHelp {
+            get {
+                return ResourceManager.GetString("SetupNag_DismissHelp", resourceCulture);
+            }
+        }
+        
+        internal static string CollectionStrategy_CollectionNotFoundError {
+            get {
+                return ResourceManager.GetString("CollectionStrategy_CollectionNotFoundError", resourceCulture);
+            }
+        }
+        
+        internal static string GearsetStrategy_GearsetNotFoundError {
+            get {
+                return ResourceManager.GetString("GearsetStrategy_GearsetNotFoundError", resourceCulture);
+            }
+        }
+        
+        internal static string GeneralActionStrategy_ActionLockedError {
+            get {
+                return ResourceManager.GetString("GeneralActionStrategy_ActionLockedError", resourceCulture);
+            }
+        }
+        
+        internal static string GeneralActionStrategy_ActionIllegalError {
+            get {
+                return ResourceManager.GetString("GeneralActionStrategy_ActionIllegalError", resourceCulture);
+            }
+        }
+        
+        internal static string InstrumentStrategy_PerformanceLockedError {
+            get {
+                return ResourceManager.GetString("InstrumentStrategy_PerformanceLockedError", resourceCulture);
+            }
+        }
+        
+        internal static string InstrumentStrategy_CurrentlyPerformingError {
+            get {
+                return ResourceManager.GetString("InstrumentStrategy_CurrentlyPerformingError", resourceCulture);
+            }
+        }
+        
+        internal static string InstrumentStrategy_InstrumentNotFoundError {
+            get {
+                return ResourceManager.GetString("InstrumentStrategy_InstrumentNotFoundError", resourceCulture);
+            }
+        }
+        
+        internal static string MacroStrategy_MacroEmptyError {
+            get {
+                return ResourceManager.GetString("MacroStrategy_MacroEmptyError", resourceCulture);
+            }
+        }
+        
+        internal static string MacroStrategy_IndividualMacroName {
+            get {
+                return ResourceManager.GetString("MacroStrategy_IndividualMacroName", resourceCulture);
+            }
+        }
+        
+        internal static string MacroStrategy_SharedMacroName {
+            get {
+                return ResourceManager.GetString("MacroStrategy_SharedMacroName", resourceCulture);
+            }
+        }
+        
+        internal static string MainCommandStrategy_ActionInvalidError {
+            get {
+                return ResourceManager.GetString("MainCommandStrategy_ActionInvalidError", resourceCulture);
+            }
+        }
+        
+        internal static string MinionStrategy_MinionNotFoundError {
+            get {
+                return ResourceManager.GetString("MinionStrategy_MinionNotFoundError", resourceCulture);
+            }
+        }
+        
+        internal static string MinionStrategy_MinionLockedError {
+            get {
+                return ResourceManager.GetString("MinionStrategy_MinionLockedError", resourceCulture);
+            }
+        }
+        
+        internal static string MountStrategy_MountNotFoundError {
+            get {
+                return ResourceManager.GetString("MountStrategy_MountNotFoundError", resourceCulture);
+            }
+        }
+        
+        internal static string MountStrategy_MountLockedError {
+            get {
+                return ResourceManager.GetString("MountStrategy_MountLockedError", resourceCulture);
+            }
+        }
+        
+        internal static string OrnamentStrategy_OrnamentLockedError {
+            get {
+                return ResourceManager.GetString("OrnamentStrategy_OrnamentLockedError", resourceCulture);
+            }
+        }
+        
+        internal static string GameClassFactory_NotFoundError {
+            get {
+                return ResourceManager.GetString("GameClassFactory_NotFoundError", resourceCulture);
+            }
+        }
+        
+        internal static string ClassJobService_FallbackClassUsed {
+            get {
+                return ResourceManager.GetString("ClassJobService_FallbackClassUsed", resourceCulture);
+            }
+        }
+        
+        internal static string SettingsWindow_XIVDeckPortOpen {
+            get {
+                return ResourceManager.GetString("SettingsWindow_XIVDeckPortOpen", resourceCulture);
+            }
+        }
+        
+        internal static string SettingsWindow_ListenOnNetwork {
+            get {
+                return ResourceManager.GetString("SettingsWindow_ListenOnNetwork", resourceCulture);
+            }
+        }
+        
+        internal static string UpdateNotifier_TestingUpdate_Headline {
+            get {
+                return ResourceManager.GetString("UpdateNotifier_TestingUpdate_Headline", resourceCulture);
+            }
+        }
+        
+        internal static string UpdateNotifier_TestingUpdate_MismatchDetectedText {
+            get {
+                return ResourceManager.GetString("UpdateNotifier_TestingUpdate_MismatchDetectedText", resourceCulture);
+            }
+        }
+        
+        internal static string UpdateNotifier_TestingUpdate_PleaseTestProperly {
+            get {
+                return ResourceManager.GetString("UpdateNotifier_TestingUpdate_PleaseTestProperly", resourceCulture);
+            }
+        }
+        
+        internal static string UpdateNotifier_TestingUpdate_IgnoreButton {
+            get {
+                return ResourceManager.GetString("UpdateNotifier_TestingUpdate_IgnoreButton", resourceCulture);
+            }
+        }
+        
+        internal static string UpdateNotifier_TestingUpdate_DownloadButton {
+            get {
+                return ResourceManager.GetString("UpdateNotifier_TestingUpdate_DownloadButton", resourceCulture);
+            }
+        }
+        
+        internal static string Common_SupportInfo {
+            get {
+                return ResourceManager.GetString("Common_SupportInfo", resourceCulture);
+            }
+        }
+        
+        internal static string UpdateNotifier_ForcedUpdate_SupportButton {
+            get {
+                return ResourceManager.GetString("UpdateNotifier_ForcedUpdate_SupportButton", resourceCulture);
+            }
+        }
+        
+        internal static string MainCommandStrategy_MainCommandLocked {
+            get {
+                return ResourceManager.GetString("MainCommandStrategy_MainCommandLocked", resourceCulture);
+            }
+        }
+        
+        internal static string SetupNag_HowInstall {
+            get {
+                return ResourceManager.GetString("SetupNag_HowInstall", resourceCulture);
+            }
+        }
+        
+        internal static string SetupNag_HowInstall_Requirements {
+            get {
+                return ResourceManager.GetString("SetupNag_HowInstall_Requirements", resourceCulture);
+            }
+        }
+        
+        internal static string SetupNag_HowInstall_Steps {
+            get {
+                return ResourceManager.GetString("SetupNag_HowInstall_Steps", resourceCulture);
+            }
+        }
+        
+        internal static string SetupNag_HowInstall_OtherInfo {
+            get {
+                return ResourceManager.GetString("SetupNag_HowInstall_OtherInfo", resourceCulture);
+            }
+        }
+        
+        internal static string SetupNag_AlreadyInstalled {
+            get {
+                return ResourceManager.GetString("SetupNag_AlreadyInstalled", resourceCulture);
+            }
+        }
+        
+        internal static string SetupNag_JoinDiscord {
+            get {
+                return ResourceManager.GetString("SetupNag_JoinDiscord", resourceCulture);
+            }
+        }
+        
+        internal static string WebSocketServer_PortInUse_Title {
+            get {
+                return ResourceManager.GetString("WebSocketServer_PortInUse_Title", resourceCulture);
+            }
+        }
+        
+        internal static string WebSocketServer_PortInUse_PortAlreadyInUse {
+            get {
+                return ResourceManager.GetString("WebSocketServer_PortInUse_PortAlreadyInUse", resourceCulture);
+            }
+        }
+        
+        internal static string WebSocketServer_PortInUse_ResolutionInstructions {
+            get {
+                return ResourceManager.GetString("WebSocketServer_PortInUse_ResolutionInstructions", resourceCulture);
+            }
+        }
+        
+        internal static string Common_IgnoreForNowButton {
+            get {
+                return ResourceManager.GetString("Common_IgnoreForNowButton", resourceCulture);
+            }
+        }
+        
+        internal static string TransportManager_TransportUnavailable_Title {
+            get {
+                return ResourceManager.GetString("TransportManager_TransportUnavailable_Title", resourceCulture);
+            }
+        }
+        
+        internal static string TransportManager_TransportUnavailable_Description {
+            get {
+                return ResourceManager.GetString("TransportManager_TransportUnavailable_Description", resourceCulture);
+            }
+        }
+        
+        internal static string TransportManager_TransportUnavailable_ResolutionInstructions {
+            get {
+                return ResourceManager.GetString("TransportManager_TransportUnavailable_ResolutionInstructions", resourceCulture);
+            }
+        }
+        
+        internal static string TransportManager_UdsUnsupported_Title {
+            get {
+                return ResourceManager.GetString("TransportManager_UdsUnsupported_Title", resourceCulture);
+            }
+        }
+        
+        internal static string TransportManager_UdsUnsupported_Description {
+            get {
+                return ResourceManager.GetString("TransportManager_UdsUnsupported_Description", resourceCulture);
+            }
+        }
+        
+        internal static string TransportManager_UdsUnsupported_ResolutionInstructions_Wine {
+            get {
+                return ResourceManager.GetString("TransportManager_UdsUnsupported_ResolutionInstructions_Wine", resourceCulture);
+            }
+        }
+        
+        internal static string TransportManager_UdsUnsupported_ResolutionInstructions_NonWine {
+            get {
+                return ResourceManager.GetString("TransportManager_UdsUnsupported_ResolutionInstructions_NonWine", resourceCulture);
+            }
+        }
+        
+        internal static string TransportManager_UdsUnsupported_SwitchButton {
+            get {
+                return ResourceManager.GetString("TransportManager_UdsUnsupported_SwitchButton", resourceCulture);
+            }
+        }
+        
+        internal static string SetupNag_MessageWillReturn {
+            get {
+                return ResourceManager.GetString("SetupNag_MessageWillReturn", resourceCulture);
+            }
+        }
+        
+        internal static string SetupNag_BypassButton {
+            get {
+                return ResourceManager.GetString("SetupNag_BypassButton", resourceCulture);
+            }
+        }
+        
+        internal static string SetupNag_BypassHint {
+            get {
+                return ResourceManager.GetString("SetupNag_BypassHint", resourceCulture);
+            }
+        }
+        
+        internal static string ConfigService_ConfigReset_Title {
+            get {
+                return ResourceManager.GetString("ConfigService_ConfigReset_Title", resourceCulture);
+            }
+        }
+        
+        internal static string ConfigService_ConfigReset_Description {
+            get {
+                return ResourceManager.GetString("ConfigService_ConfigReset_Description", resourceCulture);
+            }
+        }
+        
+        internal static string GearsetStrategy_InvalidGlamourPlateError {
+            get {
+                return ResourceManager.GetString("GearsetStrategy_InvalidGlamourPlateError", resourceCulture);
+            }
+        }
+        
+        internal static string ChatHelper_MessageEmptyError {
+            get {
+                return ResourceManager.GetString("ChatHelper_MessageEmptyError", resourceCulture);
+            }
+        }
+        
+        internal static string ChatHelper_MessageTooLongError {
+            get {
+                return ResourceManager.GetString("ChatHelper_MessageTooLongError", resourceCulture);
             }
         }
     }

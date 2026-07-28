@@ -1,80 +1,67 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System;
+using Dalamud.Plugin.Services;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using Lumina.Excel.Sheets;
-using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
+using Serilog;
 using XIVDeck.FFXIVPlugin.ActionExecutor.Payloads;
-using XIVDeck.FFXIVPlugin.Base;
-using XIVDeck.FFXIVPlugin.Exceptions;
-using XIVDeck.FFXIVPlugin.Game;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils.Game;
+using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Contract;
+using EmotePayload = XIVDeck.FFXIVPlugin.ActionExecutor.Payloads.EmotePayload;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.Emote)]
-public class EmoteStrategy : IActionStrategy {
-    private static ExecutableAction GetExecutableAction(Emote emote) {
-        return new ExecutableAction {
-            ActionId = (int) emote.RowId,
-            ActionName = emote.Name.ToString(),
-            IconId = (int)emote.Icon,
-            Category = emote.EmoteCategory.ValueNullable?.Name.ToString() ?? null,
-            HotbarSlotType = HotbarSlotType.Emote,
+public class EmoteStrategy(
+    IDataManager dataManager,
+    ILogger pluginLog,
+    IFramework framework,
+    IGameConfig gameConfig,
+    IUnlockState unlockState,
+    IClientState clientState,
+    ActionAppearanceResolver appearanceResolver) : UnlockableActionStrategy<Emote>(dataManager, framework, pluginLog, appearanceResolver) {
+    protected override ActionEntry BuildActionEntry(Emote emote) {
+        return new ActionEntry {
+            Id = (int)emote.RowId,
+            Name = emote.Name.ToString(),
+            Category = emote.EmoteCategory.ValueNullable?.Name.ToString(),
+            Type = HotbarSlotType.Emote,
             SortOrder = emote.Order
         };
     }
 
-    private static Emote? GetEmoteById(uint id) {
-        return Injections.DataManager.Excel.GetSheet<Emote>().GetRowOrDefault(id);
-    }
+    // Emotes have special unlock/validation logic we need to respect.
+    protected override unsafe bool IsUnlocked(Emote emote) {
+        if (!clientState.IsLoggedIn) return false;
 
-    public ExecutableAction? GetExecutableActionById(uint slotId) {
-        var emote = GetEmoteById(slotId);
+        if (emote.EmoteCategory.RowId == 0 || emote.Order == 0) return false;
 
-        return emote == null ? null : GetExecutableAction(emote.Value);
-    }
-
-    public List<ExecutableAction> GetAllowedItems() {
-        return Injections.DataManager.GetExcelSheet<Emote>()
-            .Where(e => e.IsUnlocked())
-            .Select(GetExecutableAction)
-            .ToList();
-    }
-
-    public void Execute(uint actionId, ActionPayload? payload) {
-        bool? logMode = null;
-        if (payload is EmotePayload ep) {
-            logMode = ep.LogMode switch {
-                EmoteLogMode.Always => true,
-                EmoteLogMode.Never => false,
-                _ => null
-            };
+        switch (emote.RowId) {
+            case 55 when PlayerState.Instance()->GrandCompany != 1: // Maelstrom
+            case 56 when PlayerState.Instance()->GrandCompany != 2: // Twin Adders
+            case 57 when PlayerState.Instance()->GrandCompany != 3: // Immortal Flames
+                return false;
         }
 
-        var emote = GetEmoteById(actionId);
-
-        if (emote == null) {
-            throw new ActionNotFoundException(HotbarSlotType.Emote, actionId);
-        }
-
-        if (!emote.Value.IsUnlocked()) {
-            throw new ActionLockedException(string.Format(UIStrings.EmoteStrategy_EmoteLockedError, emote.Value.Name));
-        }
-
-        Injections.PluginLog.Debug($"Executing emote {emote.Value.Name} (ID {actionId})");
-        Injections.Framework.RunOnFrameworkThread(delegate {
-            using var _ = logMode != null ? Injections.GameConfig.UiConfig.TemporarySet("EmoteTextType", logMode.Value) : null;
-            HotbarManager.ExecuteHotbarAction(HotbarSlotType.Emote, actionId);
-        });
+        return emote.UnlockLink == 0 || unlockState.IsEmoteUnlocked(emote);
     }
 
-    public int GetIconId(uint item) {
-        return (int?)GetEmoteById(item)?.Icon ?? 0;
+    protected override string GetLockedMessage(Emote emote) =>
+        string.Format(UIStrings.EmoteStrategy_EmoteLockedError, emote.Name);
+
+    protected override void ExecuteOnFramework(Emote emote, ActionPayload? payload) {
+        bool? logMode = (payload as EmotePayload)?.LogMode switch {
+            EmoteLogMode.Always => true,
+            EmoteLogMode.Never => false,
+            _ => null
+        };
+
+        using var _ = logMode != null ? gameConfig.UiConfig.TemporarySet("EmoteTextType", logMode.Value) : null;
+        HotbarManager.ExecuteHotbarAction(HotbarSlotType.Emote, emote.RowId);
     }
 
-    public Type GetPayloadType() {
-        return typeof(EmotePayload);
-    }
+    public override Type GetPayloadType() => typeof(EmotePayload);
 }

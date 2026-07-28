@@ -7,47 +7,51 @@ on:
 jobs:
   build-ffxivplugin:
     name: Build XIVDeck FFXIV Plugin
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     permissions:
       id-token: write
       contents: write
       attestations: write
 
+    env:
+      DALAMUD_HOME: ${{ runner.temp }}/dalamud
+
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           submodules: recursive
       - name: Set up .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 10.0.x
       - name: Restore Dependencies
-        run: dotnet restore
+        run: dotnet restore FFXIVPlugin
       - name: Download Dalamud
         run: |
-          Invoke-WebRequest -Uri https://goatcorp.github.io/dalamud-distrib/latest.zip -OutFile latest.zip
-          Expand-Archive -Force latest.zip "$env:AppData\XIVLauncher\addon\Hooks\dev"
+          curl -fsSL https://goatcorp.github.io/dalamud-distrib/latest.zip -o "$RUNNER_TEMP/dalamud.zip"
+          unzip -q -o "$RUNNER_TEMP/dalamud.zip" -d "$DALAMUD_HOME"
       - name: Build Plugin
+        env:
+          GITHUB_REF: ${{ github.ref }}
         run: |
-          $ver = '${{ github.ref }}' -replace 'refs/tags/v',''
-          invoke-expression 'dotnet build --no-restore --configuration Release --nologo -p:AssemblyVersion=$ver -p:Version=$ver -p:FileVersion=$ver FFXIVPlugin'
+          ver="${GITHUB_REF#refs/tags/v}"
+          dotnet build --no-restore --configuration Release --nologo \
+            -p:AssemblyVersion="$ver" -p:Version="$ver" -p:FileVersion="$ver" FFXIVPlugin
       - name: Report Build Hash
-        run: |
-          $fileHashInfo = Get-FileHash .\FFXIVPlugin\bin\Release\XIVDeck.FFXIVPlugin\latest.zip;
-          Write-Output "Hash of XIVDeck.FFXIVPlugin: $($fileHashInfo.Hash)";
+        run: echo "[Build Audit] $(sha256sum FFXIVPlugin/bin/Release/XIVDeck.FFXIVPlugin/latest.zip)"
       - name: Attest Build
-        uses: actions/attest-build-provenance@v1
+        uses: actions/attest-build-provenance@v4
         with:
           subject-path: |
-            .\FFXIVPlugin\bin\Release\XIVDeck.FFXIVPlugin.dll
-            .\FFXIVPlugin\bin\Release\**\XIVDeck.FFXIVPlugin.*.dll
-            .\FFXIVPlugin\bin\Release\XIVDeck.FFXIVPlugin\latest.zip
+            FFXIVPlugin/bin/Release/XIVDeck.FFXIVPlugin.dll
+            FFXIVPlugin/bin/Release/**/XIVDeck.FFXIVPlugin.*.dll
+            FFXIVPlugin/bin/Release/XIVDeck.FFXIVPlugin/latest.zip
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: XIVDeck.FFXIVPlugin
-          path: .\FFXIVPlugin\bin\Release\XIVDeck.FFXIVPlugin\
+          path: FFXIVPlugin/bin/Release/XIVDeck.FFXIVPlugin/
 
   build-sdplugin:
     name: Build XIVDeck Stream Deck Plugin
@@ -63,25 +67,31 @@ jobs:
         working-directory: ./SDPlugin
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: ./SDPlugin/pnpm-lock.yaml
       - name: Install Dependencies
-        run: yarn install
+        run: pnpm install --frozen-lockfile
       - name: Patch Version
         run: |
           export APP_VERSION=$(echo '${{ github.ref }}' | sed "s!refs/tags/v!!")
-          yarn version --new-version $APP_VERSION --no-git-tag-version
+          pnpm version $APP_VERSION --no-git-tag-version --no-git-checks --allow-same-version
       - name: Build for Release
-        run: yarn build-release
-      - name: Package Plugin
-        run: (cd dist && zip -r dev.wolf.xivdeck.streamDeckPlugin dev.wolf.xivdeck.sdPlugin)
+        run: pnpm run build-release
       - name: Report Build Hash
         run: echo "[Build Audit] $(sha256sum dist/dev.wolf.xivdeck.streamDeckPlugin)"
       - name: Attest Build
-        uses: actions/attest-build-provenance@v1
+        uses: actions/attest-build-provenance@v4
         with:
           subject-path: ./SDPlugin/dist/dev.wolf.xivdeck.streamDeckPlugin
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: XIVDeck.SDPlugin
           path: ./SDPlugin/dist/dev.wolf.xivdeck.streamDeckPlugin

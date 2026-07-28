@@ -1,62 +1,68 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using Autofac;
+using Autofac.Features.Metadata;
 using JetBrains.Annotations;
-using XIVDeck.FFXIVPlugin.Base;
+using Serilog;
+using XIVDeck.FFXIVPlugin.IoC;
 using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor;
 
-public class ActionDispatcher {
+[Service(ServiceFlags.Singleton)]
+public class ActionDispatcher : IDisposable {
     private Dictionary<HotbarSlotType, IActionStrategy> Strategies { get; } = new();
+    private ILifetimeScope StrategyScope { get; }
 
-    public ActionDispatcher() {
-        foreach (var type in Assembly.GetExecutingAssembly().GetTypes()) {
-            if (!type.GetInterfaces().Contains(typeof(IActionStrategy))) {
-                continue;
-            }
+    public ActionDispatcher(ILogger log, ILifetimeScope scope) {
+        this.StrategyScope = scope.BeginLifetimeScope(builder => {
+            builder.RegisterAssemblyTypes(typeof(ActionDispatcher).Assembly)
+                .Where(type => typeof(IActionStrategy).IsAssignableFrom(type) &&
+                               type.GetCustomAttribute<ActionStrategyAttribute>() != null)
+                .As<IActionStrategy>()
+                .WithMetadata(ActionStrategyMetadataKeys.HotbarSlotType,
+                    type => type.GetCustomAttribute<ActionStrategyAttribute>()!.HotbarSlotType);
+        });
 
-            var attr = type.GetCustomAttribute<ActionStrategyAttribute>();
-            if (attr == null) continue;
-
-            var slotType = attr.HotbarSlotType;
-
-            var handler = Activator.CreateInstance(type) as IActionStrategy;
-
-            if (handler == null) {
-                Injections.PluginLog.Error($"Could not create strategy for {Enum.GetName(slotType)}!");
-                continue;
-            }
+        foreach (var strategy in this.StrategyScope.Resolve<IEnumerable<Meta<IActionStrategy>>>()) {
+            var slotType = (HotbarSlotType) strategy.Metadata[ActionStrategyMetadataKeys.HotbarSlotType]!;
+            var handler = strategy.Value;
 
             // Hack to load everything (especially Lumina) synchronously to avoid issues
             try {
-                handler.GetAllowedItems();
+                handler.GetSelectableActions();
             } catch (Exception ex) {
-                Injections.PluginLog.Warning(ex, $"Could not populate strategy for {Enum.GetName(slotType)}!");
+                log.Warning(ex, "Could not populate strategy for {SlotType}!", slotType);
             }
 
-            Injections.PluginLog.Debug($"Registered strategy for {Enum.GetName(slotType)}: {handler.GetType()}");
+            log.Debug("Registered strategy for {SlotType}: {StrategyType}", slotType, handler.GetType().Name);
             this.Strategies[slotType] = handler;
         }
     }
 
-    public IActionStrategy GetStrategyForType(HotbarSlotType type) {
-        return this.Strategies[type];
+    public bool TryGetStrategyForType(HotbarSlotType type, [NotNullWhen(true)] out IActionStrategy? strategy) {
+        return this.Strategies.TryGetValue(type, out strategy);
     }
 
     public ReadOnlyDictionary<HotbarSlotType, IActionStrategy> GetStrategies() {
         return this.Strategies.AsReadOnly();
     }
+
+    public void Dispose() {
+        this.StrategyScope.Dispose();
+        GC.SuppressFinalize(this);
+    }
 }
 
 [AttributeUsage(AttributeTargets.Class)]
 [MeansImplicitUse]
-public class ActionStrategyAttribute : Attribute {
-    public readonly HotbarSlotType HotbarSlotType;
+public class ActionStrategyAttribute(HotbarSlotType hotbarSlotType) : Attribute {
+    public readonly HotbarSlotType HotbarSlotType = hotbarSlotType;
+}
 
-    public ActionStrategyAttribute(HotbarSlotType hotbarSlotType) {
-        this.HotbarSlotType = hotbarSlotType;
-    }
+internal static class ActionStrategyMetadataKeys {
+    public const string HotbarSlotType = "HotbarSlotType";
 }

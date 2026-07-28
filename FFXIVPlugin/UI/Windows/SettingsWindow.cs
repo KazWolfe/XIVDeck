@@ -1,38 +1,53 @@
-﻿using System.Numerics;
+using System;
+using System.Linq;
+using System.Numerics;
 using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Windowing;
+using Dalamud.Utility;
+using XIVDeck.FFXIVPlugin.Config;
+using XIVDeck.FFXIVPlugin.IoC;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
-using XIVDeck.FFXIVPlugin.UI.Windows.Nags;
+using XIVDeck.FFXIVPlugin.RpcServer;
+using XIVDeck.FFXIVPlugin.RpcServer.Transports;
 using XIVDeck.FFXIVPlugin.Utils;
 
 namespace XIVDeck.FFXIVPlugin.UI.Windows;
 
-public class SettingsWindow : Window {
+[Service(ServiceFlags.Transient)]
+public class SettingsWindow : XIVDeckWindow {
     public const string WindowKey = "###xivDeckSettingsWindow";
 
-    private static SettingsWindow? _instance;
+    private static readonly TransportType[] TransportTypes = TransportPlatform.AllowedTypes.ToArray();
+    private static readonly string[] TransportTypeLabels = TransportTypes.Select(GetTransportLabel).ToArray();
 
-    internal static SettingsWindow GetOrCreate() {
-        if (_instance == null) {
-            _instance = new SettingsWindow();
-            XIVDeckPlugin.Instance.WindowSystem.AddWindow(_instance);
-        }
+    private static string GetTransportLabel(TransportType type) => type switch {
+        TransportType.WebSocket => UIStrings.SettingsWindow_TransportType_WebSocket,
+        TransportType.UnixDomainSocket => UIStrings.SettingsWindow_TransportType_UnixDomainSocket,
+        TransportType.NamedPipe => UIStrings.SettingsWindow_TransportType_NamedPipe,
+        _ => type.ToString(),
+    };
 
-        return _instance;
-    }
-
-    private readonly XIVDeckPlugin _plugin = XIVDeckPlugin.Instance;
+    private readonly ConfigService _configService;
+    private readonly TransportManager _transportManager;
+    private readonly PluginConfig _pluginConfig;
 
     // settings
+    private int _transportTypeIndex;
     private int _websocketPort;
     private bool _safeMode = true;
-    private bool _useMIconIcons;
 
-    public SettingsWindow(bool forceMainWindow = true) :
-        base(WindowKey, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoCollapse, forceMainWindow) {
+    private string? _activePipeName;
+    private string? _activeSocketPath;
+    private string? _activeSocketPathNative;
+
+    public SettingsWindow(UIManager uiManager, ConfigService configService, TransportManager transportManager, PluginConfig pluginConfig) :
+        base(uiManager, WindowKey, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoCollapse, true) {
+        this._configService = configService;
+        this._transportManager = transportManager;
+        this._pluginConfig = pluginConfig;
 
         this.SizeCondition = ImGuiCond.FirstUseEver;
         this.SizeConstraints = new WindowSizeConstraints {
@@ -44,11 +59,44 @@ public class SettingsWindow : Window {
     }
 
     public override void OnOpen() {
-        this._websocketPort = this._plugin.Configuration.WebSocketPort;
-        this._safeMode = this._plugin.Configuration.SafeMode;
+        this._transportTypeIndex = Array.IndexOf(TransportTypes, this._pluginConfig.ActiveTransport);
+        if (this._transportTypeIndex < 0) this._transportTypeIndex = 0;
 
-        // experimental flags
-        this._useMIconIcons = this._plugin.Configuration.UseMIconIcons;
+        this._websocketPort = ((WebSocketTransportConfig) this._pluginConfig.GetTransport(TransportType.WebSocket)).Port;
+
+        this._safeMode = this._pluginConfig.SafeMode;
+
+        this.RefreshTransportInfoCache();
+    }
+
+    private void RefreshTransportInfoCache() {
+        this._activePipeName = null;
+        this._activeSocketPath = null;
+        this._activeSocketPathNative = null;
+
+        switch (this._transportManager.RunningTransport) {
+            case NamedPipeServer pipe:
+                this._activePipeName = pipe.PipeName;
+                break;
+            case UnixSocketServer uds:
+                this._activeSocketPath = uds.SocketPath;
+
+                if (Util.IsWine()) {
+                    this._activeSocketPathNative = WineUtil.WineToUnixPath(uds.SocketPath);
+                }
+
+                break;
+        }
+    }
+
+    private bool IsSelectedTransportActive() =>
+        TransportTypes[this._transportTypeIndex] == this._transportManager.RunningTransportType;
+
+    private TransportType? FallbackTransportType {
+        get {
+            var running = this._transportManager.RunningTransportType;
+            return running != null && running != this._pluginConfig.ActiveTransport ? running : null;
+        }
     }
 
     public override void Draw() {
@@ -69,24 +117,49 @@ public class SettingsWindow : Window {
             ImGui.Spacing();
         }
 
-        ImGui.PushItemWidth(80);
-
-        if (ImGui.InputInt(UIStrings.SettingsWindow_APIPort, ref this._websocketPort)) {
-            if (this._websocketPort < 1024) this._websocketPort = 1024;
-            if (this._websocketPort > 59999) this._websocketPort = 59999;
+        if (this.FallbackTransportType is {} fallback) {
+            ImGui.PushTextWrapPos();
+            ImGui.TextColored(ImGuiColors.DalamudYellow,
+                string.Format(UIStrings.SettingsWindow_TransportFallbackNotice, GetTransportLabel(fallback)));
+            ImGui.PopTextWrapPos();
+            ImGui.Spacing();
         }
 
+        ImGui.PushItemWidth(120);
+        ImGui.Combo(UIStrings.SettingsWindow_TransportType, ref this._transportTypeIndex, TransportTypeLabels, TransportTypeLabels.Length);
         ImGui.PopItemWidth();
-        ImGuiComponents.HelpMarker(string.Format(UIStrings.SettingsWindow_APIPort_Help, 37984, 1024, 59999));
+        ImGuiComponents.HelpMarker(UIStrings.SettingsWindow_TransportType_Help);
 
-        ImGui.TextWrapped(string.Format(UIStrings.SettingsWindow_ListenIP, "127.0.0.1"));
+        if (TransportTypes[this._transportTypeIndex] == TransportType.WebSocket) {
+            ImGui.PushItemWidth(80);
 
-        ImGui.Spacing();
+            if (ImGui.InputInt(UIStrings.SettingsWindow_APIPort, ref this._websocketPort)) {
+                if (this._websocketPort < 1024) this._websocketPort = 1024;
+                if (this._websocketPort > 49151) this._websocketPort = 49151;
+            }
 
-        ImGui.Checkbox(UIStrings.SettingsWindow_Experiment_MIcon, ref this._useMIconIcons);
-        ImGuiComponents.HelpMarker(UIStrings.SettingsWindow_UseMIcon_Help);
+            ImGui.PopItemWidth();
+            ImGuiComponents.HelpMarker(string.Format(UIStrings.SettingsWindow_APIPort_Help, WebSocketServer.DefaultWebsocketPort, 1024, 49151));
 
-        ImGui.Dummy(new Vector2(0, 10));
+            ImGui.TextWrapped(string.Format(UIStrings.SettingsWindow_ListenIP, "localhost"));
+        } else if (TransportTypes[this._transportTypeIndex] == TransportType.NamedPipe) {
+            if (this.IsSelectedTransportActive() && this._activePipeName != null) {
+                ImGui.PushTextWrapPos();
+                ImGui.TextWrapped(string.Format(UIStrings.SettingsWindow_PipeName, this._activePipeName));
+                ImGui.PopTextWrapPos();
+            }
+        } else if (TransportTypes[this._transportTypeIndex] == TransportType.UnixDomainSocket) {
+            if (this.IsSelectedTransportActive() && this._activeSocketPath != null) {
+                ImGui.PushTextWrapPos();
+                ImGui.TextWrapped(string.Format(UIStrings.SettingsWindow_SocketPath, this._activeSocketPath));
+
+                if (this._activeSocketPathNative != null) {
+                    ImGui.TextWrapped(string.Format(UIStrings.SettingsWindow_SocketPath_Native, this._activeSocketPathNative));
+                }
+
+                ImGui.PopTextWrapPos();
+            }
+        }
 
         ImGui.EndChild();
 
@@ -94,14 +167,6 @@ public class SettingsWindow : Window {
         ImGui.Separator();
 
         if (ImGui.Button(UIStrings.SettingsWindow_GitHubLink)) UiUtil.OpenXIVDeckGitHub();
-
-#if DEBUG
-        ImGui.SameLine();
-        if (ImGui.Button("Debug")) {
-            var debugWindow = DebugWindow.GetOrCreate();
-            debugWindow.IsOpen = true;
-        }
-#endif
 
         var applyText = UIStrings.SettingsWindow_ApplyButton;
         var applyButtonSize = ImGuiHelpers.GetButtonSize(applyText);
@@ -113,19 +178,26 @@ public class SettingsWindow : Window {
     }
 
     private void SaveSettings() {
-        if (this._websocketPort != this._plugin.Configuration.WebSocketPort) {
-            this._plugin.Configuration.WebSocketPort = this._websocketPort;
-            this._plugin.Configuration.HasLinkedStreamDeckPlugin = false;
+        var selectedType = TransportTypes[this._transportTypeIndex];
 
-            NagWindow.CloseAllNags();
-            SetupNag.Show();
+        var existingWsPort = ((WebSocketTransportConfig) this._pluginConfig.GetTransport(TransportType.WebSocket)).Port;
+        var portChanged = selectedType == TransportType.WebSocket && existingWsPort != this._websocketPort;
+
+        var transportChanged = this._pluginConfig.ActiveTransport != selectedType || portChanged;
+
+        if (transportChanged) {
+            if (selectedType == TransportType.WebSocket) {
+                ((WebSocketTransportConfig) this._pluginConfig.GetTransport(TransportType.WebSocket)).Port = this._websocketPort;
+            }
+
+            this._pluginConfig.ActiveTransport = selectedType;
         }
 
-        this._plugin.Configuration.UseMIconIcons = this._useMIconIcons;
+        this._configService.Save();
 
-        this._plugin.Configuration.Save();
-
-        // initialize regardless of change(s) so that we can easily restart the server when necessary
-        this._plugin.InitializeWebServer();
+        if (transportChanged) {
+            this._transportManager.RestartTransport();
+            this.RefreshTransportInfoCache();
+        }
     }
 }

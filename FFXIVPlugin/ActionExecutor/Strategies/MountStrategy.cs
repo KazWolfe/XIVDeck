@@ -1,64 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using Dalamud.Plugin.Services;
 using Lumina.Excel.Sheets;
+using Serilog;
 using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
-using XIVDeck.FFXIVPlugin.Base;
-using XIVDeck.FFXIVPlugin.Exceptions;
-using XIVDeck.FFXIVPlugin.Game;
-using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.Utils;
+using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Contract;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.Mount)]
-public class MountStrategy : IActionStrategy {
-    private static ExecutableAction GetExecutableAction(Mount mount) {
-        return new ExecutableAction {
-            ActionId = (int) mount.RowId,
-            ActionName = mount.Singular.ToString(),
-            IconId = mount.Icon,
-            HotbarSlotType = HotbarSlotType.Mount,
-            SortOrder = (mount.UIPriority << 8) + mount.Order
+public class MountStrategy(IDataManager dataManager, ILogger pluginLog, IFramework framework, IUnlockState unlockState,
+    ActionAppearanceResolver appearanceResolver)
+    : UnlockableActionStrategy<Mount>(dataManager, framework, pluginLog, appearanceResolver) {
+    protected override ActionEntry BuildActionEntry(Mount mount) {
+        return new ActionEntry {
+            Id = (int) mount.RowId,
+            Name = mount.Singular.ToString(),
+            Type = HotbarSlotType.Mount,
+            SortOrder = (mount.UIPriority <<  (sizeof(ushort) * 8)) + mount.Order
         };
     }
 
-    private static Mount? GetMountById(uint id) {
-        return Injections.DataManager.Excel.GetSheet<Mount>().GetRowOrDefault(id);
-    }
+    protected override bool IsUnlocked(Mount mount) => unlockState.IsMountUnlocked(mount);
 
-    public List<ExecutableAction> GetAllowedItems() {
-        return Injections.DataManager.GetExcelSheet<Mount>()
-            .Where(m => m.IsUnlocked())
-            .Select(GetExecutableAction)
-            .ToList();
-    }
+    protected override string GetNotFoundMessage(uint actionId) =>
+        string.Format(UIStrings.MountStrategy_MountNotFoundError, actionId);
 
-    public void Execute(uint actionId, ActionPayload? _) {
-        var mount = GetMountById(actionId);
-
-        if (mount == null) {
-            throw new ArgumentNullException(nameof(actionId), string.Format(UIStrings.MountStrategy_MountNotFoundError, actionId));
-        }
-
-        if (!mount.Value.IsUnlocked()) {
-            throw new ActionLockedException(string.Format(UIStrings.MountStrategy_MountLockedError, mount.Value.Singular.ToTitleCase()));
-        }
-
-        Injections.PluginLog.Debug($"Executing hotbar slot: Mount#{actionId} ({mount.Value.Singular.ToTitleCase()})");
-        Injections.Framework.RunOnFrameworkThread(delegate {
-            HotbarManager.ExecuteHotbarAction(HotbarSlotType.Mount, actionId);
-        });
-    }
-
-    public ExecutableAction? GetExecutableActionById(uint actionId) {
-        var action = GetMountById(actionId);
-        return action == null ? null : GetExecutableAction(action.Value);
-    }
-
-    public int GetIconId(uint item) {
-        return GetMountById(item)?.Icon ?? 0;
-
-    }
+    protected override string GetLockedMessage(Mount mount) =>
+        string.Format(UIStrings.MountStrategy_MountLockedError, mount.Singular.ToTitleCase());
 }

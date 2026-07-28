@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Reflection;
-using Dalamud.Game.Text.SeStringHandling;
-using Dalamud.Game.Text.SeStringHandling.Payloads;
-using XIVDeck.FFXIVPlugin.Game.Chat;
-using XIVDeck.FFXIVPlugin.Resources.Localization;
-using XIVDeck.FFXIVPlugin.UI;
 
 namespace XIVDeck.FFXIVPlugin.Utils;
 
 public static class VersionUtils {
+    public static Version GetCurrentVersion() {
+        return Assembly.GetExecutingAssembly().GetName().Version!.StripRevision();
+    }
+
     public static string GetCurrentMajMinBuild() {
-        return Assembly.GetExecutingAssembly().GetName().Version!.GetMajMinBuild();
+        return GetCurrentVersion().GetMajMinBuild();
     }
 
     public static string GetMajMinBuild(this Version version) {
@@ -21,25 +20,15 @@ public static class VersionUtils {
         return new Version(version.Major, version.Minor, version.Build);
     }
 
-    public static SeString GenerateUpdateNagString(Version xivPluginVersion) {
-        // This method is terrible and ugly and I hate it, but is basically necessary because string interpolation with
-        // SeStrings is *absolute total pain*. I tried to make it localization friendly but that's not particularly
-        // easy, sadly.
+    /// <summary>
+    /// The most significant version component, which is the one that breaks compatibility: the major version, or
+    /// <c>0.minor</c> while still on 0.x.
+    /// </summary>
+    public static string GetCompatibilityLevel(this Version version) {
+        return version.Major == 0 ? $"0.{version.Minor}" : $"{version.Major}";
+    }
 
-        var versionText = xivPluginVersion.GetMajMinBuild();
-        var versionHighlight = new SeStringBuilder()
-            .Add(ChatLinkWiring.GetPayload(LinkCode.GetGithubReleaseLink))
-            .AddUiForeground(string.Format(UIStrings.VersionUtils_UpdateAlert_Link, "\xE0BB", versionText), 32)
-            .Add(RawPayload.LinkTerminator)
-            .Build();
-
-        var outer = UIStrings.VersionUtils_UpdateAlert.Split("{0}", 2);
-
-        return new SeStringBuilder()
-            .Append(ErrorNotifier.BuildPrefixedString(""))
-            .AddText(outer[0])
-            .Append(versionHighlight)
-            .AddText(outer[1])
-            .Build();
+    public static bool IsCompatibleWith(this Version version, Version other) {
+        return version.GetCompatibilityLevel() == other.GetCompatibilityLevel();
     }
 }

@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Dalamud.Game.Text.SeStringHandling;
-using XIVDeck.FFXIVPlugin.Base;
+using Dalamud.Plugin.Services;
+using Serilog;
+using XIVDeck.FFXIVPlugin.IoC;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 
-namespace XIVDeck.FFXIVPlugin.Game.Chat; 
+namespace XIVDeck.FFXIVPlugin.Game.Chat;
 
-public static class ErrorNotifier {
+[Service(ServiceFlags.Singleton)]
+public class ErrorNotifier(ILogger log, IToastGui toasts, IChatGui chat) {
     private const int DebounceTime = 300;
-    private static readonly Dictionary<string, long> Debounce = new();
+    private readonly ConcurrentDictionary<string, long> _debounce = new();
 
     public static SeString BuildPrefixedString(SeString message, int colorKey = 514) {
         return new SeStringBuilder()
@@ -17,18 +21,17 @@ public static class ErrorNotifier {
             .Build();
     }
 
-    public static void ShowError(string text, bool useToast = false, bool prefix = true, bool debounce = false) {
-        if (debounce && Debounce.GetValueOrDefault(text, 0) > Environment.TickCount64) {
-            Injections.PluginLog.Verbose($"ShowError fired but suppressed by debounce: {text}");
+    public void ShowError(string text, bool useToast = false, bool prefix = true, bool debounce = false) {
+        if (debounce && this._debounce.GetValueOrDefault(text, 0) > Environment.TickCount64) {
+            log.Verbose("ShowError fired but suppressed by debounce: {Text}", text);
             return;
         }
-        
-        Injections.Chat.PrintError(prefix ? BuildPrefixedString(text) : text);
 
-        if (useToast) 
-            Injections.Toasts.ShowError(text);
+        chat.PrintError(prefix ? BuildPrefixedString(text) : text);
 
-        if (debounce) 
-            Debounce[text] = Environment.TickCount64 + DebounceTime;
+        if (useToast)
+            toasts.ShowError(text);
+
+        if (debounce) this._debounce[text] = Environment.TickCount64 + DebounceTime;
     }
 }

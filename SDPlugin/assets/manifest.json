@@ -1,4 +1,4 @@
-﻿{
+{
   "$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
   "Actions": [
     {
@@ -100,12 +100,16 @@
   "CategoryIcon": "assets/images/category",
   "SDKVersion": 2,
   "Author": "KazWolfe",
-  "CodePath": "plugin.html",
-  "PropertyInspectorPath": "propertyInspector.html",
+  "CodePath": "plugin.js",
+  "PropertyInspectorPath": "index.html",
+  "Nodejs": {
+    "Version": "24",
+    "Debug": "--inspect=127.0.0.1:33030"
+  },
   "Description": "Integrate with Final Fantasy XIV for a mogtastic experience in-game!",
   "Name": "XIVDeck",
   "Icon": "assets/images/icon",
-  "URL": "https://wolf.dev/",
+  "URL": "https://github.com/KazWolfe/XIVDeck",
   "Version": "1.0.0.0",
   "OS": [
     {
@@ -118,17 +122,9 @@
     }
   ],
   "Software": {
-    "MinimumVersion": "6.4"
+    "MinimumVersion": "7.1"
   },
   "ApplicationsToMonitor": {
-    "windows": [
-      "ffxiv_dx11.exe"
-    ],
-    "mac": [
-      "dezent.XIV-on-Mac"
-    ],
-    "linux": [
-      "ffxiv_dx11.exe"
-    ]
+    "windows": [ "ffxiv_dx11.exe" ]
   }
 }

@@ -16,4 +16,4 @@
 /dataSources.local.xml
 
 # Github Copilot persisted session migrations, see: https://github.com/microsoft/copilot-intellij-feedback/issues/712#issuecomment-3322062215
-copilot.data.migration.*.xml
+copilot*

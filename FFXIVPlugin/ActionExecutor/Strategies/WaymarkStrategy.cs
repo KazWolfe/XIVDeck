@@ -1,27 +1,31 @@
-﻿using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
+﻿using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 using Lumina.Excel.Sheets;
-using XIVDeck.FFXIVPlugin.Base;
+using Serilog;
+using XIVDeck.FFXIVPlugin.Game;
 using XIVDeck.FFXIVPlugin.Game.Managers;
+using XIVDeck.FFXIVPlugin.Contract;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.FieldMarker)]
-public class WaymarkStrategy : FixedCommandStrategy<FieldMarker> {
-    protected override int GetIconForAction(FieldMarker action) => action.UiIcon;
+public class WaymarkStrategy(IDataManager dataManager, IFramework framework, ILogger log,
+    ActionAppearanceResolver appearanceResolver) :
+    FixedCommandStrategy<FieldMarker>(dataManager, appearanceResolver) {
 
-    protected override ExecutableAction BuildExecutableAction(FieldMarker action) {
-        return new ExecutableAction {
-            ActionId = (int) action.RowId,
-            ActionName = action.Name.ToString(),
-            IconId = this.GetIconForAction(action),
-            HotbarSlotType = HotbarSlotType.FieldMarker
+    protected override ActionEntry BuildExecutableAction(FieldMarker action) {
+        return new ActionEntry {
+            Id = (int)action.RowId,
+            Name = action.Name.ToString(),
+            Type = HotbarSlotType.FieldMarker
         };
     }
 
-    protected override void ExecuteInner(FieldMarker action) {
-        Injections.PluginLog.Debug($"Executing {action} ({action.Name}) directly via hotbar");
+    protected override async Task ExecuteInner(FieldMarker action) {
+        log.Debug("Executing FieldMarker#{ActionId} ({ActionName}) directly via hotbar", action.RowId, action.Name.ExtractText());
 
-        Injections.Framework.RunOnFrameworkThread(delegate {
+        await framework.RunOnFrameworkThread(delegate {
             HotbarManager.ExecuteHotbarAction(HotbarSlotType.FieldMarker, action.RowId);
         });
     }

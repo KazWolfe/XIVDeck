@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="crowdin.yml" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="FFXIVPlugin/XIVDeck.FFXIVPlugin.csproj" />
+  <Project Path="SDPlugin/XIVDeck.SDPlugin.esproj" />
+</Solution>

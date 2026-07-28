@@ -21,70 +21,49 @@
         <value>XIVDeck</value>
         <comment>Product name. Do not change.</comment>
     </data>
-  <data name="StreamDeck" xml:space="preserve">
-        <value>Stream Deck</value>
-        <comment>Product name. Do not change.</comment>
-    </data>
-  <data name="XIVDeck_Title" xml:space="preserve">
+  <data name="XIVDeckPlugin_Name" xml:space="preserve">
         <value>XIVDeck Spiele-Plugin</value>
         <comment>The proper title of the Dalamud plugin.</comment>
     </data>
-  <data name="Exceptions_PlayerNotLoggedIn" xml:space="preserve">
+  <data name="PlayerNotLoggedInException_Message" xml:space="preserve">
         <value>Ein Spieler ist nicht im Spiel eingeloggt.</value>
         <comment>Shown when a user attempts to trigger a Stream Deck button without being logged in to the game.</comment>
     </data>
-  <data name="Exceptions_ActionLocked" xml:space="preserve">
+  <data name="ActionLockedException_Message" xml:space="preserve">
         <value>{0} ID {1} ist nicht freigeschaltet und kann nicht verwendet werden.</value>
     </data>
-  <data name="Exceptions_ActionNotFound" xml:space="preserve">
+  <data name="ActionNotFoundException_Message" xml:space="preserve">
         <value>Kein {0} mit der ID {1} gefunden.</value>
     </data>
-  <data name="CommandController_MissingCommandError" xml:space="preserve">
+  <data name="MissingCommandException_Message" xml:space="preserve">
         <value>Ein auszuführender Befehl muss angegeben werden.</value>
     </data>
-  <data name="CommandController_NotCommandError" xml:space="preserve">
+  <data name="UnsafeCommandException_Message" xml:space="preserve">
         <value>Befehle müssen mit einem Schrägstrich anfangen.</value>
     </data>
-  <data name="ActionController_UnknownActionTypeError" xml:space="preserve">
+  <data name="ActionTypeNotFoundException_Message" xml:space="preserve">
         <value>Es wurde keine registrierte Aktion vom Typ {0} gefunden.</value>
     </data>
-  <data name="ClassController_ClassLessThan1Error" xml:space="preserve">
+  <data name="ClassJobService_ClassLessThan1Error" xml:space="preserve">
         <value>Kann nicht zu einer Klasse mit ID kleiner 1 wechseln.</value>
     </data>
-  <data name="ClassController_InvalidClassIdError" xml:space="preserve">
+  <data name="ClassJobService_InvalidClassIdError" xml:space="preserve">
         <value>Eine Klasse mit ID {0} existiert nicht!</value>
     </data>
-  <data name="ClassController_NoGearsetForClassError" xml:space="preserve">
+  <data name="ClassJobService_NoGearsetForClassError" xml:space="preserve">
         <value>Konnte nicht zu {0} wechseln, da kein Ausrüstungsset für diese Klasse existiert. Erstelle eins und versuche es erneut.</value>
     </data>
-  <data name="HotbarController_InvalidHotbarIdError" xml:space="preserve">
+  <data name="HotbarService_InvalidHotbarIdError" xml:space="preserve">
         <value>Hotbar-ID muss zwischen 0 und 17 liegen</value>
     </data>
-  <data name="HotbarController_NormalHotbarInvalidSlotError" xml:space="preserve">
+  <data name="HotbarService_NormalHotbarInvalidSlotError" xml:space="preserve">
         <value>Wenn Hotbar-ID &lt; 10, muss Slot-ID zwischen 0 und 11 liegen</value>
     </data>
-  <data name="HotbarController_CrossHotbarInvalidSlotError" xml:space="preserve">
+  <data name="HotbarService_CrossHotbarInvalidSlotError" xml:space="preserve">
         <value>Wenn Hotbar-ID &gt;= 10, muss Slot-ID zwischen 0 und 15 liegen</value>
-    </data>
-  <data name="HotbarController_InvalidHotbarOrSlotError" xml:space="preserve">
-        <value>Eine ungültige Hotbar oder Slot wurde ausgelöst.</value>
-    </data>
-  <data name="AuthModule_BadAPIKeyError" xml:space="preserve">
-        <value>API-Schlüssel nicht vorhanden oder ungültig.</value>
-    </data>
-  <data name="WSOpcodeWiring_UnknownOpcodeError" xml:space="preserve">
-        <value>Es existiert keine Nachricht mit opcode {0}</value>
-    </data>
-  <data name="EmoteStrategy_EmoteDoesntHaveCommandError" xml:space="preserve">
-        <value>Das Emote "{0}" hat keinen zugehörigen Text-Befehl.</value>
     </data>
   <data name="EmoteStrategy_EmoteLockedError" xml:space="preserve">
         <value>Das Emote "{0}" ist nicht freigeschaltet und kann daher nicht verwendet werden.</value>
-    </data>
-  <data name="ExtraCommandStrategy_NoCommandError" xml:space="preserve">
-        <value>Kein Befehl für Extra Befehl {0} vorhanden. BERICHTE DIESEN FEHLER!</value>
-        <comment>This error message is shown when the command to use an "Extra Command" is not found. Because management of extra commands is done manually, additional instructions have been added for the user to report a bug to the developer.
-        </comment>
     </data>
   <data name="FixedCommandStrategy_ActionNotFoundError" xml:space="preserve">
         <value>Eine Aktion des Typs {0} mit der ID {1} existiert nicht.</value>
@@ -102,14 +81,6 @@
   <data name="SettingsWindow_SafeModeDisabledWarning" xml:space="preserve">
         <value>WARNUNG: SICHERER MODUS DEAKTIVIERT! Du kannst möglicherweise verbotene oder ungültige Befehle von deinem Stream Deck an das Spiel senden.</value>
         <comment>"Illegal commands" in this case mean commands that normally cannot be sent to the game and may cause damage or harm if proper care is not taken.</comment>
-    </data>
-    <data name="SettingsWindow_ExperimentalSettings" xml:space="preserve">
-        <value>Experimentelle Einstellungen</value>
-        <comment>Header for configuration window section.</comment>
-    </data>
-  <data name="SettingsWindow_Experiment_MIcon" xml:space="preserve">
-        <value>/micon Icons verwenden</value>
-        <comment>/micon is a game-provided command. It can be left as-is.</comment>
     </data>
   <data name="SettingsWindow_GitHubLink" xml:space="preserve">
         <value>XIVDeck GitHub</value>
@@ -130,16 +101,16 @@
             
 Standardport: {0}, Bereich: {1}-{2}</value>
     </data>
-  <data name="ForcedUpdateNag_Headline" xml:space="preserve">
+  <data name="UpdateNotifier_ForcedUpdate_Headline" xml:space="preserve">
         <value>Das XIVDeck Stream Deck Plugin ist veraltet und wurde deaktiviert.</value>
     </data>
-  <data name="Nag_OpenGithubDownloadButton" xml:space="preserve">
+  <data name="Common_OpenGitHubDownloadButton" xml:space="preserve">
         <value>XIVDeck Downloadseite öffnen</value>
     </data>
-  <data name="Nag_OpenSettingsButton" xml:space="preserve">
+  <data name="Common_OpenSettingsButton" xml:space="preserve">
         <value>XIVDeck Einstellungen öffnen</value>
     </data>
-  <data name="ForcedUpdateNag_ProblemDescription" xml:space="preserve">
+  <data name="UpdateNotifier_ForcedUpdate_ProblemDescription" xml:space="preserve">
         <value>Bitte lade die neueste Version des Stream Deck Plugins vom XIVDeck GitHub herunter und installiere diese, um XIVDeck weiterzunutzen.</value>
     </data>
   <data name="SetupNag_Headline" xml:space="preserve">
@@ -147,15 +118,6 @@ Standardport: {0}, Bereich: {1}-{2}</value>
     </data>
   <data name="SetupNag_ResolutionHelp" xml:space="preserve">
         <value>XIVDeck benötigt die Benutzung des Begleiters XIVDeck Stream Deck Plugin um zu funktionieren. Falls dies noch nicht getan wurde, stelle bitte sicher, dass das XIVDeck Stream Deck Plugin von GitHub heruntergeladen und installiert ist.</value>
-    </data>
-  <data name="SetupNag_AlreadyInstalledHelp" xml:space="preserve">
-        <value>Falls das XIVDeck Stream Deck Plugin bereits installiert ist, stelle bitte sicher, dass der Port in der Konfiguration auf {0} eingestellt ist und dass mindestens eine Schaltfläche angelegt ist.</value>
-    </data>
-  <data name="SetupNag_CurrentPort" xml:space="preserve">
-        <value>Aktueller Port: {0}</value>
-    </data>
-  <data name="SetupNag_PortChangeHelp" xml:space="preserve">
-        <value>Falls der Port, auf dem der Server gehostet wird, geändert werden muss, kann dies in den XIVDeck Einstellungen getan werden.</value>
     </data>
   <data name="SetupNag_DismissHelp" xml:space="preserve">
         <value>Diese Nachricht wird automatisch geschlossen, sobald das Stream Deck Plugin erkannt wurde.</value>
@@ -207,24 +169,10 @@ Standardport: {0}, Bereich: {1}-{2}</value>
   <data name="OrnamentStrategy_OrnamentLockedError" xml:space="preserve">
         <value>Das Mode Zubehör "{0}" ist nicht freigeschaltet und kann daher nicht verwendet werden.</value>
     </data>
-  <data name="ErrorHandler_ErrorPrefix" xml:space="preserve">
-        <value>{0} - FEHLER</value>
-    </data>
-  <data name="TickScheduler_ExceptionHandler" xml:space="preserve">
-        <value>Es gab ein Problem bei der Ausführung: {0}: {1}</value>
-        <comment>"Task" may be substituted for "job" in this case. This string will display when a background job fails to execute.</comment>
-    </data>
-  <data name="GameClass_NotFoundError" xml:space="preserve">
+  <data name="GameClassFactory_NotFoundError" xml:space="preserve">
         <value>Eine Klasse mit ID {0} existiert nicht.</value>
     </data>
-  <data name="GameClass_UncategorizedError" xml:space="preserve">
-        <value>Nicht erkannte Job-Kategorie für Klassen-ID {0}. BERICHTE DIESEN FEHLER!</value>
-        <comment>Shown when plugin data is invalid and requires an update from the developer.</comment>
-    </data>
-  <data name="WSInitOpcode_ThanksForInstall" xml:space="preserve">
-        <value>Vielen Dank für die Installation des Stream Deck Plugins. XIVDeck ist nun bereit!</value>
-    </data>
-  <data name="ClassController_FallbackClassUsed" xml:space="preserve">
+  <data name="ClassJobService_FallbackClassUsed" xml:space="preserve">
         <value>Es wurde kein Ausrüstungsset für {0} gefunden, stattdessen wurde {1} verwendet.</value>
     </data>
   <data name="SettingsWindow_XIVDeckPortOpen" xml:space="preserve">
@@ -233,53 +181,26 @@ Standardport: {0}, Bereich: {1}-{2}</value>
   <data name="SettingsWindow_ListenOnNetwork" xml:space="preserve">
         <value>Auf allen Netzwerkschnittstellen lauschen</value>
     </data>
-  <data name="SettingsWindow_UseMIcon_Help" xml:space="preserve">
-        <value>Wenn diese Option aktiviert ist, wird das Stream Deck /micon-Befehle in Makros respektieren. Wenn deaktiviert, wird das Stream Deck nur das Makro-Icon vom bereitgestelltem Drop-down-Menü verwenden.
-
-Standard: Aus</value>
-    </data>
-  <data name="TestingUpdateNag_Headline" xml:space="preserve">
+  <data name="UpdateNotifier_TestingUpdate_Headline" xml:space="preserve">
         <value>Warnung: XIVDeck Testversion stimmt nicht überein</value>
     </data>
-  <data name="TestingUpdateNag_MismatchDetectedText" xml:space="preserve">
+  <data name="UpdateNotifier_TestingUpdate_MismatchDetectedText" xml:space="preserve">
         <value>Es wurde ein Versionskonflikt zwischen der aktuell installierten Version des Stream Deck Plugins und dem Game Plugin entdeckt. Bestimmte Funktionen funktionieren möglicherweise nicht richtig.</value>
     </data>
-  <data name="TestingUpdateNag_PleaseTestProperly" xml:space="preserve">
+  <data name="UpdateNotifier_TestingUpdate_PleaseTestProperly" xml:space="preserve">
         <value>Um beim Test von XIVDeck Versionen richtig zu helfen, muss die richtige (übereinstimmenden) Version des Stream Deck Plugins installiert sein. Verwenden die untenstehende Schaltfläche, um die korrekte Version des Stream Deck Plugins für die Testversion herunterzuladen.</value>
     </data>
-  <data name="TestingUpdateNag_DismissHelp" xml:space="preserve">
-        <value>Diese Nachricht kann verworfen werden, wird aber wieder angezeigt, solange der Testmodus aktiviert ist und ein Versionsfehler festgestellt wird.</value>
-    </data>
-  <data name="TestingUpdateNag_IgnoreButton" xml:space="preserve">
+  <data name="UpdateNotifier_TestingUpdate_IgnoreButton" xml:space="preserve">
         <value>Vorerst ignorieren</value>
     </data>
-  <data name="TestingUpdateNag_DownloadButton" xml:space="preserve">
+  <data name="UpdateNotifier_TestingUpdate_DownloadButton" xml:space="preserve">
         <value>v{0} herunterladen</value>
     </data>
-  <data name="WSInitOpcode_GamePluginOutdated" xml:space="preserve">
-        <value>Die Version des XIVDeck Stream Deck Plugins ist neuer als das Spiel-Plugin. Bitte installieren Sie alle Updates vom Dalamud Plugin Installer.</value>
-    </data>
-  <data name="ForcedUpdateNag_SupportInfo" xml:space="preserve">
+  <data name="Common_SupportInfo" xml:space="preserve">
         <value>Du benötigst Unterstützung? Bitte schildere dein Problem im XIVLauncher &amp; Dalamud Discord (#how-to-get-help)!</value>
     </data>
-  <data name="ForcedUpdateNag_SupportButton" xml:space="preserve">
+  <data name="UpdateNotifier_ForcedUpdate_SupportButton" xml:space="preserve">
         <value>Discord öffnen</value>
-    </data>
-  <data name="ForcedUpdateNag_BypassInstructions" xml:space="preserve">
-        <value>Um diesen Fehler vorübergehend zu ignorieren, halte STRG gedrückt.
-Dies wird das Plugin nicht wieder aktivieren.</value>
-    </data>
-  <data name="ForcedUpdateNag_BypassButton" xml:space="preserve">
-        <comment>Shown when the user is given the option to temporarily ignore the update error.</comment>
-        <value>Vorerst ignorieren</value>
-    </data>
-  <data name="VersionUtils_UpdateAlert_Link" xml:space="preserve">
-        <value>{0}Version {1}</value>
-        <comment>Highlighted section of the update message and used as the link to GitHub. {0} is the "play" icon, {1} is the version number. {0} must be at the start of the message.</comment>
-    </data>
-  <data name="VersionUtils_UpdateAlert" xml:space="preserve">
-        <value>Deine Version des XIVDeck Stream Deck Plugins ist nicht mehr auf dem neuesten Stand. Bitte installiere {0} vom GitHub!</value>
-        <comment>General message notifying the user of a version update. The {0} is replaced with a colored link to GitHub ("version 1.2.3") for updating named `VersionUtils_UpdateAlert_Link`. Only *one* {0} is permitted!!</comment>
     </data>
   <data name="MainCommandStrategy_MainCommandLocked" xml:space="preserve">
         <value>Der Hauptbefehl {0} kann zurzeit nicht verwendet werden.</value>
@@ -304,37 +225,16 @@ Dies wird das Plugin nicht wieder aktivieren.</value>
   <data name="SetupNag_JoinDiscord" xml:space="preserve">
         <value>Klicke um dem Discord beizutreten!</value>
     </data>
-  <data name="XIVDeckWebServer_RunException" xml:space="preserve">
-        <value>XIVDeck's Server ist unerwartet fehlgeschlagen und wurde deaktiviert. Bitte starte dein Spiel neu. Wenn dies weiterhin geschieht, melde bitte diesen Fehler!</value>
-    </data>
-  <data name="PortInUseNag_Title" xml:space="preserve">
+  <data name="WebSocketServer_PortInUse_Title" xml:space="preserve">
         <value>Der XIVDeck API Port wird bereits verwendet!</value>
     </data>
-  <data name="PortInUseNag_PortIsAlreadyInUse" xml:space="preserve">
-        <value>XIVDeck hat festgestellt, dass Port {0} </value>
-    </data>
-  <data name="PortInUseNag_PortAlreadyInUse" xml:space="preserve">
+  <data name="WebSocketServer_PortInUse_PortAlreadyInUse" xml:space="preserve">
         <value>XIVDeck hat festgestellt, dass Port {0} bereits von einer anderen Anwendung verwendet wird.</value>
     </data>
-  <data name="PortInUseNag_ResolutionInstructions" xml:space="preserve">
+  <data name="WebSocketServer_PortInUse_ResolutionInstructions" xml:space="preserve">
         <value>Um XIVDeck verwenden zu können, muss dieser Port auf einen freien umgestellt werden. Wähle dazu bitte eine neue Port-Nummer in den XIVDeck Game Plugin-Einstellungen, und gib gleiche Portnummer in den XIVDeck Stream Deck Plugin Einstellungen ein.</value>
     </data>
-  <data name="PortInUseNag_IgnoreForNow" xml:space="preserve">
+  <data name="Common_IgnoreForNowButton" xml:space="preserve">
         <value>Vorerst ignorieren</value>
-    </data>
-  <data name="MultiboxNag_MultiboxingDetected" xml:space="preserve">
-        <value>XIVDeck hat eine weitere Instanz von Final Fantasy XIV auf dem Computer erkannt. Daher wurde es in diesem Client deaktiviert.</value>
-    </data>
-  <data name="MultiboxNag_MultiboxingIsUnsupported" xml:space="preserve">
-        <value>Multiboxing wird nicht unterstützt und es kann zu unerwartetem Verhalten kommen. Wenn dein Stream Deck nach Erhalt dieser Nachricht nicht mehr funktioniert, starte bitte alle Instanzen deines Spiel-Clients neu.</value>
-    </data>
-  <data name="MultiboxNag_SuppressWarning" xml:space="preserve">
-        <value>Diese Warnung nicht erneut anzeigen.</value>
-    </data>
-  <data name="MultiboxNag_CloseButton" xml:space="preserve">
-        <value>Schließen</value>
-    </data>
-  <data name="MultiboxNag_ChatWarning" xml:space="preserve">
-        <value>Multiboxing wurde erkannt. XIVDeck funktioniert möglicherweise nicht richtig!</value>
     </data>
 </root>

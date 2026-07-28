@@ -1,0 +1,56 @@
+{
+  "App": {
+    "actionHeader": "アクション設定",
+    "pluginHeader": "プラグイン設定",
+    "buildVersion": "ビルドバージョン:",
+    "runtimeVersion": "ランタイムバージョン:",
+    "gamePluginVersion": "ゲームプラグインのバージョン:"
+  },
+  "CommandFrame": {
+    "command": "コマンド"
+  },
+  "HotbarFrame": {
+    "hotbar": "ホットバー",
+    "placeholder": "ホットバーを選択...",
+    "standardGroup": "標準ホットバー",
+    "crossGroup": "クロスホットバー",
+    "standard": "ホットバー {{id}}",
+    "cross": "クロスホットバー {{id}}",
+    "slot": "スロット"
+  },
+  "ClassFrame": {
+    "class": "クラス",
+    "placeholder": "クラスを選択...",
+    "help": {
+      "title": "",
+      "body": ""
+    }
+  },
+  "ExecActionFrame": {
+    "type": "タイプ",
+    "typePlaceholder": "アクションタイプを選択...",
+    "action": "アクション",
+    "actionPlaceholder": "アクションを選択..."
+  },
+  "EmoteSubsettings": {
+    "logSettings": "ログ設定",
+    "default": "ゲームの既定値を使用",
+    "always": "常にチャットログメッセージを表示する",
+    "never": "チャットログメッセージを表示しない"
+  },
+  "GearsetSubsettings": {
+    "overridePlate": "ミラージュプレートを上書き",
+    "plateId": "プレートNo"
+  },
+  "MacroFrame": {
+    "type": "マクロタイプ",
+    "individual": "個別",
+    "shared": "共有",
+    "number": "マクロ No."
+  },
+  "VolumeFrame": {
+    "channel": "チャンネル",
+    "placeholder": "チャンネルを選択",
+    "step": "刻み幅"
+  }
+}

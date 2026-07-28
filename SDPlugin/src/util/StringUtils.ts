@@ -4,8 +4,4 @@
             return txt.charAt(0).toUpperCase() + txt.slice(1);
         });
     }
-    
-    public static expandCaps(myString: string): string {
-        return myString.split(/(?=[A-Z])/).join(" ");
-    }
 }

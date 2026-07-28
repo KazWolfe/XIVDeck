@@ -1,5 +1,4 @@
-﻿
-# Created by https://www.toptal.com/developers/gitignore/api/csharp
+﻿# Created by https://www.toptal.com/developers/gitignore/api/csharp
 # Edit at https://www.toptal.com/developers/gitignore?templates=csharp
 
 ### Csharp ###
@@ -37,6 +36,9 @@ bld/
 [Ll]og/
 [Ll]ogs/
 [Dd]ist/
+obj\\*/
+bin\\*/
+dist\\*/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -401,5 +403,8 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+*.local.json
+scratch/
 
 # End of https://www.toptal.com/developers/gitignore/api/csharp

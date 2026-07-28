@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using XIVDeck.FFXIVPlugin.Game.Data;
+using XIVDeck.FFXIVPlugin.Game.Types;
 
 namespace XIVDeck.FFXIVPlugin.Game.Managers;
 

@@ -1,0 +1,90 @@
+{
+  "App": {
+    "actionHeader": "Action Configuration",
+    "pluginHeader": "Plugin Configuration",
+    "connecting": "Connecting…",
+    "unsupportedAction": "Unsupported action type: {{action}}",
+    "buildVersion": "Build Version:",
+    "runtimeVersion": "Runtime Version:",
+    "gamePluginVersion": "Game Plugin Version:"
+  },
+  "GlobalFrame": {
+    "connectionSettings": "Connection Settings",
+    "notConnected": "Not connected",
+    "type": "Type",
+    "autodetect": "Auto-detect",
+    "webSocket": "WebSocket",
+    "namedPipe": "Named Pipe",
+    "unixSocket": "Unix Domain Socket",
+    "port": "WS Port",
+    "searchPath": "Search Path",
+    "choose": "Choose...",
+    "clear": "Clear",
+    "cooldowns": "Cooldowns",
+    "trackCooldowns": "Track cooldown information"
+  },
+  "NoGameBanner": {
+    "title": "FFXIV not detected!",
+    "body": "XIVDeck was not able to detect a running copy of FFXIV. Please make sure you have launched the game through <launcher>XIVLauncher</launcher> and that you've installed the XIVDeck plugin in-game.",
+    "help": "If this problem persists, visit the <discord>Dalamud Discord</discord> for help."
+  },
+  "GameDisconnectedBanner": {
+    "title": "Couldn't connect to XIVDeck server!",
+    "body": "XIVDeck detected a running copy of FFXIV, but couldn't establish a connection to the XIVDeck plugin. Please make sure you have launched the game through <launcher>XIVLauncher</launcher> and that you've installed the XIVDeck plugin in-game.",
+    "help": "If this problem persists, visit the <discord>Dalamud Discord</discord> for help."
+  },
+  "CommandFrame": {
+    "command": "Command"
+  },
+  "HotbarFrame": {
+    "hotbar": "Hotbar",
+    "placeholder": "Select hotbar...",
+    "standardGroup": "Standard Hotbars",
+    "crossGroup": "Cross Hotbars",
+    "standard": "Hotbar {{id}}",
+    "cross": "Cross Hotbar {{id}}",
+    "petStandard": "Pet Hotbar",
+    "petCross": "Cross Pet Hotbar",
+    "slot": "Slot"
+  },
+  "ClassFrame": {
+    "class": "Class",
+    "placeholder": "Select class...",
+    "help": {
+      "title": "Classes Help",
+      "body": "When this button is pressed, XIVDeck will switch to the first gearset matching the selected class. Classes without a gearset will not be displayed or usable."
+    }
+  },
+  "ExecActionFrame": {
+    "type": "Type",
+    "typePlaceholder": "Select action type...",
+    "action": "Action",
+    "actionPlaceholder": "Select action..."
+  },
+  "EmoteSubsettings": {
+    "logSettings": "Log Settings",
+    "default": "Use Game Defaults",
+    "always": "Always Show Chat Log Message",
+    "never": "Never Show Chat Log Message"
+  },
+  "GearsetSubsettings": {
+    "overridePlate": "Override Glamour Plate",
+    "plateId": "Plate ID"
+  },
+  "MacroFrame": {
+    "type": "Macro Type",
+    "individual": "Individual",
+    "shared": "Shared",
+    "number": "Macro Number"
+  },
+  "VolumeFrame": {
+    "channel": "Channel",
+    "placeholder": "Select channel...",
+    "mode": "Mode",
+    "mute": "Mute",
+    "set": "Set",
+    "adjust": "Adjust",
+    "volume": "Volume",
+    "step": "Step Size"
+  }
+}

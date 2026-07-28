@@ -1,50 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 using Lumina.Excel;
 using Lumina.Excel.Sheets;
-using XIVDeck.FFXIVPlugin.Base;
+using XIVDeck.FFXIVPlugin.ActionExecutor.Payloads;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
+using XIVDeck.FFXIVPlugin.Game;
+using ActionAppearance = XIVDeck.FFXIVPlugin.Contract.ActionAppearance;
+using XIVDeck.FFXIVPlugin.Contract;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.PerformanceInstrument)]
-public class InstrumentStrategy : IActionStrategy {
-    private static readonly ExcelSheet<Perform> PerformSheet = Injections.DataManager.Excel.GetSheet<Perform>();
+public class InstrumentStrategy(IDataManager dataManager, ICondition condition, IFramework framework,
+    ActionAppearanceResolver appearanceResolver) : IActionStrategy {
+    private readonly ExcelSheet<Perform> _performSheet = dataManager.Excel.GetSheet<Perform>();
 
-    private static ExecutableAction GetExecutableAction(Perform instrument) {
-        return new ExecutableAction {
-            ActionId = (int) instrument.RowId,
-            ActionName = instrument.Instrument.ToString(),
-            IconId = instrument.Icon,
-            HotbarSlotType = HotbarSlotType.PerformanceInstrument,
+    private static ActionEntry GetExecutableAction(Perform instrument) {
+        return new ActionEntry {
+            Id = (int) instrument.RowId,
+            Name = instrument.Instrument.ToString(),
+            Type = HotbarSlotType.PerformanceInstrument,
             SortOrder = instrument.Icon
         };
     }
 
-    private static Perform? GetActionById(uint id) {
-        return PerformSheet.GetRowOrDefault(id);
+    private Perform? GetActionById(uint id) {
+        return this._performSheet.GetRowOrDefault(id);
     }
 
     private static unsafe bool IsPerformUnlocked() {
         return UIState.Instance()->IsUnlockLinkUnlocked(255);
     }
 
-    public ExecutableAction? GetExecutableActionById(uint actionId) {
-        var action = GetActionById(actionId);
+    public ActionEntry? GetActionEntryById(uint actionId) {
+        var action = this.GetActionById(actionId);
         return action == null ? null : GetExecutableAction(action.Value);
     }
 
-    public List<ExecutableAction>? GetAllowedItems() {
-        return !IsPerformUnlocked() ? null : PerformSheet.Where(i => i.RowId > 0).Select(GetExecutableAction).ToList();
+    public List<ActionEntry> GetSelectableActions() {
+        if (!IsPerformUnlocked()) {
+            return [];
+        }
+
+        return [.. this._performSheet.Where(i => i.RowId > 0).Select(GetExecutableAction)];
     }
 
-    public void Execute(uint actionId, ActionPayload? _) {
+    public async Task Execute(uint actionId, ActionPayload? _) {
         // intentionally not checking for Bard here; the game will take care of that for us (and display a better
         // error than we normally can). It's legal for a perform to be on a non-Bard hotbar, so I'm not concerned
         // about this.
@@ -53,22 +62,21 @@ public class InstrumentStrategy : IActionStrategy {
             throw new ActionLockedException(UIStrings.InstrumentStrategy_PerformanceLockedError);
         }
 
-        if (Injections.Condition[ConditionFlag.Performing]) {
+        if (condition[ConditionFlag.Performing]) {
             throw new IllegalGameStateException(UIStrings.InstrumentStrategy_CurrentlyPerformingError);
         }
 
-        var instrument = GetActionById(actionId);
+        var instrument = this.GetActionById(actionId);
 
         if (instrument == null) {
-            throw new ArgumentOutOfRangeException(nameof(actionId), string.Format(UIStrings.InstrumentStrategy_InstrumentNotFoundError, actionId));
+            throw new ActionNotFoundException(string.Format(UIStrings.InstrumentStrategy_InstrumentNotFoundError, actionId));
         }
 
-        Injections.Framework.RunOnFrameworkThread(delegate {
+        await framework.RunOnFrameworkThread(delegate {
             HotbarManager.ExecuteHotbarAction(HotbarSlotType.PerformanceInstrument, actionId);
         });
     }
 
-    public int GetIconId(uint actionId) {
-        return GetActionById(actionId)?.Icon ?? 0;
-    }
+    public Task<ActionAppearance> GetAppearance(uint actionId) =>
+        appearanceResolver.GetActionAppearance(HotbarSlotType.PerformanceInstrument, actionId);
 }

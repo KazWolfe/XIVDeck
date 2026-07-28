@@ -1,231 +1,331 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <root>
-    <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <xsd:element name="root" msdata:IsDataSet="true">
-            
+
         </xsd:element>
     </xsd:schema>
     <resheader name="resmimetype">
-        <value>text/microsoft-resx</value>
+        <value>ţéẋţ/ɱîçŕôšôƒţ-ŕéšẋ</value>
     </resheader>
     <resheader name="version">
         <value>1.3</value>
     </resheader>
     <resheader name="reader">
-        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+        <value>Šýšţéɱ.Ŕéšôûŕçéš.ŔéšẊŔéšôûŕçéŔéàðéŕ, Šýšţéɱ.Ŵîñðôŵš.Ƒôŕɱš, Ṽéŕšîôñ=2.0.0.0, Çûļţûŕé=ñéûţŕàļ, ÞûƀļîçĶéýŢôķéñ=ƀ77à5ç561934é089</value>
     </resheader>
     <resheader name="writer">
-        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+        <value>Šýšţéɱ.Ŕéšôûŕçéš.ŔéšẊŔéšôûŕçéŴŕîţéŕ, Šýšţéɱ.Ŵîñðôŵš.Ƒôŕɱš, Ṽéŕšîôñ=2.0.0.0, Çûļţûŕé=ñéûţŕàļ, ÞûƀļîçĶéýŢôķéñ=ƀ77à5ç561934é089</value>
     </resheader>
     <data name="XIVDeck" xml:space="preserve">
-        <value>« XÎVÐéçk »</value>
-        <comment>Product name. Do not change.</comment>
+        <value>ẊÎṼÐéçķ</value>
     </data>
     <data name="StreamDeck" xml:space="preserve">
-        <value>« Stréàm Ðéççk »</value>
-        <comment>Product name. Do not change.</comment>
+        <value>Šţŕéàɱ Ðéçķ</value>
     </data>
-    <data name="XIVDeck_Title" xml:space="preserve">
-        <value>« XÎVÐéçk Gààmé Þlûgîñ »</value>
+    <data name="XIVDeckPlugin_Name" xml:space="preserve">
+        <value>ẊÎṼÐéçķ Ĝàɱé Þļûĝîñ</value>
     </data>
-    <data name="Exceptions_PlayerNotLoggedIn" xml:space="preserve">
-        <value>« À þlàýér îîs ñôt lôgggéð îñ tô tthé gàmé· »</value>
+    <data name="PlayerNotLoggedInException_Message" xml:space="preserve">
+        <value>À þļàýéŕ îš ñôţ ļôĝĝéð îñ ţô ţĥé ĝàɱé.</value>
     </data>
-    <data name="Exceptions_ActionLocked" xml:space="preserve">
-        <value>« Ţhé {0} ÎÐ {1}  hàs ñôt bbééñ ûñlôçkkéð àñð çàñññôt bé ûsééð· »</value>
+    <data name="ActionLockedException_Message" xml:space="preserve">
+        <value>Ţĥé {0} ÎÐ {1} ĥàš ñôţ ƀééñ ûñļôçķéð àñð çàññôţ ƀé ûšéð.</value>
     </data>
-    <data name="Exceptions_ActionNotFound" xml:space="preserve">
-        <value>« Ñô {0} wîth  ÎÐ {1} wàs ffôûñð· »</value>
+    <data name="ActionNotFoundException_Message" xml:space="preserve">
+        <value>Ñô {0} ŵîţĥ ÎÐ {1} ŵàš ƒôûñð.</value>
     </data>
-    <data name="CommandController_MissingCommandError" xml:space="preserve">
-        <value>« À çômmàñð  tô rûñ mûsst bé sþéçîîfîéð· »</value>
+    <data name="MissingCommandException_Message" xml:space="preserve">
+        <value>À çôɱɱàñð ţô ŕûñ ɱûšţ ƀé šþéçîƒîéð.</value>
     </data>
-    <data name="CommandController_NotCommandError" xml:space="preserve">
-        <value>« Çômmàñðs mmûst stàrt  wîth à slààsh· »</value>
+    <data name="UnsafeCommandException_Message" xml:space="preserve">
+        <value>Çôɱɱàñðš ɱûšţ šţàŕţ ŵîţĥ à šļàšĥ.</value>
     </data>
-    <data name="ActionController_UnknownActionTypeError" xml:space="preserve">
-        <value>« Ñô régîstééréð àçtîôññ ôf týþé {0}  wàs fôûñðð· »</value>
+    <data name="ActionTypeNotFoundException_Message" xml:space="preserve">
+        <value>Ñô ŕéĝîšţéŕéð àçţîôñ ôƒ ţýþé {0} ŵàš ƒôûñð.</value>
     </data>
-    <data name="ClassController_ClassLessThan1Error" xml:space="preserve">
-        <value>« Çàññôt swîîtçh tô à ççlàss wîth  ÎÐ léss thhàñ ①· »</value>
+    <data name="ClassJobService_ClassLessThan1Error" xml:space="preserve">
+        <value>Çàññôţ šŵîţçĥ ţô à çļàšš ŵîţĥ ÎÐ ļéšš ţĥàñ 1.</value>
     </data>
-    <data name="ClassController_InvalidClassIdError" xml:space="preserve">
-        <value>« À çlàss wîîth ÎÐ {0} ðôôés ñôt éxîîst¡ »</value>
+    <data name="ClassJobService_InvalidClassIdError" xml:space="preserve">
+        <value>À çļàšš ŵîţĥ ÎÐ {0} ðôéš ñôţ éẋîšţ!</value>
     </data>
-    <data name="ClassController_NoGearsetForClassError" xml:space="preserve">
-        <value>« Çôûlðñ't sswîtçh tô {0}  béçàûsé ýýôû ðôñ't hhàvé à géàrrsét fôr thhîs çlàss·  Çréàté ôñéé àñð trý ààgàîñ· »</value>
+    <data name="ClassJobService_NoGearsetForClassError" xml:space="preserve">
+        <value>Çôûļðñ'ţ šŵîţçĥ ţô {0} ƀéçàûšé ýôû ðôñ'ţ ĥàṽé à ĝéàŕšéţ ƒôŕ ţĥîš çļàšš. Çŕéàţé ôñé àñð ţŕý àĝàîñ.</value>
     </data>
-    <data name="HotbarController_InvalidHotbarIdError" xml:space="preserve">
-        <value>« Hôtbàr ÎÐ  mûst bé béétwééñ ⓞ àññð ①⑦ »</value>
+    <data name="HotbarService_InvalidHotbarIdError" xml:space="preserve">
+        <value>Ĥôţƀàŕ ÎÐ ɱûšţ ƀé ƀéţŵééñ 0 àñð 17</value>
     </data>
-    <data name="HotbarController_NormalHotbarInvalidSlotError" xml:space="preserve">
-        <value>« Whéñ Hôtbààr ÎÐ &lt; ①ⓞ,, Slôt ÎÐ mmûst bé béttwééñ ⓞ àñðð ①① »</value>
+    <data name="HotbarService_NormalHotbarInvalidSlotError" xml:space="preserve">
+        <value>Ŵĥéñ Ĥôţƀàŕ ÎÐ &lt; 10, Šļôţ ÎÐ ɱûšţ ƀé ƀéţŵééñ 0 àñð 11</value>
     </data>
-    <data name="HotbarController_CrossHotbarInvalidSlotError" xml:space="preserve">
-        <value>« Whéñ Hôtbààr ÎÐ &gt;= ①ⓞⓞ, Slôt ÎÐ  mûst bé béétwééñ ⓞ àññð ①⑤ »</value>
-    </data>
-    <data name="HotbarController_InvalidHotbarOrSlotError" xml:space="preserve">
-        <value>« Àñ îñvàlîðð hôtbàr ôrr slôt wàs  trîggéréð·· »</value>
-    </data>
-    <data name="AuthModule_BadAPIKeyError" xml:space="preserve">
-        <value>« ÀÞÎ kéý mîîssîñg ôr îîñvàlîð· »</value>
-    </data>
-    <data name="WSOpcodeWiring_UnknownOpcodeError" xml:space="preserve">
-        <value>« Ñô méssàgéé éxîsts wîîth ôþçôðé  {0} »</value>
-    </data>
-    <data name="EmoteStrategy_EmoteDoesntHaveCommandError" xml:space="preserve">
-        <value>« Ţhé émôté  "{0}" ðôés ññôt hàvé àññ àssôçîàtééð téxt çômmmàñð· »</value>
+    <data name="HotbarService_CrossHotbarInvalidSlotError" xml:space="preserve">
+        <value>Ŵĥéñ Ĥôţƀàŕ ÎÐ &gt;= 10, Šļôţ ÎÐ ɱûšţ ƀé ƀéţŵééñ 0 àñð 15</value>
     </data>
     <data name="EmoteStrategy_EmoteLockedError" xml:space="preserve">
-        <value>« Ţhé émôté  "{0}" îsñ't  ûñlôçkéð ààñð théréfôôré çàñ't bbé ûséð· »</value>
-    </data>
-    <data name="ExtraCommandStrategy_NoCommandError" xml:space="preserve">
-        <value>« Ñô çômmàñðð éxîsts fôôr Éxtrà Çôômmàñð {0}· RRÉÞÔRŢ ŢHÎSS ƁÛG¡ »</value>
-        <comment>This error message is shown when the command to use an "Extra Command" is not found. Because management of extra commands is done manually, additional instructions have been added for the user to report a bug to the developer.
-        </comment>
+        <value>Ţĥé éɱôţé "{0}" îšñ'ţ ûñļôçķéð àñð ţĥéŕéƒôŕé çàñ'ţ ƀé ûšéð.</value>
     </data>
     <data name="FixedCommandStrategy_ActionNotFoundError" xml:space="preserve">
-        <value>« Àñ àçtîôñ  ôf týþé {0}  wîth ÎÐ {1}  ðôés ñôt ééxîst· »</value>
+        <value>Àñ àçţîôñ ôƒ ţýþé {0} ŵîţĥ ÎÐ {1} ðôéš ñôţ éẋîšţ.</value>
     </data>
     <data name="FixedCommandStrategy_IllegalActionError" xml:space="preserve">
-        <value>« Ţhé àçtîôññ wîth ÎÐ {0}  îs màrkéðð às îllégààl àñð çàñññôt bé ûséðð· »</value>
-        <comment>Shown when the plugin blocks a user from calling an action marked as illegal (unsafe).</comment>
+        <value>Ţĥé àçţîôñ ŵîţĥ ÎÐ {0} îš ɱàŕķéð àš îļļéĝàļ àñð çàññôţ ƀé ûšéð.</value>
     </data>
     <data name="FixedCommandStrategy_SheetNotFoundError" xml:space="preserve">
-        <value>« À shéét ôff týþé {0} ðôôés ñôt éxîîst· »</value>
+        <value>À šĥééţ ôƒ ţýþé {0} ðôéš ñôţ éẋîšţ.</value>
     </data>
     <data name="SettingsWindow_Title" xml:space="preserve">
-        <value>« XÎVÐéçk Gààmé Þlûgîñ  Séttîñgs »</value>
+        <value>ẊÎṼÐéçķ Ĝàɱé Þļûĝîñ Šéţţîñĝš</value>
     </data>
     <data name="SettingsWindow_SafeModeDisabledWarning" xml:space="preserve">
-        <value>« ÐÀÑGÉR: SÀÀƑÉ ṀÔÐÉ ÐÎÎSÀƁLÉÐ¡ Ýôôû màý bé ààblé tô séññð îllégàl  çômmàñðs ffrôm ýôûr SStréàm Ðéçkk tô thé gààmé· »</value>
-        <comment>"Illegal commands" in this case mean commands that normally cannot be sent to the game and may cause damage or harm if proper care is not taken.</comment>
-    </data>
-    <data name="SettingsWindow_EnablePenumbraIPC" xml:space="preserve">
-        <value>« Ûsé Þéñûmbbrà Îçôñs »</value>
-        <comment>Setting to enable integration with another app named Penumbra.</comment>
-    </data>
-    <data name="SettingsWindow_EnablePenumbraIPC_Help" xml:space="preserve">
-        <value>« Whéñ éñàblléð, thîs fféàtûré wîlll àttémþt  tô ðîsþlàýý îçôñs frôôm Þéñûmbràà ôñ thé Sttréàm Ðéçk·· Ñôté thàtt Þéñûmbrà  mûst bé îññstàlléð fôôr thîs sétttîñg tô hààvé àñý éffféçt·
-
-Îf ððîsàbléð, ôôrîgîñàl gààmé îçôñs wwîll bé ûsééð îñstéàð··
-
-Ðéfàûlt:: Ôff »</value>
-    </data>
-    <data name="SettingsWindow_ExperimentalSettings" xml:space="preserve">
-        <value>« Éxþérîméñttàl Séttîñggs »</value>
-        <comment>Header for configuration window section.</comment>
-    </data>
-    <data name="SettingsWindow_Experiment_MIcon" xml:space="preserve">
-        <value>« Ûsé /mîçôññ Îçôñs »</value>
-        <comment>/micon is a game-provided command. It can be left as-is.</comment>
+        <value>ÐÀÑĜÉŔ: ŠÀƑÉ ṀÔÐÉ ÐÎŠÀßĻÉÐ! Ýôû ɱàý ƀé àƀļé ţô šéñð îļļéĝàļ çôɱɱàñðš ƒŕôɱ ýôûŕ Šţŕéàɱ Ðéçķ ţô ţĥé ĝàɱé.</value>
     </data>
     <data name="SettingsWindow_GitHubLink" xml:space="preserve">
-        <value>« XÎVÐéçk GîîtHûb »</value>
+        <value>ẊÎṼÐéçķ ĜîţĤûƀ</value>
     </data>
     <data name="SettingsWindow_ApplyButton" xml:space="preserve">
-        <value>« Àþþlý Sétttîñgs »</value>
-        <comment>Used as a "save and apply" button for a settings dialog box. Should be a short string (under 20 characters)</comment>
+        <value>Àþþļý Šéţţîñĝš</value>
     </data>
     <data name="SettingsWindow_APIPort" xml:space="preserve">
-        <value>« ÀÞÎ Þôrt »</value>
+        <value>ÀÞÎ Þôŕţ</value>
+    </data>
+    <data name="SettingsWindow_TransportType" xml:space="preserve">
+        <value>Çôññéçţîôñ Ţýþé</value>
+    </data>
+    <data name="SettingsWindow_TransportType_Help" xml:space="preserve">
+        <value>Ĥôŵ ţĥé Šţŕéàɱ Ðéçķ þļûĝîñ çôññéçţš ţô ţĥé ĝàɱé. Ûñîẋ Ðôɱàîñ Šôçķéţ/Ñàɱéð Þîþé àŕé àûţôɱàţîçàļļý ðîšçôṽéŕéð ƀý ţĥé Šţŕéàɱ Ðéçķ þļûĝîñ àñð ñééð ñô ƒûŕţĥéŕ çôñƒîĝûŕàţîôñ; ŴéƀŠôçķéţ ŕéǫûîŕéš šéţţîñĝ à ɱàţçĥîñĝ þôŕţ ôñ ţĥé Šţŕéàɱ Ðéçķ šîðé àñð îš ɱàîñļý ûšéƒûļ ƒôŕ ŕéɱôţé/çŕôšš-ɱàçĥîñé šéţûþš.</value>
+    </data>
+    <data name="SettingsWindow_TransportType_WebSocket" xml:space="preserve">
+        <value>ŴéƀŠôçķéţ</value>
+    </data>
+    <data name="SettingsWindow_TransportType_UnixDomainSocket" xml:space="preserve">
+        <value>Ûñîẋ Ðôɱàîñ Šôçķéţ</value>
+    </data>
+    <data name="SettingsWindow_TransportType_NamedPipe" xml:space="preserve">
+        <value>Ñàɱéð Þîþé</value>
     </data>
     <data name="SettingsWindow_ListenIP" xml:space="preserve">
-        <value>« Lîstééñ ÎÞ: {0} »</value>
+        <value>Ļîšţéñ ÎÞ: {0}</value>
     </data>
     <data name="SettingsWindow_APIPort_Help" xml:space="preserve">
-        <value>« Ðéfàûlt þôôrt: {0}
+        <value>Çĥàñĝîñĝ ţĥîš šéţţîñĝ ŵîļļ ŕé-ţŕîĝĝéŕ ţĥé Ŵéļçôɱé šçŕééñ.
 
-Ràññgé: {1}‐{2} »</value>
+Ðéƒàûļţ þôŕţ: {0}, Ŕàñĝé: {1}-{2}</value>
     </data>
-    <data name="ForcedUpdateNag_Headline" xml:space="preserve">
-        <value>« Ţhé XÎVÐéççk Stréàm ÐÐéçk Þlûgîññ îs çrîtîççàllý ôût ôôf ðàté àñðð hàs bééñ  ðîsàbléð· »</value>
+    <data name="SettingsWindow_PipeName" xml:space="preserve">
+        <value>Þîþé Ñàɱé: {0}</value>
     </data>
-    <data name="Nag_OpenGithubDownloadButton" xml:space="preserve">
-        <value>« Ôþéñ XÎVÐééçk Ðôwñlôààð Þàgé »</value>
+    <data name="SettingsWindow_SocketPath" xml:space="preserve">
+        <value>Šôçķéţ Þàţĥ: {0}</value>
     </data>
-    <data name="Nag_OpenSettingsButton" xml:space="preserve">
-        <value>« Ôþéñ XÎVÐééçk Séttîñggs »</value>
+    <data name="SettingsWindow_SocketPath_Native" xml:space="preserve">
+        <value>Ñàţîṽé Šôçķéţ Þàţĥ: {0}</value>
     </data>
-    <data name="ForcedUpdateNag_ResolutionHelp" xml:space="preserve">
-        <value>« Þléàsé ðôwwñlôàð àñð  îñstàll thhé làtést vvérsîôñ ôf  thé Stréàmm Ðéçk Þlûggîñ frôm thhé XÎVÐéçk  GîtHûb tô  çôñtîñûé ûûsîñg XÎVÐééçk· »</value>
+    <data name="SettingsWindow_TransportFallbackNotice" xml:space="preserve">
+        <value>ẊÎṼÐéçķ çôûļð ñôţ šţàŕţ ţĥé çôññéçţîôñ ţýþé šéļéçţéð ƀéļôŵ, àñð îš ûšîñĝ {0} ƒôŕ ţĥîš šéššîôñ îñšţéàð.</value>
+    </data>
+    <data name="UpdateNotifier_ForcedUpdate_Headline" xml:space="preserve">
+        <value>Ţĥé ẊÎṼÐéçķ Šţŕéàɱ Ðéçķ Þļûĝîñ îš ôûţ ôƒ ðàţé!</value>
+    </data>
+    <data name="Common_OpenGitHubDownloadButton" xml:space="preserve">
+        <value>Ôþéñ ẊÎṼÐéçķ Ðôŵñļôàð Þàĝé</value>
+    </data>
+    <data name="Common_OpenSettingsButton" xml:space="preserve">
+        <value>Ôþéñ ẊÎṼÐéçķ Šéţţîñĝš</value>
+    </data>
+    <data name="TransportManager_RetryButton" xml:space="preserve">
+        <value>Ŕéţŕý</value>
+    </data>
+    <data name="UpdateNotifier_ForcedUpdate_ProblemDescription" xml:space="preserve">
+        <value>Ţĥé ṽéŕšîôñ ôƒ ţĥé ẊÎṼÐéçķ Šţŕéàɱ Ðéçķ Þļûĝîñ çûŕŕéñţļý îñšţàļļéð îš ñôţ çôɱþàţîƀļé ŵîţĥ ţĥé îñšţàļļéð ṽéŕšîôñ ôƒ ţĥé Ðàļàɱûð Þļûĝîñ. Ţô ŕé-éñàƀļé ẊÎṼÐéçķ, þļéàšé ðôŵñļôàð àñð îñšţàļļ ţĥé ļàţéšţ ṽéŕšîôñ ôƒ ţĥé Šţŕéàɱ Ðéçķ Þļûĝîñ ƒŕôɱ ţĥé ƀûţţôñ ƀéļôŵ.</value>
     </data>
     <data name="SetupNag_Headline" xml:space="preserve">
-        <value>« À Stréàm ÐÐéçk hàs ñéévér çôññéççtéð tô théé gàmé· »</value>
+        <value>Ŵéļçôɱé ţô ẊÎṼÐéçķ!</value>
     </data>
     <data name="SetupNag_ResolutionHelp" xml:space="preserve">
-        <value>« Îf ýôû hàvvéñ't ðôñé  sô àlréàðýý, þléàsé mmàké sûré ýýôû'vé ðôwññlôàðéð àñðð îñstàlléðð thé çômþààñîôñ XÎVÐééçk Stréàm  Ðéçk Þlûgîîñ frôm GîttHûb· »</value>
+        <value>ẊÎṼÐéçķ ŕéǫûîŕéš ţĥé ûšé ôƒ ţĥé çôɱþàñîôñ ẊÎṼÐéçķ Šţŕéàɱ Ðéçķ þļûĝîñ ţô ƀé ûšéƒûļ. Îƒ ýôû ĥàṽéñ'ţ ýéţ ðôŵñļôàðéð ţĥé çôɱþàñîôñ þļûĝîñ ƒŕôɱ ĜîţĤûƀ, þļéàšé ðô šô ñôŵ.</value>
     </data>
-    <data name="SetupNag_AlreadyInstalledHelp" xml:space="preserve">
-        <value>« Îf thé XÎVVÐéçk Stréààm Ðéçk Þlûûgîñ îs àlrréàðý îñstààlléð, þléààsé màké sûûré thé þôrrt îs sét ççôrréçtlý îîñ thé çôñffîgûràtîôñ  àñð thàt ýýôû'vé çréààtéð àt léààst ôñé bûtttôñ· »</value>
+    <data name="SetupNag_AlreadyInstalled_Checklist" xml:space="preserve">
+        <value>Ţĥé Šţŕéàɱ Ðéçķ þļûĝîñ ƒîñðš ţĥé ĝàɱé ôñ îţš ôŵñ, šô ţĥéŕé'š ûšûàļļý ñôţĥîñĝ ţô çôñƒîĝûŕé. Þļéàšé ɱàķé šûŕé ţĥàţ ţĥé Šţŕéàɱ Ðéçķ šôƒţŵàŕé îš ŕûññîñĝ, ţĥàţ àţ ļéàšţ ôñé ẊÎṼÐéçķ àçţîôñ ĥàš ƀééñ þļàçéð ôñ ýôûŕ Šţŕéàɱ Ðéçķ, àñð ţĥàţ ţĥé Šţŕéàɱ Ðéçķ þļûĝîñ îš šţîļļ šéţ ţô ðéţéçţ ẊÎṼÐéçķ àûţôɱàţîçàļļý.</value>
     </data>
-    <data name="SetupNag_CurrentPort" xml:space="preserve">
-        <value>« Çûrréñt þôôrt: {0} »</value>
+    <data name="SetupNag_AlreadyInstalled_WebSocketHelp" xml:space="preserve">
+        <value>ẊÎṼÐéçķ îš çûŕŕéñţļý šéţ ûþ ţô àççéþţ ŴéƀŠôçķéţ çôññéçţîôñš, ŵĥîçĥ çàññôţ ƀé ðéţéçţéð àûţôɱàţîçàļļý. Îñ ţĥé Šţŕéàɱ Ðéçķ þļûĝîñ'š ẊÎṼÐéçķ šéţţîñĝš, àðð à ŴéƀŠôçķéţ çôññéçţîôñ þôîñţîñĝ àţ þôŕţ {0}.</value>
     </data>
-    <data name="SetupNag_PortChangeHelp" xml:space="preserve">
-        <value>« Îf ýôû ñéééð tô çhàñggé thé þôrtt thé sérvéér îs hôstééð ôñ, ýôû  màý ðô sô  frôm XÎVÐééçk's séttîîñgs· »</value>
+    <data name="SetupNag_AlreadyInstalled_ChangeConnectionHelp" xml:space="preserve">
+        <value>Ţĥé çôññéçţîôñ ţýþé àñð ţĥé ŴéƀŠôçķéţ þôŕţ çàñ ƀôţĥ ƀé çĥàñĝéð ƒŕôɱ ẊÎṼÐéçķ'š šéţţîñĝš.</value>
     </data>
     <data name="SetupNag_DismissHelp" xml:space="preserve">
-        <value>« Ţô ðîsmîsss thîs mésssàgé, résôllvé thé àbôôvé þrôblémm ôr ûñîñsttàll thé XÎÎVÐéçk þlûggîñ· »</value>
+        <value>Ţĥîš ɱéššàĝé ŵîļļ àûţôɱàţîçàļļý ƀé ðîšɱîššéð ôñçé ţĥé Šţŕéàɱ Ðéçķ Þļûĝîñ ĥàš ƀééñ ðéţéçţéð.</value>
     </data>
     <data name="CollectionStrategy_CollectionNotFoundError" xml:space="preserve">
-        <value>« Ñô Çôlléçttîôñ wîth ÎÎÐ {0} éxîstss· »</value>
+        <value>Ñô Çôļļéçţîôñ ŵîţĥ ÎÐ {0} éẋîšţš.</value>
     </data>
     <data name="GearsetStrategy_GearsetNotFoundError" xml:space="preserve">
-        <value>« Ñô géàrsétt éxîsts îññ slôt ñûmbbér {0}· »</value>
+        <value>Ñô ĝéàŕšéţ éẋîšţš îñ šļôţ ñûɱƀéŕ {0}.</value>
     </data>
     <data name="GeneralActionStrategy_ActionLockedError" xml:space="preserve">
-        <value>« Ţhé àçtîôññ "{0}" îs ñôôt ýét ûñlôôçkéð· »</value>
+        <value>Ţĥé àçţîôñ "{0}" îš ñôţ ýéţ ûñļôçķéð.</value>
     </data>
     <data name="GeneralActionStrategy_ActionIllegalError" xml:space="preserve">
-        <value>« Ţhé àçtîôññ "{0}" (ÎÐ {1})  îs màrkééð às îlléggàl àñð çàñññôt bé ûsééð· »</value>
-        <comment>Shown when the plugin blocks a user from calling an action marked as illegal (unsafe).</comment>
+        <value>Ţĥé àçţîôñ "{0}" (ÎÐ {1}) îš ɱàŕķéð àš îļļéĝàļ àñð çàññôţ ƀé ûšéð.</value>
     </data>
     <data name="InstrumentStrategy_PerformanceLockedError" xml:space="preserve">
-        <value>« Þérfôrmàñççé môðé hàssñ't bééñ ûûñlôçkéð ýéét· »</value>
-        <comment>Shown when a user attempts to use a musical instrument without having Performance actions unlocked.</comment>
+        <value>Þéŕƒôŕɱàñçé ɱôðé ĥàšñ'ţ ƀééñ ûñļôçķéð ýéţ.</value>
     </data>
     <data name="InstrumentStrategy_CurrentlyPerformingError" xml:space="preserve">
-        <value>« Çàññôt swîîtçh îñstrûûméñts whîllé îñ Þérfôôrmàñçé môððé· »</value>
-        <comment>Shown when a user attempts to switch musical instruments while actively in a Performance.</comment>
+        <value>Çàññôţ šŵîţçĥ îñšţŕûɱéñţš ŵĥîļé îñ Þéŕƒôŕɱàñçé ɱôðé.</value>
     </data>
     <data name="InstrumentStrategy_InstrumentNotFoundError" xml:space="preserve">
-        <value>« Ñô îñstrûmméñt wîth ÎÎÐ {0} éxîstss· »</value>
-        <comment>Shown when a user attempts to use an invalid or unknown musical instrument.</comment>
+        <value>Ñô îñšţŕûɱéñţ ŵîţĥ ÎÐ {0} éẋîšţš.</value>
     </data>
     <data name="MacroStrategy_MacroEmptyError" xml:space="preserve">
-        <value>« Ţhé sþéçîffîéð màçrô  îs émþtý ààñð çàññôt  bé ûséð· »</value>
+        <value>Ţĥé šþéçîƒîéð ɱàçŕô îš éɱþţý àñð çàññôţ ƀé ûšéð.</value>
+    </data>
+    <data name="MacroStrategy_IndividualMacroName" xml:space="preserve">
+        <value>Îñðîṽîðûàļ Ṁàçŕô {0}</value>
+    </data>
+    <data name="MacroStrategy_SharedMacroName" xml:space="preserve">
+        <value>Šĥàŕéð Ṁàçŕô {0}</value>
     </data>
     <data name="MainCommandStrategy_ActionInvalidError" xml:space="preserve">
-        <value>« Ṁàîñ çômmààñð àçtîôñ  ÎÐ {0} îs ñôôt vàlîð· »</value>
+        <value>Ṁàîñ çôɱɱàñð àçţîôñ ÎÐ {0} îš ñôţ ṽàļîð.</value>
     </data>
     <data name="MinionStrategy_MinionNotFoundError" xml:space="preserve">
-        <value>« Ñô mîñîôñ  wîth ÎÐ {0}  éxîsts· »</value>
+        <value>Ñô ɱîñîôñ ŵîţĥ ÎÐ {0} éẋîšţš.</value>
     </data>
     <data name="MinionStrategy_MinionLockedError" xml:space="preserve">
-        <value>« Ţhé mîñîôññ "{0}" îsñ'tt ûñlôçkéð  àñð théréffôré çàñ't  bé ûséð· »</value>
+        <value>Ţĥé ɱîñîôñ "{0}" îšñ'ţ ûñļôçķéð àñð ţĥéŕéƒôŕé çàñ'ţ ƀé ûšéð.</value>
     </data>
     <data name="MountStrategy_MountNotFoundError" xml:space="preserve">
-        <value>« Ñô môûñt wwîth ÎÐ {0} ééxîsts· »</value>
+        <value>Ñô ɱôûñţ ŵîţĥ ÎÐ {0} éẋîšţš.</value>
     </data>
     <data name="MountStrategy_MountLockedError" xml:space="preserve">
-        <value>« Ţhé môûñt  "{0}" îsñ't  ûñlôçkéð ààñð théréfôôré çàñ't bbé ûséð· »</value>
+        <value>Ţĥé ɱôûñţ "{0}" îšñ'ţ ûñļôçķéð àñð ţĥéŕéƒôŕé çàñ'ţ ƀé ûšéð.</value>
     </data>
     <data name="OrnamentStrategy_OrnamentLockedError" xml:space="preserve">
-        <value>« Ţhé fàshîôôñ àççéssôrrý "{0}" îsñ'tt ûñlôçkéðð àñð thérééfôré çàñ'tt bé ûséð· »</value>
+        <value>Ţĥé ƒàšĥîôñ àççéššôŕý "{0}" îšñ'ţ ûñļôçķéð àñð ţĥéŕéƒôŕé çàñ'ţ ƀé ûšéð.</value>
     </data>
-    <data name="ErrorHandler_ErrorPrefix" xml:space="preserve">
-        <value>« {0} ‐ ÉRRÔR »</value>
+    <data name="GameClassFactory_NotFoundError" xml:space="preserve">
+        <value>À çļàšš ŵîţĥ ÎÐ {0} ðôéš ñôţ éẋîšţ.</value>
     </data>
-    <data name="TickScheduler_ExceptionHandler" xml:space="preserve">
-        <value>« Ţhéré wàs  àñ îssûé rrûññîñg à ttàsk: {0}: {1} »</value>
-        <comment>"Task" may be substituted for "job" in this case. This string will display when a background job fails to execute.</comment>
+    <data name="ClassJobService_FallbackClassUsed" xml:space="preserve">
+        <value>Ñô ĝéàŕšéţ ŵàš ƒôûñð ƒôŕ {0}, šô ýôûŕ ĝéàŕšéţ ƒôŕ {1} ŵàš ûšéð îñšţéàð.</value>
     </data>
-    <data name="GameClass_NotFoundError" xml:space="preserve">
-        <value>« À çlàss wîîth ÎÐ {0} ðôôés ñôt éxîîst· »</value>
+    <data name="SettingsWindow_XIVDeckPortOpen" xml:space="preserve">
+        <value>ẊÎṼÐéçķ îš àççéššîƀļé ƒŕôɱ çôɱþûţéŕš ôñ ýôûŕ ñéţŵôŕķ!</value>
     </data>
-    <data name="GameClass_UncategorizedError" xml:space="preserve">
-        <value>« Ûñréçôgñîžžéð ĵôb çàttégôrý fôr  çlàss ÎÐ {0}·· RÉÞÔRŢ ŢŢHÎS ƁÛG¡ »</value>
-        <comment>Shown when plugin data is invalid and requires an update from the developer.</comment>
+    <data name="SettingsWindow_ListenOnNetwork" xml:space="preserve">
+        <value>Ļîšţéñ ôñ Àļļ Îñţéŕƒàçéš</value>
+    </data>
+    <data name="UpdateNotifier_TestingUpdate_Headline" xml:space="preserve">
+        <value>Ŵàŕñîñĝ: ẊÎṼÐéçķ Ţéšţîñĝ Ṽéŕšîôñ Ṁîšɱàţçĥ</value>
+    </data>
+    <data name="UpdateNotifier_TestingUpdate_MismatchDetectedText" xml:space="preserve">
+        <value>À ṽéŕšîôñ ɱîšɱàţçĥ ŵàš ðéţéçţéð ƀéţŵééñ ţĥé çûŕŕéñţļý-îñšţàļļéð ṽéŕšîôñ ôƒ ţĥé Šţŕéàɱ Ðéçķ Þļûĝîñ àñð ţĥé Ĝàɱé Þļûĝîñ. Çéŕţàîñ ƒéàţûŕéš ɱàý ñôţ ŵôŕķ þŕôþéŕļý.</value>
+    </data>
+    <data name="UpdateNotifier_TestingUpdate_PleaseTestProperly" xml:space="preserve">
+        <value>Îñ ôŕðéŕ ţô þŕôþéŕļý ĥéļþ ţéšţ ẊÎṼÐéçķ ŕéļéàšéš, ýôû ñééð ţô ƀé ôñ ţĥé çôŕŕéçţ (ɱàţçĥîñĝ) ṽéŕšîôñ ôƒ ţĥé Šţŕéàɱ Ðéçķ Þļûĝîñ. Þļéàšé ûšé ţĥé ƀéļôŵ ƀûţţôñ ţô ðôŵñļôàð ţĥé çôŕŕéçţ ṽéŕšîôñ ôƒ ţĥé Šţŕéàɱ Ðéçķ Þļûĝîñ ƒôŕ ýôûŕ ţéšţîñĝ ƀûîļð.</value>
+    </data>
+    <data name="UpdateNotifier_TestingUpdate_IgnoreButton" xml:space="preserve">
+        <value>Îĝñôŕé Ƒôŕ Ñôŵ</value>
+    </data>
+    <data name="UpdateNotifier_TestingUpdate_DownloadButton" xml:space="preserve">
+        <value>Ðôŵñļôàð ṽ{0}</value>
+    </data>
+    <data name="Common_SupportInfo" xml:space="preserve">
+        <value>Šţûçķ? Ṽîšîţ ţĥé ẊÎṼĻàûñçĥéŕ &amp; Ðàļàɱûð Ðîšçôŕð ƒôŕ ĥéļþ!</value>
+    </data>
+    <data name="UpdateNotifier_ForcedUpdate_SupportButton" xml:space="preserve">
+        <value>Ôþéñ Ðîšçôŕð</value>
+    </data>
+    <data name="MainCommandStrategy_MainCommandLocked" xml:space="preserve">
+        <value>Ţĥé ɱàîñ çôɱɱàñð "{0}" çàññôţ ƀé ûšéð àţ ţĥîš ţîɱé.</value>
+    </data>
+    <data name="SetupNag_HowInstall" xml:space="preserve">
+        <value>Ŵàîţ, ĥôŵ ðô Î îñšţàļļ ţĥîš?</value>
+    </data>
+    <data name="SetupNag_HowInstall_Requirements" xml:space="preserve">
+        <value>Îñ ôŕðéŕ ţô îñšţàļļ ẊÎṼÐéçķ, ýôû ñééð àñ Éļĝàţô Šţŕéàɱ Ðéçķ àñð ţĥé Šţŕéàɱ Ðéçķ šôƒţŵàŕé.</value>
+    </data>
+    <data name="SetupNag_HowInstall_Steps" xml:space="preserve">
+        <value>1. Ṽîšîţ ţĥé ẊÎṼÐéçķ Ðôŵñļôàð Þàĝé ûšîñĝ ţĥé ƀûţţôñ àƀôṽé.
+2. Ðôŵñļôàð "ẊÎṼÐéçķ.šţŕéàɱÐéçķÞļûĝîñ" àñð ôþéñ îţ.
+3. Ŵĥéñ þŕôɱþţéð, çĥôôšé ţô îñšţàļļ ţĥé çûšţôɱ àçţîôñ.</value>
+    </data>
+    <data name="SetupNag_HowInstall_OtherInfo" xml:space="preserve">
+        <value>Ţĥé Šţŕéàɱ Ðéçķ àþþļîçàţîôñ ŵîļļ ţàķé çàŕé ôƒ ţĥé ŕéšţ àñð šéţ ţĥé þļûĝîñ ûþ ŵîţĥ ţĥé ðéƒàûļţ šéţţîñĝš.</value>
+    </data>
+    <data name="SetupNag_AlreadyInstalled" xml:space="preserve">
+        <value>Àļŕéàðý Îñšţàļļéð ţĥé Çôɱþàñîôñ Þļûĝîñ?</value>
+    </data>
+    <data name="SetupNag_JoinDiscord" xml:space="preserve">
+        <value>Çļîçķ ţô ĵôîñ ţĥé Ðîšçôŕð!</value>
+    </data>
+    <data name="WebSocketServer_PortInUse_Title" xml:space="preserve">
+        <value>Ţĥé ẊÎṼÐéçķ ÀÞÎ þôŕţ îš àļŕéàðý îñ ûšé!</value>
+    </data>
+    <data name="WebSocketServer_PortInUse_PortAlreadyInUse" xml:space="preserve">
+        <value>ẊÎṼÐéçķ ĥàš ðéţéçţéð ţĥàţ þôŕţ {0} îš àļŕéàðý îñ ûšé ƀý àñôţĥéŕ àþþļîçàţîôñ.</value>
+    </data>
+    <data name="WebSocketServer_PortInUse_ResolutionInstructions" xml:space="preserve">
+        <value>
+            Îñ ôŕðéŕ ţô ûšé ẊÎṼÐéçķ, ţĥîš þôŕţ ɱûšţ ƀé çĥàñĝéð ţô à ƒŕéé ôñé. Ţô ðô ţĥîš, þļéàšé çĥôôšé à ñéŵ þôŕţ ñûɱƀéŕ îñ ţĥé ẊÎṼÐéçķ Ĝàɱé Þļûĝîñ šéţţîñĝš ôŕ
+            çĥôôšé à ðîƒƒéŕéñţ šéŕṽéŕ ţýþé. ßé šûŕé ţô çĥàñĝé ţĥé àþþŕôþŕîàţé šéţţîñĝš îñ ţĥé Šţŕéàɱ Ðéçķ þļûĝîñ ţôô.
+        </value>
+    </data>
+    <data name="Common_IgnoreForNowButton" xml:space="preserve">
+        <value>Îĝñôŕé Ƒôŕ Ñôŵ</value>
+    </data>
+    <data name="TransportManager_TransportUnavailable_Title" xml:space="preserve">
+        <value>ẊÎṼÐéçķ çôûļðñ'ţ šţàŕţ ŵîţĥ ýôûŕ çôñƒîĝûŕéð çôññéçţîôñ ţýþé!</value>
+    </data>
+    <data name="TransportManager_TransportUnavailable_Description" xml:space="preserve">
+        <value>ẊÎṼÐéçķ ŵàš ñôţ àƀļé ţô šţàŕţ îţš šéŕṽéŕ îñ {0} ɱôðé. Ţĥé Šţŕéàɱ Ðéçķ þļûĝîñ ŵîļļ ñôţ ƀé àƀļé ţô çôññéçţ ţô ţĥîš ĝàɱé.</value>
+    </data>
+    <data name="TransportManager_TransportUnavailable_ResolutionInstructions" xml:space="preserve">
+        <value>
+            Ŵĥîļé ţĥîš ɱàý ƀé à ţéɱþôŕàŕý éŕŕôŕ, ţĥéŕé ɱàý àļšô ƀé à çôñƒîĝûŕàţîôñ ôŕ šýšţéɱ þŕôƀļéɱ. Îƒ ŕéšţàŕţîñĝ ţĥé šéŕṽéŕ ðôéš ñôţ ĥéļþ, ţŕý çĥôôšîñĝ à ðîƒƒéŕéñţ
+            ţŕàñšþôŕţ ţýþé ƒŕôɱ ţĥé Šéţţîñĝš ÛÎ, ôŕ àšķ ƒôŕ ĥéļþ îñ ţĥé ẊÎṼĻàûñçĥéŕ Ðîšçôŕð.
+        </value>
+    </data>
+    <data name="TransportManager_UdsUnsupported_Title" xml:space="preserve">
+        <value>Ýôûŕ šýšţéɱ ðôéšñ'ţ šûþþôŕţ ţĥé šéļéçţéð çôññéçţîôñ ţýþé!</value>
+    </data>
+    <data name="TransportManager_UdsUnsupported_Description" xml:space="preserve">
+        <value>ẊÎṼÐéçķ îš çûŕŕéñţļý çôñƒîĝûŕéð ţô ûšé ţĥé Ûñîẋ Ðôɱàîñ Šôçķéţ ţŕàñšþôŕţ ɱôðé, ŵĥîçĥ îš ñôţ šûþþôŕţéð ôñ ţĥîš šýšţéɱ. Ţĥé ŴéƀŠôçķéţ ţŕàñšþôŕţ ĥàš ƀééñ ţéɱþôŕàŕîļý çĥôšéñ ƒôŕ ţĥîš šéššîôñ.</value>
+    </data>
+    <data name="TransportManager_UdsUnsupported_ResolutionInstructions_Wine" xml:space="preserve">
+        <value>Ţô ŕéšôļṽé ţĥîš þŕôƀļéɱ, þļéàšé çôñšîðéŕ šŵîţçĥîñĝ ţô à Ŵîñé ṽéŕšîôñ ţĥàţ ĥàš ÀƑ_ÛÑÎẊ šûþþôŕţ ƀûîļţ-îñ, ôŕ àšķ ýôûŕ ļàûñçĥéŕ'š šûþþôŕţ ƒôŕ ĝûîðàñçé ôñ ûšîñĝ à þàţçĥéð Ŵîñé. Ýôû ɱàý àļţéŕñàţéļý šŵîţçĥ ţô ûšîñĝ ŴéƀŠôçķéţ ɱôðé îñ ţĥé šéţţîñĝš, ƀûţ ţĥîš ɱàý ĥàṽé à šļîĝĥţ þéŕƒôŕɱàñçé îɱþàçţ.</value>
+    </data>
+    <data name="TransportManager_UdsUnsupported_ResolutionInstructions_NonWine" xml:space="preserve">
+        <value>Ţô ŕéšôļṽé ţĥîš þŕôƀļéɱ, þļéàšé šŵîţçĥ ţô ûšîñĝ ŴéƀŠôçķéţ ɱôðé îñ ţĥé šéţţîñĝš. Ñôţé ţĥàţ ţĥîš ɱàý ĥàṽé à šļîĝĥţ þéŕƒôŕɱàñçé îɱþàçţ.</value>
+    </data>
+    <data name="TransportManager_UdsUnsupported_SwitchButton" xml:space="preserve">
+        <value>Þéŕɱàñéñţļý šŵîţçĥ ţô ŴéƀŠôçķéţ</value>
+    </data>
+    <data name="SetupNag_MessageWillReturn" xml:space="preserve">
+        <value>Ţĥîš ɱéššàĝé ŵîļļ ŕéţûŕñ ôñ éṽéŕý ĝàɱé ļàûñçĥ!</value>
+    </data>
+    <data name="SetupNag_BypassButton" xml:space="preserve">
+        <value>Îĝñôŕé ƒôŕ ñôŵ</value>
+    </data>
+    <data name="SetupNag_BypassHint" xml:space="preserve">
+        <value>Ðôñ'ţ çàŕé? Ĥôļð ÇŢŔĻ ţô ƀýþàšš ţĥîš ðîàļôĝ!</value>
+    </data>
+    <data name="ConfigService_ConfigReset_Title" xml:space="preserve">
+        <value>ẊÎṼÐéçķ'š šéţţîñĝš ŵéŕé ŕéšéţ!</value>
+    </data>
+    <data name="ConfigService_ConfigReset_Description" xml:space="preserve">
+        <value>Ýôûŕ ẊÎṼÐéçķ šéţţîñĝš çôûļðñ'ţ ƀé ļôàðéð, šô ţĥéý ĥàṽé ƀééñ ŕéšéţ ţô ðéƒàûļţš. Ýôû ɱàý ñééð ţô ŕéçôñƒîĝûŕé ýôûŕ çôññéçţîôñ šéţţîñĝš.</value>
+    </data>
+    <data name="GearsetStrategy_InvalidGlamourPlateError" xml:space="preserve">
+        <value>Ĝļàɱôûŕ Þļàţé ÎÐ ɱûšţ ƀé ƀéţŵééñ 1 àñð {0}.</value>
+    </data>
+    <data name="ChatHelper_MessageEmptyError" xml:space="preserve">
+        <value>Ţĥé ɱéššàĝé ţô šéñð îš éɱþţý.</value>
+    </data>
+    <data name="ChatHelper_MessageTooLongError" xml:space="preserve">
+        <value>Ţĥé ɱéššàĝé ţô šéñð îš ļôñĝéŕ ţĥàñ ţĥé ĝàɱé àļļôŵš ({0} ƀýţéš).</value>
     </data>
 </root>

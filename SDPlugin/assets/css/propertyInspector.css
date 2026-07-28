@@ -11,3 +11,87 @@
   color: #666666;
   margin-right: 10px;
 }
+.sdpi-accordion {
+  margin: 6px 16px 8px 16px;
+  padding: 0;
+  min-width: 0;
+  border: 1px solid var(--sdpi-bordercolor);
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+
+.sdpi-accordion > summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 9pt;
+  font-weight: 600;
+  color: var(--sdpi-color);
+  background-color: var(--sdpi-bordercolor);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.sdpi-accordion > summary::-webkit-details-marker {
+  display: none;
+}
+
+.sdpi-accordion > summary::before {
+  content: "";
+  flex: none;
+  width: 0;
+  height: 0;
+  border: 4px solid transparent;
+  border-left-color: currentColor;
+  transform-origin: 2px 50%;
+  transition: transform 0.1s ease;
+}
+
+.sdpi-accordion[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.sdpi-accordion > summary:hover {
+  color: #fff;
+}
+
+.sdpi-accordion-hint {
+  margin-left: auto;
+  font-weight: normal;
+  color: #969696;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Keep the label/value grid intact inside the narrower accordion box. */
+.sdpi-accordion > .sdpi-item {
+  max-width: none;
+  margin-right: 4px;
+}
+
+.sdpi-accordion > .sdpi-item:first-of-type {
+  margin-top: 6px;
+}
+
+.sdpi-accordion > .sdpi-item:last-child {
+  margin-bottom: 6px;
+}
+
+.sdpi-accordion .sdpi-item-label {
+  width: 80px;
+}
+
+.sdpi-accordion .sdpi-item-value {
+  margin-right: 8px;
+}
+
+.sdpi-accordion input:not([type="range"]),
+.sdpi-accordion select,
+.sdpi-accordion .sdpi-file-info {
+  min-width: 0;
+}

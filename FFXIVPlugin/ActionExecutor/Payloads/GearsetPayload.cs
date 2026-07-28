@@ -1,7 +1,6 @@
-﻿using Newtonsoft.Json;
+using PolyType;
 
-namespace XIVDeck.FFXIVPlugin.ActionExecutor.Payloads; 
+namespace XIVDeck.FFXIVPlugin.ActionExecutor.Payloads;
 
-public record GearsetPayload : ActionPayload {
-    [JsonProperty("glamourPlateId")] public uint? GlamourPlateId;
-}
+[GenerateShape]
+public partial record GearsetPayload(uint? GlamourPlateId) : ActionPayload;

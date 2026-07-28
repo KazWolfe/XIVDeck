@@ -1,37 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 using Lumina.Excel;
 using Lumina.Excel.Sheets;
-using XIVDeck.FFXIVPlugin.Base;
+using Serilog;
+using XIVDeck.FFXIVPlugin.ActionExecutor.Payloads;
 using XIVDeck.FFXIVPlugin.Exceptions;
 using XIVDeck.FFXIVPlugin.Game.Managers;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
+using XIVDeck.FFXIVPlugin.Game;
+using ActionAppearance = XIVDeck.FFXIVPlugin.Contract.ActionAppearance;
+using XIVDeck.FFXIVPlugin.Contract;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.GeneralAction)]
-public class GeneralActionStrategy : IActionStrategy {
-    private List<uint> _illegalActionCache = new();
+public class GeneralActionStrategy(
+    IDataManager dataManager,
+    ILogger pluginLog,
+    IFramework framework,
+    ActionAppearanceResolver appearanceResolver) : IActionStrategy {
+    private List<uint> _illegalActionCache = [];
 
-    private static readonly ExcelSheet<GeneralAction> ActionSheet =
-        Injections.DataManager.Excel.GetSheet<GeneralAction>();
+    private readonly ExcelSheet<GeneralAction> _actionSheet = dataManager.Excel.GetSheet<GeneralAction>();
 
-    private static ExecutableAction GetExecutableAction(GeneralAction action) {
-        return new ExecutableAction {
-            ActionId = (int)action.RowId,
-            ActionName = action.Name.ToString(),
-            IconId = action.Icon,
-            HotbarSlotType = HotbarSlotType.GeneralAction,
+    private static ActionEntry GetExecutableAction(GeneralAction action) {
+        return new ActionEntry {
+            Id = (int)action.RowId,
+            Name = action.Name.ToString(),
+            Type = HotbarSlotType.GeneralAction,
             SortOrder = action.UIPriority,
         };
     }
 
-    private static GeneralAction? GetActionById(uint actionId) {
-        return ActionSheet.GetRowOrDefault(actionId);
+    private GeneralAction? GetActionById(uint actionId) {
+        return this._actionSheet.GetRowOrDefault(actionId);
     }
 
     private IEnumerable<uint> GetIllegalActionIDs() {
@@ -39,74 +47,76 @@ public class GeneralActionStrategy : IActionStrategy {
             return this._illegalActionCache;
         }
 
-        var illegalActions = ActionSheet
+        var illegalActions = this._actionSheet
             .Where(action => action.UIPriority == 0 || action.Name.ExtractText().IsNullOrEmpty())
             .Select(a => a.RowId)
             .ToList();
 
         illegalActions.AddRange([
-            13, // Advanced Materia Melding - automatically injected on use of Materia Melding
+            13, // automatically substituted for Materia Melding by our client
             29, // Sort Pet Hotbar (Normal) - contextual
-            30  // Sort Pet Hotbar (Cross)  - contextual
+            30 // Sort Pet Hotbar (Cross)  - contextual
         ]);
 
         this._illegalActionCache = illegalActions;
         return illegalActions;
     }
 
-    public unsafe ExecutableAction? GetExecutableActionById(uint actionId) {
-        var action = GetActionById(actionId);
+    private static unsafe bool IsUnlockLinkUnlocked(uint linkId) => UIState.Instance()->IsUnlockLinkUnlocked(linkId);
 
-        if (action == null) return null;
-
-        // ERRATA - swap out melding
-        if (actionId == 12 && UIState.Instance()->IsUnlockLinkUnlocked(12)) {
-            action = GetActionById(13)!;
+    /// <summary>
+    /// Resolve action IDs that may be changed or substituted via game behavior.
+    /// </summary>
+    /// <param name="actionId">The action ID to evaluate.</param>
+    /// <returns>The substituted action ID.</returns>
+    private static uint SubstituteActionId(uint actionId) {
+        // Replaces Materia Melding with Advanced Materia Melding, if enabled.
+        if (actionId == 12 && IsUnlockLinkUnlocked(12)) {
+            return 13;
         }
 
-        return GetExecutableAction(action.Value);
+        return actionId;
     }
 
-    public unsafe void Execute(uint actionId, ActionPayload? _) {
-        var action = GetActionById(actionId);
+    public ActionEntry? GetActionEntryById(uint actionId) {
+        var action = this.GetActionById(SubstituteActionId(actionId));
+
+        return action == null ? null : GetExecutableAction(action.Value);
+    }
+
+    public async Task Execute(uint actionId, ActionPayload? _) {
+        var action = this.GetActionById(actionId);
 
         if (action == null) {
             throw new ActionNotFoundException(HotbarSlotType.GeneralAction, actionId);
         }
 
         if (this.GetIllegalActionIDs().Contains(actionId)) {
-            throw new ArgumentOutOfRangeException(nameof(actionId),
-                string.Format(UIStrings.GeneralActionStrategy_ActionIllegalError, action.Value.Name, actionId));
+            throw new ActionInvalidException(string.Format(UIStrings.GeneralActionStrategy_ActionIllegalError,
+                action.Value.Name, actionId));
         }
 
-        if (action.Value.UnlockLink != 0 && !UIState.Instance()->IsUnlockLinkUnlocked(action.Value.UnlockLink)) {
+        if (action.Value.UnlockLink != 0 && !IsUnlockLinkUnlocked(action.Value.UnlockLink)) {
             throw new ActionLockedException(string.Format(UIStrings.GeneralActionStrategy_ActionLockedError,
                 action.Value.Name));
         }
 
-        // Advanced Materia Melding auto-replacement
-        if (actionId == 12 && UIState.Instance()->IsUnlockLinkUnlocked(12)) {
-            action = GetActionById(13)!;
-        }
+        action = this.GetActionById(SubstituteActionId(actionId))!;
 
-        Injections.PluginLog.Debug($"Executing hotbar slot: GeneralAction#{action.Value.RowId} ({action.Value.Name})");
-        Injections.Framework.RunOnFrameworkThread(delegate {
+        pluginLog.Debug("Executing GeneralAction#{ActionId} ({ActionName})", action.Value.RowId,
+            action.Value.Name.ExtractText());
+        await framework.RunOnFrameworkThread(delegate {
             HotbarManager.ExecuteHotbarAction(HotbarSlotType.GeneralAction, action.Value.RowId);
         });
     }
 
-    public unsafe int GetIconId(uint actionId) {
-        // ERRATA - replace Materia Melding with Advanced Materia Melding if unlocked
-        if (actionId == 12 && UIState.Instance()->IsUnlockLinkUnlocked(12)) {
-            actionId = 13;
-        }
-
-        return GetActionById(actionId)?.Icon ?? 0;
+    public List<ActionEntry> GetSelectableActions() {
+        return this._actionSheet.Where(action => !this.GetIllegalActionIDs().Contains(action.RowId))
+            .Where(action => action.UnlockLink == 0 || IsUnlockLinkUnlocked(action.UnlockLink))
+            .Select(GetExecutableAction).ToList();
     }
 
-    public unsafe List<ExecutableAction> GetAllowedItems() {
-        return ActionSheet.Where(action => !this.GetIllegalActionIDs().Contains(action.RowId))
-            .Where(action => action.UnlockLink == 0 || UIState.Instance()->IsUnlockLinkUnlocked(action.UnlockLink))
-            .Select(GetExecutableAction).ToList();
+    public Task<ActionAppearance> GetAppearance(uint actionId) {
+        return appearanceResolver.GetActionAppearance(HotbarSlotType.GeneralAction, SubstituteActionId(actionId));
     }
 }

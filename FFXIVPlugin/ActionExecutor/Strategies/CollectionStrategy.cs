@@ -1,63 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Lumina.Excel;
+using Dalamud.Plugin.Services;
 using Lumina.Excel.Sheets;
-using XIVDeck.FFXIVPlugin.Base;
-using XIVDeck.FFXIVPlugin.Game;
-using XIVDeck.FFXIVPlugin.Game.Managers;
+using Serilog;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
+using XIVDeck.FFXIVPlugin.Game;
+using XIVDeck.FFXIVPlugin.Contract;
 
 namespace XIVDeck.FFXIVPlugin.ActionExecutor.Strategies;
 
 [ActionStrategy(HotbarSlotType.McGuffin)]
-public class CollectionStrategy : IActionStrategy {
-    private static readonly ExcelSheet<McGuffin> Sheet = Injections.DataManager.Excel.GetSheet<McGuffin>();
-
-    private static ExecutableAction GetExecutableAction(McGuffin mcguffin) {
+public class CollectionStrategy(IDataManager dataManager, ILogger pluginLog, IFramework framework, IUnlockState unlockState,
+    ActionAppearanceResolver appearanceResolver)
+    : UnlockableActionStrategy<McGuffin>(dataManager, framework, pluginLog, appearanceResolver) {
+    protected override ActionEntry BuildActionEntry(McGuffin mcguffin) {
         var uiData = mcguffin.UIData.Value;
 
-        return new ExecutableAction {
-            ActionId = (int) mcguffin.RowId,
-            ActionName = uiData.Name.ToString(),
-            IconId = (int) uiData.Icon,
-            Category = null,
-            HotbarSlotType = HotbarSlotType.McGuffin,
+        return new ActionEntry {
+            Id = (int) mcguffin.RowId,
+            Name = uiData.Name.ToString(),
+            Type = HotbarSlotType.McGuffin,
             SortOrder = uiData.Order
         };
     }
 
-    private static McGuffin? GetMcGuffinById(uint id) {
-        return Sheet.GetRowOrDefault(id);
-    }
+    protected override bool IsUnlocked(McGuffin mcguffin) => unlockState.IsMcGuffinUnlocked(mcguffin);
 
-    public ExecutableAction? GetExecutableActionById(uint actionId) {
-        var mcguffin = GetMcGuffinById(actionId);
-
-        return mcguffin == null ? null : GetExecutableAction(mcguffin.Value);
-    }
-
-    public List<ExecutableAction> GetAllowedItems() {
-        return Sheet.Where(m => m.IsUnlocked())
-            .Select(GetExecutableAction)
-            .ToList();
-    }
-
-    public void Execute(uint actionId, ActionPayload? _) {
-        var mcguffin = GetMcGuffinById(actionId);
-
-        if (mcguffin == null) {
-            throw new ArgumentOutOfRangeException(nameof(actionId), string.Format(UIStrings.CollectionStrategy_CollectionNotFoundError, actionId));
-        }
-
-        Injections.Framework.RunOnFrameworkThread(delegate {
-            HotbarManager.ExecuteHotbarAction(HotbarSlotType.McGuffin, actionId);
-        });
-    }
-
-    public int GetIconId(uint item) {
-        return (int) (GetMcGuffinById(item)?.UIData.ValueNullable?.Icon ?? 0);
-
-    }
+    protected override string GetNotFoundMessage(uint actionId) =>
+        string.Format(UIStrings.CollectionStrategy_CollectionNotFoundError, actionId);
 }
