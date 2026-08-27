@@ -12,7 +12,7 @@ import i18n from "./i18n/i18n";
 
 class XIVDeckInspector {
     sdPluginLink: SDInspector = new Streamdeck().propertyinspector();
-    xivPluginLink: FFXIVPluginLink = new FFXIVPluginLink(this.sdPluginLink);
+    xivPluginLink: FFXIVPluginLink = new FFXIVPluginLink(this.sdPluginLink, false);
 
     // state for this inspector
     uuid: string = "";
