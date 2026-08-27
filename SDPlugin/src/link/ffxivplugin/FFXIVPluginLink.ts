@@ -5,6 +5,7 @@ import {InitOpcode} from "./messages/outbound/InitOpcode";
 import AbstractStreamdeckConnector from "@rweich/streamdeck-ts/dist/AbstractStreamdeckConnector";
 import {FFXIVInitReply} from "./GameTypes";
 import {PropertyInspector} from "@rweich/streamdeck-ts";
+import packageInfo from "../../../package.json";
 
 export class FFXIVPluginLink {
     public static instance: FFXIVPluginLink;
@@ -21,9 +22,20 @@ export class FFXIVPluginLink {
     private _plugin: AbstractStreamdeckConnector;
     private _doConnectionRetries: boolean = true;
 
-    constructor(instance: AbstractStreamdeckConnector) {
+    private get isOpenDeckHost(): boolean {
+        return typeof process === "undefined";
+    }
+
+    private get isLinuxHost(): boolean {
+        return typeof process !== "undefined" && process.platform === "linux";
+    }
+
+    constructor(instance: AbstractStreamdeckConnector, registerAsPluginInstance: boolean = true) {
         this._plugin = instance;
-        FFXIVPluginLink.instance = this;
+        // Inspectors must not replace the button plugin's API connection.
+        if (registerAsPluginInstance || FFXIVPluginLink.instance == null) {
+            FFXIVPluginLink.instance = this;
+        }
 
         // initreply listener goes into constructor because otherwise it gets called *per connect*, which causes
         // a huge mess on many retry attempts
@@ -44,8 +56,7 @@ export class FFXIVPluginLink {
     }
 
     public connect(doRetry: boolean = true): void {
-        // if the game currently isn't alive, there's nothing for us to do.
-        if (!this.isGameAlive) {
+        if (!this.isGameAlive && !this.isLinuxHost && !this.isOpenDeckHost) {
             console.warn("[XIVDeck - FFXIVLink] Attempted websocket connection while game should be dead.");
             this._plugin.logMessage("[WARN][FFXIVLink] Attempted websocket connection while game should be dead.");
             return;
@@ -62,12 +73,9 @@ export class FFXIVPluginLink {
         this._websocket = new WebSocket(`ws://${this.hostname}:${this.port}/ws`);
 
         this._websocket.onopen = () => {
-            // this shouldn't actually be here, but managing the instance of the application is a significant pain
-            // otherwise, so this is the simpler (albeit uglier) solution to the problem.
-            let pInfo = this._plugin.info.plugin as Record<string, string>;
-            let isInspector = this._plugin instanceof PropertyInspector
-
-            this.send(new InitOpcode(pInfo.version, (isInspector ? "Inspector" : "Plugin")));
+            const version = this._plugin.info?.plugin?.version || packageInfo.version;
+            const isInspector = this._plugin instanceof PropertyInspector;
+            this.send(new InitOpcode(version, (isInspector ? "Inspector" : "Plugin")));
             this.emit("_wsOpened", null);
         };
 
@@ -99,7 +107,7 @@ export class FFXIVPluginLink {
         this.emit("_wsClosed", {});
         this._websocket = null;
 
-        if (!this._doConnectionRetries || !this.isGameAlive) {
+        if (!this._doConnectionRetries || (!this.isGameAlive && !this.isLinuxHost && !this.isOpenDeckHost)) {
             this._plugin.logMessage("Not attempting reconnect: game is dead or retries disabled.");
             console.warn("Not attempting reconnect: game is dead or retries disabled.");
             return;

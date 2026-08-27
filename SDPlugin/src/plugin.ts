@@ -38,6 +38,10 @@ class XIVDeckPlugin {
         this.sdPluginLink.on('touchTap', (ev: TouchTapEvent) => this.dispatcher.dispatch(ev));
         this.sdPluginLink.on('titleParametersDidChange', (ev: TitleParametersDidChangeEvent) => this.dispatcher.dispatch(ev));
 
+        if (typeof process === "undefined" || process.platform === "linux") {
+            this.xivPluginLink.connect(true);
+        }
+
         // deprecated events
         this.sdPluginLink.on('dialPress', (ev: DialPressEvent) => {
             let appInfo = this.sdPluginLink.info.application as Record<string, string>;

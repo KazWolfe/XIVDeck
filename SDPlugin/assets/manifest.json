@@ -115,6 +115,10 @@
     {
       "Platform": "mac",
       "MinimumVersion": "11"
+    },
+    {
+      "Platform": "linux",
+      "MinimumVersion": "1"
     }
   ],
   "Software": {
