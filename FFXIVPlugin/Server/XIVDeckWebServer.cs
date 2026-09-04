@@ -105,15 +105,17 @@ public class XIVDeckWebServer : IXIVDeckServer {
             return mode;
         }
 
-        // If you're wondering why this is here despite the below line doing the same thing, it's legacy just in case
-        // I want to swap the default listener for a specific operating system class.
         if (Util.IsWine()) {
             Injections.PluginLog.Information("Linux environment detected; using EmbedIO listener.");
             return HttpListenerMode.EmbedIO;
         }
 
-        Injections.PluginLog.Debug("HttpListenerMode not set; using EmbedIO listener.");
-        return HttpListenerMode.EmbedIO;
+        // On Windows, hand the sockets to http.sys instead. EmbedIO's own listener writes responses from a thread
+        // pool thread, and when a Stream Deck drops its connection mid-write the resulting socket error takes the
+        // game down with it -- Dalamud treats an unhandled exception as fatal, and no try/catch in this process gets
+        // a chance to run first. System.Net.HttpListener keeps that write out of our address space entirely.
+        Injections.PluginLog.Debug("HttpListenerMode not set; using system listener.");
+        return HttpListenerMode.Microsoft;
     }
 
     private static string[] GenerateUrlPrefixes(int port) {
