@@ -1,0 +1,49 @@
+{
+  "$schema": "https://schemas.elgato.com/streamdeck/plugins/layout.json",
+  "id": "vitals_classjob",
+  "controller": "Neo",
+  "items": [
+    { "key": "stat0o_image", "type": "pixmap", "rect": [8, 0, 24, 32] },
+    { "key": "stat0o_text", "type": "text", "rect": [8, 32, 24, 16] },
+    { "key": "stat0e_image", "type": "pixmap", "rect": [20, 0, 24, 32], "zOrder": 10 },
+    { "key": "stat0e_text", "type": "text", "rect": [20, 32, 24, 16], "zOrder": 10 },
+
+    { "key": "stat1o_image", "type": "pixmap", "rect": [32, 0, 24, 32] },
+    { "key": "stat1o_text", "type": "text", "rect": [32, 32, 24, 16] },
+    { "key": "stat1e_image", "type": "pixmap", "rect": [44, 0, 24, 32], "zOrder": 10 },
+    { "key": "stat1e_text", "type": "text", "rect": [44, 32, 24, 16], "zOrder": 10 },
+
+    { "key": "stat2o_image", "type": "pixmap", "rect": [56, 0, 24, 32] },
+    { "key": "stat2o_text", "type": "text", "rect": [56, 32, 24, 16] },
+    { "key": "stat2e_image", "type": "pixmap", "rect": [68, 0, 24, 32], "zOrder": 10 },
+    { "key": "stat2e_text", "type": "text", "rect": [68, 32, 24, 16], "zOrder": 10 },
+
+    { "key": "stat3o_image", "type": "pixmap", "rect": [80, 0, 24, 32] },
+    { "key": "stat3o_text", "type": "text", "rect": [80, 32, 24, 16] },
+    { "key": "stat3e_image", "type": "pixmap", "rect": [92, 0, 24, 32], "zOrder": 10 },
+    { "key": "stat3e_text", "type": "text", "rect": [92, 32, 24, 16], "zOrder": 10 },
+
+    { "key": "stat4o_image", "type": "pixmap", "rect": [104, 0, 24, 32] },
+    { "key": "stat4o_text", "type": "text", "rect": [104, 32, 24, 16] },
+    { "key": "stat4e_image", "type": "pixmap", "rect": [116, 0, 24, 32], "zOrder": 10 },
+    { "key": "stat4e_text", "type": "text", "rect": [116, 32, 24, 16], "zOrder": 10 },
+
+    { "key": "stat5o_image", "type": "pixmap", "rect": [128, 0, 24, 32] },
+    { "key": "stat5o_text", "type": "text", "rect": [128, 32, 24, 16] },
+    { "key": "stat5e_image", "type": "pixmap", "rect": [140, 0, 24, 32], "zOrder": 10 },
+    { "key": "stat5e_text", "type": "text", "rect": [140, 32, 24, 16], "zOrder": 10 },
+
+    { "key": "stat6o_image", "type": "pixmap", "rect": [152, 0, 24, 32] },
+    { "key": "stat6o_text", "type": "text", "rect": [152, 32, 24, 16] },
+    { "key": "stat6e_image", "type": "pixmap", "rect": [164, 0, 24, 32], "zOrder": 10 },
+    { "key": "stat6e_text", "type": "text", "rect": [164, 32, 24, 16], "zOrder": 10 },
+
+    { "key": "stat7o_image", "type": "pixmap", "rect": [176, 0, 24, 32] },
+    { "key": "stat7o_text", "type": "text", "rect": [176, 32, 24, 16] },
+    { "key": "stat7e_image", "type": "pixmap", "rect": [188, 0, 24, 32], "zOrder": 10 },
+    { "key": "stat7e_text", "type": "text", "rect": [188, 32, 24, 16], "zOrder": 10 },
+
+    { "key": "stat8o_image", "type": "pixmap", "rect": [200, 0, 24, 32] },
+    { "key": "stat8o_text", "type": "text", "rect": [200, 32, 24, 16] }
+  ]
+}

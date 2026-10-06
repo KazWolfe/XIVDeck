@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 42 42">
+  <defs>
+    <linearGradient id="face" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6b696b"/>
+      <stop offset="0.45" stop-color="#555555"/>
+      <stop offset="1" stop-color="#3a3d3a"/>
+    </linearGradient>
+    <linearGradient id="rim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a5a4a5"/>
+      <stop offset="0.5" stop-color="#5a595a"/>
+      <stop offset="1" stop-color="#2e2e2e"/>
+    </linearGradient>
+  </defs>
+  <circle cx="21" cy="21" r="20.5" fill="#1e1e1e"/>
+  <circle cx="21" cy="21" r="19.25" fill="url(#face)" stroke="url(#rim)" stroke-width="1.5"/>
+  <g transform="translate(21 21) scale(1.4) translate(-12 -12)">
+    <!-- mdi-volume-high, from https://materialdesignicons.com/ -->
+    <path d="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z" fill="#e0dce0"/>
+  </g>
+</svg>

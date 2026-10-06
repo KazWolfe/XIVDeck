@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
+  <defs>
+    <radialGradient id="face" cx="40" cy="40" r="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5a1a1a"/>
+      <stop offset="0.7" stop-color="#9c3131"/>
+      <stop offset="1" stop-color="#ad3939"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="2" x2="0" y2="22" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f9dc88"/>
+      <stop offset="0.45" stop-color="#e3b75e"/>
+      <stop offset="1" stop-color="#c2913e"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+      <feComponentTransfer result="blur">
+        <feFuncA type="linear" slope="1"/>
+      </feComponentTransfer>
+      <feFlood flood-color="#1a0505"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <linearGradient id="badgeFace" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6b696b"/>
+      <stop offset="0.45" stop-color="#555555"/>
+      <stop offset="1" stop-color="#3a3d3a"/>
+    </linearGradient>
+    <linearGradient id="badgeRim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a5a4a5"/>
+      <stop offset="0.5" stop-color="#5a595a"/>
+      <stop offset="1" stop-color="#2e2e2e"/>
+    </linearGradient>
+  </defs>
+  <rect width="80" height="80" rx="6" fill="url(#face)"/>
+  <!-- mdi-volume-source, from https://materialdesignicons.com/ -->
+  <g filter="url(#shadow)">
+    <g transform="translate(33 33) scale(2.5) translate(-12 -12)" fill="url(#gold)">
+      <path d="M3 9V15H7L12 20V4L7 9H3M16 15H14V9H16V15M20 19H18V5H20V19Z"/>
+    </g>
+  </g>
+  <!-- state badge, from o_muted.svg (42x42, scaled to 38x38 in the lower-right corner) -->
+  <g transform="translate(41 41) scale(0.904762)">
+    <circle cx="21" cy="21" r="20.5" fill="#1e1e1e"/>
+    <circle cx="21" cy="21" r="19.25" fill="url(#badgeFace)" stroke="url(#badgeRim)" stroke-width="1.5"/>
+    <g transform="translate(21 21) scale(1.4) translate(-12 -12)">
+      <!-- mdi-volume-mute, from https://materialdesignicons.com/ -->
+      <path d="M3,9H7L12,4V20L7,15H3V9Z" fill="#e0dce0"/>
+      <path d="M16.59,12L14,9.41L15.41,8L18,10.59L20.59,8L22,9.41L19.41,12L22,14.59L20.59,16L18,13.41L15.41,16L14,14.59L16.59,12Z" fill="#cc5250"/>
+    </g>
+  </g>
+</svg>

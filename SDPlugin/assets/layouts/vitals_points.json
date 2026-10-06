@@ -1,0 +1,51 @@
+{
+  "$schema": "https://schemas.elgato.com/streamdeck/plugins/layout.json",
+  "id": "vitals_points",
+  "controller": "Neo",
+  "items": [
+    {
+      "key": "primary_stat_bar",
+      "type": "bar",
+      "subtype": 0,
+      "rect": [10, 20, 212, 4],
+      "value": 0,
+      "border_w": 0
+    },
+    {
+      "key": "primary_stat_name",
+      "type": "text",
+      "rect": [10, 2, 48, 18],
+      "alignment": "left",
+      "font": { "size": 18 }
+    },
+    {
+      "key": "primary_stat_value",
+      "type": "text",
+      "rect": [138, 2, 84, 18],
+      "alignment": "right",
+      "font": { "size": 15 }
+    },
+    {
+      "key": "secondary_stat_bar",
+      "type": "bar",
+      "subtype": 0,
+      "rect": [10, 26, 212, 4],
+      "value": 0,
+      "border_w": 0
+    },
+    {
+      "key": "secondary_stat_name",
+      "type": "text",
+      "rect": [10, 30, 48, 18],
+      "alignment": "left",
+      "font": { "size": 18 }
+    },
+    {
+      "key": "secondary_stat_value",
+      "type": "text",
+      "rect": [138, 30, 84, 18],
+      "alignment": "right",
+      "font": { "size": 15 }
+    }
+  ]
+}

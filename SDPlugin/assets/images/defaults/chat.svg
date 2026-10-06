@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
+  <defs>
+    <radialGradient id="face" cx="40" cy="40" r="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5a1a1a"/>
+      <stop offset="0.7" stop-color="#9c3131"/>
+      <stop offset="1" stop-color="#ad3939"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="2" x2="0" y2="22" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f9dc88"/>
+      <stop offset="0.45" stop-color="#e3b75e"/>
+      <stop offset="1" stop-color="#c2913e"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+      <feComponentTransfer result="blur">
+        <feFuncA type="linear" slope="1"/>
+      </feComponentTransfer>
+      <feFlood flood-color="#1a0505"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="80" height="80" rx="6" fill="url(#face)"/>
+  <!-- mdi-message-text, from https://materialdesignicons.com/ -->
+  <g filter="url(#shadow)">
+    <g transform="translate(40 40) scale(2.9) translate(-12 -12)" fill="url(#gold)">
+      <path d="M20,2H4A2,2 0 0,0 2,4V22L6,18H20A2,2 0 0,0 22,16V4A2,2 0 0,0 20,2M6,9H18V11H6M14,14H6V12H14M18,8H6V6H18"/>
+    </g>
+  </g>
+</svg>

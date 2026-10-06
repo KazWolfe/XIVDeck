@@ -16,7 +16,7 @@
     },
     {
       "Icon": "assets/images/sidebar/hotbar",
-      "Name": "Execute Hotbar Slot",
+      "Name": "Hotbar Slot",
       "States": [
         {
           "Image": "assets/images/defaults/hotbar",
@@ -42,7 +42,7 @@
     },
     {
       "Icon": "assets/images/sidebar/macro",
-      "Name": "Run In-Game Macro",
+      "Name": "In-Game Macro",
       "States": [
         {
           "Image": "assets/images/defaults/macro",

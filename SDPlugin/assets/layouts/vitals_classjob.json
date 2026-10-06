@@ -1,0 +1,65 @@
+{
+  "$schema": "https://schemas.elgato.com/streamdeck/plugins/layout.json",
+  "id": "vitals_classjob",
+  "controller": "Neo",
+  "items": [
+    {
+      "key": "job_icon",
+      "type": "pixmap",
+      "rect": [ 1, 1, 48, 48 ]
+    },
+    {
+      "key": "xp_bar",
+      "type": "bar",
+      "subtype": 0,
+      "rect": [ 52, 27, 178, 4 ],
+      "value": 0,
+      "border_w": 0,
+      "bar_fill_c": "#F8AB2B",
+      "bar_bg_c": "#00000000",
+      "zOrder": 10
+    },
+    {
+      "key": "rested_xp_bar",
+      "type": "bar",
+      "subtype": 0,
+      "rect": [ 52, 27, 178, 4 ],
+      "value": 0,
+      "border_w": 0,
+      "bar_fill_c": "#B17A15",
+      "zOrder": 0
+    },
+    {
+      "key": "level_text",
+      "type": "text",
+      "rect": [ 174, 7, 56, 20 ],
+      "alignment": "right",
+      "font": { "size": 15 }
+    },
+    {
+      "key": "job_name",
+      "type": "text",
+      "rect": [52, 7, 122, 20 ],
+      "alignment": "left",
+      "font": { "size": 16 }
+    },
+    {
+      "key": "xp_progress",
+      "type": "text",
+      "rect": [ 52, 32, 136, 10 ],
+      "font": {
+        "size": 8
+      },
+      "alignment": "left"
+    },
+    {
+      "key": "xp_percent",
+      "type": "text",
+      "rect": [ 188, 32, 42, 10 ],
+      "font": {
+        "size": 10
+      },
+      "alignment": "right"
+    }
+  ]
+}
