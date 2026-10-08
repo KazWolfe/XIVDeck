@@ -27,7 +27,7 @@ const config = (environment: unknown, argv: { mode: string; env: unknown; watch?
 
     return {
         entry: {
-            plugin: './src/plugin.ts',
+            plugin: './src/host.ts',
         },
         target: 'node',
         output: {

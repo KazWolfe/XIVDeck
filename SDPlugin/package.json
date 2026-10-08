@@ -4,13 +4,16 @@
   "private": true,
   "license": "MPL",
   "packageManager": "pnpm@11.24.0",
+  "imports": {
+    "#/*": "./src/*.ts"
+  },
   "scripts": {
     "build-release": "vite build && webpack --mode production && streamdeck pack dist/dev.wolf.xivdeck.sdPlugin -o dist -f --no-update-check",
     "build": "vite build && webpack --mode development",
     "watch": "concurrently \"vite build --watch\" \"webpack --mode development --watch --progress\"",
     "link": "streamdeck link dist/dev.wolf.xivdeck.sdPlugin",
     "dev": "streamdeck dev",
-    "check": "tsc --noEmit -p . && svelte-check --workspace src/pi --tsconfig ./tsconfig.json"
+    "check": "tsc --noEmit -p . && svelte-check --workspace propertyInspector --tsconfig ./tsconfig.json"
   },
   "dependencies": {
     "@elgato/streamdeck": "^3.0.0",
@@ -18,6 +21,8 @@
     "@msgpack/msgpack": "^3.1.3",
     "@xmldom/xmldom": "^0.9.12",
     "i18next": "^26.4.2",
+    "inversify": "^8.2.3",
+    "reflect-metadata": "^0.2.2",
     "ws": "^8.21.3"
   },
   "devDependencies": {

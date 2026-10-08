@@ -1,20 +1,18 @@
-import {SettingsGateway} from "../SettingsGateway";
-import {HotbarButtonSettings} from "../types/HotbarButtonSettings";
+import {MigrationChain} from "#/settings/SettingsMigrator";
+import {HotbarButtonSettings} from "#/settings/types/HotbarButtonSettings";
 
 interface HotbarButtonSettingsV0 {
-    // -1 meant "unset".
-    hotbarId?: number;
-    slotId?: number;
+    hotbarId: number;
+    slotId: number;
 }
 
-SettingsGateway.register<HotbarButtonSettings>("hotbar", {
+export const HotbarSettingsMigrations: MigrationChain<HotbarButtonSettings> = {
     currentVersion: 1,
     steps: {
-        0: (v0: HotbarButtonSettingsV0): Partial<HotbarButtonSettings> => ({
+        0: (v0: HotbarButtonSettingsV0): HotbarButtonSettings => ({
             _v: 1,
-            hotbarId: v0.hotbarId != null && v0.hotbarId >= 0 ? v0.hotbarId : undefined,
-            slotId: v0.slotId != null && v0.slotId >= 0 ? v0.slotId : undefined,
+            hotbarId: v0.hotbarId,
+            slotId: v0.slotId,
         }),
     },
-    isComplete: (s): s is HotbarButtonSettings => typeof s.hotbarId === "number" && typeof s.slotId === "number",
-});
+};

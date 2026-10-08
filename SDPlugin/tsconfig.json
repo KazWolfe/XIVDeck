@@ -19,11 +19,13 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
   },
   "exclude": [
     "build",
 
     // PI is handled separately.
-    "src/pi"
+    "propertyInspector"
   ]
 }

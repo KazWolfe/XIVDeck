@@ -1,8 +1,7 @@
-import {SettingsGateway} from "../SettingsGateway";
-import {ClassButtonSettings} from "../types/ClassButtonSettings";
+import {MigrationChain} from "#/settings/SettingsMigrator";
+import {ClassButtonSettings} from "#/settings/types/ClassButtonSettings";
 
-SettingsGateway.register<ClassButtonSettings>("class", {
+export const ClassSettingsMigrations: MigrationChain<ClassButtonSettings> = {
     currentVersion: 0,
     steps: {},
-    isComplete: (s): s is ClassButtonSettings => typeof s.classId === "number",
-});
+};

@@ -1,8 +1,7 @@
-import {SettingsGateway} from "../SettingsGateway";
-import {MacroButtonSettings} from "../types/MacroButtonSettings";
+import {MigrationChain} from "#/settings/SettingsMigrator";
+import {MacroButtonSettings} from "#/settings/types/MacroButtonSettings";
 
-SettingsGateway.register<MacroButtonSettings>("macro", {
+export const MacroSettingsMigrations: MigrationChain<MacroButtonSettings> = {
     currentVersion: 0,
     steps: {},
-    isComplete: (s): s is MacroButtonSettings => typeof s.macroId === "number",
-});
+};

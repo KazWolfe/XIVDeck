@@ -1,9 +1,7 @@
-import {SettingsGateway} from "../SettingsGateway";
-import {CommandButtonSettings} from "../types/CommandButtonSettings";
+import {MigrationChain} from "#/settings/SettingsMigrator";
+import {CommandButtonSettings} from "#/settings/types/CommandButtonSettings";
 
-SettingsGateway.register<CommandButtonSettings>("command", {
+export const CommandSettingsMigrations: MigrationChain<CommandButtonSettings> = {
     currentVersion: 0,
     steps: {},
-    // A bare "/" is what the property inspector shows for an empty command.
-    isComplete: (s): s is CommandButtonSettings => typeof s.command === "string" && s.command !== "" && s.command !== "/",
-});
+};

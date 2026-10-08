@@ -32,11 +32,17 @@ function loadResources(): Record<string, Record<string, object>> {
     return resources;
 }
 
-void i18next.init({
-    resources: loadResources(),
-    fallbackLng: "en",
-    defaultNS: "controls",
-    interpolation: {escapeValue: false},
-});
+export class I18n {
+    public static async initialize(language: string): Promise<void> {
+        await i18next.init({
+            resources: loadResources(),
+            fallbackLng: "en",
+            defaultNS: "controls",
+            interpolation: {escapeValue: false},
+        });
+
+        await i18next.changeLanguage(language);
+    }
+}
 
 export default i18next;

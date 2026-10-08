@@ -16,9 +16,11 @@
     "webSocket": "WebSocket",
     "namedPipe": "Named Pipe",
     "unixSocket": "Unix Domain Socket",
+    "custom": "Custom",
     "port": "WS Port",
     "searchPath": "Search Path",
-    "choose": "Choose...",
+    "searchPathDefault": "Using default locations",
+    "addPath": "Add...",
     "clear": "Clear",
     "cooldowns": "Cooldowns",
     "trackCooldowns": "Track cooldown information"

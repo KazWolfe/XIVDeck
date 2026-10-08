@@ -16,9 +16,11 @@
     "webSocket": "ŴéƀŠôçķéţ",
     "namedPipe": "Ñàɱéð Þîþé",
     "unixSocket": "Ûñîẋ Ðôɱàîñ Šôçķéţ",
+    "custom": "Çûšţôɱ",
     "port": "ŴŠ Þôŕţ",
     "searchPath": "Šéàŕçĥ Þàţĥ",
-    "choose": "Çĥôôšé...",
+    "searchPathDefault": "Ûšîñĝ ðéƒàûļţ ļôçàţîôñš",
+    "addPath": "Àðð...",
     "clear": "Çļéàŕ",
     "cooldowns": "Çôôļðôŵñš",
     "trackCooldowns": "Ţŕàçķ çôôļðôŵñ îñƒôŕɱàţîôñ"

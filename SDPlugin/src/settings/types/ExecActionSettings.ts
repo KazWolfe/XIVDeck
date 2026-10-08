@@ -1,5 +1,5 @@
 import {JsonObject, JsonValue} from "@elgato/utils";
-import {ActionEntry} from "../../rpc/messages/Action";
+import {ActionEntry} from "#/client/rpc/messages/Action";
 
 export interface ExecActionSettings extends JsonObject {
     _v: 1;

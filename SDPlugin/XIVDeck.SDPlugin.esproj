@@ -15,6 +15,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<Script Include="src/**;build/**" Exclude="*.esproj;**/node_modules/**" />
+        <Script Include="propertyInspector/**" Exclude="*.esproj;**/node_modules/**" />
 		<None Include="assets/**" />
 		<None Include="LICENSE;package.json;pnpm-workspace.yaml;tsconfig.json;vite.config.ts;webpack.config.ts" />
 	</ItemGroup>

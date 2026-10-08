@@ -5,7 +5,7 @@ import {manifestNs} from "./build/scripts/manifest";
 import packageJson from "./package.json";
 
 export default defineConfig({
-    root: path.resolve(__dirname, "src/pi"),
+    root: path.resolve(__dirname, "propertyInspector"),
     plugins: [svelte()],
     base: "./",
     define: {

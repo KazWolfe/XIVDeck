@@ -6,13 +6,6 @@ export enum VolumeControlMode {
     MUTE = "mute",
 }
 
-export interface StoredVolumeControlSettings extends JsonObject {
-    channel?: string;
-    mode?: VolumeControlMode;
-    multiplier?: number;
-    value?: number;
-}
-
 export interface MuteVolumeControlSettings extends JsonObject {
     channel: string;
     mode?: VolumeControlMode.MUTE;
