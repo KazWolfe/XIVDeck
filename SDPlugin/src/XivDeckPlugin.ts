@@ -40,8 +40,8 @@ export class XivDeckPlugin implements Disposable {
         this._subscriptions.use(streamDeck.system.onApplicationDidLaunch(this.onApplicationDidLaunch.bind(this)));
         this._subscriptions.use(streamDeck.system.onApplicationDidTerminate(this.onApplicationDidTerminate.bind(this)));
 
-        this.clientManager.start();
         this.processWatcher.start();
+        this.clientManager.initialize();
     }
 
     public [Symbol.dispose](): void {
