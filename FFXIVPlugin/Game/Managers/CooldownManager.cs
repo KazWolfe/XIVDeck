@@ -82,7 +82,8 @@ public unsafe class CooldownManager : IDisposable {
         return result;
     }
 
-    private void DetourServerSetCooldown(ActionManager* self, ActionType type, uint actionId, float elapsed, float total) {
+    private void DetourServerSetCooldown(ActionManager* self, ActionType type, uint actionId, float elapsed,
+        float total) {
         this._setCooldownHook!.OriginalDisposeSafe(self, type, actionId, elapsed, total);
         this.OnActionFired(self, type, actionId);
     }
@@ -96,7 +97,8 @@ public unsafe class CooldownManager : IDisposable {
         this.OnActionFired(thisPtr, savedCastType, savedCastId);
     }
 
-    private long DetourUseItem(AgentInventoryContext* thisPtr, uint itemId, InventoryType inventoryType, uint itemSlot = 0,
+    private long DetourUseItem(AgentInventoryContext* thisPtr, uint itemId, InventoryType inventoryType,
+        uint itemSlot = 0,
         short a5 = 0) {
         var result = this._useItemHook!.OriginalDisposeSafe(thisPtr, itemId, inventoryType, itemSlot, a5);
 
@@ -116,10 +118,19 @@ public unsafe class CooldownManager : IDisposable {
     private void EmitCooldownStart(int groupId) {
         if (groupId < 0) return;
 
-        this.CooldownStart?.InvokeSafely(this, new CooldownNotification(groupId));
+        var groupInfo = ActionManager.Instance()->GetRecastGroupDetail(groupId);
+        var timings = CooldownWindow(groupInfo->Elapsed, groupInfo->Total, DateTimeOffset.Now);
+
+        this.CooldownStart?.InvokeSafely(this, new CooldownNotification {
+            GroupId = groupId,
+            IsActive = groupInfo->IsActive,
+            StartTime = timings.StartTime,
+            EndTime = timings.EndTime,
+            TriggeringActionId = groupInfo->ActionId,
+        });
     }
 
-    private static ActionCooldownDetail GetActionCooldownSnapshot(ActionType actionType, uint actionId) {
+    public static ActionCooldownDetail GetActionCooldownSnapshot(ActionType actionType, uint actionId) {
         var actionManager = ActionManager.Instance();
         var now = DateTimeOffset.UtcNow;
 

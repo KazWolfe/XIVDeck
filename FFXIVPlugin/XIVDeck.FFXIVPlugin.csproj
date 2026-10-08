@@ -18,13 +18,11 @@
 
     <PropertyGroup Label="Target">
         <LangVersion>latest</LangVersion>
+        <TargetFramework>net10.0</TargetFramework>
     </PropertyGroup>
     <PropertyGroup Label="Build">
         <AppendPlatformToOutputPath>false</AppendPlatformToOutputPath>
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-
-        <!-- StreamJsonRPC compat -->
-        <EnableWindowsTargeting>true</EnableWindowsTargeting>
     </PropertyGroup>
     <PropertyGroup Label="Feature">
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -49,14 +47,14 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="../SDPlugin/assets/images/icon@2x.png">
-            <TargetPath>images/icon.png</TargetPath>
+        <Content Include="../SDPlugin/assets/images/icon.svg">
+            <TargetPath>images/icon.svg</TargetPath>
             <Visible>false</Visible>
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
 
         <EmbeddedResource Include="./LICENSE" LogicalName="LICENSE.txt" />
-        <EmbeddedResource Include="../SDPlugin/assets/images/icon@2x.png" LogicalName="icon.png" />
+        <EmbeddedResource Include="../SDPlugin/assets/images/icon.svg" LogicalName="icon.svg" />
     </ItemGroup>
 
     <!-- Localization -->

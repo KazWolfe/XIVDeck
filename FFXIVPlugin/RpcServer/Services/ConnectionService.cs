@@ -14,7 +14,7 @@ namespace XIVDeck.FFXIVPlugin.RpcServer.Services;
 public class ConnectionService(ILogger log, UIManager uiManager, UpdateNotifier updateNotifier, ConfigService config,
     IDalamudPluginInterface pluginInterface, RpcClient client) {
     public ServerHello Initialize(ClientHello clientHello) {
-        // any client connecting means we have the ability to talk, no need to setup nag.
+        // any client connecting means we can talk, no need to setup nag.
         uiManager.CloseAll<SetupNag>();
 
         if (!config.Config.HasLinkedStreamDeckPlugin) {

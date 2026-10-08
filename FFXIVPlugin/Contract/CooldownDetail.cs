@@ -25,7 +25,14 @@ public record CooldownGroupDetail {
 }
 
 [GenerateShape]
-public partial record CooldownNotification(int GroupId);
+public partial record CooldownNotification {
+    public required int GroupId;
+
+    public bool IsActive;
+    public long StartTime;
+    public long EndTime;
+    public uint TriggeringActionId;
+}
 
 public record ActionCooldownDetail {
     public ActionType ActionType;

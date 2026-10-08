@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Versioning;
 using Autofac;
 using Autofac.Core;
 using Autofac.Core.Resolving.Pipeline;
@@ -12,12 +13,13 @@ using XIVDeck.FFXIVPlugin.Config;
 using XIVDeck.FFXIVPlugin.IoC;
 using XIVDeck.FFXIVPlugin.Resources.Localization;
 using XIVDeck.FFXIVPlugin.RpcServer;
-using XIVDeck.FFXIVPlugin.RpcServer.Services;
 using XIVDeck.FFXIVPlugin.RpcServer.Transports;
 using XIVDeck.FFXIVPlugin.UI;
 using XIVDeck.FFXIVPlugin.UI.Windows;
 using XIVDeck.FFXIVPlugin.UI.Windows.Nags;
 using XIVDeck.FFXIVPlugin.Utils;
+
+[assembly: SupportedOSPlatform("windows")]
 
 namespace XIVDeck.FFXIVPlugin;
 
