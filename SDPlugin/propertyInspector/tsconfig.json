@@ -1,0 +1,16 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext"
+  },
+  "include": [
+    "../src/**/*.ts",
+    "./**/*.ts",
+    "./**/*.svelte"
+  ],
+  // The root config excludes the PI; this is the PI.
+  "exclude": [
+    "../build"
+  ]
+}
