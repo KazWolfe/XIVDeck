@@ -1,127 +1,196 @@
-import streamDeck, {DidReceiveSettingsEvent, SendToPluginEvent, WillAppearEvent} from "@elgato/streamdeck";
-import {JsonObject, JsonValue} from "@elgato/utils";
-import {ClientProvider} from "../rpc/ClientProvider";
-import {GlobalSettingsProvider} from "../settings/GlobalSettingsProvider";
-import {getGlobalPiCommand} from "../rpc/GlobalPiCommands";
-import {BaseControl} from "./BaseControl";
-import {InteractiveControl} from "./InteractiveControl";
-import {HotbarButton} from "./controls/HotbarButton";
-import {CommandButton} from "./controls/CommandButton";
-import {ExecButton} from "./controls/ExecButton";
-import {MacroButton} from "./controls/MacroButton";
-import {ClassButton} from "./controls/ClassButton";
-import {VolumeControl} from "./controls/VolumeControl";
-import {HotbarWatchRegistry} from "../rpc/HotbarWatchRegistry";
+import {injectable} from "inversify";
+import streamDeck, {
+    DialAction,
+    DialDownEvent,
+    DialUpEvent,
+    DialRotateEvent,
+    DidReceiveSettingsEvent,
+    KeyAction,
+    KeyDownEvent,
+    KeyUpEvent,
+    TouchTapEvent,
+    WillAppearEvent,
+    WillDisappearEvent,
+} from "@elgato/streamdeck";
+import {DisposableStack, JsonObject} from "@elgato/utils";
+import {Control} from "./Control";
+import {ControlContext} from "./ControlContext";
+import {ControlInput} from "./ControlInput";
+import {ControlFactory} from "./ControlFactory";
+import {SettingsMigrator} from "#/settings/SettingsMigrator";
 
-type ControlFactory = (ev: WillAppearEvent<any>) => BaseControl<any>;
+interface IAlertableActionEvent {
+    readonly type: string;
+    readonly action: KeyAction<JsonObject> | DialAction<JsonObject>;
+}
 
-export class ControlDispatcher {
-    private readonly _contextCache = new Map<string, BaseControl<any>>();
-    private readonly _hotbarWatches: HotbarWatchRegistry;
+@injectable()
+export class ControlDispatcher implements Disposable {
+    private readonly _controls = new Map<string, Control<JsonObject>>();
+    private readonly _subscriptions = new DisposableStack();
 
-    /**
-     * bind our action IDs to actual, well, actions.
-     */
-    private readonly _factories: Record<string, ControlFactory> = {
-        "dev.wolf.xivdeck.sdplugin.actions.sendcommand": ev => new CommandButton(ev, this.clients),
-        "dev.wolf.xivdeck.sdplugin.actions.exechotbar": ev => new HotbarButton(ev, this.clients, this.globalSettings, this._hotbarWatches),
-        "dev.wolf.xivdeck.sdplugin.actions.execaction": ev => new ExecButton(ev, this.clients, this.globalSettings),
-        "dev.wolf.xivdeck.sdplugin.actions.execmacro": ev => new MacroButton(ev, this.clients, this.globalSettings),
-        "dev.wolf.xivdeck.sdplugin.actions.switchclass": ev => new ClassButton(ev, this.clients),
-        "dev.wolf.xivdeck.sdplugin.actions.volume": ev => new VolumeControl(ev, this.clients),
-    };
-
-    constructor(private readonly clients: ClientProvider, private readonly globalSettings: GlobalSettingsProvider) {
-        this._hotbarWatches = new HotbarWatchRegistry(clients);
+    public constructor(private readonly factory: ControlFactory) {
     }
 
-    initialize(): void {
-        streamDeck.actions.onWillAppear(ev => void this._constructControl(ev));
-        streamDeck.actions.onWillDisappear(ev => this._destructControl(ev.action.id));
-
-        streamDeck.actions.onKeyDown(ev => void this._withControl(ev.action.id, c => c.onKeyDown(ev)));
-        streamDeck.actions.onDialDown(ev => void this._withControl(ev.action.id, c => c.onDialDown(ev)));
-        streamDeck.actions.onTouchTap(ev => void this._withControl(ev.action.id, c => c.onTouchTap(ev)));
-        streamDeck.actions.onDialRotate(ev => void this._withControl(ev.action.id, c => c.onDialRotate(ev)));
-
-        streamDeck.settings.onDidReceiveSettings(ev => void this._handleReceivedSettings(ev));
-        streamDeck.ui.onSendToPlugin(ev => void this._handleSendToPlugin(ev));
+    public get(actionId: string): Control<JsonObject> | undefined {
+        return this._controls.get(actionId);
     }
 
-    async refreshAll(): Promise<void> {
-        for (const control of this._contextCache.values()) {
-            await control.safeRender();
+    public initialize(): void {
+        this._subscriptions.use(streamDeck.actions.onWillAppear(this.onWillAppear.bind(this)));
+        this._subscriptions.use(streamDeck.actions.onWillDisappear(this.onWillDisappear.bind(this)));
+        this._subscriptions.use(streamDeck.actions.onKeyDown(this.onKeyDown.bind(this)));
+        this._subscriptions.use(streamDeck.actions.onKeyUp(this.onKeyUp.bind(this)));
+        this._subscriptions.use(streamDeck.actions.onDialDown(this.onDialDown.bind(this)));
+        this._subscriptions.use(streamDeck.actions.onDialUp(this.onDialUp.bind(this)));
+        this._subscriptions.use(streamDeck.actions.onDialRotate(this.onDialRotate.bind(this)));
+        this._subscriptions.use(streamDeck.actions.onTouchTap(this.onTouchTap.bind(this)));
+        this._subscriptions.use(streamDeck.settings.onDidReceiveSettings(this.onDidReceiveSettings.bind(this)));
+    }
+
+    /** Stops routing Stream Deck events and disposes every live control. */
+    public [Symbol.dispose](): void {
+        this._subscriptions.dispose();
+
+        for (const control of this._controls.values()) {
+            control[Symbol.dispose]();
+        }
+
+        this._controls.clear();
+    }
+
+    private async onWillAppear(ev: WillAppearEvent<JsonObject>): Promise<void> {
+        let control: Control<JsonObject> | undefined;
+        try {
+            control = this.factory.create(ev);
+        } catch (err) {
+            streamDeck.logger.error(`Failed to create control for "${ev.action.manifestId}" (${ev.action.id}):`, err);
+            return;
+        }
+
+        if (!control) {
+            return;
+        }
+
+        // Track before awaiting anything, so a willDisappear that races the initial load still disposes it.
+        this._controls.set(ev.action.id, control);
+
+        try {
+            await this.factory.loadSettings(control, ev);
+        } catch (err) {
+            streamDeck.logger.error(`Failed to load settings for control ${ev.action.id}:`, err);
         }
     }
 
-    private async _constructControl(ev: WillAppearEvent<JsonObject>): Promise<void> {
-        const manifestId = ev.action.manifestId?.toLowerCase() ?? "";
-        const factory = this._factories[manifestId];
+    private onWillDisappear(ev: WillDisappearEvent<JsonObject>): void {
+        const control = this.get(ev.action.id);
+        if (!control) {
+            return;
+        }
 
-        if (!factory) {
-            streamDeck.logger.warn(`ControlDispatcher: no control for manifestId "${manifestId}", ignoring.`);
+        this._controls.delete(ev.action.id);
+        control[Symbol.dispose]();
+    }
+
+    private async onKeyDown(ev: KeyDownEvent<JsonObject>): Promise<void> {
+        const control = this.get(ev.action.id);
+        if (!control || !ControlInput.isKeyControl(control) || !control.onKeyDown) {
             return;
         }
 
         try {
-            const control = factory(ev);
-            this._contextCache.set(ev.action.id, control);
-            await control.loadSettings(ev.payload.settings, true);
+            await control.onKeyDown(ev);
         } catch (err) {
-            // e.g. an action placed on a controller its control class doesn't support.
-            streamDeck.logger.error(`ControlDispatcher: failed to create ${ev.action.controllerType} control for "${manifestId}":`, err);
+            await this.handleInputError(ev, err);
         }
     }
 
-    private _destructControl(context: string): void {
-        const control = this._contextCache.get(context);
-        if (!control) return;
+    private async onKeyUp(ev: KeyUpEvent<JsonObject>): Promise<void> {
+        const control = this.get(ev.action.id);
 
-        control.cleanup();
-        this._contextCache.delete(context);
-    }
-
-    private async _withControl(context: string, fn: (control: InteractiveControl<any>) => Promise<void>): Promise<void> {
-        const control = this._contextCache.get(context);
-        if (!(control instanceof InteractiveControl)) {
-            streamDeck.logger.warn(`ControlDispatcher: no cached interactive control for context ${context}.`);
+        if (!control || !ControlInput.isKeyControl(control) || !control.onKeyUp) {
             return;
         }
 
         try {
-            await fn(control);
+            await control.onKeyUp(ev);
         } catch (err) {
-            await control.handleTriggerError(err);
+            await this.handleInputError(ev, err);
         }
     }
 
-    private async _handleReceivedSettings(ev: DidReceiveSettingsEvent<JsonObject>): Promise<void> {
-        const control = this._contextCache.get(ev.action.id);
-        if (!control) return;
-
-        await control.loadSettings(ev.payload.settings, false);
-    }
-
-    private async _handleSendToPlugin(ev: SendToPluginEvent<JsonValue, JsonObject>): Promise<void> {
-        const {id, command, params} = ev.payload as { id: number; command: string; params?: unknown };
+    private async onDialDown(ev: DialDownEvent<JsonObject>): Promise<void> {
+        const control = this.get(ev.action.id);
+        if (!control || !ControlInput.isDialControl(control) || !control.onDialDown) {
+            return;
+        }
 
         try {
-            const result = await this._runPiCommand(ev.action.id, command, params);
-            await streamDeck.ui.sendToPropertyInspector({id, result} as JsonValue);
+            await control.onDialDown(ev);
         } catch (err) {
-            const message = err instanceof Error ? err.message : String(err);
-            await streamDeck.ui.sendToPropertyInspector({id, error: message} as JsonValue);
+            await this.handleInputError(ev, err);
         }
     }
 
-    /** Global commands win; anything else goes to the control behind the property inspector's context. */
-    private async _runPiCommand(context: string, command: string, params: unknown): Promise<unknown> {
-        const globalHandler = getGlobalPiCommand(command);
-        if (globalHandler) return globalHandler(params);
+    private async onDialUp(ev: DialUpEvent<JsonObject>): Promise<void> {
+        const control = this.get(ev.action.id);
+        if (!control || !ControlInput.isDialControl(control) || !control.onDialUp) {
+            return;
+        }
 
-        const control = this._contextCache.get(context);
-        if (!control) throw new Error(`No control cached for context ${context}.`);
+        try {
+            await control.onDialUp(ev);
+        } catch (err) {
+            await this.handleInputError(ev, err);
+        }
+    }
 
-        return control.handlePiRequest(command, params);
+    private async onDialRotate(ev: DialRotateEvent<JsonObject>): Promise<void> {
+        const control = this.get(ev.action.id);
+        if (!control || !ControlInput.isDialControl(control) || !control.onDialRotate) {
+            return;
+        }
+
+        try {
+            await control.onDialRotate(ev);
+        } catch (err) {
+            await this.handleInputError(ev, err);
+        }
+    }
+
+    private async onTouchTap(ev: TouchTapEvent<JsonObject>): Promise<void> {
+        const control = this.get(ev.action.id);
+        if (!control || !ControlInput.isDialControl(control) || !control.onTouchTap) {
+            return;
+        }
+
+        try {
+            await control.onTouchTap(ev);
+        } catch (err) {
+            await this.handleInputError(ev, err);
+        }
+    }
+
+    private async onDidReceiveSettings(ev: DidReceiveSettingsEvent<JsonObject>): Promise<void> {
+        const control = this.get(ev.action.id);
+        if (!control) {
+            return;
+        }
+
+        try {
+            await control.applySettings(SettingsMigrator.orEmpty(ev.payload.settings));
+        } catch (err) {
+            streamDeck.logger.error(`Could not apply settings to ${ev.action.id}:`, err, ev.payload.settings);
+        }
+    }
+
+    private async handleInputError(ev: IAlertableActionEvent, err: unknown): Promise<void> {
+        ControlContext.logActionError(ev.action, `handling ${ev.type} for`, err);
+
+        try {
+            await ev.action.showAlert();
+        } catch (alertErr) {
+            streamDeck.logger.error(`Couldn't show an alert on ${ev.action.id}:`, alertErr);
+        }
     }
 }

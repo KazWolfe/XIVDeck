@@ -1,26 +1,27 @@
-import {KeyDownEvent, WillAppearEvent} from "@elgato/streamdeck";
-import {InteractiveControl} from "../InteractiveControl";
-import {ClientProvider} from "../../rpc/ClientProvider";
-import {CommandButtonSettings} from "../../settings/types/CommandButtonSettings";
+import {injectable} from "inversify";
+import {KeyDownEvent} from "@elgato/streamdeck";
+import {JsonObject} from "@elgato/utils";
+import {Control} from "#/control/Control";
+import {IKeyControl} from "#/control/ControlInput";
+import {ControlContext} from "#/control/ControlContext";
+import {ClientProxy} from "#/control/proxy/ClientProxy";
+import {CommandButtonSettings} from "#/settings/types/CommandButtonSettings";
 
-export class CommandButton extends InteractiveControl<CommandButtonSettings> {
-    constructor(ev: WillAppearEvent<CommandButtonSettings>, clients: ClientProvider) {
-        super(ev, clients, "command");
+@injectable()
+export class CommandButton extends Control<CommandButtonSettings> implements IKeyControl {
+    public constructor(context: ControlContext, client: ClientProxy) {
+        super(context, client);
+    }
+
+    public async onKeyDown(_ev: KeyDownEvent<JsonObject>): Promise<void> {
+        await this.client.request("Command.ExecuteCommand", {
+            commandRequest: {
+                command: this.tryReadSeconds().command,
+            },
+        });
     }
 
     protected async render(): Promise<void> {
         // nothing to render
-    }
-
-    async onKeyDown(_ev: KeyDownEvent<CommandButtonSettings>): Promise<void> {
-        if (!this.settings) {
-            throw new Error("No command specified for this button.");
-        }
-
-        await this.activeClient.request("Command.ExecuteCommand", {
-            commandRequest: {
-                command: this.settings.command,
-            },
-        });
     }
 }

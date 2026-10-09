@@ -1,45 +1,50 @@
-import {KeyDownEvent, WillAppearEvent} from "@elgato/streamdeck";
-import {InteractiveControl} from "../InteractiveControl";
-import {ClientProvider} from "../../rpc/ClientProvider";
-import {ClassButtonSettings} from "../../settings/types/ClassButtonSettings";
+import {injectable} from "inversify";
+import {KeyAction, KeyDownEvent} from "@elgato/streamdeck";
+import {JsonObject} from "@elgato/utils";
+import {Control} from "#/control/Control";
+import {IKeyControl} from "#/control/ControlInput";
+import {ControlContext} from "#/control/ControlContext";
+import {ClientProxy} from "#/control/proxy/ClientProxy";
+import {ClassButtonSettings} from "#/settings/types/ClassButtonSettings";
 
-export class ClassButton extends InteractiveControl<ClassButtonSettings> {
-    constructor(ev: WillAppearEvent<ClassButtonSettings>, clients: ClientProvider) {
-        super(ev, clients, "class");
+@injectable()
+export class ClassButton extends Control<ClassButtonSettings> implements IKeyControl {
+    private readonly _action: KeyAction<ClassButtonSettings>;
+    private _lastImage: string | undefined;
+
+    public constructor(context: ControlContext, client: ClientProxy) {
+        super(context, client);
+        this._action = context.asKey<ClassButtonSettings>();
     }
 
-    protected async render(): Promise<void> {
-        const client = this.activeClient;
-        const settings = this.settings;
-
-        if (!client.isReady() || !settings) {
-            return;
-        }
-
-        const classInfo = await client.request("ClassJob.GetClass", {id: settings.classId});
-
-        if (JSON.stringify(classInfo) !== JSON.stringify(settings.cache)) {
-            this.settings = {...settings, cache: classInfo};
-            await this.action.setSettings(this.settings);
-        }
-
-        const iconBase64 = await client.icons.getBase64(classInfo.iconId);
-        await this.setImage(`data:image/png;base64,${iconBase64}`);
+    public async onKeyDown(_ev: KeyDownEvent<JsonObject>): Promise<void> {
+        await this.client.request("ClassJob.SwitchClass", {id: this.tryReadSeconds().classId});
     }
 
-    async onKeyDown(_ev: KeyDownEvent<ClassButtonSettings>): Promise<void> {
-        if (!this.settings) {
-            throw new Error("No class configured for this button.");
-        }
-
-        await this.activeClient.request("ClassJob.SwitchClass", {id: this.settings.classId});
-    }
-
-    async handlePiRequest(command: string, params: unknown): Promise<unknown> {
+    public override async handlePiRequest(command: string, params: unknown): Promise<unknown> {
         if (command !== "listClasses") {
             return super.handlePiRequest(command, params);
         }
 
-        return (await this.activeClient.request("ClassJob.GetAvailableClasses")).classes;
+        return (await this.client.request("ClassJob.GetAvailableClasses")).classes;
+    }
+
+    protected async render(): Promise<void> {
+        const settings = this.settings;
+        if (!this.client.isAvailable || !settings) {
+            return;
+        }
+
+        const classInfo = await this.client.request("ClassJob.GetClass", {id: settings.classId});
+
+        await this.saveSettings({...settings, cache: classInfo});
+
+        const image = `data:image/png;base64,${await this.client.getIcon(classInfo.iconId)}`;
+        if (image === this._lastImage) {
+            return;
+        }
+
+        await this._action.setImage(image);
+        this._lastImage = image;
     }
 }

@@ -1,57 +1,56 @@
-import {KeyDownEvent, WillAppearEvent} from "@elgato/streamdeck";
-import {VirtualSlotControl} from "../VirtualSlotControl";
-import {ClientProvider} from "../../rpc/ClientProvider";
-import {HotbarButtonSettings} from "../../settings/types/HotbarButtonSettings";
-import {GlobalSettingsProvider} from "../../settings/GlobalSettingsProvider";
-import {HotbarWatchRegistry} from "../../rpc/HotbarWatchRegistry";
+import {injectable} from "inversify";
+import {KeyAction, KeyDownEvent} from "@elgato/streamdeck";
+import {JsonObject} from "@elgato/utils";
+import {Control} from "#/control/Control";
+import {IKeyControl} from "#/control/ControlInput";
+import {ControlContext} from "#/control/ControlContext";
+import {ClientProxy} from "#/control/proxy/ClientProxy";
+import {HotbarTrackerProxy} from "#/control/proxy/HotbarTrackerProxy";
+import {VirtualSlotPresenter} from "#/control/virtual_slot/VirtualSlotPresenter";
+import {HotbarButtonSettings} from "#/settings/types/HotbarButtonSettings";
 
-export class HotbarButton extends VirtualSlotControl<HotbarButtonSettings> {
-    constructor(
-        ev: WillAppearEvent<HotbarButtonSettings>, clients: ClientProvider, globalSettings: GlobalSettingsProvider,
-        private readonly watches: HotbarWatchRegistry,
-    ) {
-        super(ev, clients, "hotbar", globalSettings);
+@injectable()
+export class HotbarButton extends Control<HotbarButtonSettings> implements IKeyControl {
+    private readonly _action: KeyAction<HotbarButtonSettings>;
+
+    public constructor(context: ControlContext, client: ClientProxy, private readonly slot: VirtualSlotPresenter,
+                       private readonly hotbars: HotbarTrackerProxy) {
+        super(context, client);
+        this._action = context.asKey<HotbarButtonSettings>();
+
+        slot.setPresentHandler(this.presentSlot.bind(this));
+        hotbars.changed.add(this.requestRender.bind(this));
     }
 
-    async loadSettings(raw: unknown, migrate: boolean): Promise<void> {
-        await super.loadSettings(raw, migrate);
+    public async onKeyDown(_ev: KeyDownEvent<JsonObject>): Promise<void> {
+        const {hotbarId, slotId} = this.tryReadSeconds();
+        await this.client.request("Hotbar.TriggerHotbarSlot", {hotbarId, slotId});
+    }
 
+    protected override onSettingsChanged(_previous: HotbarButtonSettings | undefined): void {
         if (this.settings) {
-            this.watches.watch(this.context, this.settings, () => void this.safeRender());
+            this.hotbars.watch({hotbarId: this.settings.hotbarId, slotId: this.settings.slotId});
         } else {
-            this.watches.release(this.context);
+            this.hotbars.release();
         }
-    }
-
-    cleanup(): void {
-        this.watches.release(this.context);
-        super.cleanup();
     }
 
     protected async render(): Promise<void> {
-        const client = this.activeClient;
         const settings = this.settings;
-
-        if (!client.isReady() || !settings) {
+        if (!settings) {
+            this.slot.clear();
             return;
         }
 
-        const appearance = await client.request("Hotbar.GetHotbarSlot", {
-            hotbarId: settings.hotbarId,
-            slotId: settings.slotId,
-        });
-
-        await this.applyAppearance(appearance);
-    }
-
-    async onKeyDown(_ev: KeyDownEvent<HotbarButtonSettings>): Promise<void> {
-        if (!this.settings) {
-            throw new Error("No hotbarId/slotId configured for this button.");
+        if (!this.client.isAvailable) {
+            return;
         }
 
-        await this.activeClient.request("Hotbar.TriggerHotbarSlot", {
-            hotbarId: this.settings.hotbarId,
-            slotId: this.settings.slotId,
-        });
+        const {hotbarId, slotId} = settings;
+        await this.slot.setAppearance(await this.client.request("Hotbar.GetHotbarSlot", {hotbarId, slotId}));
+    }
+
+    private async presentSlot(image: string): Promise<void> {
+        await this._action.setImage(image);
     }
 }

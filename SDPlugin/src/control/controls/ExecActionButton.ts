@@ -8,25 +8,33 @@ import {ActionTypeUpdates} from "#/control/ActionTypeUpdates";
 import {ClientProxy} from "#/control/proxy/ClientProxy";
 import {GameNotificationProxy} from "#/control/proxy/GameNotificationProxy";
 import {VirtualSlotPresenter} from "#/control/virtual_slot/VirtualSlotPresenter";
-import {MacroButtonSettings} from "#/settings/types/MacroButtonSettings";
+import {ExecActionSettings} from "#/settings/types/ExecActionSettings";
 import {ActionTypeUpdateBatch} from "#/client/rpc/messages/Action";
-import MACRO_TYPE_ICON_SVG from "../../../assets/templates/MacroTypeIcon.svg";
 
 @injectable()
-export class MacroButton extends Control<MacroButtonSettings> implements IKeyControl {
-    private readonly _action: KeyAction<MacroButtonSettings>;
+export class ExecActionButton extends Control<ExecActionSettings> implements IKeyControl {
+    private readonly _action: KeyAction<ExecActionSettings>;
 
     public constructor(context: ControlContext, client: ClientProxy, private readonly slot: VirtualSlotPresenter,
                        notifications: GameNotificationProxy) {
         super(context, client);
-        this._action = context.asKey<MacroButtonSettings>();
+        this._action = context.asKey<ExecActionSettings>();
 
         slot.setPresentHandler(this.presentSlot.bind(this));
         notifications.on("Action.ActionTypeUpdate", this.onActionTypeUpdate.bind(this));
     }
 
     public async onKeyDown(_ev: KeyDownEvent<JsonObject>): Promise<void> {
-        await this.client.request("Action.ExecuteAction", {type: "Macro", id: this.tryReadSeconds().macroId});
+        const {actionType, actionId, payload} = this.tryReadSeconds();
+        await this.client.request("Action.ExecuteAction", {type: actionType, id: actionId, payload: payload ?? null});
+    }
+
+    public override async handlePiRequest(command: string, params: unknown): Promise<unknown> {
+        if (command !== "listActions") {
+            return super.handlePiRequest(command, params);
+        }
+
+        return (await this.client.request("Action.GetActions")).actions;
     }
 
     protected async render(): Promise<void> {
@@ -40,13 +48,19 @@ export class MacroButton extends Control<MacroButtonSettings> implements IKeyCon
             return;
         }
 
-        const appearance = await this.client.request("Action.GetActionAppearance", {type: "Macro", id: settings.macroId});
-        await this.slot.setAppearance(appearance, MACRO_TYPE_ICON_SVG);
+        const {actionType, actionId} = settings;
+
+        // cache the button's action data just so the PI can stay up to date.
+        // called here since some actions (gearsets especially) can update outside the PI's lifecycle.
+        const entry = await this.client.request("Action.GetActionEntry", {type: actionType, id: actionId});
+        await this.saveSettings({...settings, cache: entry});
+
+        await this.slot.setAppearance(await this.client.request("Action.GetActionAppearance", {type: actionType, id: actionId}));
     }
 
     private async onActionTypeUpdate(batch: ActionTypeUpdateBatch): Promise<void> {
         const settings = this.settings;
-        if (settings && ActionTypeUpdates.affects(batch, "Macro", settings.macroId)) {
+        if (settings && ActionTypeUpdates.affects(batch, settings.actionType, settings.actionId)) {
             await this.requestRender();
         }
     }
