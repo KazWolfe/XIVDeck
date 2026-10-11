@@ -29,14 +29,22 @@ public class ActionAppearanceResolver(CooldownManager cooldownManager, IFramewor
             CooldownDetails = cooldownManager.GetActionCooldownSnapshotForSlot(slot, apparentType, apparentId),
         };
 
-        if (intermediate.CostDisplayMode is >= 1 and <= 4) {
-            result.CostText = intermediate.CostDisplayMode is 1 or 3
-                ? intermediate.CostValue == 0 ? "" : intermediate.CostValue.ToString()
-                : intermediate.CostText.ToString();
-            result.CostType = (ActionCostType)intermediate.CostType;
-            result.CostRightJustified = intermediate.CostDisplayMode >= 3;
-        } else {
-            result.CostText = "";
+        switch (intermediate.CostDisplayMode)
+        {
+            // TODO: Eventually .CostValue will be an int. Maybe.
+            case 1 or 3 when intermediate.CostValue is not (0 or uint.MaxValue):
+                result.CostText = intermediate.CostValue.ToString();
+                result.CostType = (ActionCostType)intermediate.CostType;
+                result.CostRightJustified = intermediate.CostDisplayMode >= 3;
+                break;
+            case 2 or 4:
+                result.CostText = intermediate.CostText.ToString();
+                result.CostType = (ActionCostType)intermediate.CostType;
+                result.CostRightJustified = intermediate.CostDisplayMode >= 3;
+                break;
+            default:
+                result.CostText = "";
+                break;
         }
 
         return result;
@@ -45,11 +53,20 @@ public class ActionAppearanceResolver(CooldownManager cooldownManager, IFramewor
     private unsafe ActionAppearance GetVirtualSlotAppearance(HotbarSlotType slotType, uint commandId) {
         var virtualSlot = new HotbarSlot();
         virtualSlot.Initialize();
-        virtualSlot.Set(slotType, commandId);
 
-        RaptureHotbarModule.GetSlotAppearance(&virtualSlot.ApparentSlotType, &virtualSlot.ApparentActionId,
-            &virtualSlot.ApparentActionModeParam, RaptureHotbarModule.Instance(), &virtualSlot);
+        try {
+            virtualSlot.Set(slotType, commandId);
 
-        return this.GetAppearance(&virtualSlot);
+            RaptureHotbarModule.GetSlotAppearance(&virtualSlot.ApparentSlotType, &virtualSlot.ApparentActionId,
+                &virtualSlot.ApparentActionModeParam, RaptureHotbarModule.Instance(), &virtualSlot);
+
+            var appearance = this.GetAppearance(&virtualSlot);
+
+            return appearance;
+        } finally {
+            // note: rare memleak when a hotbar slot has a really long name.
+            virtualSlot.Clear();
+            virtualSlot.PopUpHelp.Dtor();
+        }
     }
 }

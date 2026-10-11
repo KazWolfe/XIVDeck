@@ -89,7 +89,7 @@ public class HotbarManager(ILogger log, IGameGui gameGui) {
         // Take in default values, just in case GetSlotAppearance fails for some reason
         var acType = slot->ApparentSlotType;
         var acId = slot->ApparentActionId;
-        ushort actionModeParam = slot->ApparentActionModeParam;
+        var actionModeParam = slot->ApparentActionModeParam;
 
         RaptureHotbarModule.GetSlotAppearance(&acType, &acId, &actionModeParam, hotbarModule, slot);
 

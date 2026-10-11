@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
+using Dalamud.Game.Gui;
 using Dalamud.Plugin.Services;
-using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using Serilog;
 using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 using XIVDeck.FFXIVPlugin.Contract;
@@ -18,91 +19,87 @@ public class HotbarWatcher : IDisposable {
         HotbarSlotType CommandType,
         uint CommandId,
         HotbarSlotType ApparentType,
-        uint ApparentId);
+        uint ApparentId,
+        uint Cost);
 
     private readonly ILogger _log;
     private readonly IFramework _framework;
+    private readonly IGameGui _gameGui;
 
-    private readonly Lock _registrationLock = new();
-    private readonly List<Registration> _registrations = [];
+    private readonly Lock _trackerLock = new();
+    private readonly List<SlotWatchTracker> _trackers = [];
+    private HotbarSlotRef[] _watched = [];
 
-    private IReadOnlyDictionary<HotbarSlotRef, Registration[]> _watched =
-        new Dictionary<HotbarSlotRef, Registration[]>();
+    private readonly Dictionary<int, SlotSnapshot> _snapshots = new();
 
-    private readonly Dictionary<HotbarSlotRef, SlotSnapshot> _baselines = new();
-    private IReadOnlyDictionary<HotbarSlotRef, Registration[]>? _baselinesFor;
+    private bool _inventoryDirty;
 
-    public HotbarWatcher(ILogger log, IFramework framework) {
+    public HotbarWatcher(ILogger log, IFramework framework, IGameGui gameGui) {
         this._log = log;
         this._framework = framework;
+        this._gameGui = gameGui;
+
+        // AgentUpdate runs first in this case.
+        this._gameGui.AgentUpdate += this.OnAgentUpdate;
         this._framework.Update += this.OnGameUpdate;
     }
 
-    public Registration Register(Action<IReadOnlyList<HotbarSlotRef>> onChanged) {
-        var registration = new Registration(this, onChanged);
-
-        lock (this._registrationLock) {
-            this._registrations.Add(registration);
-        }
-
-        return registration;
+    public SlotWatchTracker GetWatchTracker(Action<IReadOnlyList<HotbarSlotRef>> onChanged) {
+        return new SlotWatchTracker(this, onChanged);
     }
 
-    private void Update(Registration registration, IReadOnlySet<HotbarSlotRef>? slots) {
-        lock (this._registrationLock) {
-            if (slots == null) {
-                this._registrations.Remove(registration);
-            } else {
-                registration.Slots = slots;
+    private void ApplyWatch(SlotWatchTracker slotWatchTracker, bool remove) {
+        lock (this._trackerLock) {
+            if (remove) {
+                this._trackers.Remove(slotWatchTracker);
+            } else if (!this._trackers.Contains(slotWatchTracker)) {
+                this._trackers.Add(slotWatchTracker);
             }
 
-            var watched = this._registrations
-                .SelectMany(r => r.Slots, (r, slot) => (Slot: slot, Registration: r))
-                .GroupBy(e => e.Slot, e => e.Registration)
-                .ToDictionary(g => g.Key, g => g.ToArray());
+            var watched = this._trackers
+                .SelectMany(r => r.Slots)
+                .Distinct()
+                .ToArray();
 
             Volatile.Write(ref this._watched, watched);
         }
     }
 
-    private unsafe void OnGameUpdate(IFramework framework) {
-        var watched = Volatile.Read(ref this._watched);
+    private void OnAgentUpdate(AgentUpdateFlag flags) {
+        if ((flags & AgentUpdateFlag.InventoryUpdate) != 0) {
+            this._inventoryDirty = true;
+        }
+    }
 
-        if (!ReferenceEquals(watched, this._baselinesFor)) {
-            foreach (var slot in this._baselines.Keys.Where(slot => !watched.ContainsKey(slot)).ToList()) {
-                this._baselines.Remove(slot);
-            }
+    private void OnGameUpdate(IFramework framework) {
+        List<HotbarSlotRef>? changedSlots = null;
+        foreach (var slot in Volatile.Read(ref this._watched)) {
+            var index = (slot.HotbarId << 8) | slot.SlotId;
+            var slotTracked = (this._snapshots.TryGetValue(index, out var previous));
+            var current = GetSnapshot(slot, previous, this._inventoryDirty);
+            if (slotTracked && (current == previous)) continue;
 
-            this._baselinesFor = watched;
+            this._snapshots[index] = current;
+
+            changedSlots ??= [];
+            changedSlots.Add(slot);
         }
 
-        if (watched.Count == 0) return;
+        this._inventoryDirty = false;
 
-        Dictionary<Registration, List<HotbarSlotRef>>? changes = null;
-
-        foreach (var (slot, registrations) in watched) {
-            var gameSlot = HotbarManager.GetSlotByIdFixed((uint)slot.HotbarId, (uint)slot.SlotId);
-            HotbarManager.ResolveApparentAction(gameSlot, out var apparentType, out var apparentId);
-            var current = new SlotSnapshot(gameSlot->CommandType, gameSlot->CommandId, apparentType, apparentId);
-
-            if (!this._baselines.TryGetValue(slot, out var previous)) {
-                this._baselines[slot] = current;
-                continue;
-            }
-
-            if (current == previous) continue;
-            this._baselines[slot] = current;
-
-            changes ??= new Dictionary<Registration, List<HotbarSlotRef>>();
-            foreach (var registration in registrations) {
-                if (!changes.TryGetValue(registration, out var list)) changes[registration] = list = [];
-                list.Add(slot);
-            }
+        if (changedSlots != null) {
+            Task.Run(() => this.PublishSlotUpdates(changedSlots));
         }
+    }
 
-        if (changes == null) return;
+    private void PublishSlotUpdates(List<HotbarSlotRef> changedSlots) {
+        SlotWatchTracker[] registrations;
+        lock (this._trackerLock) registrations = [.. this._trackers];
 
-        foreach (var (registration, slots) in changes) {
+        foreach (var registration in registrations) {
+            var slots = registration.Slots.Where(changedSlots.Contains).ToArray();
+            if (slots.Length == 0) continue;
+
             try {
                 registration.OnChanged(slots);
             } catch (Exception ex) {
@@ -111,26 +108,45 @@ public class HotbarWatcher : IDisposable {
         }
     }
 
+    private static unsafe SlotSnapshot GetSnapshot(HotbarSlotRef slot, SlotSnapshot? previous, bool refreshItemCosts) {
+        var gameSlot = HotbarManager.GetSlotByIdFixed((uint)slot.HotbarId, (uint)slot.SlotId);
+        HotbarManager.ResolveApparentAction(gameSlot, out var apparentType, out var apparentId);
+
+        // Cost for items is particularly annoying to calculate, so we'll cache it unless we get a notification.
+        uint cost;
+        if (!refreshItemCosts && apparentType == HotbarSlotType.Item
+                              && previous is { ApparentType: HotbarSlotType.Item } p
+                              && p.ApparentId == apparentId) {
+            cost = p.Cost;
+        } else {
+            cost = gameSlot->GetCostValueForSlot(apparentType, apparentId);
+        }
+
+        return new SlotSnapshot(gameSlot->CommandType, gameSlot->CommandId, apparentType, apparentId, cost);
+    }
+
     public void Dispose() {
+        this._gameGui.AgentUpdate -= this.OnAgentUpdate;
         this._framework.Update -= this.OnGameUpdate;
     }
 
-    public sealed class Registration : IDisposable {
+    public sealed class SlotWatchTracker : IDisposable {
         private readonly HotbarWatcher _watcher;
         internal readonly Action<IReadOnlyList<HotbarSlotRef>> OnChanged;
-        internal IReadOnlySet<HotbarSlotRef> Slots = new HashSet<HotbarSlotRef>();
+        internal HotbarSlotRef[] Slots = [];
 
-        internal Registration(HotbarWatcher watcher, Action<IReadOnlyList<HotbarSlotRef>> onChanged) {
+        internal SlotWatchTracker(HotbarWatcher watcher, Action<IReadOnlyList<HotbarSlotRef>> onChanged) {
             this._watcher = watcher;
             this.OnChanged = onChanged;
         }
 
-        public void SetSlots(IEnumerable<HotbarSlotRef> slots) {
-            this._watcher.Update(this, slots.ToHashSet());
+        public void SetWatched(IEnumerable<HotbarSlotRef> slots) {
+            this.Slots = [.. slots.Distinct()];
+            this._watcher.ApplyWatch(this, false);
         }
 
         public void Dispose() {
-            this._watcher.Update(this, null);
+            this._watcher.ApplyWatch(this, true);
         }
     }
 }

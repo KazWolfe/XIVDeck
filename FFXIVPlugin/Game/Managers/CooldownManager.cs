@@ -16,6 +16,7 @@ namespace XIVDeck.FFXIVPlugin.Game.Managers;
 [Service(ServiceFlags.Singleton | ServiceFlags.AutoLoad)]
 public unsafe class CooldownManager : IDisposable {
     private readonly ILogger _log;
+    private readonly IFramework _framework;
 
     public event EventHandler<CooldownNotification>? CooldownStart;
 
@@ -25,8 +26,9 @@ public unsafe class CooldownManager : IDisposable {
 
     private Hook<AgentInventoryContext.Delegates.UseItem>? _useItemHook;
 
-    public CooldownManager(ILogger logger, IGameInteropProvider interop) {
+    public CooldownManager(ILogger logger, IGameInteropProvider interop, IFramework framework) {
         this._log = logger;
+        this._framework = framework;
 
         this._useActionHook = interop.HookFromAddress<ActionManager.Delegates.UseActionLocation>(
             ActionManager.Addresses.UseActionLocation.Value, this.DetourUseActionLocation);
@@ -119,7 +121,7 @@ public unsafe class CooldownManager : IDisposable {
         if (groupId < 0) return;
 
         var groupInfo = ActionManager.Instance()->GetRecastGroupDetail(groupId);
-        var timings = CooldownWindow(groupInfo->Elapsed, groupInfo->Total, DateTimeOffset.Now);
+        var timings = CooldownWindow(groupInfo->Elapsed, groupInfo->Total, this._framework.LastUpdateUTC);
 
         this.CooldownStart?.InvokeSafely(this, new CooldownNotification {
             GroupId = groupId,
@@ -155,16 +157,20 @@ public unsafe class CooldownManager : IDisposable {
             ? (int)actionManager->GetCurrentCharges(actionId)
             : 0;
 
-        var (primaryStart, primaryEnd) = CooldownWindow(hci.PrimaryElapsedTime, hci.PrimaryTotalTime, now);
-        var primaryDetail = new CooldownGroupDetail {
-            GroupId = primaryGroupId,
-            RenderMode = renderMode,
-            StartTime = primaryStart,
-            EndTime = primaryEnd,
-            CurrentCharges = currentCharges,
-            MaxCharges = hci.CurrentMaxCharges,
-            HideTimerLabel = hci.IsGcd,
-        };
+        CooldownGroupDetail? primaryDetail = null;
+
+        if (primaryGroupId >= 0) {
+            var (primaryStart, primaryEnd) = CooldownWindow(hci.PrimaryElapsedTime, hci.PrimaryTotalTime, now);
+            primaryDetail = new CooldownGroupDetail {
+                GroupId = primaryGroupId,
+                RenderMode = renderMode,
+                StartTime = primaryStart,
+                EndTime = primaryEnd,
+                CurrentCharges = currentCharges,
+                MaxCharges = hci.CurrentMaxCharges,
+                HideTimerLabel = hci.IsGcd,
+            };
+        }
 
         if (additionalGroupId < 0) {
             snapshot.RecastGroup = primaryDetail;

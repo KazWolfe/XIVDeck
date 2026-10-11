@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 using System.Threading;
 using Dalamud.Hooking;
 using Dalamud.Plugin.Services;
@@ -12,16 +13,10 @@ namespace XIVDeck.FFXIVPlugin.Game.Watchers;
 
 [Service(ServiceFlags.Singleton)]
 public unsafe class FocusWatcher : IDisposable {
-    private static class Signatures {
-        public const string SetInactive = "E8 ?? ?? ?? ?? E9 ?? ?? ?? ?? 66 83 FF 02";
-    }
-
-    private delegate void SetInactiveDelegate(Framework* framework, bool inactive);
-
     public event EventHandler<FocusState>? FocusChanged;
 
     private readonly ILogger _log;
-    private readonly Hook<SetInactiveDelegate>? _setInactiveHook;
+    private readonly Hook<Framework.Delegates.SetInactive>? _setInactiveHook;
 
     private bool _focusedCache;
 
@@ -47,8 +42,9 @@ public unsafe class FocusWatcher : IDisposable {
     public FocusWatcher(ILogger log, IGameInteropProvider interop) {
         this._log = log;
 
-        this._setInactiveHook = interop.HookFromSignature<SetInactiveDelegate>(
-            Signatures.SetInactive, this.SetInactiveDetour);
+        this._setInactiveHook = interop.HookFromAddress<Framework.Delegates.SetInactive>(
+            Framework.Addresses.SetInactive.Value,
+            this.SetInactiveDetour);
         this._setInactiveHook?.Enable();
 
         this.SetFocusState(this.GetFocusState());
