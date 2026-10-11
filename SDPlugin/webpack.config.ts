@@ -46,9 +46,7 @@ const config = (environment: unknown, argv: { mode: string; env: unknown; watch?
                         context: path.resolve(__dirname, 'assets'),
                         to: path.resolve(outDir, 'manifest.json'),
                         transform: (content) => {
-                            const contentString = new TextDecoder('utf-8').decode(content)
-                                .replaceAll("assets/", "");
-
+                            const contentString = new TextDecoder('utf-8').decode(content);
                             const manifest = JSON.parse(contentString);
                             manifest.Version = pluginVersion;
                             return Buffer.from(JSON.stringify(manifest, null, 2), 'utf-8');

@@ -2,11 +2,11 @@
   "$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
   "Actions": [
     {
-      "Icon": "assets/images/sidebar/chat",
+      "Icon": "images/sidebar/chat",
       "Name": "Text Command",
       "States": [
         {
-          "Image": "assets/images/defaults/chat",
+          "Image": "images/defaults/chat",
           "TitleAlignment": "bottom",
           "FontSize": 12
         }
@@ -15,11 +15,11 @@
       "UUID": "dev.wolf.xivdeck.sdplugin.actions.sendcommand"
     },
     {
-      "Icon": "assets/images/sidebar/hotbar",
+      "Icon": "images/sidebar/hotbar",
       "Name": "Hotbar Slot",
       "States": [
         {
-          "Image": "assets/images/defaults/hotbar",
+          "Image": "images/defaults/hotbar",
           "TitleAlignment": "bottom",
           "FontSize": 12
         }
@@ -28,11 +28,11 @@
       "UUID": "dev.wolf.xivdeck.sdplugin.actions.exechotbar"
     },
     {
-      "Icon": "assets/images/sidebar/action",
+      "Icon": "images/sidebar/action",
       "Name": "Execute Action",
       "States": [
         {
-          "Image": "assets/images/defaults/action",
+          "Image": "images/defaults/action",
           "TitleAlignment": "bottom",
           "FontSize": 12
         }
@@ -41,11 +41,11 @@
       "UUID": "dev.wolf.xivdeck.sdplugin.actions.execaction"
     },
     {
-      "Icon": "assets/images/sidebar/macro",
+      "Icon": "images/sidebar/macro",
       "Name": "In-Game Macro",
       "States": [
         {
-          "Image": "assets/images/defaults/macro",
+          "Image": "images/defaults/macro",
           "TitleAlignment": "bottom",
           "FontSize": 12
         }
@@ -54,11 +54,11 @@
       "UUID": "dev.wolf.xivdeck.sdplugin.actions.execmacro"
     },
     {
-      "Icon": "assets/images/sidebar/gearset",
+      "Icon": "images/sidebar/gearset",
       "Name": "Switch Class",
       "States": [
         {
-          "Image": "assets/images/defaults/gearset",
+          "Image": "images/defaults/gearset",
           "TitleAlignment": "bottom",
           "FontSize": 16
         }
@@ -67,16 +67,16 @@
       "UUID": "dev.wolf.xivdeck.sdplugin.actions.switchclass"
     },
     {
-      "Icon": "assets/images/sidebar/volume",
+      "Icon": "images/sidebar/volume",
       "Name": "Change Volume",
       "States": [
         {
-          "Image": "assets/images/states/volume/unmuted",
+          "Image": "images/states/volume/unmuted",
           "TitleAlignment": "top",
           "FontSize": 12
         },
         {
-          "Image": "assets/images/states/volume/muted",
+          "Image": "images/states/volume/muted",
           "TitleAlignment": "top",
           "FontSize": 12
         }
@@ -97,8 +97,8 @@
   ],
   "UUID": "dev.wolf.xivdeck",
   "Category": "XIVDeck",
-  "CategoryIcon": "assets/images/category",
-  "SDKVersion": 2,
+  "CategoryIcon": "images/category",
+  "SDKVersion": 3,
   "Author": "KazWolfe",
   "CodePath": "plugin.js",
   "PropertyInspectorPath": "index.html",
@@ -108,7 +108,7 @@
   },
   "Description": "Integrate with Final Fantasy XIV for a mogtastic experience in-game!",
   "Name": "XIVDeck",
-  "Icon": "assets/images/icon",
+  "Icon": "images/icon",
   "URL": "https://github.com/KazWolfe/XIVDeck",
   "Version": "1.0.0.0",
   "OS": [
