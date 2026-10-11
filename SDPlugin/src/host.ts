@@ -4,7 +4,6 @@ import {Container} from "inversify";
 import {ClientManager} from "./client/ClientManager";
 import {ControlDispatcher} from "./control/ControlDispatcher";
 import {ControlFactory} from "./control/ControlFactory";
-import {HotbarSlotRenderer} from "./control/virtual_slot/HotbarSlotRenderer";
 import {PropertyInspectorHost} from "./sd/PropertyInspectorHost";
 import {GlobalSettingsStore} from "./settings/GlobalSettingsStore";
 import {ProcessWatcher} from "./util/ProcessWatcher";
@@ -18,7 +17,6 @@ async function main(): Promise<void> {
     root.bind(GlobalSettingsStore).toSelf().inSingletonScope();
     root.bind(ProcessWatcher).toSelf().inSingletonScope();
     root.bind(PropertyInspectorHost).toSelf().inSingletonScope();
-    root.bind(HotbarSlotRenderer).toSelf().inSingletonScope();
     root.bind(ClientManager).toSelf().inSingletonScope();
     root.bind(ControlDispatcher).toSelf().inSingletonScope();
     root.bind(ControlFactory).toSelf().inSingletonScope();

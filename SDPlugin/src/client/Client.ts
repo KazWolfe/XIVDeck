@@ -4,6 +4,7 @@ import {GameConnection} from "./rpc/GameConnection";
 import {IconCache} from "./services/IconCache";
 import {HotbarTracker} from "./services/HotbarTracker";
 import {CooldownTicker} from "./services/CooldownTicker";
+import {HotbarSlotRenderer} from "./services/HotbarSlotRenderer";
 import {FocusState} from "./rpc/messages/GameState";
 import {ServerHello} from "./rpc/messages/Connection";
 import {EventSource, IEvent} from "#/util/EventSource";
@@ -31,6 +32,7 @@ export class Client implements Disposable {
         public readonly icons: IconCache,
         public readonly hotbars: HotbarTracker,
         public readonly cooldowns: CooldownTicker,
+        public readonly slotRenderer: HotbarSlotRenderer,
     ) {
         connection.ready.add(this.onReady);
         connection.closed.add(this.onClosed);

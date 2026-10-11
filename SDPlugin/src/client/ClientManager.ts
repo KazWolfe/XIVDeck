@@ -7,6 +7,7 @@ import {UnixSocketTransport} from "./rpc/transports/UnixSocketTransport";
 import {IconCache} from "./services/IconCache";
 import {HotbarTracker} from "./services/HotbarTracker";
 import {CooldownTicker} from "./services/CooldownTicker";
+import {HotbarSlotRenderer} from "./services/HotbarSlotRenderer";
 import {GlobalSettingsStore} from "#/settings/GlobalSettingsStore";
 import {Endpoint, Endpoints, TransportSettings} from "#/settings/types/TransportSettings";
 import {EventSource, IEvent} from "#/util/EventSource";
@@ -239,6 +240,7 @@ export class ClientManager implements Disposable {
         scope.bind(IconCache).toSelf().inSingletonScope();
         scope.bind(HotbarTracker).toSelf().inSingletonScope();
         scope.bind(CooldownTicker).toSelf().inSingletonScope();
+        scope.bind(HotbarSlotRenderer).toSelf().inSingletonScope();
 
         const client = scope.get(Client);
         this._clients.set(Endpoints.keyOf(endpoint), client);

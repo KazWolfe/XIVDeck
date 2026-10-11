@@ -55,6 +55,7 @@ export class CooldownTrackerProxy implements IProxyService, ICooldownSubscriber 
             }
 
             this._watched = fresh;
+            client.cooldowns.setTimersFromGroups(CooldownTrackerProxy.groupsOf(fresh));
             this._refreshed.emit(fresh);
         } catch (err) {
             this.context.logError("refreshing cooldowns for", err);

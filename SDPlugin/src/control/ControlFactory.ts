@@ -7,6 +7,7 @@ import {IDialControl, IKeyControl} from "./ControlInput";
 import {ClientProxy} from "./proxy/ClientProxy";
 import {HotbarTrackerProxy} from "./proxy/HotbarTrackerProxy";
 import {CooldownTrackerProxy} from "./proxy/CooldownTrackerProxy";
+import {HotbarSlotRendererProxy} from "./proxy/HotbarSlotRendererProxy";
 import {GameNotificationProxy} from "./proxy/GameNotificationProxy";
 import {VirtualSlotPresenter} from "./virtual_slot/VirtualSlotPresenter";
 import {CommandButton} from "./controls/CommandButton";
@@ -86,6 +87,7 @@ export class ControlFactory {
         scope.bind(ClientProxy).toSelf().inSingletonScope();
         scope.bind(HotbarTrackerProxy).toSelf().inSingletonScope();
         scope.bind(CooldownTrackerProxy).toSelf().inSingletonScope();
+        scope.bind(HotbarSlotRendererProxy).toSelf().inSingletonScope();
         scope.bind(GameNotificationProxy).toSelf().inSingletonScope();
         scope.bind(VirtualSlotPresenter).toSelf().inSingletonScope();
 

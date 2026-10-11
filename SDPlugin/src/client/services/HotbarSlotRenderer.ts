@@ -7,6 +7,7 @@ import {
     CooldownRenderMode,
 } from "#/client/rpc/messages/ActionAppearance";
 import {GlobalSettingsStore} from "#/settings/GlobalSettingsStore";
+import {CooldownTicker} from "./CooldownTicker";
 import {HotbarSlotDocument} from "./HotbarSlotDocument";
 
 export interface CooldownOverlay {
@@ -24,14 +25,9 @@ interface IChargeInterval {
     intoCurrentCharge: number;
 }
 
-/**
- * Turns action appearances into hotbar slot images. The appearance's own parts (icon, cost) go straight onto a
- * {@link HotbarSlotDocument}; its cooldown snapshot is resolved for the current time by {@link buildCooldownOverlay},
- * unless cooldown tracking is turned off.
- */
 @injectable()
 export class HotbarSlotRenderer {
-    public constructor(private readonly settings: GlobalSettingsStore) {
+    public constructor(private readonly settings: GlobalSettingsStore, private readonly cooldowns: CooldownTicker) {
     }
 
     public buildSlot(appearance: ActionAppearance, iconBase64: string, typeIconSvg: string | undefined): string {
@@ -41,7 +37,7 @@ export class HotbarSlotRenderer {
         slot.setTypeIcon(typeIconSvg);
 
         const details = this.settings.trackCooldowns ? appearance.cooldownDetails : null;
-        const overlay = details ? HotbarSlotRenderer.buildCooldownOverlay(details, Date.now()) : undefined;
+        const overlay = details ? this.buildCooldownOverlay(details, Date.now()) : undefined;
 
         if (overlay) {
             slot.setRecastTimer(overlay.recastElapsedPercent);
@@ -61,20 +57,45 @@ export class HotbarSlotRenderer {
         return slot.toDataUrl();
     }
 
-    private static buildCooldownOverlay(details: ActionCooldownDetail, now: number): CooldownOverlay {
+    private buildCooldownOverlay(details: ActionCooldownDetail, now: number): CooldownOverlay {
         const overlay: CooldownOverlay = {};
+        const rechargeGroup = this.resolveGroup(details.rechargeGroup, now);
+        const recastGroup = this.resolveGroup(details.recastGroup, now);
 
-        if (details.rechargeGroup) {
-            HotbarSlotRenderer.addGroupToOverlay(overlay, details.rechargeGroup, now);
+        if (rechargeGroup) {
+            HotbarSlotRenderer.addGroupToOverlay(overlay, rechargeGroup, now);
         }
-        if (details.recastGroup) {
-            HotbarSlotRenderer.addGroupToOverlay(overlay, details.recastGroup, now);
+        if (recastGroup) {
+            HotbarSlotRenderer.addGroupToOverlay(overlay, recastGroup, now);
         }
 
-        overlay.secondsRemaining = HotbarSlotRenderer.getCooldownSeconds(details.rechargeGroup, now)
-            ?? HotbarSlotRenderer.getCooldownSeconds(details.recastGroup, now);
+        overlay.secondsRemaining = HotbarSlotRenderer.getCooldownSeconds(rechargeGroup, now)
+            ?? HotbarSlotRenderer.getCooldownSeconds(recastGroup, now);
 
         return overlay;
+    }
+
+    /**
+     * Applies the ticker's timing to a snapshot group, falling back to the snapshot's own if the ticker hasn't seen
+     * the group yet. Charges are derived from that timing, as the snapshot's count goes stale as soon as one comes back.
+     */
+    private resolveGroup(group: CooldownGroupDetail | null | undefined, now: number): CooldownGroupDetail | undefined {
+        if (group == null) return undefined;
+
+        const timing = this.cooldowns.timingOf(group.groupId) ?? group;
+        const resolved = {...group, startTime: timing.startTime, endTime: timing.endTime};
+
+        if (now >= resolved.endTime) {
+            resolved.currentCharges = resolved.maxCharges;
+        } else {
+            const interval = HotbarSlotRenderer.chargeInterval(resolved, now);
+            if (interval) {
+                const charges = Math.floor((now - resolved.startTime) / interval.chargeIntervalMs);
+                resolved.currentCharges = Math.min(resolved.maxCharges, Math.max(0, charges));
+            }
+        }
+
+        return resolved;
     }
 
     private static getCooldownSeconds(group: CooldownGroupDetail | null | undefined, now: number): number | undefined {

@@ -3,7 +3,7 @@ import {ControlContext} from "#/control/ControlContext";
 import {ClientProxy} from "#/control/proxy/ClientProxy";
 import {CooldownTrackerProxy} from "#/control/proxy/CooldownTrackerProxy";
 import {ActionAppearance, ActionCooldownDetail} from "#/client/rpc/messages/ActionAppearance";
-import {HotbarSlotRenderer} from "./HotbarSlotRenderer";
+import {HotbarSlotRendererProxy} from "#/control/proxy/HotbarSlotRendererProxy";
 
 /** Puts a finished slot image (a data URL) wherever the owning control wants it. */
 export type SlotPresentHandler = (image: string) => Promise<void>;
@@ -26,7 +26,8 @@ export class VirtualSlotPresenter {
     private _lastImage: string | undefined;
 
     public constructor(private readonly context: ControlContext, private readonly client: ClientProxy,
-                       private readonly renderer: HotbarSlotRenderer, private readonly cooldowns: CooldownTrackerProxy) {
+                       private readonly renderer: HotbarSlotRendererProxy,
+                       private readonly cooldowns: CooldownTrackerProxy) {
         cooldowns.refreshed.add(this.onCooldownRefreshed.bind(this));
         cooldowns.tick.add(this.onCooldownTick.bind(this));
     }
@@ -92,7 +93,7 @@ export class VirtualSlotPresenter {
         }
 
         const image = this.renderer.buildSlot(shown.appearance, shown.iconBase64, shown.typeIconSvg);
-        if (image === this._lastImage) {
+        if (image === undefined || image === this._lastImage) {
             return;
         }
 
