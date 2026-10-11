@@ -5,8 +5,8 @@ import {CooldownTrackerProxy} from "#/control/proxy/CooldownTrackerProxy";
 import {ActionAppearance, ActionCooldownDetail} from "#/client/rpc/messages/ActionAppearance";
 import {HotbarSlotRendererProxy} from "#/control/proxy/HotbarSlotRendererProxy";
 
-/** Puts a finished slot image (a data URL) wherever the owning control wants it. */
-export type SlotPresentHandler = (image: string) => Promise<void>;
+/** Puts a finished slot image (a data URL) wherever the owning control wants it; `null` resets to the default. */
+export type SlotPresentHandler = (image: string | null) => Promise<void>;
 
 interface IShownSlot {
     appearance: ActionAppearance;
@@ -23,7 +23,7 @@ interface IShownSlot {
 export class VirtualSlotPresenter {
     private _presentHandler: SlotPresentHandler | undefined;
     private _shown: IShownSlot | undefined;
-    private _lastImage: string | undefined;
+    private _lastImage: string | null | undefined;
 
     public constructor(private readonly context: ControlContext, private readonly client: ClientProxy,
                        private readonly renderer: HotbarSlotRendererProxy,
@@ -61,6 +61,12 @@ export class VirtualSlotPresenter {
         this.cooldowns.unsubscribe();
     }
 
+    /** Stops tracking whatever was shown and resets to the default image. */
+    public async reset(): Promise<void> {
+        this.clear();
+        await this.presentImage(null);
+    }
+
     private async onCooldownRefreshed(details: ActionCooldownDetail): Promise<void> {
         const shown = this._shown;
         if (!shown) {
@@ -84,16 +90,20 @@ export class VirtualSlotPresenter {
         }
     }
 
-    /** Renders the current state as of right now and presents it, unless it's the image last presented. */
+    /** Renders the current state as of right now and presents it; without a client, resets to the default. */
     private async present(): Promise<void> {
         const shown = this._shown;
-        const handler = this._presentHandler;
-        if (!shown || !handler) {
+        if (!shown) {
             return;
         }
 
         const image = this.renderer.buildSlot(shown.appearance, shown.iconBase64, shown.typeIconSvg);
-        if (image === undefined || image === this._lastImage) {
+        await this.presentImage(image ?? null);
+    }
+
+    private async presentImage(image: string | null): Promise<void> {
+        const handler = this._presentHandler;
+        if (!handler || image === this._lastImage) {
             return;
         }
 

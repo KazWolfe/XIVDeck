@@ -43,6 +43,7 @@ export class HotbarButton extends Control<HotbarButtonSettings> implements IKeyC
         }
 
         if (!this.client.isAvailable) {
+            await this.slot.reset();
             return;
         }
 
@@ -50,7 +51,7 @@ export class HotbarButton extends Control<HotbarButtonSettings> implements IKeyC
         await this.slot.setAppearance(await this.client.request("Hotbar.GetHotbarSlot", {hotbarId, slotId}));
     }
 
-    private async presentSlot(image: string): Promise<void> {
-        await this._action.setImage(image);
+    private async presentSlot(image: string | null): Promise<void> {
+        await this._action.setImage(image ?? undefined);
     }
 }

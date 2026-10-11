@@ -10,7 +10,7 @@ import {ClassButtonSettings} from "#/settings/types/ClassButtonSettings";
 @injectable()
 export class ClassButton extends Control<ClassButtonSettings> implements IKeyControl {
     private readonly _action: KeyAction<ClassButtonSettings>;
-    private _lastImage: string | undefined;
+    private _lastImage: string | null | undefined;
 
     public constructor(context: ControlContext, client: ClientProxy) {
         super(context, client);
@@ -31,7 +31,12 @@ export class ClassButton extends Control<ClassButtonSettings> implements IKeyCon
 
     protected async render(): Promise<void> {
         const settings = this.settings;
-        if (!this.client.isAvailable || !settings) {
+        if (!settings) {
+            return;
+        }
+
+        if (!this.client.isAvailable) {
+            await this.present(null);
             return;
         }
 
@@ -39,12 +44,16 @@ export class ClassButton extends Control<ClassButtonSettings> implements IKeyCon
 
         await this.saveSettings({...settings, cache: classInfo});
 
-        const image = `data:image/png;base64,${await this.client.getIcon(classInfo.iconId)}`;
+        await this.present(`data:image/png;base64,${await this.client.getIcon(classInfo.iconId)}`);
+    }
+
+    /** `null` resets to the default image. */
+    private async present(image: string | null): Promise<void> {
         if (image === this._lastImage) {
             return;
         }
 
-        await this._action.setImage(image);
+        await this._action.setImage(image ?? undefined);
         this._lastImage = image;
     }
 }

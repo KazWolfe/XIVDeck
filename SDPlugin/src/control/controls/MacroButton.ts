@@ -37,6 +37,7 @@ export class MacroButton extends Control<MacroButtonSettings> implements IKeyCon
         }
 
         if (!this.client.isAvailable) {
+            await this.slot.reset();
             return;
         }
 
@@ -51,7 +52,7 @@ export class MacroButton extends Control<MacroButtonSettings> implements IKeyCon
         }
     }
 
-    private async presentSlot(image: string): Promise<void> {
-        await this._action.setImage(image);
+    private async presentSlot(image: string | null): Promise<void> {
+        await this._action.setImage(image ?? undefined);
     }
 }

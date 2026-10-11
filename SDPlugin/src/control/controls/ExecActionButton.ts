@@ -45,6 +45,7 @@ export class ExecActionButton extends Control<ExecActionSettings> implements IKe
         }
 
         if (!this.client.isAvailable) {
+            await this.slot.reset();
             return;
         }
 
@@ -65,7 +66,7 @@ export class ExecActionButton extends Control<ExecActionSettings> implements IKe
         }
     }
 
-    private async presentSlot(image: string): Promise<void> {
-        await this._action.setImage(image);
+    private async presentSlot(image: string | null): Promise<void> {
+        await this._action.setImage(image ?? undefined);
     }
 }
