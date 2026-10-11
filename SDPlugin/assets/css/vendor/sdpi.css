@@ -1103,7 +1103,8 @@ h1 {
 
 ::-webkit-datetime-edit {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    background: url(../assets/elg_calendar_inv.svg) no-repeat left center;
+    /* XIVDECK PATCH: New path to calendar invite SVG to prevent build warnings */
+    background: url(./elg_calendar_inv.svg) no-repeat left center;
     padding-right: 1em;
     padding-left: 25px;
     background-position: 4px 0px;
